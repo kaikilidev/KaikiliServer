@@ -1,10 +1,9 @@
 {
   "port": 5000,
-  "dbUrl": "mongodb://root@198.211.109.120:27017/",
-  "dbName": "db",
+  "dbUrl": "mongodb://root@157.230.188.53:27017/",
+  "dbName": "kdb",
   "collections": {
     "add_services": "add_services"
-
   }
 
 }
