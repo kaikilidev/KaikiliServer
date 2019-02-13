@@ -55,7 +55,7 @@ var SubService = {
                         status: 0,
                         message: "Failed"
                     };
-                    console.log(status);
+                    // console.log(status);
                     callback(status);
 
                 } else {
@@ -64,7 +64,7 @@ var SubService = {
                         message: "Success Get all service to Mongodb",
                         data: docs
                     };
-                    console.log(status);
+                    // console.log(status);
                     // db.close();
                     callback(status);
                 }

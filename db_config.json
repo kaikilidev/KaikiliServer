@@ -3,7 +3,8 @@
   "dbUrl": "mongodb://root@157.230.188.53:27017/",
   "dbName": "kdb",
   "collections": {
-    "add_services": "add_services"
+    "add_services": "add_services",
+    "sp_sr_catalogue": "sp_sr_catalogue"
   }
 
 }
