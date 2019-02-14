@@ -4,7 +4,8 @@
   "dbName": "kdb",
   "collections": {
     "add_services": "add_services",
-    "sp_sr_catalogue": "sp_sr_catalogue"
+    "sp_sr_catalogue": "sp_sr_catalogue",
+    "sp_personal_info": "sp_personal_info"
   }
 
 }
