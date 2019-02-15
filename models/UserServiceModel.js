@@ -13,30 +13,34 @@ var UserService = {
         var recodeId = "";
         mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs){
-                 recodeId = docs[0]._id;
-            });
-            if (recodeId.length > 0) {
-                collection.update({_id: recodeId},{$set:addService}, function (err, records) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        console.log(status);
-                        callback(status);
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Success upload to sub service to server",
-                            // data: records['ops'][0]
-                        };
-                        console.log(status);
-                        callback(status);
-                    }
-                });
+            var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray();
 
+
+            if (addServiceArray.length > 0) {
+                var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
+
+                    recodeId = docs[0]._id;
+                    console.log(recodeId);
+                    collection.update({_id: recodeId}, {$set: addService}, function (err, records) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Success upload to sub service to server",
+                                // data: records['ops'][0]
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    });
+                });
             } else {
                 collection.insert(addService, function (err, records) {
                     if (err) {
