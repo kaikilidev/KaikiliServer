@@ -24,6 +24,7 @@ router.post('/AddUserServices', function (req, res, next) {
 });
 
 
+
 router.post('/AddNewUser', function (req, res, next) {
     userServiceModel.addNewUser(req, function (err, result) {
         if (err) {

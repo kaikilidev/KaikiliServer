@@ -33,6 +33,7 @@ var UserService = {
     },
 
 
+
     addNewUser: function (req, callback) {
 
         var newUser = {
