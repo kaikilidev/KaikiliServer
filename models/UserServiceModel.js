@@ -15,7 +15,7 @@ var UserService = {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray();
 
-
+            console.log(addServiceArray.length);
             if (addServiceArray.length > 0) {
                 var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
 
