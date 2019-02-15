@@ -73,41 +73,6 @@ var SubService = {
         });
     },
 
-    //
-    // updateService: function (req, callback) {
-    //     var service = {
-    //         serviceName: req.body.serviceName,
-    //         serviceInfo: req.body.serviceInfo,
-    //         isActive: req.body.isActive,
-    //         creationDate: new Date().toISOString(),
-    //     };
-    //     var serviceId = req.body.serviceId;
-    //     console.log(service);
-    //     mongo.connect(config.dbUrl, function (err, db) {
-    //         var collection = db.db(config.dbName).collection(config.collections.service);
-    //         var myquery = { _id: new ObjectID(serviceId) };
-    //         collection.updateOne(myquery, service, function (err) {
-    //             if (err) {
-    //                 console.log(err);
-    //                 var status = {
-    //                     status: 0,
-    //                     message: "Failed"
-    //                 };
-    //                 console.log(status);
-    //                 callback(status);
-    //             } else {
-    //                 var status = {
-    //                     status: 1,
-    //                     message: "Success update service to server"
-    //                 };
-    //                 console.log(status);
-    //                 callback(status);
-    //             }
-    //         });
-    //     });
-    // }
-
-
 };
 
 

@@ -7,69 +7,97 @@ var config = require('../db_config.json');
 var UserService = {
 
     addUserService: function (req, callback) {
-        var addService = req.body ;
+        var addService = req.body;
+        var sp_id = req.body.sp_id;
+        var sr_id = req.body.sr_id;
+        var recodeId = "";
         mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            collection.insert(addService, function (err, records) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Success upload new sub service to server",
-                        // data: records['ops'][0]
-                    };
-                    console.log(status);
-                    callback(status);
-                }
+            var addServiceArray = collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs){
+                 recodeId = docs[0]._id;
             });
+            if (recodeId.length > 0) {
+                collection.update({_id: recodeId},{$set:addService}, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success upload to sub service to server",
+                            // data: records['ops'][0]
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+
+            } else {
+                collection.insert(addService, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success upload new sub service to server",
+                            // data: records['ops'][0]
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            }
         });
     },
 
 
-
-    addNewUser: function (req, callback) {
-
-        var newUser = {
-            sp_id: req.body.sp_id,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            dob: req.body.dob,
-            gender: req.body.gender,
-            mobile_no: req.body.mobile_no,
-            creationDate: new Date().toISOString()
-        };
-
+    getUserService: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var sr_id = req.body.sr_id;
+        console.log(sr_id);
+        console.log(sp_id);
         mongo.connect(config.dbUrl, function (err, db) {
-            var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
-            collection.insert(newUser, function (err, records) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+
+            // Company.findOne({where:{id:company_id}
+            console.log(err);
+            collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
+
                 if (err) {
                     console.log(err);
                     var status = {
                         status: 0,
                         message: "Failed"
                     };
-                    console.log(status);
+                    // console.log(status);
                     callback(status);
+
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success create new user",
-                        // data: records['ops'][0]
+                        message: "Success Get all service to Mongodb",
+                        data: docs
                     };
-                    console.log(status);
+                    // console.log(status);
+                    // db.close();
                     callback(status);
                 }
             });
+
         });
     },
+
 
 };
 
