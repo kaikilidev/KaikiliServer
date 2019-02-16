@@ -73,6 +73,36 @@ var SubService = {
         });
     },
 
+
+    getSingleService: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        console.log(sr_id);
+        mongo.connect(config.dbUrl, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.add_services);
+            console.log(err);
+            collection.find({sr_id: sr_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all service to Mongodb",
+                        data: docs
+                    };
+                    // console.log(status);
+                    // db.close();
+                    callback(status);
+                }
+            });
+        });
+    },
 };
 
 

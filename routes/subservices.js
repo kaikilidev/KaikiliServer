@@ -16,6 +16,17 @@ router.get('/getAllAddService', function (req, res, next) {
 });
 
 
+// P O S T   M E T H O D S
+
+router.post('/getServiceIdInfo', function (req, res, next) {
+    subservices.getSingleService(req, function (err, result) {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(result);
+        }
+    });
+});
 
 
 
