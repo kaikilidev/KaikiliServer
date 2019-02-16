@@ -76,7 +76,7 @@ var SubService = {
 
     getSingleService: function (req, callback) {
         var sr_id = req.body.sr_id;
-        console.log(sr_id);
+     //   console.log(sr_id);
         mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.add_services);
             console.log(err);

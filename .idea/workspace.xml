@@ -4,9 +4,6 @@
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/SubServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/SubServiceModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/subservices.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/subservices.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -102,23 +99,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="80" column="92" selection-start-line="80" selection-start-column="92" selection-end-line="80" selection-end-column="92" />
-              <folding>
-                <element signature="e#236#1626#0" />
-              </folding>
+            <state relative-caret-position="-2">
+              <caret line="78" column="7" selection-start-line="78" selection-start-column="7" selection-end-line="78" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/subservices.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="20" column="30" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="30" />
+            <state relative-caret-position="269">
+              <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -163,8 +157,8 @@
         <option value="$PROJECT_DIR$/models/ServiceModel.js" />
         <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
-        <option value="$PROJECT_DIR$/models/SubServiceModel.js" />
         <option value="$PROJECT_DIR$/routes/subservices.js" />
+        <option value="$PROJECT_DIR$/models/SubServiceModel.js" />
       </list>
     </option>
   </component>
@@ -305,7 +299,7 @@
       <workItem from="1550035533476" duration="6786000" />
       <workItem from="1550118847182" duration="6020000" />
       <workItem from="1550206668602" duration="23091000" />
-      <workItem from="1550292589337" duration="3445000" />
+      <workItem from="1550292589337" duration="5002000" />
     </task>
     <task id="LOCAL-00001" summary="new Code with new DB Server">
       <created>1550035603407</created>
@@ -377,11 +371,18 @@
       <option name="project" value="LOCAL" />
       <updated>1550238475047</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Add New Api Set -Test">
+      <created>1550302528999</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1550302528999</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71677000" />
+    <option name="totallyTimeSpent" value="73234000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -395,13 +396,13 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23061225" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23061225" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4979592" visible="true" weight="0.68085104" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4979592" weight="0.68085104" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -429,7 +430,8 @@
     <MESSAGE value="Add Services API" />
     <MESSAGE value="Add User Api" />
     <MESSAGE value="Add Service Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Service Update" />
+    <MESSAGE value="Add New Api Set -Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add New Api Set -Test" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../../DropTale/Drop Tale Server Code/droptale/package.json">
@@ -605,13 +607,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -619,20 +614,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
+    <entry file="file://$PROJECT_DIR$/routes/subservices.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="80" column="92" selection-start-line="80" selection-start-column="92" selection-end-line="80" selection-end-column="92" />
-          <folding>
-            <element signature="e#236#1626#0" />
-          </folding>
+        <state relative-caret-position="269">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/subservices.js">
+    <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="20" column="30" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="30" />
+        <state relative-caret-position="136">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2">
+          <caret line="78" column="7" selection-start-line="78" selection-start-column="7" selection-end-line="78" selection-end-column="7" />
         </state>
       </provider>
     </entry>
