@@ -82,6 +82,20 @@ router.post('/getUserTransitionSL', function (req, res, next) {
 });
 
 
+router.post('/userTransitionUpdate', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    userServiceModel.userTransitionUpdate(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 
 
 

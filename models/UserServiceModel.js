@@ -17,9 +17,9 @@ var UserService = {
             console.log(sp_id);
             console.log(sr_id);
 
-            collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs){
+            collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
 
-                if(docs.length >0){
+                if (docs.length > 0) {
                     recodeId = docs[0]._id;
                     console.log(recodeId);
 
@@ -44,9 +44,9 @@ var UserService = {
                         }
                     });
 
-                }else {
+                } else {
                     console.log(recodeId + " New Insert");
-                // Insert new service record
+                    // Insert new service record
                     collection.insert(addService, function (err, records) {
                         if (err) {
                             console.log(err);
@@ -72,8 +72,6 @@ var UserService = {
     },
 
 
-
-
     getUserService: function (req, callback) {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
@@ -81,8 +79,6 @@ var UserService = {
         console.log(sp_id);
         mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-
-            // Company.findOne({where:{id:company_id}
             console.log(err);
             collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
 
@@ -117,7 +113,13 @@ var UserService = {
         mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
-            collection.find({sp_id: sp_id},{ _id: 1 ,sp_id: 2,sr_id: 3, sr_title:4,sp_sr_status:5}).toArray(function (err, docs) {
+            collection.find({sp_id: sp_id}, {
+                _id: 1,
+                sp_id: 2,
+                sr_id: 3,
+                sr_title: 4,
+                sp_sr_status: 5
+            }).toArray(function (err, docs) {
                 // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
                 if (err) {
                     console.log(err);
@@ -146,10 +148,13 @@ var UserService = {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
         mongo.connect(config.dbUrl, function (err, db) {
-            var mysort = { updateDate: -1 };
+            var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
-            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+            collection.find({
+                sp_id: sp_id,
+                sr_status: {$ne: ["Cancel", "Review"]}
+            }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -172,8 +177,69 @@ var UserService = {
         });
     },
 
+    userTransitionUpdate: function (req, callback) {
 
-};
+        var tran_id = req.body.tran_id;
 
+        var serviceUpdate = {
+            sr_status: req.body.sr_status,
+            updateDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        data: docs
+                    };
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+
+                         var messagesBody = {
+                                author: docs[0].sp_id,
+                                author_type:"SP",
+                                sp_delet:"0",
+                                cu_delte:"0",
+                                sp_read:"0",
+                                cu_read:"0",
+                                created_on:new Date().toISOString(),
+                                body:docs[0].sr_status+" - "+docs[0].sr_title+" "+docs[0].date+" "+docs[0].time
+                             };
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.update({tran_id: tran_id},{$push: {messages: messagesBody}},function (err, docs) {
+
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in Notification");
+                                // console.log(docs);
+                            }
+                        });
+
+                    });
+                    console.log();
+                    callback(status);
+
+                }
+            });
+
+
+        });
+    },
+
+}
 
 module.exports = UserService;
