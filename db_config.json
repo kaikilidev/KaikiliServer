@@ -5,7 +5,8 @@
   "collections": {
     "add_services": "add_services",
     "sp_sr_catalogue": "sp_sr_catalogue",
-    "sp_personal_info": "sp_personal_info"
+    "sp_personal_info": "sp_personal_info",
+    "cu_sp_transaction": "cu_sp_transaction"
   }
 
 }

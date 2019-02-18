@@ -141,6 +141,38 @@ var UserService = {
         });
     },
 
+
+    getUserTransitionSL: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, function (err, db) {
+            var mysort = { updateDate: -1 };
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            console.log(err);
+            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service to Mongodb",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
+
 };
 
 
