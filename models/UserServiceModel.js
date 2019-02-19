@@ -177,6 +177,80 @@ var UserService = {
         });
     },
 
+
+    getUserNotification: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, function (err, db) {
+            var mysort = {updateDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+            console.log(err);
+            collection.find({sp_id: sp_id},
+                {
+                    _id: 1,
+                    cu_name: 2,
+                    conversation_id: 3,
+                    tran_id: 4,
+                    date: 5,
+                    time: 6,
+                    sr_title: 7,
+                    updateDate: 8
+                }).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service to Mongodb",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
+    getUserSingleNotification: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var tran_id = req.body.tran_id;
+        var conversation_id = req.body.conversation_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, function (err, db) {
+            var mysort = {updateDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+            console.log(err);
+            collection.find({sp_id: sp_id, tran_id: tran_id, conversation_id: conversation_id}
+            ).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service to Mongodb",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
     userTransitionUpdate: function (req, callback) {
 
         var tran_id = req.body.tran_id;
@@ -207,22 +281,23 @@ var UserService = {
                     };
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
-                         var messagesBody = {
-                                author: docs[0].sp_id,
-                                author_type:"SP",
-                                sp_delet:"0",
-                                cu_delte:"0",
-                                sp_read:"0",
-                                cu_read:"0",
-                                created_on:new Date().toISOString(),
-                                body:docs[0].sr_status+" - "+docs[0].sr_title+" "+docs[0].date+" "+docs[0].time
-                             };
+                        var messagesBody = {
+                            author: docs[0].sp_id,
+                            author_type: "SP",
+                            sp_delet: "0",
+                            cu_delte: "0",
+                            sp_read: "0",
+                            cu_read: "0",
+                            created_on: new Date().toISOString(),
+                            body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                        };
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                        collectionNotification.update({tran_id: tran_id},{$push: {messages: messagesBody}},function (err, docs) {
+                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
 
                             if (err) {
                                 console.log(err);
+
                             } else {
                                 console.log("Update in Notification");
                                 // console.log(docs);
@@ -238,6 +313,51 @@ var UserService = {
 
 
         });
+    },
+
+
+    userNotificationPost: function (req, callback) {
+
+        var tran_id = req.body.tran_id;
+        var sp_id = req.body.sp_id;
+        var body = req.body.message;
+
+        var messagesBody = {
+            author: sp_id,
+            author_type: "SP",
+            sp_delet: "0",
+            cu_delte: "0",
+            sp_read: "0",
+            cu_read: "0",
+            created_on: new Date().toISOString(),
+            body: body
+        };
+        mongo.connect(config.dbUrl, function (err, db) {
+            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+            collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success to post messages",
+                        data: docs
+                    };
+                    callback(status);
+                    // console.log("Update in Notification");
+                    // console.log(docs);
+                }
+            });
+
+        });
+
     },
 
 }
