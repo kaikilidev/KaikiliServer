@@ -12,7 +12,7 @@ var UserService = {
         var sr_id = req.body.sr_id;
         var recodeId = "";
 
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(sp_id);
             console.log(sr_id);
@@ -77,7 +77,7 @@ var UserService = {
         var sr_id = req.body.sr_id;
         console.log(sr_id);
         console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
             collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
@@ -110,7 +110,7 @@ var UserService = {
     getUserServiceCatalogue: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
             collection.find({sp_id: sp_id}, {
@@ -147,9 +147,9 @@ var UserService = {
     getUserTransitionSL: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, function (err, kdb) {
             var mysort = {updateDate: -1};
-            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({
                 sp_id: sp_id,
@@ -181,7 +181,7 @@ var UserService = {
     getUserNotification: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             console.log(err);
@@ -223,7 +223,7 @@ var UserService = {
         var tran_id = req.body.tran_id;
         var conversation_id = req.body.conversation_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             console.log(err);
@@ -260,7 +260,7 @@ var UserService = {
             updateDate: new Date().toISOString()
         };
 
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
             // Update service record
@@ -331,7 +331,7 @@ var UserService = {
             created_on: new Date().toISOString(),
             body: body
         };
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
 
@@ -370,7 +370,7 @@ var UserService = {
             updateDate: new Date().toISOString()
         };
 
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl,  function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
             // Update service record
@@ -455,35 +455,35 @@ var UserService = {
         });
     },
 
-    getUserCompletedTransition: function (req, callback) {
-        var sp_id = req.body.sp_id;
-        console.log(sp_id);
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
-            var mysort = {updateDate: -1};
-            var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
-            console.log(err);
-            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    // console.log(status);
-                    callback(status);
-
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service to Mongodb",
-                        data: docs
-                    };
-                    callback(status);
-                }
-            });
-
-        });
-    },
+    // getUserCompletedTransition: function (req, callback) {
+    //     var sp_id = req.body.sp_id;
+    //     console.log(sp_id);
+    //     mongo.connect(config.dbUrl,  function (err, db) {
+    //         var mysort = {updateDate: -1};
+    //         var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
+    //         console.log(err);
+    //         collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+    //             if (err) {
+    //                 console.log(err);
+    //                 var status = {
+    //                     status: 0,
+    //                     message: "Failed"
+    //                 };
+    //                 // console.log(status);
+    //                 callback(status);
+    //
+    //             } else {
+    //                 var status = {
+    //                     status: 1,
+    //                     message: "Success Get all Transition service to Mongodb",
+    //                     data: docs
+    //                 };
+    //                 callback(status);
+    //             }
+    //         });
+    //
+    //     });
+    // },
 
 }
 
