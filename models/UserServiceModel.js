@@ -279,6 +279,7 @@ var UserService = {
                         message: "Success upload to service to server",
                         data: docs
                     };
+
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
                         var messagesBody = {
@@ -310,8 +311,6 @@ var UserService = {
 
                 }
             });
-
-
         });
     },
 
@@ -358,6 +357,132 @@ var UserService = {
 
         });
 
+    },
+
+
+    userTransitionCompleted: function (req, callback) {
+
+        var tran_id = req.body.tran_id;
+
+        var serviceUpdate = {
+            sr_status: req.body.sr_status,
+            txn_status: req.body.txn_status,
+            updateDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server"
+                    };
+
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+
+                        var messagesBody = {
+                            author: docs[0].sp_id,
+                            author_type: "SP",
+                            sp_delet: "0",
+                            cu_delte: "0",
+                            sp_read: "0",
+                            cu_read: "0",
+                            created_on: new Date().toISOString(),
+                            body: + "Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                        };
+
+
+
+                        var paymentSettlementBody = {
+                            cust_id:docs[0].cust_id,
+                            cust_first_name:docs[0].cust_first_name,
+                            cust_last_name:docs[0].cust_last_name,
+                            sp_id:docs[0].sp_id,
+                            sp_first_name:docs[0].sp_first_name,
+                            sp_Last_name:docs[0].sp_Last_name,
+                            tran_id:docs[0].tran_id,
+                            date:docs[0].date,
+                            time:docs[0].time,
+                            sr_id:docs[0].sr_id,
+                            sr_title:docs[0].sr_title,
+                            sr_status:docs[0].sr_status,
+                            txn_status:docs[0].txn_status,
+                            payment_type:"Credit",
+                            net_payment:docs[0].sp_net_pay,
+                            kaikili_comm:docs[0].kaikili_commission.kk_rate_per_item,
+                            discount:docs[0].discount.ds_rate_per_item,
+                            total:docs[0].sr_total,
+                            updateDate: new Date().toISOString()
+                        }
+
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in Notification");
+                            }
+                        });
+
+                        var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
+                        collectionPaymentSettlement.insertOne(paymentSettlementBody, function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in payment Settlement ");
+                            }
+                        });
+
+                    });
+
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
+
+    getUserCompletedTransition: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, function (err, db) {
+            var mysort = {updateDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
+            console.log(err);
+            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service to Mongodb",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
     },
 
 }

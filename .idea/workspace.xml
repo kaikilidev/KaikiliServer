@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
     </list>
@@ -32,7 +33,7 @@
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="169">
-              <caret line="124" column="30" selection-start-line="124" selection-start-column="30" selection-end-line="124" selection-end-column="30" />
+              <caret line="151" column="40" selection-start-line="151" selection-start-column="40" selection-end-line="151" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -40,8 +41,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="318" column="24" selection-start-line="318" selection-start-column="4" selection-end-line="318" selection-end-column="24" />
+            <state relative-caret-position="206">
+              <caret line="457" column="30" selection-start-line="457" selection-start-column="4" selection-end-line="457" selection-end-column="30" />
+              <folding>
+                <element signature="e#7710#8865#0" />
+                <element signature="e#9997#11199#0" />
+                <element signature="e#11284#12661#0" />
+                <element signature="e#12718#16608#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/db_config.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="24" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="24" />
+            <state relative-caret-position="170">
+              <caret line="10" column="29" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -94,8 +101,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+            <state relative-caret-position="204">
+              <caret line="12" column="48" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -178,7 +185,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -194,17 +200,13 @@
             <path>
               <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
               <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -302,7 +304,8 @@
       <workItem from="1550206668602" duration="23091000" />
       <workItem from="1550292589337" duration="5641000" />
       <workItem from="1550468788522" duration="14308000" />
-      <workItem from="1550572083756" duration="3525000" />
+      <workItem from="1550572083756" duration="5442000" />
+      <workItem from="1550647901774" duration="5744000" />
     </task>
     <task id="LOCAL-00001" summary="new Code with new DB Server">
       <created>1550035603407</created>
@@ -402,11 +405,18 @@
       <option name="project" value="LOCAL" />
       <updated>1550495371623</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Add New Api">
+      <created>1550576609163</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1550576609163</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91706000" />
+    <option name="totallyTimeSpent" value="99367000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -421,7 +431,7 @@
     <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.24285714" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24285714" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -458,6 +468,18 @@
     <MESSAGE value="Add New Api Set -Test" />
     <MESSAGE value="Add New Api" />
     <option name="LAST_COMMIT_MESSAGE" value="Add New Api" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/models/UserServiceModel.js</url>
+          <line>282</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../../DropTale/Drop Tale Server Code/droptale/package.json">
@@ -619,13 +641,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -642,22 +657,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db_config.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="24" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="24" />
+        <state relative-caret-position="170">
+          <caret line="10" column="29" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="318" column="24" selection-start-line="318" selection-start-column="4" selection-end-line="318" selection-end-column="24" />
+        <state relative-caret-position="206">
+          <caret line="457" column="30" selection-start-line="457" selection-start-column="4" selection-end-line="457" selection-end-column="30" />
+          <folding>
+            <element signature="e#7710#8865#0" />
+            <element signature="e#9997#11199#0" />
+            <element signature="e#11284#12661#0" />
+            <element signature="e#12718#16608#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
-          <caret line="124" column="30" selection-start-line="124" selection-start-column="30" selection-end-line="124" selection-end-column="30" />
+          <caret line="151" column="40" selection-start-line="151" selection-start-column="40" selection-end-line="151" selection-end-column="40" />
         </state>
       </provider>
     </entry>
