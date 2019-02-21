@@ -249,9 +249,6 @@ var UserService = {
     },
 
     userTransitionUpdate: function (req, callback) {
-
-        console.log(req.body)
-
         var tran_id = req.body.tran_id;
 
         var serviceUpdate = {
@@ -313,7 +310,6 @@ var UserService = {
         });
     },
 
-
     userNotificationPost: function (req, callback) {
 
         var tran_id = req.body.tran_id;
@@ -357,7 +353,6 @@ var UserService = {
         });
 
     },
-
 
     userTransitionCompleted: function (req, callback) {
 
@@ -483,7 +478,6 @@ var UserService = {
         });
     },
 
-
     userAddToServiceReview: function (req, callback) {
 
         var tran_id = req.body.tran_id;
@@ -571,6 +565,38 @@ var UserService = {
         });
     },
 
+
+    getSingleTransitionInfo: function (req, callback) {
+        var tran_id = req.body.tran_id;
+
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.findOne({tran_id: tran_id}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        data: docs
+                    };
+
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
 
 }
 module.exports = UserService;
