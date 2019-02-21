@@ -18,7 +18,7 @@ var SubService = {
 
         };
         console.log(subService);
-        mongo.connect(config.dbUrl,  function (err, db) {
+        mongo.connect(config.dbUrl, { useNewUrlParser: true }, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.subService);
             collection.insert(subService, function (err, records) {
                 if (err) {
@@ -45,9 +45,9 @@ var SubService = {
     },
 
     getAllAddService: function (id, callback) {
-      //  console.log("call get all service");
-        mongo.connect(config.dbUrl,  function (err, db) {
-            var collection = db.db(config.dbName).collection(config.collections.add_services);
+        console.log("call get all service");
+        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.add_services);
             collection.find({}).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -55,7 +55,7 @@ var SubService = {
                         status: 0,
                         message: "Failed"
                     };
-                    // console.log(status);
+                     console.log(status);
                     callback(status);
 
                 } else {
@@ -64,7 +64,7 @@ var SubService = {
                         message: "Success Get all service to Mongodb",
                         data: docs
                     };
-                    // console.log(status);
+                     console.log(status);
                     // db.close();
                     callback(status);
                 }
@@ -77,7 +77,7 @@ var SubService = {
     getSingleService: function (req, callback) {
         var sr_id = req.body.sr_id;
      //   console.log(sr_id);
-        mongo.connect(config.dbUrl,  function (err, db) {
+        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.add_services);
             console.log(err);
             collection.find({sr_id: sr_id}).toArray(function (err, docs) {

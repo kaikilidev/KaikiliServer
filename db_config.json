@@ -1,6 +1,6 @@
 {
   "port": 5000,
-  "dbUrl": "mongodb://root:kaikili123@157.230.188.53:27017/",
+  "dbUrl": "mongodb://157.230.188.53:27017/",
   "dbName": "kdb",
   "collections": {
     "add_services": "add_services",

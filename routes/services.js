@@ -4,7 +4,7 @@ var service = require('../models/ServiceModel');
 
 
 // //G E T   M E T H O D S
-//
+
 // router.get('/getAllServices', function (req, res, next) {
 //     service.getAllService(req, function (err, result) {
 //         if (err) {
@@ -31,8 +31,8 @@ var service = require('../models/ServiceModel');
 //         }
 //     });
 // });
-//
-//
+
+
 // router.post('/updateServices', function (req, res, next) {
 //     service.updateService(req, function (err, result) {
 //         if (err) {

@@ -6,6 +6,8 @@ var subservices = require('../models/SubServiceModel');
 // //G E T   M E T H O D S
 
 router.get('/getAllAddService', function (req, res, next) {
+
+    console.log("call get all service");
     subservices.getAllAddService(req, function (err, result) {
         if (err) {
             res.json(err);
