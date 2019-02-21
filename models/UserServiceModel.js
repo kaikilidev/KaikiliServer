@@ -12,7 +12,7 @@ var UserService = {
         var sr_id = req.body.sr_id;
         var recodeId = "";
 
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(sp_id);
             console.log(sr_id);
@@ -77,7 +77,7 @@ var UserService = {
         var sr_id = req.body.sr_id;
         console.log(sr_id);
         console.log(sp_id);
-        mongo.connect(config.dbUrl, { useNewUrlParser: true }, function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
             collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
@@ -110,7 +110,7 @@ var UserService = {
     getUserServiceCatalogue: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl, { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
             collection.find({sp_id: sp_id}, {
@@ -147,12 +147,13 @@ var UserService = {
     getUserTransitionSL: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,{ useNewUrlParser: true },function (err, kdb) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: -1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({
                 sp_id: sp_id,
+                sp_review: "false",
                 sr_status: {$ne: ["Cancel", "Review"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
@@ -181,7 +182,7 @@ var UserService = {
     getUserNotification: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl, { useNewUrlParser: true }, function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             console.log(err);
@@ -223,7 +224,7 @@ var UserService = {
         var tran_id = req.body.tran_id;
         var conversation_id = req.body.conversation_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl,{ useNewUrlParser: true },  function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             console.log(err);
@@ -253,6 +254,8 @@ var UserService = {
 
     userTransitionUpdate: function (req, callback) {
 
+        console.log(req.body)
+
         var tran_id = req.body.tran_id;
 
         var serviceUpdate = {
@@ -260,7 +263,7 @@ var UserService = {
             updateDate: new Date().toISOString()
         };
 
-        mongo.connect(config.dbUrl,{ useNewUrlParser: true },  function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
             // Update service record
@@ -331,7 +334,7 @@ var UserService = {
             created_on: new Date().toISOString(),
             body: body
         };
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
 
@@ -370,7 +373,7 @@ var UserService = {
             updateDate: new Date().toISOString()
         };
 
-        mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
             // Update service record
@@ -399,30 +402,29 @@ var UserService = {
                             sp_read: "0",
                             cu_read: "0",
                             created_on: new Date().toISOString(),
-                            body: + "Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            body: +"Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
 
-
                         var paymentSettlementBody = {
-                            cust_id:docs[0].cust_id,
-                            cust_first_name:docs[0].cust_first_name,
-                            cust_last_name:docs[0].cust_last_name,
-                            sp_id:docs[0].sp_id,
-                            sp_first_name:docs[0].sp_first_name,
-                            sp_Last_name:docs[0].sp_Last_name,
-                            tran_id:docs[0].tran_id,
-                            date:docs[0].date,
-                            time:docs[0].time,
-                            sr_id:docs[0].sr_id,
-                            sr_title:docs[0].sr_title,
-                            sr_status:docs[0].sr_status,
-                            txn_status:docs[0].txn_status,
-                            payment_type:"Credit",
-                            net_payment:docs[0].sp_net_pay,
-                            kaikili_comm:docs[0].kaikili_commission.kk_rate_per_item,
-                            discount:docs[0].discount.ds_rate_per_item,
-                            total:docs[0].sr_total,
+                            cust_id: docs[0].cust_id,
+                            cust_first_name: docs[0].cust_first_name,
+                            cust_last_name: docs[0].cust_last_name,
+                            sp_id: docs[0].sp_id,
+                            sp_first_name: docs[0].sp_first_name,
+                            sp_Last_name: docs[0].sp_Last_name,
+                            tran_id: docs[0].tran_id,
+                            date: docs[0].date,
+                            time: docs[0].time,
+                            sr_id: docs[0].sr_id,
+                            sr_title: docs[0].sr_title,
+                            sr_status: docs[0].sr_status,
+                            txn_status: docs[0].txn_status,
+                            payment_type: "Credit",
+                            net_payment: docs[0].sp_net_pay,
+                            kaikili_comm: docs[0].kaikili_commission.kk_rate_per_item,
+                            discount: docs[0].discount.ds_rate_per_item,
+                            total: docs[0].sr_total,
                             updateDate: new Date().toISOString()
                         }
 
@@ -458,7 +460,7 @@ var UserService = {
     getUserCompletedTransition: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
-        mongo.connect(config.dbUrl, { useNewUrlParser: true }, function (err, db) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
             console.log(err);
@@ -485,6 +487,61 @@ var UserService = {
         });
     },
 
-}
 
+    userAddToServiceReview: function (req, callback) {
+
+        var tran_id = req.body.tran_id;
+        var reviewAdd = {
+            cust_id: req.body.cust_id,
+            sp_id: req.body.sp_id,
+            tran_id: req.body.tran_id,
+            sr_id: req.body.sr_id,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            creationDate: new Date().toISOString()
+        };
+
+        var updateTran = {
+            tran_id: req.body.tran_id,
+            sp_review: "true",
+            sr_status: "Completed",
+            txn_status: "Paid"
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.cu_sp_review);
+            collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you fore review."
+                    };
+
+                    var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                    collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log();
+                            // callback(status);
+                        }
+                    });
+
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    }
+
+
+}
 module.exports = UserService;
