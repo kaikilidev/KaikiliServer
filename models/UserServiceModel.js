@@ -71,7 +71,6 @@ var UserService = {
         });
     },
 
-
     getUserService: function (req, callback) {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
@@ -105,7 +104,6 @@ var UserService = {
 
         });
     },
-
 
     getUserServiceCatalogue: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -143,7 +141,6 @@ var UserService = {
         });
     },
 
-
     getUserTransitionSL: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
@@ -177,7 +174,6 @@ var UserService = {
 
         });
     },
-
 
     getUserNotification: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -504,8 +500,7 @@ var UserService = {
         var updateTran = {
             tran_id: req.body.tran_id,
             sp_review: "true",
-            sr_status: "Completed",
-            txn_status: "Paid"
+            sr_status: "Completed"
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -540,7 +535,41 @@ var UserService = {
                 }
             });
         });
-    }
+    },
+
+
+    userCompletedService: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var mysort = {updateDate: -1};
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            console.log(err);
+            collection.find({
+                sp_id: sp_id,
+                sr_status: "Completed"
+            }).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service list",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
 
 
 }

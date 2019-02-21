@@ -175,6 +175,19 @@ router.post('/userAddServiceReview', function (req, res, next) {
     });
 });
 
+router.post('/userCompletedService', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.userCompletedService(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 
 
 
