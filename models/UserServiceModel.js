@@ -341,7 +341,7 @@ var UserService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success to post messages",
+                        message: "Success to load bank info",
                         data: docs
                     };
                     callback(status);
@@ -541,8 +541,7 @@ var UserService = {
             console.log(err);
             collection.find({
                 sp_id: sp_id,
-                sr_status: "Completed"
-            }).sort(mysort).toArray(function (err, docs) {
+                sr_status: "Completed"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -564,7 +563,6 @@ var UserService = {
 
         });
     },
-
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -597,6 +595,107 @@ var UserService = {
             });
         });
     },
+
+
+    userAddBankInfo: function (req, callback) {
+
+       var bankInfoAdd = {
+            sp_id: req.body.sp_id,
+            card_no: req.body.card_no,
+            bank_name: req.body.bank_name,
+            card_holder_name: req.body.card_holder_name,
+            month: req.body.month,
+            year: req.body.year,
+            cvc: req.body.cvc,
+            isUsed:"false",
+            creationDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you fore add new card."
+                    };
+
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    },
+
+    SPUserBankInfoList: function (req, callback) {
+
+        var sp_id = req.body.sp_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            var mysort = {creationDate: -1};
+
+            bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you.",
+                        data: docs
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    },
+
+
+    SPUserDeleteBankInfo: function (req, callback) {
+
+        var sp_id = req.body.sp_id;
+        var id = req.body.id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            var mysort = {creationDate: -1};
+
+            bankdata.deleteOne({sp_id: sp_id,_id:id},function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Deleted your bank information",
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    },
+
 
 }
 module.exports = UserService;

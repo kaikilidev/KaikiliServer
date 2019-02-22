@@ -9,7 +9,8 @@
     "cu_sp_transaction": "cu_sp_transaction",
     "cu_sp_notifications": "cu_sp_notifications",
     "cu_sp_payment_settlement": "cu_sp_payment_settlement",
-    "cu_sp_review": "cu_sp_review"
+    "cu_sp_review": "cu_sp_review",
+    "sp_bank_info": "sp_bank_info"
   }
 
 }

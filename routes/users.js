@@ -202,6 +202,48 @@ router.post('/getSingleTransitionInfo', function (req, res, next) {
 });
 
 
+router.post('/SPAddBankInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.userAddBankInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/SPUserBankInfoList', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.SPUserBankInfoList(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/SPUserDeleteBankInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.SPUserDeleteBankInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 
 
 
