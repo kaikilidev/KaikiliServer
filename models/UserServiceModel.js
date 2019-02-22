@@ -700,7 +700,7 @@ var UserService = {
     SPUserSetDefaultBankInfo: function (req, callback) {
 
         var sp_id = req.body.sp_id;
-        var pid = req.body._id;
+        var pid = req.body.id;
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
