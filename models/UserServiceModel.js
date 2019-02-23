@@ -2,6 +2,7 @@ var mongo = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
+var comman = require('../models/Comman');
 
 
 var UserService = {
@@ -531,7 +532,6 @@ var UserService = {
         });
     },
 
-
     userCompletedService: function (req, callback) {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
@@ -597,7 +597,6 @@ var UserService = {
         });
     },
 
-
     userAddBankInfo: function (req, callback) {
 
         var bankInfoAdd = {
@@ -608,30 +607,36 @@ var UserService = {
             month: req.body.month,
             year: req.body.year,
             cvc: req.body.cvc,
-            isUsed: "false",
+            isUsed: "true",
             creationDate: new Date().toISOString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
-            collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Thank you fore add new card."
-                    };
+            var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            collection.updateMany({sp_id: sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
 
-                    console.log();
-                    callback(status);
-                }
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
+                    collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Thank you fore add new card."
+                            };
+
+                            console.log();
+                            callback(status);
+                        }
+                    });
+                });
             });
         });
     },
@@ -739,6 +744,10 @@ var UserService = {
             });
         });
     },
+
+
+
+
 
 }
 module.exports = UserService;
