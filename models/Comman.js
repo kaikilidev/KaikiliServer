@@ -8,8 +8,7 @@ var Comman = {
 
     getNextSequenceUserID(name, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collection = db.db(config.dbName).collection(config.collections.sp_auto_id);
-
+            var collection = db.db(config.dbName).collection(config.collections.auto_id);
             var newId = null;
             var query = {_id: name};
             var update = {$inc: {seq: 1}};
