@@ -8,8 +8,8 @@ var comman = require('../models/Comman');
 var Users = {
 
     addNewUser: function (req, callback) {
-        var newSPid = comman.getNextSequenceUserID("sp_user", function (result) {
-            console.log(result);
+       comman.getNextSequenceUserID("sp_user", function (result) {
+          //  console.log(result);
 
             var newUser = {
                 sp_id: "SP0" + result,
@@ -23,8 +23,8 @@ var Users = {
             };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
-                collection.insert(newUser, function (err, records) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+                collectionSP.insert(newUser, function (err, records) {
                     if (err) {
                         console.log(err);
                         var status = {
