@@ -37,7 +37,7 @@ var Users = {
                     var status = {
                         status: 1,
                         message: "Success create new user",
-                        // data: records['ops'][0]
+                        data: records['ops'][0]
                     };
                     console.log(status);
                     callback(status);
