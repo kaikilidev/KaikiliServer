@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/ServiceModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UsersModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UsersModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
     </list>
@@ -33,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-528">
-              <caret line="49" column="4" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
+            <state relative-caret-position="84">
+              <caret line="111" column="22" selection-start-line="111" selection-start-column="4" selection-end-line="111" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -63,8 +61,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="259" column="31" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="31" />
+            <state relative-caret-position="84">
+              <caret line="273" column="32" selection-start-line="273" selection-start-column="14" selection-end-line="273" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -111,9 +109,9 @@
         <option value="$PROJECT_DIR$/routes/testNew.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
-        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/ServiceModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
+        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
       </list>
     </option>
@@ -259,7 +257,7 @@
       <workItem from="1550895899472" duration="10849000" />
       <workItem from="1550917242395" duration="1851000" />
       <workItem from="1551070127064" duration="6431000" />
-      <workItem from="1551168747848" duration="1298000" />
+      <workItem from="1551168747848" duration="5056000" />
     </task>
     <task id="LOCAL-00001" summary="new Code with new DB Server">
       <created>1550035603407</created>
@@ -471,11 +469,25 @@
       <option name="project" value="LOCAL" />
       <updated>1550918030123</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Add New Api">
+      <created>1551181784058</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1551181784058</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Add New Api">
+      <created>1551184176272</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1551184176272</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="155562000" />
+    <option name="totallyTimeSpent" value="159320000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -488,7 +500,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
@@ -768,15 +779,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-528">
-          <caret line="49" column="4" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
+        <state relative-caret-position="84">
+          <caret line="111" column="22" selection-start-line="111" selection-start-column="4" selection-end-line="111" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="259" column="31" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="31" />
+        <state relative-caret-position="84">
+          <caret line="273" column="32" selection-start-line="273" selection-start-column="14" selection-end-line="273" selection-end-column="32" />
         </state>
       </provider>
     </entry>

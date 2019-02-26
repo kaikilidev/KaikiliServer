@@ -53,64 +53,87 @@ var Users = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-            collectionSP.find({sp_id: sp_id}).toArray( function (err, docs) {
-                 if(docs.length == 0){
-                     console.log("created new object");
+            collectionSP.find({sp_id: sp_id}).toArray(function (err, docs) {
+                if (docs.length == 0) {
+                    console.log("created new object");
 
-                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-                         collectionSP.insert(addWorkInfo, function (err, records) {
-                             if (err) {
-                                 console.log(err);
-                                 var status = {
-                                     status: 0,
-                                     message: "Failed"
-                                 };
-                                 console.log(status);
-                                 callback(status);
-                             } else {
-                                 var status = {
-                                     status: 1,
-                                     message: "Successfully added work profile",
-                                     data: records['ops'][0]
-                                 };
-                                 console.log(status);
-                                 callback(status);
-                             }
-                         });
-                     });
-                 }else {
-                     console.log("update new object");
-                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-                         collectionSP.updateOne({sp_id: sp_id},{$set : addWorkInfo}, function (err, records) {
-                             if (err) {
-                                 console.log(err);
-                                 var status = {
-                                     status: 0,
-                                     message: "Failed"
-                                 };
-                                 console.log(status);
-                                 callback(status);
-                             } else {
-                                 var status = {
-                                     status: 1,
-                                     message: "Successfully updated work profile",
-                                 };
-                                 console.log(status);
-                                 callback(status);
-                             }
-                         });
-                     });
-                 }
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                        var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+                        collectionSP.insert(addWorkInfo, function (err, records) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully added work profile",
+                                    data: records['ops'][0]
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
+                    });
+                } else {
+                    console.log("update new object");
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                        var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+                        collectionSP.updateOne({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully updated work profile",
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
+                    });
+                }
 
             });
         });
+    },
 
 
+    getUserWorkProfile: function (req, callback) {
+        var sp_id = req.body.sp_id;
 
-
-
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.find({sp_id: sp_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully data getting",
+                        data: docs
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
     },
 
 
