@@ -96,7 +96,6 @@ var Users = {
                                  var status = {
                                      status: 1,
                                      message: "Successfully updated work profile",
-                                     data: records['ops'][0]
                                  };
                                  console.log(status);
                                  callback(status);
