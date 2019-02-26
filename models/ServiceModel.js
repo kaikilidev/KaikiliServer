@@ -1,7 +1,7 @@
 var mongo = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
-var config = require('../db_config.json');
+//var config = require('../db_config.json');
 
 
 var Service = {
@@ -16,7 +16,7 @@ var Service = {
 //         db.close();
 //     });
 // });
-};
+}
 
 
 module.exports = Service;

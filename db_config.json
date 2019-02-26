@@ -11,7 +11,8 @@
     "cu_sp_payment_settlement": "cu_sp_payment_settlement",
     "cu_sp_review": "cu_sp_review",
     "sp_bank_info": "sp_bank_info",
-    "auto_id": "auto_id"
+    "auto_id": "auto_id",
+    "sp_sr_profile": "sp_sr_profile"
   }
 
 }
