@@ -14,7 +14,8 @@ let userSPImageStorage = multer.diskStorage({
   filename: function (req, file, cb) {
     let exploded_name = file.originalname.split(".");
     let ext = exploded_name[exploded_name.length - 1];
-    cb(null, req.query.id + "@" + Date.now() + "." + ext);
+    // cb(null, req.query.id + "@" + Date.now() + "." + ext);
+    cb(null, Date.now() + "." + ext);
   }
 });
 
@@ -24,7 +25,7 @@ let uploadSPUserProfileIM = multer({
     return cb(null, true);
   }
 }).fields([
-  { name: "profile", maxCount: 1 }
+  { name: "uploads", maxCount: 1 }
 ]);
 
 

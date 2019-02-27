@@ -138,12 +138,10 @@ var Users = {
     updateSPWorkImageUpload: function(id,data,callback){
         console.log(" data "+data.images);
         console.log(" imageAmount "+data);
-        var addWorkInfo = {
-            "workImages":data
-        };
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-            collectionSP.update({sp_id: id}, {$push: addWorkInfo}, function (err, records) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);//scores: { $each: [ 90, 92, 85 ] } }
+            collectionSP.updateOne({sp_id: id}, {$push: {workImages: {$each: data}}}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -166,7 +164,6 @@ var Users = {
 
 
     updateSPProfileImageUpload: function(id,data,callback){
-        console.log(" data "+data.images);
         console.log(" imageAmount "+data);
         var addWorkInfo = {
             "profile_image":data[0]
