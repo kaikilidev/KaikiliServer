@@ -2,11 +2,18 @@ var express = require('express');
 var router = express.Router();
 var userServiceModel = require('../models/UserServiceModel');
 var usersModel = require('../models/UsersModel');
+var comman = require('../models/Comman');
 
+const multerSettings = require("../models/Multer-settings");
+const Bluebird = require("bluebird");
+let uploadSPWork = multerSettings.uploadSPWork;
+let uploadSPUserProfileIM = multerSettings.uploadSPUserProfileIM;
+
+// var multer = require('multer');
+// const path = require('path');
+// const userUploadDirPath = path.join(__dirname, "..", "public/uploads");
 
 // //G E T   M E T H O D S
-
-
 
 
 //P O S T   M E T H O D S
@@ -23,7 +30,6 @@ router.post('/AddUserServices', function (req, res, next) {
         }
     });
 });
-
 
 
 router.post('/AddNewUser', function (req, res, next) {
@@ -54,7 +60,6 @@ router.post('/GetUserServices', function (req, res, next) {
 });
 
 
-
 router.post('/getUserServiceCatalogue', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     userServiceModel.getUserServiceCatalogue(req, function (err, result) {
@@ -67,6 +72,7 @@ router.post('/getUserServiceCatalogue', function (req, res, next) {
         }
     });
 });
+
 
 router.post('/getUserTransitionSL', function (req, res, next) {
     // console.log("Call ling sub metherd ");
@@ -95,6 +101,7 @@ router.post('/userTransitionUpdate', function (req, res, next) {
     });
 });
 
+
 router.post('/userNotificationList', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     userServiceModel.getUserNotification(req, function (err, result) {
@@ -121,6 +128,7 @@ router.post('/userSingleNotification', function (req, res, next) {
         }
     });
 });
+
 
 router.post('/userPostMessages', function (req, res, next) {
     // console.log("Call ling sub metherd ");
@@ -149,6 +157,7 @@ router.post('/userTransitionCompleted', function (req, res, next) {
     });
 });
 
+
 router.post('/getUserCompletedTransition', function (req, res, next) {
     console.log("Call ling sub -------- ");
     userServiceModel.getUserCompletedTransition(req, function (err, result) {
@@ -161,6 +170,7 @@ router.post('/getUserCompletedTransition', function (req, res, next) {
         }
     });
 });
+
 
 router.post('/userAddServiceReview', function (req, res, next) {
     console.log("Call ling sub -------- ");
@@ -175,6 +185,7 @@ router.post('/userAddServiceReview', function (req, res, next) {
     });
 });
 
+
 router.post('/userCompletedService', function (req, res, next) {
     console.log("Call ling sub -------- ");
     userServiceModel.userCompletedService(req, function (err, result) {
@@ -187,6 +198,7 @@ router.post('/userCompletedService', function (req, res, next) {
         }
     });
 });
+
 
 router.post('/getSingleTransitionInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
@@ -243,6 +255,7 @@ router.post('/SPUserDeleteBankInfo', function (req, res, next) {
     });
 });
 
+
 router.post('/SPUserSetDefaultBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     userServiceModel.SPUserSetDefaultBankInfo(req, function (err, result) {
@@ -285,11 +298,69 @@ router.post('/getUserWorkProfile', function (req, res, next) {
 });
 
 
+router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
+    let upload = Bluebird.promisify(uploadSPWork);
+    return upload(req, res).then((data) => {
+        if (req.files && req.files.uploads) {
+            // type = req.query.type;
+            let documents = req.files.uploads;
+            let uploads = [];
+            if (documents && (documents.length > 0)) {
+                documents.forEach(function (item, index) {
+                    uploads.push(documents[index].filename);
+                });
+                usersModel.updateSPWorkImageUpload(req.params.sp_id, uploads, function (err, result) {
+                    if (err) {
+                        res.json(err);
+                        console.log(err);
+
+                    } else {
+                        console.log(result);
+                        res.json(result);
+                    }
+                });
+            }
+        } else {
+            var status = {
+                status: 0,
+                message: "No files uploaded"
+            };
+            res.json(status)
+        }
+    });
+});
 
 
-
-
-
+router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
+    let upload = Bluebird.promisify(uploadSPUserProfileIM);
+    return upload(req, res).then((data) => {
+        if (req.files && req.files.uploads) {
+            // type = req.query.type;
+            let documents = req.files.uploads;
+            let uploads = [];
+            if (documents && (documents.length > 0)) {
+                documents.forEach(function (item, index) {
+                    uploads.push(documents[index].filename);
+                });
+                usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
+                    if (err) {
+                        res.json(err);
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                        res.json(result);
+                    }
+                });
+            }
+        } else {
+            var status = {
+                status: 0,
+                message: "No files uploaded"
+            };
+            res.json(status)
+        }
+    });
+});
 
 
 

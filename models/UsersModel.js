@@ -111,7 +111,6 @@ var Users = {
 
     getUserWorkProfile: function (req, callback) {
         var sp_id = req.body.sp_id;
-
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
             collectionSP.find({sp_id: sp_id}).toArray(function (err, docs) {
@@ -136,37 +135,66 @@ var Users = {
         });
     },
 
+    updateSPWorkImageUpload: function(id,data,callback){
+        console.log(" data "+data.images);
+        console.log(" imageAmount "+data);
+        var addWorkInfo = {
+            "workImages":data
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.update({sp_id: id}, {$push: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated work images",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
 
-    // uploadImageQuantity: function (req, callback) {
-    //     // var path = req.body.taleImagePath;
-    //     var imageIndex = req.body.taleFileIndex;
-    //     var taleId = req.params._id;
-    //     var aws_url = "https://s3-us-west-2.amazonaws.com/droptale1/uploads/tales/" + taleId + "/images/" + imageIndex + ".jpg";
-    //     console.log("imageIndex: " + imageIndex);
-    //     console.log("taleId: " + taleId);
-    //     // var path = 'uploads/tales/' + taleId + '/records';
-    //
-    //     mongo.connect(config.dbUrl, function (err, db) {
-    //         var collection = db.collection(config.collections.tales);
-    //         var myquery = { _id: new ObjectID(taleId) };
-    //         var newvalues = { $set: { imagesAmount: imageIndex } };
-    //
-    //         collection.updateOne(myquery, newvalues, function (err) {
-    //             if (err) {
-    //                 console.log(err);
-    //             } else {
-    //                 console.log("Success update Image index to mongodb");
-    //                 var status = {
-    //                     code: 0,
-    //                     description: "Success"
-    //                 };
-    //                 callback(status);
-    //             }
-    //         });
-    //     });
-    //
-    //
-    // },
+
+    updateSPProfileImageUpload: function(id,data,callback){
+        console.log(" data "+data.images);
+        console.log(" imageAmount "+data);
+        var addWorkInfo = {
+            "profile_image":data[0]
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.update({sp_id: id}, {$set: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated images",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
+
 
 };
 
