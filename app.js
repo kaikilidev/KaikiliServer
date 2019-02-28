@@ -28,6 +28,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static('app/public'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+const userSPUploadProfile = path.join(__dirname, "..", "public/SPProfile/");
+const userSPUploadWork = path.join(__dirname,"..","public/SPWork/");
+
+app.use('/SPProfile', express.static(path.join(userSPUploadProfile, 'SPProfile')));
+app.use('/SPWork', express.static(path.join(userSPUploadWork, 'SPWork')));
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/services', servicesRouter);
