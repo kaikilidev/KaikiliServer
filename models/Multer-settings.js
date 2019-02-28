@@ -14,7 +14,7 @@ let userSPImageStorage = multer.diskStorage({
   filename: function (req, file, cb) {
     let exploded_name = file.originalname.split(".");
     let ext = exploded_name[exploded_name.length - 1];
-    // console.log(req.params.sp_id+"---------");
+     console.log(req.params.sp_id+"---------");
     // cb(null, req.query.id + "@" + Date.now() + "." + ext);
     cb(null, req.params.sp_id+ "." + ext);
   }
