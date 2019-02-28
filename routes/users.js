@@ -360,5 +360,14 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
 });
 
 
+//Delete File not working
+// router.post('/spWorkImageDelete/', function (req, res, next) {
+//     try {
+//         fs.unlinkSync('/tmp/hello');
+//         console.log('successfully deleted /tmp/hello');
+//     } catch (err) {
+//         // handle the error
+//     }
+// });
 
 module.exports = router;
