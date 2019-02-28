@@ -3,18 +3,13 @@ var router = express.Router();
 var userServiceModel = require('../models/UserServiceModel');
 var usersModel = require('../models/UsersModel');
 var comman = require('../models/Comman');
+var configDB = require('../db_config.json');
 
 const multerSettings = require("../models/Multer-settings");
 const Bluebird = require("bluebird");
 let uploadSPWork = multerSettings.uploadSPWork;
 let uploadSPUserProfileIM = multerSettings.uploadSPUserProfileIM;
-const path = require("path");
-const userSPUploadProfile = path.join(__dirname, "..", "public/SPProfile/");
-const userSPUploadWork = path.join(__dirname,"..","public/SPWork/");
 
-// var multer = require('multer');
-// const path = require('path');
-// const userUploadDirPath = path.join(__dirname, "..", "public/uploads");
 
 // //G E T   M E T H O D S
 
@@ -310,7 +305,7 @@ router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(userSPUploadWork+documents[index].filename);
+                    uploads.push(configDB.imagePath+"/SPWork/"+documents[index].filename);
                 });
                 usersModel.updateSPWorkImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {
@@ -344,7 +339,7 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(userSPUploadProfile+documents[index].filename);
+                    uploads.push(configDB.imagePath+"/SPProfile/"+documents[index].filename);
                 });
                 usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {

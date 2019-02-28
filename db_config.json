@@ -1,6 +1,7 @@
 {
   "port": 5000,
   "dbUrl": "mongodb://157.230.188.53:27017/",
+  "imagePath": "http://157.230.188.53:3000/",
   "dbName": "kdb",
   "collections": {
     "add_services": "add_services",
