@@ -262,7 +262,7 @@ var Users = {
             sp_personal: false,
             sp_work_profile: false,
             sp_add_service: false,
-            sp_add_bank: false
+            sp_add_bank: false,
             sp_background: false
         };
 
