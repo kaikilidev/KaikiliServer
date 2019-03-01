@@ -359,8 +359,6 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
     });
 });
 
-
-
 router.post('/checkSPUserCreated', function (req, res, next) {
     usersModel.checkSPUserCreated(req, function (err, result) {
         if (err) {
@@ -374,7 +372,8 @@ router.post('/checkSPUserCreated', function (req, res, next) {
 });
 
 router.post('/SPUserRegistrationCheck', function (req, res, next) {
-    usersModel.checkSPUserRegistration(req, function (err, result) {
+    console.log("call SPUserRegistrationCheck -----1");
+    usersModel.SPRegiCheck(req, function (err, result) {
         if (err) {
             res.json(err);
             console.log(err);

@@ -255,9 +255,9 @@ var Users = {
         });
     },
 
-    checkSPUserRegistration: function (req, callback) {
-        var sp_id = req.body.sp_id;
+   SPRegiCheck: function (req, callback) {
 
+        var sp_id = req.body.sp_id;
         var checkSP = {
             sp_personal: false,
             sp_work_profile: false,
@@ -274,7 +274,7 @@ var Users = {
                 } else {
                     checkSP.sp_personal = false;
                 }
-                console.log(checkSP.sp_personal);
+                // console.log(checkSP.sp_personal);
                 var collectionSPProfile = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                 collectionSPProfile.findOne({sp_id: sp_id}, function (err, docs) {
                     if (docs != null) {
@@ -282,7 +282,7 @@ var Users = {
                     } else {
                         checkSP.sp_work_profile = false;
                     }
-                    console.log(checkSP.sp_work_profile);
+                    // console.log(checkSP.sp_work_profile);
                     var collectionAddService = db.db(config.dbName).collection(config.collections.add_services);
                     collectionAddService.findOne({sp_id: sp_id}, function (err, docs) {
                         if (docs != null) {
@@ -290,7 +290,7 @@ var Users = {
                         } else {
                             checkSP.sp_add_service = false;
                         }
-                        console.log(checkSP.sp_add_service);
+                        // console.log(checkSP.sp_add_service);
                         var collectionSPBank = db.db(config.dbName).collection(config.collections.sp_bank_info);
                         collectionSPBank.findOne({sp_id: sp_id}, function (err, docs) {
                             if (docs != null) {
@@ -307,6 +307,7 @@ var Users = {
                                     checkSP.sp_background = false;
                                 }
                                 console.log(checkSP.sp_background);
+                                console.log(checkSP);
                                 callback(checkSP);
                             });
                         });
@@ -319,7 +320,6 @@ var Users = {
 
     addBackgroundUser: function (req, callback) {
 
-        //  console.log(result);
         var newUser = {
             sp_id: sp_id,
             first_name: req.body.first_name,
@@ -332,7 +332,6 @@ var Users = {
             ssn: req.body.ssn,
             creationDate: new Date().toISOString()
         };
-
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_background);
             collectionSP.insert(newUser, function (err, records) {
@@ -355,7 +354,6 @@ var Users = {
             });
         });
     },
+
 }
-
-
-exports = Users;
+module.exports = Users;
