@@ -7,7 +7,6 @@ var bcrypt = require('bcrypt');
 
 
 var Users = {
-
     addNewUser: function (req, callback) {
         comman.getNextSequenceUserID("sp_user", function (result) {
             //  console.log(result);
@@ -264,6 +263,7 @@ var Users = {
             sp_work_profile: false,
             sp_add_service: false,
             sp_add_bank: false
+            sp_background: false
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -299,8 +299,16 @@ var Users = {
                                 checkSP.sp_add_bank = false;
                             }
                             console.log(checkSP.sp_add_bank);
-                            console.log(checkSP);
-                            callback(checkSP);
+                            var collectionSPBackground = db.db(config.dbName).collection(config.collections.sp_background);
+                            collectionSPBackground.findOne({sp_id: sp_id}, function (err, docs) {
+                                if (docs != null) {
+                                    checkSP.sp_background = true;
+                                } else {
+                                    checkSP.sp_background = false;
+                                }
+                                console.log(checkSP.sp_background);
+                                callback(checkSP);
+                            });
                         });
                     });
                 });
@@ -309,7 +317,45 @@ var Users = {
     },
 
 
-};
+    addBackgroundUser: function (req, callback) {
+
+        //  console.log(result);
+        var newUser = {
+            sp_id: sp_id,
+            first_name: req.body.first_name,
+            middle_name: req.body.middle_name,
+            last_name: req.body.last_name,
+            address: req.body.address,
+            city: req.body.city,
+            st: req.body.st,
+            zip: req.body.zip,
+            ssn: req.body.ssn,
+            creationDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_background);
+            collectionSP.insert(newUser, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully add data",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+}
 
 
-module.exports = Users;
+exports = Users;

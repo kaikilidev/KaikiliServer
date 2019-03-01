@@ -386,6 +386,20 @@ router.post('/SPUserRegistrationCheck', function (req, res, next) {
 });
 
 
+router.post('/SPAddBackgroundUser', function (req, res, next) {
+    usersModel.addBackgroundUser(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 
 
 
