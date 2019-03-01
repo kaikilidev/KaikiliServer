@@ -255,7 +255,7 @@ var Users = {
         });
     },
 
-   SPRegiCheck: function (req, callback) {
+    SPRegiCheck: function (req, callback) {
 
         var sp_id = req.body.sp_id;
         var checkSP = {
@@ -283,7 +283,7 @@ var Users = {
                         checkSP.sp_work_profile = false;
                     }
                     // console.log(checkSP.sp_work_profile);
-                    var collectionAddService = db.db(config.dbName).collection(config.collections.add_services);
+                    var collectionAddService = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                     collectionAddService.findOne({sp_id: sp_id}, function (err, docs) {
                         if (docs != null) {
                             checkSP.sp_add_service = true;
@@ -317,11 +317,10 @@ var Users = {
         });
     },
 
-
     addBackgroundUser: function (req, callback) {
 
         var newUser = {
-            sp_id: sp_id,
+            sp_id: req.body.sp_id,
             first_name: req.body.first_name,
             middle_name: req.body.middle_name,
             last_name: req.body.last_name,
@@ -354,6 +353,64 @@ var Users = {
             });
         });
     },
+
+    SPUserLogin: function (req, callback) {
+
+        var email = req.body.email;
+        var password = req.body.password;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collectionSP.find({email: email}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    console.log(docs);
+                    if (docs.length == 1) {
+
+                        bcrypt.compare(password, docs[0].password, function(err, res) {
+                            if(res) {
+                                // Passwords match
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully data getting",
+                                    data: docs[0]
+                                };
+                                console.log(status);
+                                callback(status);
+
+                            } else {
+                                var status = {
+                                    status: 0,
+                                    message: "User Id and Passwords don't match"
+                                };
+                                console.log(status);
+                                callback(status);
+                                // Passwords don't match
+                            }
+                        });
+
+
+                    } else {
+                        var status = {
+                            status: 0,
+                            message: "This Email id are not register."
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                }
+            });
+        });
+    },
+
+
 
 }
 module.exports = Users;
