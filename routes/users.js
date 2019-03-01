@@ -360,6 +360,36 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
 });
 
 
+
+router.post('/checkSPUserCreated', function (req, res, next) {
+    usersModel.checkSPUserCreated(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+router.post('/SPUserRegistrationCheck', function (req, res, next) {
+    usersModel.checkSPUserRegistration(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
+
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {
 //     try {
