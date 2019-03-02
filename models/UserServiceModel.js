@@ -303,7 +303,7 @@ var UserService = {
                             time: docs[0].time,
                             dateNew1: dateNew1,
                             timeNew1: timeNew1,
-                            dateNew2: dateNew1,
+                            dateNew2: dateNew2,
                             timeNew2: timeNew2,
                             created_on: new Date().toISOString(),
                         };
