@@ -152,7 +152,7 @@ var UserService = {
             collection.find({
                 sp_id: sp_id,
                 sp_review: "false",
-                sr_status: {$ne: ["Cancel", "Review"]}
+                sr_status: {$nin: ["Cancel", "Review","Cancelled"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -748,6 +748,94 @@ var UserService = {
     },
 
 
+    userTransitionCancellation: function (req, callback) {
+        var tran_id = req.body.tran_id;
+        var reason = req.body.reason;
+
+        var serviceUpdate = {
+            sr_status: req.body.sr_status,
+            updateDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+
+                        var messagesBody = {
+                            author: docs[0].sp_id,
+                            author_type: "SP",
+                            sp_delet: "0",
+                            cu_delte: "0",
+                            sp_read: "0",
+                            cu_read: "0",
+                            created_on: new Date().toISOString(),
+                            body:  docs[0].sr_status + " - "+reason+" - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                        };
+                        console.log(docs);
+                        var cancellation = {
+                            sp_id: docs[0].sp_id,
+                            sr_id: docs[0].sr_id,
+                            cust_id: docs[0].cust_id,
+                            tran_id: docs[0].tran_id,
+                            reason: reason,
+                            created_on: new Date().toISOString(),
+                        };
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log();
+                                callback(status);
+                            } else {
+                                var collectionCancellation = db.db(config.dbName).collection(config.collections.sp_cu_cancellation);
+                                collectionCancellation.insert(cancellation , function (err, docs) {
+
+                                    if (err) {
+                                        console.log(err);
+                                        var status = {
+                                            status: 0,
+                                            message: "Failed"
+                                        };
+                                        console.log();
+                                        callback(status);
+                                    } else {
+                                        var status = {
+                                            status: 1,
+                                            message: "Success upload to service to server",
+                                        };
+                                        console.log();
+                                        callback(status);
+                                    }
+                                });
+                            }
+                        });
+
+                    });
+
+
+                }
+            });
+        });
+    },
 
 
 

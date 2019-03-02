@@ -411,6 +411,20 @@ router.post('/SPUserLogin', function (req, res, next) {
 });
 
 
+router.post('/userTransitionCancellation', function (req, res, next) {
+    userServiceModel.userTransitionCancellation(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 
 
 

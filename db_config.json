@@ -14,7 +14,8 @@
     "sp_bank_info": "sp_bank_info",
     "auto_id": "auto_id",
     "sp_sr_profile": "sp_sr_profile",
-    "sp_background": "sp_background"
+    "sp_background": "sp_background",
+    "sp_cu_cancellation": "sp_cu_cancellation"
   }
 
 }
