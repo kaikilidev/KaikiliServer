@@ -251,6 +251,10 @@ var UserService = {
 
     userTransitionUpdate: function (req, callback) {
         var tran_id = req.body.tran_id;
+        var dateNew1 = req.body.dateNew1;
+        var timeNew1 = req.body.timeNew1;
+        var timeNew2 = req.body.timeNew2;
+        var dateNew2 = req.body.dateNew2;
 
         var serviceUpdate = {
             sr_status: req.body.sr_status,
@@ -277,8 +281,8 @@ var UserService = {
                         data: docs
                     };
 
-                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
                         var messagesBody = {
                             author: docs[0].sp_id,
                             author_type: "SP",
@@ -290,17 +294,41 @@ var UserService = {
                             body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
+                        var rescheduled = {
+                            sp_id: docs[0].sp_id,
+                            sr_id: docs[0].sr_id,
+                            cust_id: docs[0].cust_id,
+                            tran_id: docs[0].tran_id,
+                            date: docs[0].date,
+                            time: docs[0].time,
+                            dateNew1: dateNew1,
+                            timeNew1: timeNew1,
+                            dateNew2: dateNew1,
+                            timeNew2: timeNew2,
+                            created_on: new Date().toISOString(),
+                        };
+
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                         collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
                             if (err) {
                                 console.log(err);
-
                             } else {
                                 console.log("Update in Notification");
                                 // console.log(docs);
                             }
                         });
+
+                        if(req.body.sr_status == "Rescheduled"){
+                            var collectionRescheduled = db.db(config.dbName).collection(config.collections.cu_sp_reschedule);
+                            collectionRescheduled.insert(rescheduled, function (err, docs) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Inserted Reschedule data in server");
+                                    // console.log(docs);
+                                }
+                            });
+                        }
 
                     });
                     console.log();
@@ -746,7 +774,6 @@ var UserService = {
             });
         });
     },
-
 
     userTransitionCancellation: function (req, callback) {
         var tran_id = req.body.tran_id;
