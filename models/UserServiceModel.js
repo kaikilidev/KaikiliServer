@@ -613,7 +613,9 @@ var UserService = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
-            collection.updateMany({sp_id: sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
+            collection.updateMany({sp_id: req.body.sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
+
+                console.log(docs);
 
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                     var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
