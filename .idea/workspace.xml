@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_config.json" afterDir="false" />
-    </list>
+    <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,7 +224,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="10.15.3" />
-    <property name="last_opened_file_path" value="C:/Program Files/nodejs/node.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -344,14 +340,7 @@
       <workItem from="1551940202549" duration="2319000" />
       <workItem from="1551948171359" duration="1769000" />
       <workItem from="1553538886001" duration="5116000" />
-      <workItem from="1553568886390" duration="811000" />
-    </task>
-    <task id="LOCAL-00003" summary="Add User Api">
-      <created>1550141364818</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1550141364818</updated>
+      <workItem from="1553568886390" duration="1702000" />
     </task>
     <task id="LOCAL-00004" summary="Add User Api">
       <created>1550208653064</created>
@@ -689,11 +678,18 @@
       <option name="project" value="LOCAL" />
       <updated>1553543235626</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Add New Api">
+      <created>1553569986401</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1553569986403</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250889000" />
+    <option name="totallyTimeSpent" value="251780000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -710,7 +706,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" visible="true" weight="0.22080536" />
+      <window_info content_ui="combo" id="Project" order="3" visible="true" weight="0.22080536" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49693877" weight="0.601983" />
@@ -722,7 +718,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50306123" side_tool="true" weight="0.60229135" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" weight="0.5679887" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" visible="true" weight="0.5679887" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
