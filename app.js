@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var servicesRouter = require('./routes/services');
 var subServiceRouter = require('./routes/subservices');
 var usersRouter = require('./routes/users');
+var customerRouter = require('./routes/customer');
 
 
 
@@ -38,6 +39,7 @@ app.use('/SPWork', express.static(path.join(userSPUploadWork, 'SPWork')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/customer', customerRouter);
 app.use('/services', servicesRouter);
 app.use('/subservices', subServiceRouter);
 
