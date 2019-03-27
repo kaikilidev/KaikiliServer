@@ -31,6 +31,7 @@ router.post('/AddNewUser', function (req, res, next) {
 
 
 router.post('/checkCUUserCreated', function (req, res, next) {
+    console.log("call checkCUUserCreated-----1");
     customerModel.checkCUUserCreated(req, function (err, result) {
         if (err) {
             res.json(err);
@@ -59,6 +60,7 @@ router.post('/CPUserRegistrationCheck', function (req, res, next) {
 
 
 router.post('/CUUserLogin', function (req, res, next) {
+    console.log("call CUUserLogin-----1");
     customerModel.CUUserLogin(req, function (err, result) {
         if (err) {
             res.json(err);
@@ -69,6 +71,34 @@ router.post('/CUUserLogin', function (req, res, next) {
         }
     });
 });
+
+router.post('/addCUAddress', function (req, res, next) {
+    console.log("call addCUAddress-----1");
+    customerModel.addUserAddress(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/GetCUAddress', function (req, res, next) {
+    console.log("call addCUAddress-----1");
+    customerModel.userGetAddress(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 
 
 

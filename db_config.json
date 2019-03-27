@@ -17,7 +17,8 @@
     "sp_background": "sp_background",
     "sp_cu_cancellation": "sp_cu_cancellation",
     "cu_sp_reschedule": "cu_sp_reschedule",
-    "cu_profile": "cu_profile"
+    "cu_profile": "cu_profile",
+    "cu_address": "cu_address"
   }
 
 }

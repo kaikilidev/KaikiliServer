@@ -6,7 +6,7 @@ var comman = require('../models/Comman');
 var bcrypt = require('bcrypt');
 
 
-var Customer  = {
+var Customer = {
     addNewUser: function (req, callback) {
         comman.getNextSequenceUserID("cu_user", function (result) {
             //  console.log(result);
@@ -76,8 +76,6 @@ var Customer  = {
     },
 
 
-
-
     checkCUUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -115,7 +113,6 @@ var Customer  = {
     },
 
 
-
     CUUserLogin: function (req, callback) {
 
         var email = req.body.email;
@@ -136,8 +133,8 @@ var Customer  = {
                     console.log(docs);
                     if (docs.length == 1) {
 
-                        bcrypt.compare(password, docs[0].password, function(err, res) {
-                            if(res) {
+                        bcrypt.compare(password, docs[0].password, function (err, res) {
+                            if (res) {
                                 // Passwords match
                                 var status = {
                                     status: 1,
@@ -194,5 +191,79 @@ var Customer  = {
         });
     },
 
+    addUserAddress: function (req, callback) {
+        comman.getNextSequenceUserID("cu_user", function (result) {
+            //  console.log(result);
+            var newAddress = {
+                cu_id: req.body.cu_id,
+                title: req.body.title,
+                address: req.body.address,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude,
+                creationDate: new Date().toISOString()
+            };
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
+                collectionSP.insert(newAddress, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add user address",
+                            data: records
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+
+        });
+    },
+
+
+        userGetAddress: function (req, callback) {
+            var cu_id = req.body.cu_id;
+            console.log(cu_id);
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                var mysort = {updateDate: -1};
+                var collection = kdb.db(config.dbName).collection(config.collections.cu_address);
+                console.log(err);
+                collection.find({
+                    cu_id: cu_id
+                }).sort(mysort).toArray(function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all Transition service list",
+                            data: docs
+                        };
+                        callback(status);
+                    }
+                });
+
+            });
+        },
+
+
+
+
 }
-module.exports = Customer ;
+module.exports = Customer;
