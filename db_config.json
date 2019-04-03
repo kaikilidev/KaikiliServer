@@ -19,7 +19,8 @@
     "cu_sp_reschedule": "cu_sp_reschedule",
     "cu_profile": "cu_profile",
     "cu_address": "cu_address",
-    "sp_sr_geo_location": "sp_sr_geo_location"
+    "sp_sr_geo_location": "sp_sr_geo_location",
+    "sp_sr_geo_location_match": "sp_sr_geo_location_match"
   }
 
 }
