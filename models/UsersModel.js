@@ -78,6 +78,11 @@ var Users = {
     addNewWorkProfile: function (req, callback) {
         var sp_id = req.body.sp_id;
         var addWorkInfo = req.body;
+        var geoLocationMatch = {
+            sp_id: req.body.sp_id,
+            radius: req.body.radius,
+            coordinates: [req.body.coordinatePoint.latitude,req.body.coordinatePoint.longitude]
+        };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
@@ -97,6 +102,18 @@ var Users = {
                                 console.log(status);
                                 callback(status);
                             } else {
+
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    collectionSP.insert(geoLocationMatch, function (err, records) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            console.log(records);
+                                        }
+                                    });
+                                });
+
                                 var status = {
                                     status: 1,
                                     message: "Successfully added work profile",
@@ -121,6 +138,17 @@ var Users = {
                                 console.log(status);
                                 callback(status);
                             } else {
+
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            console.log(records);
+                                        }
+                                    });
+                                });
                                 var status = {
                                     status: 1,
                                     message: "Successfully updated work profile",

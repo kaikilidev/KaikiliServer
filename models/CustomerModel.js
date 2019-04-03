@@ -230,39 +230,81 @@ var Customer = {
     },
 
 
-        userGetAddress: function (req, callback) {
-            var cu_id = req.body.cu_id;
-            console.log(cu_id);
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-                var mysort = {updateDate: -1};
-                var collection = kdb.db(config.dbName).collection(config.collections.cu_address);
-                console.log(err);
-                collection.find({
-                    cu_id: cu_id
-                }).sort(mysort).toArray(function (err, docs) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        // console.log(status);
-                        callback(status);
+    userGetAddress: function (req, callback) {
+        var cu_id = req.body.cu_id;
+        console.log(cu_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var mysort = {updateDate: -1};
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_address);
+            console.log(err);
+            collection.find({
+                cu_id: cu_id
+            }).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
 
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Success Get all Transition service list",
-                            data: docs
-                        };
-                        callback(status);
-                    }
-                });
-
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service list",
+                        data: docs
+                    };
+                    callback(status);
+                }
             });
-        },
+
+        });
+    },
+
+    searchServiceProvider: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+        console.log(req.body.sr_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            collection.find({services: sr_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+
+                    var newArrData = new Array();
+                    docs.forEach(function (element) {
+                        comman.getDistanceFromLatLonInKm(element.location.coordinates[0],element.location.coordinates[1],latitude,longitude,function (result){
+                            console.log(result+"-------------------"+element.radius);
+                            if(result<=element.radius){
+                                newArrData.push(element);
+                            }
+                        })
+                    });
+
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service list",
+                        data: newArrData
+                    };
+                    callback(status);
+                    // res.json(docs);
 
 
+                }
+            });
+
+        });
+    },
 
 
 }
