@@ -20,12 +20,12 @@ var UserService = {
         req.body.cost_comps_pro_rate_on.forEach(function (element) {
             newCostComps.push(element.cc_id);
         });
-
-
+        var newServiceArr = new Array();
+        newServiceArr.push(req.body.sr_id);
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+
             console.log(sp_id);
             console.log(sr_id);
 
@@ -46,17 +46,19 @@ var UserService = {
                             console.log(status);
                             callback(status);
                         } else {
-                            // ----------------update({tran_id: tran_id}, {$push: {messages: messagesBody}}
-                            collection_location.updateOne({sp_id: sp_id},
-                                { $set : { "services" : [sr_id]}}, // set with $, which is crucual because it uses the previously found/matched array item
-                                { $set : { "cost_comps" : newCostComps}}, // set with $, which is crucual because it uses the previously found/matched array item
-                                { upsert: true},
-                                 function (err, records) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log(records);
-                                }
+                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                collection_location.updateOne({sp_id: sp_id},
+                                    { $addToSet : { services : { $each : newServiceArr}, cost_comps : { $each :newCostComps}}}, // set with $, which is crucual because it uses the previously found/matched array item
+                                    { upsert: true},
+                                    function (err, records) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            console.log(records);
+                                        }
+                                    });
+
                             });
 
                             var status = {
@@ -82,17 +84,20 @@ var UserService = {
                             console.log(status);
                             callback(status);
                         } else {
-                            collection_location.updateOne({sp_id: sp_id},
-                                { $set : { "services" : [sr_id]}}, // set with $, which is crucual because it uses the previously found/matched array item
-                                { $set : { "cost_comps" : newCostComps}}, // set with $, which is crucual because it uses the previously found/matched array item
-                                { upsert: true},
-                                function (err, records) {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        console.log(records);
-                                    }
-                                });
+                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                collection_location.updateOne({sp_id: sp_id},
+                                    { $addToSet : { services : { $each : newServiceArr}, cost_comps : { $each :newCostComps}}},// set with $, which is crucual because it uses the previously found/matched array item
+                                    { upsert: true},
+                                    function (err, records) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            console.log(records);
+                                        }
+                                    });
+
+                            });
                             var status = {
                                 status: 1,
                                 message: "Success upload new sub service to server",
