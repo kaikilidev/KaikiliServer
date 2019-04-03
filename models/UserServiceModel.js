@@ -12,6 +12,7 @@ var UserService = {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
         var recodeId = "";
+        var sp_sr_status = req.body.sp_sr_status;
 
         var newCostComps = new Array();
         req.body.cost_comps_per_item_on.forEach(function (element) {
@@ -25,7 +26,6 @@ var UserService = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-
             console.log(sp_id);
             console.log(sr_id);
 
@@ -34,7 +34,6 @@ var UserService = {
                 if (docs.length > 0) {
                     recodeId = docs[0]._id;
                     console.log(recodeId);
-
                     // Update service record
                     collection.update({_id: recodeId}, {$set: addService}, function (err, records) {
                         if (err) {
@@ -46,20 +45,47 @@ var UserService = {
                             console.log(status);
                             callback(status);
                         } else {
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                                var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-                                collection_location.updateOne({sp_id: sp_id},
-                                    { $addToSet : { services : { $each : newServiceArr}, cost_comps : { $each :newCostComps}}}, // set with $, which is crucual because it uses the previously found/matched array item
-                                    { upsert: true},
-                                    function (err, records) {
-                                        if (err) {
-                                            console.log(err);
-                                        } else {
-                                            console.log(records);
-                                        }
-                                    });
 
-                            });
+                            if (sp_sr_status === "ON") {
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    collection_location.updateOne({sp_id: sp_id},
+                                        {
+                                            $addToSet: {
+                                                services: {$each: newServiceArr},
+                                                cost_comps: {$each: newCostComps}
+                                            }
+                                        }, // set with $, which is crucual because it uses the previously found/matched array item
+                                        {upsert: true},
+                                        function (err, records) {
+                                            // if (err) {
+                                            //     console.log(err);
+                                            // } else {
+                                            //     console.log(records);
+                                            // }
+                                        });
+                                });
+                            } else {
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    collection_location.updateOne({sp_id: sp_id},
+                                        {
+                                            $pull: {
+                                                services: {$in: newServiceArr},
+                                                cost_comps: {$in: newCostComps}
+                                            }
+                                        }, // set with $, which is crucual because it uses the previously found/matched array item
+                                        {upsert: true},
+                                        function (err, records) {
+                                            // if (err) {
+                                            //     console.log(err);
+                                            // } else {
+                                            //     console.log(records);
+                                            // }
+                                        });
+                                });
+                            }
+
 
                             var status = {
                                 status: 1,
@@ -84,20 +110,47 @@ var UserService = {
                             console.log(status);
                             callback(status);
                         } else {
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                                var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-                                collection_location.updateOne({sp_id: sp_id},
-                                    { $addToSet : { services : { $each : newServiceArr}, cost_comps : { $each :newCostComps}}},// set with $, which is crucual because it uses the previously found/matched array item
-                                    { upsert: true},
-                                    function (err, records) {
-                                        if (err) {
-                                            console.log(err);
-                                        } else {
-                                            console.log(records);
-                                        }
-                                    });
+                            if (sp_sr_status === "ON") {
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    collection_location.updateOne({sp_id: sp_id},
+                                        {
+                                            $addToSet: {
+                                                services: {$each: newServiceArr},
+                                                cost_comps: {$each: newCostComps}
+                                            }
+                                        }, // set with $, which is crucual because it uses the previously found/matched array item
+                                        {upsert: true},
+                                        function (err, records) {
+                                            // if (err) {
+                                            //     console.log(err);
+                                            // } else {
+                                            //     console.log(records);
+                                            // }
+                                        });
+                                });
+                            } else {
+                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                    var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                    // "sp_sr_status":"OFF"
+                                    collection_location.updateOne({sp_id: sp_id},
+                                        {
+                                            $pull: {
+                                                services: {$in: newServiceArr},
+                                                cost_comps: {$in: newCostComps}
+                                            }
+                                        }, // set with $, which is crucual because it uses the previously found/matched array item
+                                        {upsert: true},
+                                        function (err, records) {
+                                            // if (err) {
+                                            //     console.log(err);
+                                            // } else {
+                                            //     console.log(records);
+                                            // }
+                                        });
+                                });
+                            }
 
-                            });
                             var status = {
                                 status: 1,
                                 message: "Success upload new sub service to server",
@@ -192,7 +245,7 @@ var UserService = {
             collection.find({
                 sp_id: sp_id,
                 sp_review: "false",
-                sr_status: {$nin: ["Cancel", "Review","Cancelled"]}
+                sr_status: {$nin: ["Cancel", "Review", "Cancelled"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -358,7 +411,7 @@ var UserService = {
                             }
                         });
 
-                        if(req.body.sr_status == "Rescheduled"){
+                        if (req.body.sr_status == "Rescheduled") {
                             var collectionRescheduled = db.db(config.dbName).collection(config.collections.cu_sp_reschedule);
                             collectionRescheduled.insert(rescheduled, function (err, docs) {
                                 if (err) {
@@ -749,7 +802,7 @@ var UserService = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
             var mysort = {creationDate: -1};
-            var myquery = { _id: ObjectID(pid), sp_id: sp_id};
+            var myquery = {_id: ObjectID(pid), sp_id: sp_id};
             bankdata.deleteOne(myquery, function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -791,7 +844,10 @@ var UserService = {
                     callback(status);
                 } else {
                     // console.log(data);
-                   collection.updateOne({ _id: ObjectID(pid) ,sp_id: sp_id }, {$set: {isUsed: "true"}}, function (err, docs) {
+                    collection.updateOne({
+                        _id: ObjectID(pid),
+                        sp_id: sp_id
+                    }, {$set: {isUsed: "true"}}, function (err, docs) {
                         if (err) {
                             console.log(err);
                             var status = {
@@ -849,7 +905,7 @@ var UserService = {
                             sp_read: "0",
                             cu_read: "0",
                             created_on: new Date().toISOString(),
-                            body:  docs[0].sr_status + " - "+reason+" - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            body: docs[0].sr_status + " - " + reason + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
                         console.log(docs);
                         var cancellation = {
@@ -874,7 +930,7 @@ var UserService = {
                                 callback(status);
                             } else {
                                 var collectionCancellation = db.db(config.dbName).collection(config.collections.sp_cu_cancellation);
-                                collectionCancellation.insert(cancellation , function (err, docs) {
+                                collectionCancellation.insert(cancellation, function (err, docs) {
 
                                     if (err) {
                                         console.log(err);
@@ -903,7 +959,6 @@ var UserService = {
             });
         });
     },
-
 
 
 }
