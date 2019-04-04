@@ -24,6 +24,17 @@ var UserService = {
         var newServiceArr = new Array();
         newServiceArr.push(req.body.sr_id);
 
+        var newCostCompsOFF = new Array();
+        req.body.cost_comps_per_item_off.forEach(function (element) {
+            newCostCompsOFF.push(element.cc_id);
+        });
+        req.body.cost_comps_pro_rate_off.forEach(function (element) {
+            newCostCompsOFF.push(element.cc_id);
+        });
+
+        var newServiceArr = new Array();
+        newServiceArr.push(req.body.sr_id);
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(sp_id);
@@ -54,6 +65,9 @@ var UserService = {
                                             $addToSet: {
                                                 services: {$each: newServiceArr},
                                                 cost_comps: {$each: newCostComps}
+                                            },
+                                            $pull: {
+                                                cost_comps: {$in: newCostCompsOFF}
                                             }
                                         }, // set with $, which is crucual because it uses the previously found/matched array item
                                         {upsert: true},
@@ -86,7 +100,6 @@ var UserService = {
                                 });
                             }
 
-
                             var status = {
                                 status: 1,
                                 message: "Success upload to old sub service to server",
@@ -118,6 +131,9 @@ var UserService = {
                                             $addToSet: {
                                                 services: {$each: newServiceArr},
                                                 cost_comps: {$each: newCostComps}
+                                            },
+                                            $pull: {
+                                                cost_comps: {$in: newCostCompsOFF}
                                             }
                                         }, // set with $, which is crucual because it uses the previously found/matched array item
                                         {upsert: true},
