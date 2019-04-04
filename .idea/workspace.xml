@@ -20,7 +20,6 @@
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805787.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805788.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805792.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4216">
-              <caret line="275" column="103" selection-start-line="275" selection-start-column="103" selection-end-line="275" selection-end-column="103" />
+            <state relative-caret-position="264">
+              <caret line="281" column="20" lean-forward="true" selection-start-line="272" selection-start-column="9" selection-end-line="281" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -57,8 +56,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="136" column="45" selection-start-line="136" selection-start-column="45" selection-end-line="136" selection-end-column="45" />
+            <state relative-caret-position="68">
+              <caret line="61" column="133" lean-forward="true" selection-start-line="60" selection-start-column="31" selection-end-line="61" selection-end-column="133" />
             </state>
           </provider>
         </entry>
@@ -316,14 +315,7 @@
       <workItem from="1554101260707" duration="4174000" />
       <workItem from="1554109449474" duration="9362000" />
       <workItem from="1554280590269" duration="22744000" />
-      <workItem from="1554369730422" duration="1185000" />
-    </task>
-    <task id="LOCAL-00012" summary="Add New Api Set -Test">
-      <created>1550316965241</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1550316965241</updated>
+      <workItem from="1554369730422" duration="2160000" />
     </task>
     <task id="LOCAL-00013" summary="Add New Api">
       <created>1550481122603</created>
@@ -661,11 +653,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554311391651</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Add New Api">
+      <created>1554370940388</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1554370940389</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="300915000" />
+    <option name="totallyTimeSpent" value="301890000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -682,7 +681,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="3" visible="true" weight="0.2536913" />
+      <window_info active="true" content_ui="combo" id="Project" order="3" visible="true" weight="0.2536913" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49693877" weight="0.601983" />
@@ -694,7 +693,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50306123" side_tool="true" weight="0.60229135" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" visible="true" weight="0.6331445" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" weight="0.6331445" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -963,13 +962,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4216">
-          <caret line="275" column="103" selection-start-line="275" selection-start-column="103" selection-end-line="275" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1411">
@@ -984,10 +976,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="281" column="20" lean-forward="true" selection-start-line="272" selection-start-column="9" selection-end-line="281" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="136" column="45" selection-start-line="136" selection-start-column="45" selection-end-line="136" selection-end-column="45" />
+        <state relative-caret-position="68">
+          <caret line="61" column="133" lean-forward="true" selection-start-line="60" selection-start-column="31" selection-end-line="61" selection-end-column="133" />
         </state>
       </provider>
     </entry>
