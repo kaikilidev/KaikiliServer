@@ -81,7 +81,10 @@ var Users = {
         var geoLocationMatch = {
             sp_id: req.body.sp_id,
             radius: req.body.radius,
-            coordinates: [req.body.coordinatePoint.latitude,req.body.coordinatePoint.longitude]
+            location: {
+                coordinates: [parseFloat(req.body.coordinatePoint.latitude),parseFloat(req.body.coordinatePoint.longitude)],
+                type: "Point"
+            }
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {

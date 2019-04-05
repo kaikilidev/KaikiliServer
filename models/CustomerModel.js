@@ -266,10 +266,12 @@ var Customer = {
         var sr_id = req.body.sr_id;
         var latitude = req.body.latitude;
         var longitude = req.body.longitude;
-        console.log(longitude + " --- " + latitude);
+        var cc_ids = req.body.cc_ids;
+        var cost_item = req.body.cost_item;
+        // console.log(longitude + " --- " + latitude);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location_match);
 
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
             var cursor = collection.aggregate([
                 {
                     $geoNear: {
@@ -277,9 +279,10 @@ var Customer = {
                         key: "location",
                         maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                         distanceField: "dist", //give values in metre
-                        query: {services: sr_id}
+                        query: {services: sr_id, cost_comps: cc_ids}
                     }
                 }]);
+
 
             cursor.toArray(function (err, docs) {
                 if (err) {
@@ -294,26 +297,86 @@ var Customer = {
                 } else {
 
                     var newArrData = new Array();
+                    var ctr = 0;
+                    var newArrServic = new Array();
                     docs.forEach(function (element) {
                         var newRadius = element.radius * 1609.34;
                         if (element.dist <= newRadius) {
-                            newArrData.push(element);
+                            newArrData.push(element.sp_id);
+                            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                            // console.log(err);
+                            collection.find({sp_id: element.sp_id, sr_id: sr_id}
+                            ).toArray(function (err, docs) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                    var newItemCost = new Array();
+                                    var totalCost =0;
+                                    cost_item.forEach(function (element) {
+                                        var picked = children.filter(function(value){ return value.cc_id==element.cc_id;})
+                                        var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                        // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                        totalCost = totalCost+cost;
+                                        var dataCostItem = {
+                                            cc_id:element.cc_id,
+                                            cc_title:element.cc_title,
+                                            cc_per_item_qut:element.cc_per_item_qut,
+                                            cc_per_item_rate:picked[0].cc_rate_per_item,
+                                            cc_per_item_cost:cost,
+                                        };
+                                        newItemCost.push(dataCostItem);
+
+                                    });
+                                    // console.log("******");
+                                    var discountGive = 0;
+                                    if(docs[0].discount.ds_check_box == "ON"){
+                                        discountGive = docs[0].discount.ds_rate_per_item;
+                                    }
+
+                                    var discountAmount = (totalCost*parseFloat(discountGive))/100;
+                                    // console.log(discountAmount);
+                                    var discountAfterPrice = totalCost - discountAmount;
+                                    var dataShow = {
+                                        sp_id: docs[0].sp_id,
+                                        minimum_charge:docs[0].minimum_charge,
+                                        totalCost:totalCost,
+                                        itemCost: newItemCost,
+                                        discountGive:discountGive,
+                                        discountAfterPrice:discountAfterPrice
+
+                                    };
+                                    newArrServic.push(dataShow);
+                                    ctr++;
+                                    if (ctr === docs.length) {
+                                        var status = {
+                                            status: 1,
+                                            message: "Success Get all Transition service list",
+                                            data: newArrServic
+                                        };
+                                        callback(status);
+                                    }
+                                }
+                            });
                         }
                     });
-
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service list",
-                        data: newArrData
-                    };
-                    callback(status);
-                    // res.json(docs);
                 }
             });
 
         });
     },
 
+
+    // var cursor = collection.aggregate([
+    //     {
+    //         $geoNear: {
+    //             near: {type: "Point", coordinates: [parseFloat(latitude), parseFloat(longitude)]},
+    //             key: "location",
+    //             maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+    //             distanceField: "dist", //give values in metre
+    //             query: {services: sr_id }
+    //         }
+    //     }]);
 
     // searchServiceProvider: function (req, callback) {
     //     var sr_id = req.body.sr_id;
