@@ -299,6 +299,7 @@ var Customer = {
                     var newArrData = new Array();
                     var ctr = 0;
                     var newArrServic = new Array();
+                    if(docs.length>0){
                     docs.forEach(function (element) {
                         var newRadius = element.radius * 1609.34;
                         if (element.dist <= newRadius) {
@@ -360,6 +361,14 @@ var Customer = {
                             });
                         }
                     });
+                    }else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all Transition service list",
+                            data: newArrServic
+                        };
+                        callback(status);
+                    }
                 }
             });
 
