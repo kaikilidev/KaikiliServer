@@ -82,7 +82,7 @@ var Users = {
             sp_id: req.body.sp_id,
             radius: req.body.radius,
             location: {
-                coordinates: [parseFloat(req.body.coordinatePoint.latitude),parseFloat(req.body.coordinatePoint.longitude)],
+                coordinates: [parseFloat(req.body.coordinatePoint.longitude),parseFloat(req.body.coordinatePoint.latitude)],
                 type: "Point"
             }
         };

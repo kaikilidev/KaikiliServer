@@ -275,7 +275,7 @@ var Customer = {
             var cursor = collection.aggregate([
                 {
                     $geoNear: {
-                        near: {type: "Point", coordinates: [parseFloat(latitude), parseFloat(longitude)]},
+                        near: {type: "Point", coordinates: [parseFloat(longitude),parseFloat(latitude)]},
                         key: "location",
                         maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                         distanceField: "dist", //give values in metre
