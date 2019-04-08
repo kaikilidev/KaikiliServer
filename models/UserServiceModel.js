@@ -32,8 +32,16 @@ var UserService = {
             newCostCompsOFF.push(element.cc_id);
         });
 
-        var newServiceArr = new Array();
-        newServiceArr.push(req.body.sr_id);
+        var newQuoteServiceAddArr = new Array();
+        var newQuoteServiceRemoveArr = new Array();
+
+        if(parseInt(req.body.quote_accept) === 1){
+            newQuoteServiceAddArr.push(req.body.sr_id);
+        }else {
+            newQuoteServiceRemoveArr.push(req.body.sr_id);
+        }
+
+
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
@@ -64,14 +72,16 @@ var UserService = {
                                         {
                                             $addToSet: {
                                                 services: {$each: newServiceArr},
-                                                cost_comps: {$each: newCostComps}
+                                                cost_comps: {$each: newCostComps},
+                                                quote_service: {$each: newQuoteServiceAddArr}
                                             }
                                         },{upsert: true});
 
                                     var cursor1 = collection_location.updateOne({sp_id: sp_id},
                                         {
                                             $pull: {
-                                                cost_comps: {$in: newCostCompsOFF}
+                                                cost_comps: {$in: newCostCompsOFF},
+                                                quote_service: {$in: newQuoteServiceRemoveArr}
                                             }
                                         },{upsert: true});
 
@@ -83,7 +93,8 @@ var UserService = {
                                         {
                                             $pull: {
                                                 services: {$in: newServiceArr},
-                                                cost_comps: {$in: newCostComps}
+                                                cost_comps: {$in: newCostComps},
+                                                quote_service: {$in: newQuoteServiceRemoveArr}
                                             }
                                         },{upsert: true});
 
@@ -120,14 +131,16 @@ var UserService = {
                                         {
                                             $addToSet: {
                                                 services: {$each: newServiceArr},
-                                                cost_comps: {$each: newCostComps}
+                                                cost_comps: {$each: newCostComps},
+                                                quote_service: {$each: newQuoteServiceAddArr}
                                             }
                                         },{upsert: true});
 
                                     var cursor1 = collection_location.updateOne({sp_id: sp_id},
                                         {
                                             $pull: {
-                                                cost_comps: {$in: newCostCompsOFF}
+                                                cost_comps: {$in: newCostCompsOFF},
+                                                quote_service: {$in: newQuoteServiceRemoveArr}
                                             }
                                         },{upsert: true});
                                 });
@@ -139,7 +152,8 @@ var UserService = {
                                         {
                                             $pull: {
                                                 services: {$in: newServiceArr},
-                                                cost_comps: {$in: newCostComps}
+                                                cost_comps: {$in: newCostComps},
+                                                quote_service: {$in: newQuoteServiceRemoveArr}
                                             }
                                         },{upsert: true});
                                 });
