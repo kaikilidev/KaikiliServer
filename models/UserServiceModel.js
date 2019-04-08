@@ -94,7 +94,7 @@ var UserService = {
                                             $pull: {
                                                 services: {$in: newServiceArr},
                                                 cost_comps: {$in: newCostComps},
-                                                quote_service: {$in: newQuoteServiceRemoveArr}
+                                                quote_service: {$in: newQuoteServiceAddArr}
                                             }
                                         },{upsert: true});
 
@@ -153,7 +153,7 @@ var UserService = {
                                             $pull: {
                                                 services: {$in: newServiceArr},
                                                 cost_comps: {$in: newCostComps},
-                                                quote_service: {$in: newQuoteServiceRemoveArr}
+                                                quote_service: {$in: newQuoteServiceAddArr}
                                             }
                                         },{upsert: true});
                                 });
