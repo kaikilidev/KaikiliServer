@@ -192,7 +192,7 @@ var Customer = {
     },
 
     addUserAddress: function (req, callback) {
-        comman.getNextSequenceUserID("cu_user", function (result) {
+
             //  console.log(result);
             var newAddress = {
                 cu_id: req.body.cu_id,
@@ -226,7 +226,7 @@ var Customer = {
                 });
             });
 
-        });
+
     },
 
 
@@ -376,61 +376,49 @@ var Customer = {
     },
 
 
-    // var cursor = collection.aggregate([
-    //     {
-    //         $geoNear: {
-    //             near: {type: "Point", coordinates: [parseFloat(latitude), parseFloat(longitude)]},
-    //             key: "location",
-    //             maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
-    //             distanceField: "dist", //give values in metre
-    //             query: {services: sr_id }
-    //         }
-    //     }]);
+    searchQuoteProvider: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        comman.getNextSequenceUserID("qr_service", function (result) {
+                var newQuoteRequirement = {
+                    cu_id: "QR0" + result,
+                    latitude: req.body.latitude,
+                    longitude: req.body.longitude,
+                    address: req.body.address,
+                    quote_requirement: req.body.quote_requirement,
+                    sr_id: req.body.sr_id,
+                    sr_name: req.body.sr_name,
+                    time: req.body.time,
+                    date: req.body.date,
+                    creationDate: new Date().toISOString()
+                };
 
-    // searchServiceProvider: function (req, callback) {
-    //     var sr_id = req.body.sr_id;
-    //     var latitude = req.body.latitude;
-    //     var longitude = req.body.longitude;
-    //     console.log(req.body.sr_id);
-    //
-    //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-    //         var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-    //         collection.find({services: sr_id}).toArray(function (err, docs) {
-    //             if (err) {
-    //                 console.log(err);
-    //                 var status = {
-    //                     status: 0,
-    //                     message: "Failed"
-    //                 };
-    //                 // console.log(status);
-    //                 callback(status);
-    //
-    //             } else {
-    //
-    //                 var newArrData = new Array();
-    //                 docs.forEach(function (element) {
-    //                     comman.getDistanceFromLatLonInKm(element.location.coordinates[0],element.location.coordinates[1],latitude,longitude,function (result){
-    //                         console.log(result+"-------------------"+element.radius);
-    //                         if(result<=element.radius){
-    //                             newArrData.push(element);
-    //                         }
-    //                     })
-    //                 });
-    //
-    //                 var status = {
-    //                     status: 1,
-    //                     message: "Success Get all Transition service list",
-    //                     data: newArrData
-    //                 };
-    //                 callback(status);
-    //                 // res.json(docs);
-    //
-    //
-    //             }
-    //         });
-    //
-    //     });
-    // },
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collection = db.db(config.dbName).collection(config.collections.cu_quote_request);
+                collection.insert(newQuoteRequirement, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add user address",
+                            data: records
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+
+        });
+
+    },
+
 
 
 }
