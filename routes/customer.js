@@ -100,7 +100,7 @@ router.post('/GetCUAddress', function (req, res, next) {
 });
 
 router.post('/searchSProvider', function (req, res, next) {
-    console.log("call addCUAddress-----1");
+    console.log("call searchServiceProvider-----1");
     customerModel.searchServiceProvider(req, function (err, result) {
         if (err) {
             res.json(err);

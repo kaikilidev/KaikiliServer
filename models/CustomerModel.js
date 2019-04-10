@@ -193,38 +193,38 @@ var Customer = {
 
     addUserAddress: function (req, callback) {
 
-            //  console.log(result);
-            var newAddress = {
-                cu_id: req.body.cu_id,
-                title: req.body.title,
-                address: req.body.address,
-                latitude: req.body.latitude,
-                longitude: req.body.longitude,
-                creationDate: new Date().toISOString()
-            };
+        //  console.log(result);
+        var newAddress = {
+            cu_id: req.body.cu_id,
+            title: req.body.title,
+            address: req.body.address,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
+            creationDate: new Date().toISOString()
+        };
 
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
-                collectionSP.insert(newAddress, function (err, records) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        console.log(status);
-                        callback(status);
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Successfully add user address",
-                            data: records
-                        };
-                        console.log(status);
-                        callback(status);
-                    }
-                });
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
+            collectionSP.insert(newAddress, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully add user address",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
             });
+        });
 
 
     },
@@ -270,23 +270,27 @@ var Customer = {
         var cost_item = req.body.cost_item;
         // console.log(longitude + " --- " + latitude);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-            var cursor = collection.aggregate([
+
+            var cursorIndex =   collection.createIndex({ location: "2dsphere" });
+
+            console.log("----------"+cc_ids);
+            var cursorSearch = collection.aggregate([
                 {
                     $geoNear: {
-                        near: {type: "Point", coordinates: [parseFloat(longitude),parseFloat(latitude)]},
+                        near: {type: "Point", coordinates: [ parseFloat(longitude),parseFloat(latitude)]},
                         key: "location",
                         maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                         distanceField: "dist", //give values in metre
-                        query: {services: sr_id, cost_comps: cc_ids}
+                        query: {services: sr_id, cost_comps: { $all : cc_ids  }}//{services: sr_id}// cost_comps: cc_ids
                     }
                 }]);
 
 
-            cursor.toArray(function (err, docs) {
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log(mainDocs.length +"----------size");
                 if (err) {
-                    console.log(err);
+                    console.log(err+"----err");
                     var status = {
                         status: 0,
                         message: "Failed"
@@ -299,72 +303,101 @@ var Customer = {
                     var newArrData = new Array();
                     var ctr = 0;
                     var newArrServic = new Array();
-                    if(docs.length>0){
-                    docs.forEach(function (element) {
-                        var newRadius = element.radius * 1609.34;
-                        if (element.dist <= newRadius) {
-                            newArrData.push(element.sp_id);
-                            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-                            // console.log(err);
-                            collection.find({sp_id: element.sp_id, sr_id: sr_id}
-                            ).toArray(function (err, docs) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
-                                    var newItemCost = new Array();
-                                    var totalCost =0;
-                                    cost_item.forEach(function (element) {
-                                        var picked = children.filter(function(value){ return value.cc_id==element.cc_id;})
-                                        var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
-                                        // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
-                                        totalCost = totalCost+cost;
-                                        var dataCostItem = {
-                                            cc_id:element.cc_id,
-                                            cc_title:element.cc_title,
-                                            cc_per_item_qut:element.cc_per_item_qut,
-                                            cc_per_item_rate:picked[0].cc_rate_per_item,
-                                            cc_per_item_cost:cost,
+
+                    if (mainDocs.length > 0) {
+                        mainDocs.forEach(function (element) {
+                             var newRadius = element.radius * 1609.34;
+                            // var newRadius = 100;
+                            console.log( parseFloat(element.dist)+" <= "+ parseFloat(newRadius));
+                            if (parseFloat(element.dist) <= parseFloat(newRadius)) {
+
+                                newArrData.push(element.sp_id);
+                                var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                                collection.aggregate([
+                                    {$match:{sp_id: element.sp_id, sr_id: sr_id}},
+                                    { $lookup:{
+                                    from :config.collections.sp_sr_profile,
+                                    localField:"sp_id",
+                                    foreignField :"sp_id",
+                                    as:"userprofile"}
+                                }]).toArray(function (err, docs) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log(docs);
+                                        var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        var newItemCost = new Array();
+                                        var totalCost = 0;
+                                        cost_item.forEach(function (element) {
+                                            var picked = children.filter(function (value) {
+                                                return value.cc_id == element.cc_id;
+                                            })
+                                            var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                            // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                            totalCost = totalCost + cost;
+                                            var dataCostItem = {
+                                                cc_id: element.cc_id,
+                                                cc_title: element.cc_title,
+                                                cc_per_item_qut: element.cc_per_item_qut,
+                                                cc_per_item_rate: picked[0].cc_rate_per_item,
+                                                cc_per_item_cost: cost,
+                                            };
+                                            newItemCost.push(dataCostItem);
+
+                                        });
+                                        // console.log("******");
+                                        var discountGive = 0;
+                                        if (docs[0].discount.ds_check_box == "ON") {
+                                            discountGive = docs[0].discount.ds_rate_per_item;
+                                        }
+
+
+                                        var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                        var discountAfterPrice = totalCost - discountAmount;
+                                        var dataShow = {
+                                            sp_id: docs[0].sp_id,
+                                            minimum_charge: docs[0].minimum_charge,
+                                            totalCost: totalCost,
+                                            itemCost: newItemCost,
+                                            discountGive: discountGive,
+                                            discountAfterPrice: discountAfterPrice,
+                                            dist: element.dist,
+                                            sp_about:docs[0].userprofile[0].about_sp_profile,
+                                            sp_workImage:docs[0].userprofile[0].workImages
+
                                         };
-                                        newItemCost.push(dataCostItem);
+                                        newArrServic.push(dataShow);
+                                        ctr++;
+                                        if (ctr === mainDocs.length) {
+                                            var status = {
+                                                status: 1,
+                                                message: "Success Get all Transition service list",
+                                                data: newArrServic
+                                            };
+                                            callback(status);
 
-                                    });
-                                    // console.log("******");
-                                    var discountGive = 0;
-                                    if(docs[0].discount.ds_check_box == "ON"){
-                                        discountGive = docs[0].discount.ds_rate_per_item;
+                                        }
+
+
                                     }
-
-                                    var discountAmount = (totalCost*parseFloat(discountGive))/100;
-                                    // console.log(discountAmount);
-                                    var discountAfterPrice = totalCost - discountAmount;
-                                    var dataShow = {
-                                        sp_id: docs[0].sp_id,
-                                        minimum_charge:docs[0].minimum_charge,
-                                        totalCost:totalCost,
-                                        itemCost: newItemCost,
-                                        discountGive:discountGive,
-                                        discountAfterPrice:discountAfterPrice
-
+                                });
+                            }else {
+                                ctr++;
+                                if (ctr === mainDocs.length) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Success Get all Transition service list",
+                                        data: newArrServic
                                     };
-                                    newArrServic.push(dataShow);
-                                    ctr++;
-                                    if (ctr === docs.length) {
-                                        var status = {
-                                            status: 1,
-                                            message: "Success Get all Transition service list",
-                                            data: newArrServic
-                                        };
-                                        callback(status);
-                                    }
+                                    callback(status);
+
                                 }
-                            });
-                        }
-                    });
-                    }else {
+                            }
+                        });
+                    } else {
                         var status = {
                             status: 1,
-                            message: "Success Get all Transition service list",
+                            message: "Success Get all service list",
                             data: newArrServic
                         };
                         callback(status);
@@ -376,21 +409,164 @@ var Customer = {
     },
 
 
+
+
+    /*searchServiceProvider: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+        var cc_ids = req.body.cc_ids;
+        var cost_item = req.body.cost_item;
+        // console.log(longitude + " --- " + latitude);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+
+            var cursorIndex =   collection.createIndex({ location: "2dsphere" });
+
+            console.log("----------"+parseFloat(longitude+"  ")+""+parseFloat(latitude+"  "));
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [ parseFloat(longitude),parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, docs) {
+                console.log(docs.length +"----------size");
+                if (err) {
+                    console.log(err+"----err");
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+
+                    var newArrData = new Array();
+                    var ctr = 0;
+                    var newArrServic = new Array();
+                    var sp_aboutData = "";
+                    var sp_workImage = [];
+
+                    if (docs.length > 0) {
+                        docs.forEach(function (element) {
+                            var newRadius = element.radius * 1609.34;
+                            console.log( parseFloat(element.dist)+" <= "+ parseFloat(newRadius));
+                            if (parseFloat(element.dist) <= parseFloat(newRadius)) {
+
+                                var collectionSP = kdb.db(config.dbName).collection(config.collections.sp_sr_profile);
+                                console.log("========= sp id --- "+element.sp_id);
+                                collectionSP.find({sp_id: element.sp_id}).toArray(function (err, docs) {
+                                    if (err) {
+                                    } else {
+                                        console.log("========= sp id --- "+docs[0].about_sp_profile);
+                                        sp_aboutData = docs[0].about_sp_profile;
+                                        sp_workImage = docs[0].workImages;
+                                    }
+                                });
+
+                                newArrData.push(element.sp_id);
+                                var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                                // console.log(err);
+                                collection.find({sp_id: element.sp_id, sr_id: sr_id}
+                                ).toArray(function (err, docs) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        var newItemCost = new Array();
+                                        var totalCost = 0;
+                                        cost_item.forEach(function (element) {
+                                            var picked = children.filter(function (value) {
+                                                return value.cc_id == element.cc_id;
+                                            })
+                                            var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                            // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                            totalCost = totalCost + cost;
+                                            var dataCostItem = {
+                                                cc_id: element.cc_id,
+                                                cc_title: element.cc_title,
+                                                cc_per_item_qut: element.cc_per_item_qut,
+                                                cc_per_item_rate: picked[0].cc_rate_per_item,
+                                                cc_per_item_cost: cost,
+                                            };
+                                            newItemCost.push(dataCostItem);
+
+                                        });
+                                        // console.log("******");
+                                        var discountGive = 0;
+                                        if (docs[0].discount.ds_check_box == "ON") {
+                                            discountGive = docs[0].discount.ds_rate_per_item;
+                                        }
+
+
+
+
+                                        var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                        var discountAfterPrice = totalCost - discountAmount;
+                                        var dataShow = {
+                                            sp_id: docs[0].sp_id,
+                                            minimum_charge: docs[0].minimum_charge,
+                                            totalCost: totalCost,
+                                            itemCost: newItemCost,
+                                            discountGive: discountGive,
+                                            discountAfterPrice: discountAfterPrice,
+                                            dist: element.dist,
+                                            sp_about:sp_aboutData,
+                                            sp_workImage:sp_workImage
+
+                                        };
+                                        newArrServic.push(dataShow);
+
+                                        if (ctr === docs.length) {
+                                            var status = {
+                                                status: 1,
+                                                message: "Success Get all Transition service list",
+                                                data: newArrServic
+                                            };
+                                            callback(status);
+                                        }
+                                        ctr++;
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all service list",
+                            data: newArrServic
+                        };
+                        callback(status);
+                    }
+                }
+            });
+
+        });
+    },*/
     searchQuoteProvider: function (req, callback) {
         var sr_id = req.body.sr_id;
         comman.getNextSequenceUserID("qr_service", function (result) {
-                var newQuoteRequirement = {
-                    cu_id: "QR0" + result,
-                    latitude: req.body.latitude,
-                    longitude: req.body.longitude,
-                    address: req.body.address,
-                    quote_requirement: req.body.quote_requirement,
-                    sr_id: req.body.sr_id,
-                    sr_name: req.body.sr_name,
-                    time: req.body.time,
-                    date: req.body.date,
-                    creationDate: new Date().toISOString()
-                };
+            var newQuoteRequirement = {
+                qr_id: "QR0" + result,
+                cu_id: req.body.cu_id,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude,
+                address: req.body.address,
+                quote_requirement: req.body.quote_requirement,
+                sr_id: req.body.sr_id,
+                sr_name: req.body.sr_name,
+                time: req.body.time,
+                date: req.body.date,
+                creationDate: new Date().toISOString()
+            };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collection = db.db(config.dbName).collection(config.collections.cu_quote_request);
@@ -418,7 +594,6 @@ var Customer = {
         });
 
     },
-
 
 
 }
