@@ -363,7 +363,8 @@ var Customer = {
                                             discountAfterPrice: discountAfterPrice,
                                             dist: element.dist,
                                             sp_about:docs[0].userprofile[0].about_sp_profile,
-                                            sp_workImage:docs[0].userprofile[0].workImages
+                                            avg_response:docs[0].userprofile[0].avg_response,
+                                            avg_rating:docs[0].userprofile[0].avg_rating
 
                                         };
                                         newArrServic.push(dataShow);
