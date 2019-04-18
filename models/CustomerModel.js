@@ -225,8 +225,6 @@ var Customer = {
                 }
             });
         });
-
-
     },
 
 
@@ -411,6 +409,45 @@ var Customer = {
     },
 
 
+    addServiceAlertData: function (req, callback) {
+
+        //  console.log(result);
+        var newServiceAlert = {
+            cu_id: req.body.cu_id,
+            cc_ids: req.body.cc_ids,
+            cost_item: req.body.cost_item,
+            sr_name: req.body.sr_name,
+            sr_id: req.body.sr_id,
+            comment: req.body.comment,
+            address: req.body.address,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
+            creationDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            collectionSP.insert(newServiceAlert, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully add user address",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
 
 
     /*searchServiceProvider: function (req, callback) {

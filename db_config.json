@@ -21,7 +21,8 @@
     "cu_address": "cu_address",
     "sp_sr_geo_location": "sp_sr_geo_location",
     "sp_sr_geo_location_match": "sp_sr_geo_location_match",
-    "cu_quote_request": "cu_quote_request"
+    "cu_quote_request": "cu_quote_request",
+    "cu_service_alert": "cu_service_alert"
   }
 
 }
