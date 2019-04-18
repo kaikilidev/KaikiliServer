@@ -439,7 +439,7 @@ var Customer = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully add user address",
+                        message: "Successfully add your Service alert information.",
                         data: records
                     };
                     console.log(status);
