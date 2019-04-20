@@ -21,7 +21,7 @@
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805788.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805792.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,15 +45,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="694">
-              <caret line="350" lean-forward="true" selection-start-line="350" selection-end-line="350" />
+            <state relative-caret-position="6424">
+              <caret line="366" column="52" selection-start-line="366" selection-start-column="52" selection-end-line="366" selection-end-column="52" />
               <folding>
                 <element signature="e#4703#6795#0" />
                 <element signature="e#6840#7528#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/subservices.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="22" column="40" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -70,8 +88,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7260">
-              <caret line="330" column="34" selection-start-line="330" selection-start-column="14" selection-end-line="330" selection-end-column="34" />
+            <state relative-caret-position="232">
+              <caret line="18" column="29" lean-forward="true" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="25" column="40" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -124,6 +151,8 @@
       <find>console</find>
       <find>newServiceArr</find>
       <find>spProfileImageUpload</find>
+      <find>getAllAddService</find>
+      <find>AddUserServices</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -152,10 +181,10 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
-        <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
         <option value="$PROJECT_DIR$/routes/customer.js" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
+        <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
       </list>
     </option>
   </component>
@@ -179,6 +208,11 @@
             <path>
               <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
               <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -319,14 +353,8 @@
       <workItem from="1554974614305" duration="5699000" />
       <workItem from="1555132658664" duration="2267000" />
       <workItem from="1555593830752" duration="2067000" />
-      <workItem from="1555657890592" duration="1059000" />
-    </task>
-    <task id="LOCAL-00026" summary="Add New Api">
-      <created>1550843630809</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1550843630809</updated>
+      <workItem from="1555657890592" duration="4171000" />
+      <workItem from="1555747784555" duration="1262000" />
     </task>
     <task id="LOCAL-00027" summary="Add New Api">
       <created>1550913502888</created>
@@ -664,11 +692,18 @@
       <option name="project" value="LOCAL" />
       <updated>1555595125787</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Add New Api">
+      <created>1555665022265</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1555665022266</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="358740000" />
+    <option name="totallyTimeSpent" value="363114000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -681,11 +716,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" visible="true" weight="0.21946308" />
+      <window_info content_ui="combo" id="Project" order="3" weight="0.22281879" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49693877" weight="0.7223796" />
@@ -829,13 +865,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/subservices.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helpers/AvatarStorage.js" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/11.9.0/node-typings/node_modules/@types/node/globals.d.ts" />
     <entry file="file://$PROJECT_DIR$/public/uploads/1551260297624-ic_signature.png" />
@@ -885,13 +914,6 @@
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/product-info.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/ServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -952,13 +974,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2948">
-          <caret line="134" column="79" selection-start-line="134" selection-start-column="74" selection-end-line="134" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1036">
@@ -968,12 +983,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="694">
-          <caret line="350" lean-forward="true" selection-start-line="350" selection-end-line="350" />
+        <state relative-caret-position="6424">
+          <caret line="366" column="52" selection-start-line="366" selection-start-column="52" selection-end-line="366" selection-end-column="52" />
           <folding>
             <element signature="e#4703#6795#0" />
             <element signature="e#6840#7528#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/subservices.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -984,17 +1006,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7260">
-          <caret line="330" column="34" selection-start-line="330" selection-start-column="14" selection-end-line="330" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db_config.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/SubServiceModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="22" column="40" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="18" column="29" lean-forward="true" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="25" column="40" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="40" />
         </state>
       </provider>
     </entry>

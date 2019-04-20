@@ -15,20 +15,15 @@ var UserService = {
         var sp_sr_status = req.body.sp_sr_status;
 
         var newCostComps = new Array();
-        req.body.cost_comps_per_item_on.forEach(function (element) {
+        req.body.cost_components_on.forEach(function (element) {
             newCostComps.push(element.cc_id);
         });
-        req.body.cost_comps_pro_rate_on.forEach(function (element) {
-            newCostComps.push(element.cc_id);
-        });
+
         var newServiceArr = new Array();
         newServiceArr.push(req.body.sr_id);
 
         var newCostCompsOFF = new Array();
-        req.body.cost_comps_per_item_off.forEach(function (element) {
-            newCostCompsOFF.push(element.cc_id);
-        });
-        req.body.cost_comps_pro_rate_off.forEach(function (element) {
+        req.body.cost_components_off.forEach(function (element) {
             newCostCompsOFF.push(element.cc_id);
         });
 
