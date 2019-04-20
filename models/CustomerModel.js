@@ -323,7 +323,8 @@ var Customer = {
                                         console.log(err);
                                     } else {
                                         console.log(docs);
-                                        var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        // var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        var children = docs[0].cost_components_on;
                                         var newItemCost = new Array();
                                         var totalCost = 0;
                                         cost_item.forEach(function (element) {
