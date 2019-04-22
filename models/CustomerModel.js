@@ -366,7 +366,6 @@ var Customer = {
                                             avg_response:docs[0].userprofile[0].avg_response,
                                             avg_rating:docs[0].userprofile[0].avg_rating,
                                             sp_image:docs[0].userprofile[0].profile_image,
-                                            post_data:req.body
 
                                         };
                                         newArrServic.push(dataShow);
@@ -375,6 +374,7 @@ var Customer = {
                                             var status = {
                                                 status: 1,
                                                 message: "Success Get all Transition service list",
+                                                post_data:req.body,
                                                 data: newArrServic
                                             };
                                             callback(status);
