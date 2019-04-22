@@ -637,6 +637,68 @@ var Customer = {
 
     },
 
+    serviceBookUser: function (req, callback) {
+        comman.getNextSequenceUserID("tr_service", function (result) {
+            //  console.log(result);
+            var newBookServiceUser = {
+                cu_id: "TR0" + result,
+                address: req.body.address,
+                comment: req.body.comment,
+                sr_id: req.body.sr_id,
+                sr_name: req.body.sr_name,
+                time: req.body.time,
+                date: req.body.date,
+                cust_id: req.body.cust_id,
+                cust_first_name: req.body.cust_first_name,
+                cust_last_name: req.body.cust_last_name,
+                sp_first_name: req.body.sp_first_name,
+                sp_Last_name: req.body.sp_Last_name,
+                sp_id: req.body.sp_id,
+                sp_image: req.body.sp_image,
+                sr_status: req.body.sr_status,
+                txn_status: req.body.txn_status,
+                minimum_charge: req.body.minimum_charge,
+                totalCost: req.body.totalCost,
+                itemCost: req.body.itemCost,
+                minimum_charge: req.body.minimum_charge,
+                discount: req.body.discount,
+                kaikili_commission: req.body.kaikili_commission,
+                sr_type: req.body.sr_type,
+                sr_total: req.body.sr_total,
+                sp_net_pay: req.body.sp_net_pay,
+                coordinatePoint: req.body.coordinatePoint,
+                cp_review: req.body.cp_review,
+                sp_review: req.body.sp_review,
+                creationDate: new Date().toISOString()
+            };
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                collectionCU.insert(newBookServiceUser, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add user address",
+                            data: records
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+        });
+
+
+    },
+
 
 }
 module.exports = Customer;

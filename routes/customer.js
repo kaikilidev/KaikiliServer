@@ -140,6 +140,20 @@ router.post('/addNewServiceAlert', function (req, res, next) {
 });
 
 
+router.post('/bookNewService', function (req, res, next) {
+    console.log("call serviceBookUser-----1");
+    customerModel.serviceBookUser(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 
 
 module.exports = router;
