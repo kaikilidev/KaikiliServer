@@ -660,7 +660,7 @@ var Customer = {
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
-                sr_name: req.body.sr_name,
+                sr_title: req.body.sr_name,
                 time: req.body.time,
                 date: req.body.date,
                 cust_id: req.body.cust_id,
