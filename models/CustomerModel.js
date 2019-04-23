@@ -270,25 +270,25 @@ var Customer = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
 
-            var cursorIndex =   collection.createIndex({ location: "2dsphere" });
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
 
-            console.log("----------"+cc_ids);
+            console.log("----------" + cc_ids);
             var cursorSearch = collection.aggregate([
                 {
                     $geoNear: {
-                        near: {type: "Point", coordinates: [ parseFloat(longitude),parseFloat(latitude)]},
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
                         key: "location",
                         maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                         distanceField: "dist", //give values in metre
-                        query: {services: sr_id, cost_comps: { $all : cc_ids  }}//{services: sr_id}// cost_comps: cc_ids
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
                     }
                 }]);
 
 
             cursorSearch.toArray(function (err, mainDocs) {
-                console.log(mainDocs.length +"----------size");
+                console.log(mainDocs.length + "----------size");
                 if (err) {
-                    console.log(err+"----err");
+                    console.log(err + "----err");
                     var status = {
                         status: 0,
                         message: "Failed"
@@ -304,21 +304,37 @@ var Customer = {
 
                     if (mainDocs.length > 0) {
                         mainDocs.forEach(function (element) {
-                             var newRadius = element.radius * 1609.34;
+                            var newRadius = element.radius * 1609.34;
                             // var newRadius = 100;
-                            console.log( parseFloat(element.dist)+" <= "+ parseFloat(newRadius));
+                            console.log(parseFloat(element.dist) + " <= " + parseFloat(newRadius));
                             if (parseFloat(element.dist) <= parseFloat(newRadius)) {
 
                                 newArrData.push(element.sp_id);
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                                 collection.aggregate([
-                                    {$match:{sp_id: element.sp_id, sr_id: sr_id}},
-                                    { $lookup:{
-                                    from :config.collections.sp_sr_profile,
-                                    localField:"sp_id",
-                                    foreignField :"sp_id",
-                                    as:"userprofile"}
-                                }]).toArray(function (err, docs) {
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                    {
+                                        $lookup: {
+                                            from: config.collections.sp_sr_profile,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "userprofile"
+                                        }
+                                    },
+                                    {
+                                        $unwind: "$userprofile"
+                                    },{
+                                        $lookup: {
+                                            from: config.collections.sp_personal_info,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "profile"
+                                        }
+                                    },{
+                                        $unwind: "$profile"
+                                    }
+                            ]).
+                                toArray(function (err, docs) {
                                     if (err) {
                                         console.log(err);
                                     } else {
@@ -361,12 +377,14 @@ var Customer = {
                                             discountGive: discountGive,
                                             discountAfterPrice: discountAfterPrice,
                                             dist: element.dist,
-                                            sp_about:docs[0].userprofile[0].about_sp_profile,
-                                            sp_workImage:docs[0].userprofile[0].workImages,
-                                            avg_response:docs[0].userprofile[0].avg_response,
-                                            avg_rating:docs[0].userprofile[0].avg_rating,
-                                            sp_image:docs[0].userprofile[0].profile_image,
-
+                                            sp_about: docs[0].userprofile.about_sp_profile,
+                                            sp_workImage: docs[0].userprofile.workImages,
+                                            avg_response: docs[0].userprofile.avg_response,
+                                            avg_rating: docs[0].userprofile.avg_rating,
+                                            sp_image: docs[0].userprofile.profile_image,
+                                            sp_first_name: docs[0].profile.first_name,
+                                            sp_last_name: docs[0].profile.last_name,
+                                            sp_mobile_no: docs[0].profile.mobile_no
                                         };
                                         newArrServic.push(dataShow);
                                         ctr++;
@@ -374,17 +392,14 @@ var Customer = {
                                             var status = {
                                                 status: 1,
                                                 message: "Success Get all Transition service list",
-                                                post_data:req.body,
+                                                post_data: req.body,
                                                 data: newArrServic
                                             };
                                             callback(status);
-
                                         }
-
-
                                     }
                                 });
-                            }else {
+                            } else {
                                 ctr++;
                                 if (ctr === mainDocs.length) {
                                     var status = {
@@ -641,7 +656,7 @@ var Customer = {
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
             var newBookServiceUser = {
-                cu_id: "TR0" + result,
+                tr_id: "TR0" + result,
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
