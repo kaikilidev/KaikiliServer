@@ -684,6 +684,7 @@ var Customer = {
                 coordinatePoint: req.body.coordinatePoint,
                 cp_review: req.body.cp_review,
                 sp_review: req.body.sp_review,
+                distance: req.body.distance,
                 creationDate: new Date().toISOString()
             };
 
