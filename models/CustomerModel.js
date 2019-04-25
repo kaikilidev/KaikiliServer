@@ -353,6 +353,8 @@ var Customer = {
                                             var dataCostItem = {
                                                 cc_id: element.cc_id,
                                                 cc_title: element.cc_title,
+                                                hcc_id: picked[0].hcc_id,
+                                                hcc_title: picked[0].hcc_title,
                                                 cc_per_item_qut: element.cc_per_item_qut,
                                                 cc_per_item_rate: picked[0].cc_rate_per_item,
                                                 cc_per_item_cost: cost,
@@ -608,6 +610,7 @@ var Customer = {
 
         });
     },*/
+
     searchQuoteProvider: function (req, callback) {
         var sr_id = req.body.sr_id;
         comman.getNextSequenceUserID("qr_service", function (result) {
@@ -660,7 +663,7 @@ var Customer = {
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
-                sr_title: req.body.sr_name,
+                sr_title: req.body.sr_title,
                 time: req.body.time,
                 date: req.body.date,
                 cust_id: req.body.cust_id,
@@ -672,7 +675,6 @@ var Customer = {
                 sp_image: req.body.sp_image,
                 sr_status: req.body.sr_status,
                 txn_status: req.body.txn_status,
-                minimum_charge: req.body.minimum_charge,
                 totalCost: req.body.totalCost,
                 itemCost: req.body.itemCost,
                 minimum_charge: req.body.minimum_charge,
