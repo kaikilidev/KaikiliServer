@@ -531,7 +531,7 @@ var Customer = {
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
             var newBookServiceUser = {
-                tr_id: "TR0" + result,
+                tran_id: "TR0" + result,
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
