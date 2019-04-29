@@ -574,47 +574,9 @@ var Customer = {
                         console.log(status);
                         callback(status);
                     } else {
-
-
-                        var messagesBody = {
-                            author: req.body.sp_id,
-                            author_type: "CU",
-                            sp_delet: "0",
-                            cu_delte: "0",
-                            sp_read: "0",
-                            cu_read: "0",
-                            created_on: new Date().toISOString(),
-                            body: "New Service Request -"+req.body.sr_title
-                        };
-                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                            collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
-                                if (err) {
-                                    console.log(err);
-                                    var status = {
-                                        status: 0,
-                                        message: "Failed"
-                                    };
-                                    // console.log(status);
-                                    callback(status);
-                                } else {
-                                    var status = {
-                                        status: 1,
-                                        message: "Success to load bank info",
-                                        data: docs
-                                    };
-                                    callback(status);
-                                    // console.log("Update in Notification");
-                                    // console.log(docs);
-                                }
-                            });
-
-                        });
-
                         var status = {
                             status: 1,
-                            message: "Successfully add user address",
+                            message: "Successfully add new service",
                             data: records
                         };
                         console.log(status);
