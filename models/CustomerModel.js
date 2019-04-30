@@ -481,8 +481,6 @@ var Customer = {
     },
 
 
-
-
     searchQuoteProvider: function (req, callback) {
         var sr_id = req.body.sr_id;
         comman.getNextSequenceUserID("qr_service", function (result) {
@@ -585,10 +583,39 @@ var Customer = {
                 });
             });
         });
-
-
     },
 
+    removeUserAddress: function (req, callback) {
+
+        //  console.log(result);
+        var newAddress = {
+            cu_id: req.body.cu_id,
+            _id: req.body.id,
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
+            collectionSP.removeOne({cu_id: req.body.cu_id,_id: req.body.id}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully add user address",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
 
 }
 module.exports = Customer;
