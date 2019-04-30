@@ -480,7 +480,6 @@ var Customer = {
         });
     },
 
-
     searchQuoteProvider: function (req, callback) {
         var sr_id = req.body.sr_id;
         comman.getNextSequenceUserID("qr_service", function (result) {
@@ -560,6 +559,22 @@ var Customer = {
                 creationDate: new Date().toISOString()
             };
 
+            var notificationData = {
+                tran_id: "TR0" + result,
+                sr_id: req.body.sr_id,
+                sr_title: req.body.sr_title,
+                time: req.body.time,
+                date: req.body.date,
+                cust_id: req.body.cust_id,
+                cust_first_name: req.body.cust_first_name,
+                cust_last_name: req.body.cust_last_name,
+                sp_first_name: req.body.sp_first_name,
+                sp_Last_name: req.body.sp_Last_name,
+                sp_id: req.body.sp_id,
+                sp_image: req.body.sp_image,
+                messages :[]
+            };
+
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                 collectionCU.insert(newBookServiceUser, function (err, records) {
@@ -572,10 +587,23 @@ var Customer = {
                         console.log(status);
                         callback(status);
                     } else {
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.insert(notificationData, function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in Notification");
+                                // console.log(docs);
+                            }
+                        });
+
                         var status = {
                             status: 1,
                             message: "Successfully add new service",
                             data: records
+
+
                         };
                         console.log(status);
                         callback(status);
