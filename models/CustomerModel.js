@@ -588,14 +588,13 @@ var Customer = {
     removeUserAddress: function (req, callback) {
 
         //  console.log(result);
-        var newAddress = {
-            cu_id: req.body.cu_id,
-            _id: req.body.id,
-        };
+          var cu_id= req.body.cu_id;
+          var id= req.body.id;
+        console.log("----------"+id);
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
-            collectionSP.removeOne({cu_id: req.body.cu_id,_id: req.body.id}, function (err, records) {
+            collectionSP.deleteOne({"cu_id":cu_id,"_id" : mongoose.Types.ObjectId(id)}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -607,7 +606,7 @@ var Customer = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully add user address",
+                        message: "Successfully remove address",
                         data: records
                     };
                     console.log(status);
