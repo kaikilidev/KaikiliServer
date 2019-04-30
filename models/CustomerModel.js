@@ -572,6 +572,7 @@ var Customer = {
                 sp_Last_name: req.body.sp_Last_name,
                 sp_id: req.body.sp_id,
                 sp_image: req.body.sp_image,
+                creationDate: new Date().toISOString(),
                 messages :[]
             };
 
