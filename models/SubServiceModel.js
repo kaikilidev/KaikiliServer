@@ -48,7 +48,7 @@ var SubService = {
         console.log("call get all service");
         mongo.connect(config.dbUrl,  { useNewUrlParser: true },function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.add_services);
-            collection.find({}).toArray(function (err, docs) {
+            collection.find({"sr_availability": "ON"}).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
