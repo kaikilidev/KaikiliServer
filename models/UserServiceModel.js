@@ -1006,6 +1006,7 @@ var UserService = {
                         "quote_accept": 1,
                         "services.cost_components": 1,
                         "services.deleted": 1,
+                        "services.notes": 1,
                     }
                 }
 

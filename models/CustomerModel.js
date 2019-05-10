@@ -378,7 +378,6 @@ var Customer = {
                                             discountGive = docs[0].discount.ds_rate_per_item;
                                         }
 
-
                                         var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
                                         var discountAfterPrice = totalCost - discountAmount;
                                         var dataShow = {
