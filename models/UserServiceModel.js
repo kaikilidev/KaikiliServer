@@ -1022,7 +1022,7 @@ var UserService = {
 
                 } else {
                     var status = {
-                        status: 3,
+                        status: 1,
                         message: "Success Get all service to Mongodb",
                         data: docs
                     };
