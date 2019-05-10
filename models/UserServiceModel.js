@@ -967,32 +967,48 @@ var UserService = {
     getUserServiceCatalogueData: function (req, callback) {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
+
+        console.log(sr_id);
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
 
+
             collection.aggregate([
-                {$match: {sp_id: sp_id,sr_id: sr_id}},
+                {$match: {sp_id: sp_id, sr_id:sr_id}},
+                // {$match: { $and:[{sp_id: sp_id},{ sr_id: sr_id}] }},
+
+                // {$match: {sp_id: sp_id,sr_id: sr_id}},
                 {
                     $lookup: {
                         from: config.collections.add_services,
-                        localField: "sr_id",
-                        foreignField: "sr_id",
-                        as: "userprofile"
+                        localField: sr_id,
+                        foreignField: sr_id,
+                        as: "services"
                     }
                 },
                 {
-                    $unwind: "$userprofile"
+                    $unwind: "$services"
                 },
-                               // { $project: {"$userprofile.cost_components"} }
+                {
+                    $project: {
+                        "_id": 1,
+                        "sp_id": 1,
+                        "sr_id": 1,
+                        "sr_title": 1,
+                        "sp_sr_status": 1,
+                        "sr_type": 1,
+                        "cost_components_on": 1,
+                        "cost_components_off": 1,
+                        "discount": 1,
+                        "minimum_charge": 1,
+                        "quote_accept": 1,
+                        "services.cost_components": 1,
+                        "services.deleted": 1,
+                    }
+                }
 
-            // collection.find({sp_id: sp_id,sr_id: sr_id}, {
-            //     _id: 1,
-            //     sp_id: 2,
-            //     sr_id: 3,
-            //     sr_title: 4,
-            //     sp_sr_status: 5
             ]).toArray(function (err, docs) {
                 // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
                 if (err) {
@@ -1006,7 +1022,7 @@ var UserService = {
 
                 } else {
                     var status = {
-                        status: 1,
+                        status: 3,
                         message: "Success Get all service to Mongodb",
                         data: docs
                     };

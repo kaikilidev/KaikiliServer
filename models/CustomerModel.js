@@ -266,7 +266,7 @@ var Customer = {
         var longitude = req.body.longitude;
         var cc_ids = req.body.cc_ids;
         var cost_item = req.body.cost_item;
-        // console.log(longitude + " --- " + latitude);
+         console.log(longitude + " --- " + req.body.cc_ids);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
 
@@ -286,7 +286,7 @@ var Customer = {
 
 
             cursorSearch.toArray(function (err, mainDocs) {
-                console.log(mainDocs.length + "----------size");
+                // console.log(mainDocs.length + "----------size");
                 if (err) {
                     console.log(err + "----err");
                     var status = {
@@ -361,7 +361,8 @@ var Customer = {
                                             totalCost = totalCost + cost;
                                             var dataCostItem = {
                                                 cc_id: element.cc_id,
-                                                cc_title: element.cc_title,
+                                                cc_cu_title: element.cc_cu_title,
+                                                cc_sp_title: element.cc_sp_title,
                                                 hcc_id: picked[0].hcc_id,
                                                 hcc_title: picked[0].hcc_title,
                                                 cc_per_item_qut: element.cc_per_item_qut,
