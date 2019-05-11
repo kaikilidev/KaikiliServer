@@ -266,7 +266,7 @@ var Customer = {
         var longitude = req.body.longitude;
         var cc_ids = req.body.cc_ids;
         var cost_item = req.body.cost_item;
-         console.log(longitude + " --- " + req.body.cc_ids);
+        console.log(longitude + " --- " + req.body.cc_ids);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
 
@@ -323,27 +323,26 @@ var Customer = {
                                     },
                                     {
                                         $unwind: "$userprofile"
-                                    },{
+                                    }, {
                                         $lookup: {
                                             from: config.collections.sp_personal_info,
                                             localField: "sp_id",
                                             foreignField: "sp_id",
                                             as: "profile"
                                         }
-                                    },{
+                                    }, {
                                         $unwind: "$profile"
-                                    },{
+                                    }, {
                                         $lookup: {
                                             from: config.collections.add_services,
                                             localField: "sr_id",
                                             foreignField: "sr_id",
                                             as: "services"
                                         }
-                                    },{
+                                    }, {
                                         $unwind: "$services"
                                     }
-                            ]).
-                                toArray(function (err, docs) {
+                                ]).toArray(function (err, docs) {
                                     if (err) {
                                         console.log(err);
                                     } else {
@@ -574,7 +573,7 @@ var Customer = {
                 sp_id: req.body.sp_id,
                 sp_image: req.body.sp_image,
                 creationDate: new Date().toISOString(),
-                messages :[]
+                messages: []
             };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -618,13 +617,13 @@ var Customer = {
     removeUserAddress: function (req, callback) {
 
         //  console.log(result);
-          var cu_id= req.body.cu_id;
-          var id= req.body.id;
-        console.log("----------"+id);
+        var cu_id = req.body.cu_id;
+        var id = req.body.id;
+        console.log("----------" + id);
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
-            collectionSP.deleteOne({"cu_id":cu_id,"_id" : mongoose.Types.ObjectId(id)}, function (err, records) {
+            collectionSP.deleteOne({"cu_id": cu_id, "_id": mongoose.Types.ObjectId(id)}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -652,7 +651,7 @@ var Customer = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            console.log(err);
+            var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
             collection.find({cust_id: cust_id}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -664,12 +663,17 @@ var Customer = {
                     callback(status);
 
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service to Mongodb",
-                        data: docs
-                    };
-                    callback(status);
+
+                    collectionQuote.find({cu_id: cust_id}).sort({creationDate:-1}).toArray(function (err, docsQuote) {
+
+                        var status = {
+                            status: 1,
+                            message: "Success Get all Transition service to Mongodb",
+                            data: docs,
+                            dataQuote: docsQuote
+                        };
+                        callback(status);
+                    });
                 }
             });
 
