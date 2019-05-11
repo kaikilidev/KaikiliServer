@@ -646,5 +646,35 @@ var Customer = {
         });
     },
 
+    getCustomerTransition: function (req, callback) {
+        var cust_id = req.body.cust_id;
+        console.log(cust_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var mysort = {updateDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            console.log(err);
+            collection.find({cust_id: cust_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service to Mongodb",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
 }
 module.exports = Customer;
