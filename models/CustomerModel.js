@@ -362,6 +362,7 @@ var Customer = {
                                             var dataCostItem = {
                                                 cc_id: element.cc_id,
                                                 cc_cu_title: element.cc_cu_title,
+                                                show_order: element.show_order,
                                                 cc_sp_title: element.cc_sp_title,
                                                 hcc_id: picked[0].hcc_id,
                                                 hcc_title: picked[0].hcc_title,
