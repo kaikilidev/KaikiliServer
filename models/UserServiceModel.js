@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 var comman = require('../models/Comman');
+// load math.js (using node.js)
+const math = require('mathjs')
 
 
 var UserService = {
@@ -963,123 +965,7 @@ var UserService = {
     },
 
 
-    // getUserServiceCatalogueData1: function (req, callback) {
-    //     var sp_id = req.body.sp_id;
-    //     var sr_id = req.body.sr_id;
-    //
-    //     console.log(sr_id);
-    //     console.log(sp_id);
-    //
-    //
-    //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-    //             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-    //             var collectionService = db.db(config.dbName).collection(config.collections.add_services);
-    //             collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs1) {
-    //                 if (docs1.length == 0) {
-    //
-    //                     collection.aggregate([
-    //                         {$match: {sp_id: sp_id, sr_id: sr_id}},
-    //                         // {$match: { $and:[{sp_id: sp_id},{ sr_id: sr_id}] }},
-    //
-    //                         // {$match: {sp_id: sp_id,sr_id: sr_id}},
-    //                         {
-    //                             $lookup: {
-    //                                 from: config.collections.add_services,
-    //                                 localField: sr_id,
-    //                                 foreignField: sr_id,
-    //                                 as: "services"
-    //                             }
-    //                         },
-    //                         {
-    //                             $unwind: "$services"
-    //                         },
-    //                         {
-    //                             $project: {
-    //                                 "_id": 1,
-    //                                 "sp_id": 1,
-    //                                 "sr_id": 1,
-    //                                 "sr_title": 1,
-    //                                 "sp_sr_status": 1,
-    //                                 "sr_type": 1,
-    //                                 "cost_components_on": 1,
-    //                                 "cost_components_off": 1,
-    //                                 "discount": 1,
-    //                                 "minimum_charge": 1,
-    //                                 "quote_accept": 1,
-    //                                 "services.cost_components": 1,
-    //                                 "services.deleted": 1,
-    //                                 "services.notes": 1,
-    //                             }
-    //                         }
-    //
-    //                     ]).toArray(function (err, docs) {
-    //                         // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
-    //                         if (err) {
-    //                             console.log(err);
-    //                             var status = {
-    //                                 status: 0,
-    //                                 message: "Failed"
-    //                             };
-    //                             // console.log(status);
-    //                             callback(status);
-    //
-    //                         } else {
-    //                             var status = {
-    //                                 status: 1,
-    //                                 message: "Success Get all service to Mongodb",
-    //                                 data: docs
-    //                             };
-    //                             callback(status);
-    //                         }
-    //                     });
-    //                 } else {
-    //
-    //                     collectionService.aggregate([
-    //                         {$match: {sp_id: sp_id, sr_id: sr_id}},
-    //                         {
-    //                             $project: {
-    //                                 "_id": 1,
-    //                                 "sp_id": sp_id,
-    //                                 "sr_id": 1,
-    //                                 "sr_title": 1,
-    //                                 "sp_sr_status": 1,
-    //                                 "sr_type": 1,
-    //                                 "cost_components_on": [],
-    //                                 "cost_components_off": [],
-    //                                 "discount": 1,
-    //                                 "minimum_charge": 1,
-    //                                 "quote_accept": 1,
-    //                                 "cost_components": 1,
-    //                                 "deleted": 1,
-    //                                 "services.notes": 1,
-    //                             }
-    //                         }
-    //                     ]).toArray(function (err, docs) {
-    //                         // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
-    //                         if (err) {
-    //                             console.log(err);
-    //                             var status = {
-    //                                 status: 0,
-    //                                 message: "Failed"
-    //                             };
-    //                             // console.log(status);
-    //                             callback(status);
-    //
-    //                         } else {
-    //                             var status = {
-    //                                 status: 13,
-    //                                 message: "Success Get all service to Mongodb",
-    //                                 data: docs
-    //                             };
-    //                             callback(status);
-    //                         }
-    //                     });
-    //
-    //                 }
-    //             });
-    //         }
-    //     );
-    // },
+
 
     getUserServiceCatalogueData: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -1090,7 +976,11 @@ var UserService = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionService = db.db(config.dbName).collection(config.collections.add_services);
             var collectionProvider = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            collectionService.find({"sr_availability": "ON", sr_id: sr_id, "deleted":"0"}).toArray(function (err, docs) {
+            collectionService.find({
+                "sr_availability": "ON",
+                sr_id: sr_id,
+                "deleted": "0"
+            }).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -1102,6 +992,7 @@ var UserService = {
 
                 } else {
                     if (docs.length > 0) {
+
                         collectionProvider.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs1) {
                             if (err) {
                                 console.log(err);
@@ -1113,51 +1004,113 @@ var UserService = {
                                 callback(status);
 
                             } else {
-                                if(docs1.length>0){
-                                    var status = {
-                                        status: 1,
-                                        data:{
-                                            "_id": docs[0]._id,
-                                        "sp_id": sp_id,
-                                        "sr_id": sr_id,
-                                        "sr_title": docs[0].sr_title,
-                                        "sr_type": docs[0].sr_type,
-                                        "cost_components_on": docs1[0].cost_components_on,
-                                        "cost_components_off": docs1[0].cost_components_off,
-                                        "sp_sr_status": docs1[0].sp_sr_status,
-                                        "discount": docs1[0].discount,
-                                        "minimum_charge": docs1[0].minimum_charge,
-                                        "quote_accept": docs1[0].quote_accept,
-                                        "cost_components": docs[0].cost_components,
-                                        "notes": docs[0].notes},
-                                        message: "Success Get all service to Mongodb",
-                                        // serviceData:docs,
-                                        // userData: docs1,
-                                    };
-                                    callback(status);
-                                }else {
-                                    var status = {
-                                        status: 1,
-                                        data:{
-                                            "_id": docs[0]._id,
-                                        "sp_id": sp_id,
-                                        "sr_id": sr_id,
-                                        "sr_title": docs[0].sr_title,
-                                        "sr_type": docs[0].sr_type,
-                                        "cost_components_on": [],
-                                        "cost_components_off": [],
-                                        "sp_sr_status": "ON",
-                                        "discount":docs[0].discount,
-                                        "minimum_charge": "",
-                                        "quote_accept": "",
-                                        "cost_components": docs[0].cost_components,
-                                        "notes": docs[0].notes},
-                                        message: "Success Get all service to Mongodb",
-                                        // serviceData:docs,
-                                        // userData: docs1,
-                                    };
-                                    callback(status);
-                                }
+                                var userSPidList = [];
+                                comman.getSPUserRadiusLocationOtherSP(sp_id, sr_id, function (result) {
+                                  //  console.log("---->>" + result.length);
+                                    result.forEach(function (element) {
+                                      //  console.log(element.sp_id);
+                                        userSPidList.push(element.sp_id);
+                                    });
+                                   // console.log("------>" + userSPidList);
+                                    var newCost_components =  new Array();
+                                    var ctr = 0;
+                                    docs[0].cost_components.forEach(function (elementCost) {
+                                      //  console.log(elementCost.sp_id);
+                                        comman.getSPUserCCRatData(userSPidList,sr_id,elementCost.cc_id,function (resultCost) {
+                                            var userSPidSetRate = [];
+                                            resultCost.forEach(function (element) {
+                                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                                            });
+                                            console.log("------1>"+elementCost.cc_id);
+                                            console.log("------2>"+userSPidSetRate);
+                                            console.log("------min >"+math.min(userSPidSetRate));
+                                            console.log("------max >"+math.max(userSPidSetRate));
+                                            console.log("------sum >"+math.sum(userSPidSetRate));
+                                            console.log("------threshould_price >"+docs[0].threshould_price);
+                                            console.log("------avg >"+(math.sum(userSPidSetRate)/userSPidSetRate.length));
+                                            var minPri = math.min(userSPidSetRate);
+                                            var apMinPri = (math.min(userSPidSetRate)*docs[0].threshould_price)/100;
+                                            console.log("------apMinPri >"+apMinPri);
+                                            var avg = 1;
+                                            if((math.sum(userSPidSetRate)/userSPidSetRate.length) >= 1){
+                                                avg = (math.sum(userSPidSetRate)/userSPidSetRate.length)
+                                            }
+
+                                            var costData = {
+                                                "cc_id": elementCost.cc_id,
+                                                "cc_cu_title":elementCost.cc_cu_title,
+                                                "cc_sp_title": elementCost.cc_sp_title,
+                                                "cc_status":  elementCost.cc_status,
+                                                "hcc_id": elementCost.hcc_id,
+                                                "hcc_title": elementCost.hcc_title,
+                                                "required_field": elementCost.required_field,
+                                                "show_order": elementCost.show_order,
+                                                "avg_rate":avg
+                                            };
+                                            // console.log("------set new cost >"+costData);
+                                            newCost_components.push(costData);
+
+                                            ctr++;
+                                            if (ctr === docs[0].cost_components.length) {
+                                                if (docs1.length > 0) {
+                                                    var status = {
+                                                        status: 1,
+                                                        data: {
+                                                            "_id": docs[0]._id,
+                                                            "sp_id": sp_id,
+                                                            "sr_id": sr_id,
+                                                            "sr_title": docs[0].sr_title,
+                                                            "sr_type": docs[0].sr_type,
+                                                            "cost_components_on": docs1[0].cost_components_on,
+                                                            "cost_components_off": docs1[0].cost_components_off,
+                                                            "sp_sr_status": docs1[0].sp_sr_status,
+                                                            "discount": docs1[0].discount,
+                                                            "minimum_charge": docs1[0].minimum_charge,
+                                                            "quote_accept": docs1[0].quote_accept,
+                                                            "cost_components": newCost_components,
+                                                            // "cost_components": docs[0].cost_components,
+                                                            "notes": docs[0].notes
+                                                        },
+                                                        message: "Success Get all service to Mongodb",
+                                                        // serviceData:docs,
+                                                        // userData: docs1,
+                                                    };
+                                                    callback(status);
+                                                } else {
+                                                    var status = {
+                                                        status: 1,
+                                                        data: {
+                                                            "_id": docs[0]._id,
+                                                            "sp_id": sp_id,
+                                                            "sr_id": sr_id,
+                                                            "sr_title": docs[0].sr_title,
+                                                            "sr_type": docs[0].sr_type,
+                                                            "cost_components_on": [],
+                                                            "cost_components_off": [],
+                                                            "sp_sr_status": "ON",
+                                                            "discount": docs[0].discount,
+                                                            "minimum_charge": "",
+                                                            "quote_accept": "",
+                                                            "cost_components": newCost_components,
+                                                            // "cost_components": docs[0].cost_components,
+                                                            "notes": docs[0].notes
+                                                        },
+                                                        message: "Success Get all service to Mongodb",
+                                                        // serviceData:docs,
+                                                        // userData: docs1,
+                                                    };
+                                                    callback(status);
+                                                }
+                                            }
+
+                                            //console.log("------cost  size >"+newCost_components.length);
+                                        });
+
+                                    });
+                                    // console.log("------cost  size 1>"+newCost_components.length);
+
+
+                                });
 
 
                             }
