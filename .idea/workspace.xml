@@ -21,8 +21,6 @@
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805788.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/public/SPWork/1551278805792.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -100,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="456" column="50" selection-start-line="456" selection-start-column="50" selection-end-line="456" selection-end-column="50" />
+            <state relative-caret-position="149">
+              <caret line="684" column="30" selection-start-line="684" selection-start-column="4" selection-end-line="684" selection-end-column="30" />
               <folding>
                 <element signature="e#301#3347#0" />
                 <element signature="e#3400#4657#0" />
@@ -112,6 +110,10 @@
                 <element signature="e#6840#7528#0" />
                 <element signature="e#7576#8773#0" />
                 <element signature="e#8822#9858#0" />
+                <element signature="e#19967#21357#0" />
+                <element signature="e#21410#23053#0" />
+                <element signature="e#23102#26862#0" />
+                <element signature="e#26913#27977#0" />
               </folding>
             </state>
           </provider>
@@ -148,11 +150,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/customer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="130" column="25" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="25" />
+            <state relative-caret-position="124">
+              <caret line="183" column="34" selection-start-line="183" selection-start-column="14" selection-end-line="183" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -225,12 +227,12 @@
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
         <option value="$PROJECT_DIR$/models/SubServiceModel.js" />
-        <option value="$PROJECT_DIR$/routes/customer.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
+        <option value="$PROJECT_DIR$/routes/customer.js" />
       </list>
     </option>
   </component>
@@ -425,21 +427,7 @@
       <workItem from="1557727328425" duration="2926000" />
       <workItem from="1557751899830" duration="15574000" />
       <workItem from="1557896977574" duration="8269000" />
-      <workItem from="1557999423850" duration="1374000" />
-    </task>
-    <task id="LOCAL-00054" summary="Add New Api">
-      <created>1553575997537</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1553575997537</updated>
-    </task>
-    <task id="LOCAL-00055" summary="Add New Api">
-      <created>1553713246709</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1553713246710</updated>
+      <workItem from="1557999423850" duration="4536000" />
     </task>
     <task id="LOCAL-00056" summary="Add New Api">
       <created>1554282301081</created>
@@ -770,11 +758,25 @@
       <option name="project" value="LOCAL" />
       <updated>1557903808542</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="Add New Api">
+      <created>1558003463187</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1558003463188</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Add New Api">
+      <created>1558008681210</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1558008681210</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="478193000" />
+    <option name="totallyTimeSpent" value="481355000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -791,7 +793,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" visible="true" weight="0.20738254" />
+      <window_info content_ui="combo" id="Project" order="3" visible="true" weight="0.20738254" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49693877" weight="0.7223796" />
@@ -803,7 +805,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50306123" side_tool="true" weight="0.601983" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" weight="0.6331445" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" visible="true" weight="0.6331445" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="14" weight="0.3286119" />
@@ -838,17 +840,6 @@
     <MESSAGE value="Add New Api Set -Test" />
     <MESSAGE value="Add New Api" />
     <option name="LAST_COMMIT_MESSAGE" value="Add New Api" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>649</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/node_modules/express/lib/express.js">
@@ -1115,17 +1106,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="130" column="25" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="456" column="50" selection-start-line="456" selection-start-column="50" selection-end-line="456" selection-end-column="50" />
+        <state relative-caret-position="149">
+          <caret line="684" column="30" selection-start-line="684" selection-start-column="4" selection-end-line="684" selection-end-column="30" />
           <folding>
             <element signature="e#301#3347#0" />
             <element signature="e#3400#4657#0" />
@@ -1133,7 +1117,18 @@
             <element signature="e#6840#7528#0" />
             <element signature="e#7576#8773#0" />
             <element signature="e#8822#9858#0" />
+            <element signature="e#19967#21357#0" />
+            <element signature="e#21410#23053#0" />
+            <element signature="e#23102#26862#0" />
+            <element signature="e#26913#27977#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="183" column="34" selection-start-line="183" selection-start-column="14" selection-end-line="183" selection-end-column="34" />
         </state>
       </provider>
     </entry>

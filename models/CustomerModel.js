@@ -698,17 +698,12 @@ var Customer = {
                     callback(status);
 
                 } else {
-
-                    collectionQuote.find({cu_id: cust_id}).sort({creationDate:-1}).toArray(function (err, docsQuote) {
-
                         var status = {
                             status: 1,
                             message: "Success get all alert service to Mongodb",
                             data: docs,
-                            dataQuote: docsQuote
                         };
                         callback(status);
-                    });
                 }
             });
 
