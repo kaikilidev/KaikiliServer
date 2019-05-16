@@ -452,7 +452,10 @@ var Customer = {
             cu_id: req.body.cu_id,
             cc_ids: req.body.cc_ids,
             sr_type: req.body.sr_type,
-            coordinatePoint: req.body.coordinatePoint,
+            location: {
+                coordinates: [parseFloat(req.body.coordinatePoint.longitude),parseFloat(req.body.coordinatePoint.latitude)],
+                type: "Point"
+            },
             alert_active: req.body.alert_active,
             creationDate: new Date().toISOString()
         };
