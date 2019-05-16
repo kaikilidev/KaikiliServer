@@ -682,5 +682,38 @@ var Customer = {
         });
     },
 
+    getCustomerAlertTransition: function (req, callback) {
+        var cu_id = req.body.cu_id;
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var mysort = {creationDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            collection.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+
+                    collectionQuote.find({cu_id: cust_id}).sort({creationDate:-1}).toArray(function (err, docsQuote) {
+
+                        var status = {
+                            status: 1,
+                            message: "Success get all alert service to Mongodb",
+                            data: docs,
+                            dataQuote: docsQuote
+                        };
+                        callback(status);
+                    });
+                }
+            });
+
+        });
+    },
+
 }
 module.exports = Customer;

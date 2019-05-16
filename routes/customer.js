@@ -181,4 +181,21 @@ router.post('/getCustomerTransition', function (req, res, next) {
 });
 
 
+router.post('/getCustomerAlertData', function (req, res, next) {
+    console.log("call getCustomerTransition-----1");
+    customerModel.getCustomerAlertTransition(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
 module.exports = router;
