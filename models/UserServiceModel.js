@@ -1181,7 +1181,8 @@ var UserService = {
                                     "cost_item": element.cost_item,
                                     "cu_id": element.cu_id,
                                     "cc_ids": element.cc_ids,
-                                    "location": element.location,
+                                    "longitude": element.location.coordinates[0],
+                                    "latitude": element.location.coordinates[1],
                                     "creationDate": element.creationDate,
                                 };
                                 newAlert_components.push(costData)
