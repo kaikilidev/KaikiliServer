@@ -964,7 +964,6 @@ var UserService = {
         });
     },
 
-
     getUserServiceCatalogueData: function (req, callback) {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
@@ -1066,7 +1065,7 @@ var UserService = {
                                                             "discount": docs1[0].discount,
                                                             "minimum_charge": docs1[0].minimum_charge,
                                                             "quote_accept": docs1[0].quote_accept,
-                                                            "threshould_price" : docs[0].threshould_price,
+                                                            "threshould_price": docs[0].threshould_price,
                                                             "cost_components": newCost_components,
                                                             // "cost_components": docs[0].cost_components,
                                                             "notes": docs[0].notes
@@ -1089,7 +1088,7 @@ var UserService = {
                                                             "cost_components_off": [],
                                                             "sp_sr_status": "ON",
                                                             "discount": docs[0].discount,
-                                                            "threshould_price" : docs[0].threshould_price,
+                                                            "threshould_price": docs[0].threshould_price,
                                                             "minimum_charge": "",
                                                             "quote_accept": "",
                                                             "cost_components": newCost_components,
@@ -1133,6 +1132,85 @@ var UserService = {
 
 
     },
+
+    getUserNearestShoutingData: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+
+        console.log(sp_id + " - " + latitude + " - " + longitude);
+
+        comman.getSPUserServiceData(sp_id, function (result) {
+            console.log(result.length + "------");
+            if (result.length > 0) {
+                var newAlert_components = new Array();
+                var ctr = 0;
+                var userSRidList = [];
+                result.forEach(function (element) {
+                    userSRidList.push(element.sr_id);
+                });
+
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                        var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
+                        var cursorIndex = collection.createIndex({location: "2dsphere"});
+                        var radius = (parseFloat("5.0") * parseFloat("1609.34"));
+
+                        var cursorSearch = collection.aggregate([
+                            {
+                                $geoNear: {
+                                    near: {
+                                        type: "Point",
+                                        coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                                    },
+                                    key: "location",
+                                    maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                                    distanceField: "dist", //give values in metre
+                                    query: {sr_id: {$in: userSRidList}}//{services: sr_id}// cost_comps: cc_ids
+                                }
+                            }]);
+
+                        cursorSearch.toArray(function (err, mainDocs) {
+                            console.log("----" + mainDocs.length);
+
+                            mainDocs.forEach(function (element) {
+
+                                var costData = {
+                                    "comment": element.comment,
+                                    "address": element.address,
+                                    "sr_title": element.sr_title,
+                                    "cost_item": element.cost_item,
+                                    "cu_id": element.cu_id,
+                                    "cc_ids": element.cc_ids,
+                                    "location": element.location,
+                                    "creationDate": element.creationDate,
+                                };
+                                newAlert_components.push(costData)
+                                ctr++;
+                                if (ctr === mainDocs.length) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Service Data",
+                                        data:newAlert_components
+                                    };
+                                    callback(status);
+                                }
+                            });
+
+                            // return callBack(mainDocs);
+                        });
+                    });
+                // console.log(status);
+            } else {
+                var status = {
+                    status: 0,
+                    message: "No Service Data"
+                };
+                // console.log(status);
+                callback(status);
+            }
+        });
+
+    }
 
 }
 module.exports = UserService;

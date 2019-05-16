@@ -438,6 +438,19 @@ router.post('/getUserServiceDataNew', function (req, res, next) {
 });
 
 
+router.post('/getUserShoutingData', function (req, res, next) {
+    userServiceModel.getUserNearestShoutingData(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 
 
 

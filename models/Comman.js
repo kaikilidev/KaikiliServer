@@ -122,6 +122,17 @@ var Comman = {
     },
 
 
+    getSPUserServiceData(spid, callBack) {
+        // var query = {sp_id: spid};
+        // console.log("----" + query);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+            var cursorSearch = collection.find({sp_id: spid,"sp_sr_status": "ON"});//,{sr_id:1}
+            cursorSearch.toArray(function (err, mainDocs) {
+                return callBack(mainDocs);
+            });
+        });
+    },
 
 }
 
