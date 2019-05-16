@@ -969,8 +969,8 @@ var UserService = {
         var sp_id = req.body.sp_id;
         var sr_id = req.body.sr_id;
 
-        console.log(sr_id);
-        console.log(sp_id);
+        // console.log(sr_id);
+        // console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionService = db.db(config.dbName).collection(config.collections.add_services);
             var collectionProvider = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
@@ -990,7 +990,6 @@ var UserService = {
 
                 } else {
                     if (docs.length > 0) {
-
                         collectionProvider.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs1) {
                             if (err) {
                                 console.log(err);
@@ -1067,6 +1066,7 @@ var UserService = {
                                                             "discount": docs1[0].discount,
                                                             "minimum_charge": docs1[0].minimum_charge,
                                                             "quote_accept": docs1[0].quote_accept,
+                                                            "threshould_price" : docs[0].threshould_price,
                                                             "cost_components": newCost_components,
                                                             // "cost_components": docs[0].cost_components,
                                                             "notes": docs[0].notes
@@ -1089,6 +1089,7 @@ var UserService = {
                                                             "cost_components_off": [],
                                                             "sp_sr_status": "ON",
                                                             "discount": docs[0].discount,
+                                                            "threshould_price" : docs[0].threshould_price,
                                                             "minimum_charge": "",
                                                             "quote_accept": "",
                                                             "cost_components": newCost_components,

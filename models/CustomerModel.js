@@ -444,17 +444,19 @@ var Customer = {
 
         //  console.log(result);
         var newServiceAlert = {
-            cu_id: req.body.cu_id,
-            cc_ids: req.body.cc_ids,
-            cost_item: req.body.cost_item,
-            sr_name: req.body.sr_name,
-            sr_id: req.body.sr_id,
             comment: req.body.comment,
             address: req.body.address,
-            latitude: req.body.latitude,
-            longitude: req.body.longitude,
+            sr_id: req.body.sr_id,
+            sr_title: req.body.sr_title,
+            cost_item: req.body.cost_item,
+            cu_id: req.body.cu_id,
+            cc_ids: req.body.cc_ids,
+            sr_type: req.body.sr_type,
+            coordinatePoint: req.body.coordinatePoint,
+            alert_active: req.body.alert_active,
             creationDate: new Date().toISOString()
         };
+
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
@@ -470,7 +472,7 @@ var Customer = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully add your Service alert information.",
+                        message: "Successfully add your Service alert information are store.",
                         data: records
                     };
                     console.log(status);
