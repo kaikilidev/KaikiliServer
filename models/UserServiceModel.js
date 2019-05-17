@@ -1019,20 +1019,21 @@ var UserService = {
                                             resultCost.forEach(function (element) {
                                                 userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
                                             });
-                                            console.log("------1>" + elementCost.cc_id);
-                                            console.log("------2>" + userSPidSetRate);
-                                            console.log("------min >" + math.min(userSPidSetRate));
-                                            console.log("------max >" + math.max(userSPidSetRate));
-                                            console.log("------sum >" + math.sum(userSPidSetRate));
-                                            console.log("------threshould_price >" + docs[0].threshould_price);
-                                            console.log("------avg >" + (math.sum(userSPidSetRate) / userSPidSetRate.length));
-                                            var minPri = math.min(userSPidSetRate);
-                                            var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
-                                            console.log("------apMinPri >" + apMinPri);
+                                            // console.log("------1>" + elementCost.cc_id);
+                                            // console.log("------2>" + userSPidSetRate);
+                                            // console.log("------min >" + math.min(userSPidSetRate));
+                                            // console.log("------max >" + math.max(userSPidSetRate));
+                                            // console.log("------sum >" + math.sum(userSPidSetRate));
+                                            // console.log("------threshould_price >" + docs[0].threshould_price);
+                                            // console.log("------avg >" + (math.sum(userSPidSetRate) / userSPidSetRate.length));
+                                            // var minPri = math.min(userSPidSetRate);
+                                            // var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
+                                            // console.log("------apMinPri >" + apMinPri);
                                             var avg = 1;
+                                            if(userSPidSetRate.length>0){
                                             if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
                                                 avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
-                                            }
+                                            }}
 
                                             var costData = {
                                                 "cc_id": elementCost.cc_id,
@@ -1146,8 +1147,19 @@ var UserService = {
                 var newAlert_components = new Array();
                 var ctr = 0;
                 var userSRidList = [];
+                var userSRData = new Array();
                 result.forEach(function (element) {
                     userSRidList.push(element.sr_id);
+                    var userSRCCList = [];
+                    element.cost_components_on.forEach(function (elementSub) {
+                        userSRCCList.push(elementSub.cc_id);
+                    });
+                    var srData = {
+                        "sr_id" : element.sr_id,
+                        "cc_ids": userSRCCList,
+                        "cost_components_on":element.cost_components_on
+                    }
+                    userSRData.push(srData)
                 });
 
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
@@ -1174,18 +1186,47 @@ var UserService = {
 
                             mainDocs.forEach(function (element) {
 
-                                var costData = {
-                                    "comment": element.comment,
-                                    "address": element.address,
-                                    "sr_title": element.sr_title,
-                                    "cost_item": element.cost_item,
-                                    "cu_id": element.cu_id,
-                                    "cc_ids": element.cc_ids,
-                                    "longitude": element.location.coordinates[0],
-                                    "latitude": element.location.coordinates[1],
-                                    "creationDate": element.creationDate,
-                                };
-                                newAlert_components.push(costData)
+                                var sr_cost_components =[];
+                                var sr_cc_ids =[];
+                                userSRData.forEach(function (userElement) {
+                                    if(userElement.sr_id == element.sr_id){
+                                        sr_cost_components = userElement.cost_components_on;
+                                        sr_cc_ids = userElement.cc_ids;
+                                    }
+                                });
+
+                                var allElement = true;
+                                element.cc_ids.forEach(function (ccid){
+                                    if(!sr_cc_ids.includes(ccid)){
+                                        allElement = false
+                                    }
+                                });
+
+
+                                if(allElement){
+
+
+
+
+                                    var costData = {
+                                        "comment": element.comment,
+                                        "address": element.address,
+                                        "sr_title": element.sr_title,
+                                        "sr_id": element.sr_id,
+                                        "cost_item": element.cost_item,
+                                        "cu_id": element.cu_id,
+                                        "cc_ids": element.cc_ids,
+                                        "sr_cc_ids": sr_cc_ids,
+                                        "dist": element.dist,
+                                        "longitude": element.location.coordinates[0],
+                                        "latitude": element.location.coordinates[1],
+                                        "creationDate": element.creationDate,
+                                        // "sr_cost_components": sr_cost_components,
+                                    };
+                                    newAlert_components.push(costData)
+                                }
+
+
                                 ctr++;
                                 if (ctr === mainDocs.length) {
                                     var status = {
