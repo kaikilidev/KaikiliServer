@@ -127,9 +127,66 @@ var Comman = {
         // console.log("----" + query);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            var cursorSearch = collection.find({sp_id: spid,"sp_sr_status": "ON"});//,{sr_id:1}
+            var cursorSearch = collection.find({sp_id: spid,"sp_sr_status": "ON"}
+            );//,{sr_id:1}
             cursorSearch.toArray(function (err, mainDocs) {
                 return callBack(mainDocs);
+            });
+        });
+    },
+
+    getSPUserInformationData(sp_id,sr_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+            var cursorSearch = autoIdCollection.aggregate([
+                {$match: {sp_id: sp_id, sr_id: sr_id}},
+                {
+                    $lookup: {
+                        from: config.collections.sp_sr_profile,
+                        localField: "sp_id",
+                        foreignField: "sp_id",
+                        as: "userprofile"
+                    }
+                },
+                {
+                    $unwind: "$userprofile"
+                }, {
+                    $lookup: {
+                        from: config.collections.sp_personal_info,
+                        localField: "sp_id",
+                        foreignField: "sp_id",
+                        as: "profile"
+                    }
+                }, {
+                    $unwind: "$profile"
+                }, {
+                    $lookup: {
+                        from: config.collections.add_services,
+                        localField: "sr_id",
+                        foreignField: "sr_id",
+                        as: "services"
+                    }
+                }, {
+                    $unwind: "$services"
+                }
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                // console.log("----" + mainDocs.length);
+                return callBack(mainDocs);
+            });
+        });
+    },
+
+
+    getServiceKaikiliCommission(srid, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.add_services);
+            var sr_commission = null;
+            var query = {sr_id: srid};
+            autoIdCollection.findOne(query, function (err, doc) {
+                sr_commission = doc.sr_commission
+                return callBack(sr_commission);
             });
         });
     },

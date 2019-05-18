@@ -1179,7 +1179,17 @@ var UserService = {
                                     distanceField: "dist", //give values in metre
                                     query: {sr_id: {$in: userSRidList}}//{services: sr_id}// cost_comps: cc_ids
                                 }
-                            }]);
+                            }, {
+                                $lookup: {
+                                    from: config.collections.add_services,
+                                    localField: "sr_id",
+                                    foreignField: "sr_id",
+                                    as: "services"
+                                }
+                            }, {
+                                $unwind: "$services"
+                            }
+                            ]);
 
                         cursorSearch.toArray(function (err, mainDocs) {
                             console.log("----" + mainDocs.length);
@@ -1202,26 +1212,65 @@ var UserService = {
                                     }
                                 });
 
-
                                 if(allElement){
 
+                                    var new_cost_item = new Array();
+                                    var totalCost = 0;
+                                    element.cost_item.forEach(function (ccid_item){
+                                        sr_cost_components.forEach(function (sr_ccid_item){
+                                            if(sr_ccid_item.cc_id ==  ccid_item.cc_id){
+                                                console.log("----->"+sr_ccid_item.cc_sp_title);
+                                                var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                                                totalCost = totalCost + cost;
+                                                var cost_item_data = {
+                                                    "cc_id": ccid_item.cc_id,
+                                                    "cc_cu_title": ccid_item.cc_cu_title,
+                                                    "cc_sp_title": ccid_item.cc_sp_title,
+                                                    "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                                                    "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                                                    "cc_per_item_cost": cost,
+                                                    "hcc_id": ccid_item.hcc_id,
+                                                    "hcc_title": ccid_item.hcc_title,
+                                                    "show_order": ccid_item.show_order
+                                                }
+                                                new_cost_item.push(cost_item_data)
+                                            }
+                                        });
+                                    });
 
 
+                                    // var discountGive = 0;
+                                    // if (docs[0].discount.ds_check_box == "ON") {
+                                    //     discountGive = docs[0].discount.ds_rate_per_item;
+                                    // }
+                                    //
+                                    // var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                    // var discountAfterPrice = totalCost - discountAmount;
+
+                                    // comman.getServiceKaikiliCommission(element.sr_id,function (data) {
+                                    //     // kaikili_commission = data;
+                                        console.log(element.services.sr_commission+"------");
+                                    // });
 
                                     var costData = {
                                         "comment": element.comment,
                                         "address": element.address,
                                         "sr_title": element.sr_title,
                                         "sr_id": element.sr_id,
-                                        "cost_item": element.cost_item,
+                                        // "cost_item": element.cost_item,
+                                        "cost_item": new_cost_item,
                                         "cu_id": element.cu_id,
-                                        "cc_ids": element.cc_ids,
-                                        "sr_cc_ids": sr_cc_ids,
+                                        // "cc_ids": element.cc_ids,
+                                        // "sr_cc_ids": sr_cc_ids,
                                         "dist": element.dist,
                                         "longitude": element.location.coordinates[0],
                                         "latitude": element.location.coordinates[1],
                                         "creationDate": element.creationDate,
-                                        // "sr_cost_components": sr_cost_components,
+                                        "totalCost": totalCost,
+                                        "kaikili_commission": element.services.sr_commission,
+                                        "discountGive": "",
+                                        "discountAfterPrice": ""
+
                                     };
                                     newAlert_components.push(costData)
                                 }
