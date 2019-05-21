@@ -1098,6 +1098,8 @@ var UserService = {
                                                             "sp_sr_status": "ON",
                                                             "discount": docs[0].discount,
                                                             "threshould_price": docs[0].threshould_price,
+                                                            "neighbourhood_offer": "OFF",
+                                                            "neighbourhood_offer_rat": "",
                                                             "minimum_charge": "",
                                                             "quote_accept": "",
                                                             "cost_components": newCost_components,
