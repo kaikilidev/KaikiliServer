@@ -1030,10 +1030,16 @@ var UserService = {
                                             // var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
                                             // console.log("------apMinPri >" + apMinPri);
                                             var avg = 1;
-                                            if(userSPidSetRate.length>0){
+                                            if(userSPidSetRate.length>2){
                                             if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
+
+                                                var n = userSPidSetRate.length;
                                                 avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
-                                            }}
+                                                var std = math.std(userSPidSetRate);
+                                                console.log("------std >" + std);
+                                            }}else {
+                                                avg = elementCost.average;
+                                            }
 
                                             var costData = {
                                                 "cc_id": elementCost.cc_id,
@@ -1064,6 +1070,8 @@ var UserService = {
                                                             "cost_components_off": docs1[0].cost_components_off,
                                                             "sp_sr_status": docs1[0].sp_sr_status,
                                                             "discount": docs1[0].discount,
+                                                            "neighbourhood_offer": docs1[0].neighbourhood_offer,
+                                                            "neighbourhood_offer_rat": docs1[0].neighbourhood_offer_rat,
                                                             "minimum_charge": docs1[0].minimum_charge,
                                                             "quote_accept": docs1[0].quote_accept,
                                                             "threshould_price": docs[0].threshould_price,
