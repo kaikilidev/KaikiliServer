@@ -48,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="428" column="41" selection-start-line="428" selection-start-column="41" selection-end-line="428" selection-end-column="41" />
+            <state relative-caret-position="48">
+              <caret line="441" column="21" selection-start-line="441" selection-start-column="21" selection-end-line="441" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -57,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="1099" column="77" selection-start-line="1099" selection-start-column="61" selection-end-line="1099" selection-end-column="77" />
+            <state relative-caret-position="6582">
+              <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
               <folding>
                 <element signature="e#8318#9424#0" />
                 <element signature="e#9481#10712#0" />
@@ -94,7 +94,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>checkSPUserRegistration</find>
       <find>SPUserRegistrationCheck</find>
       <find>usersModel</find>
       <find>getUserTransitionSL</find>
@@ -124,6 +123,7 @@
       <find>sp_sr_geo_location_match</find>
       <find>addNewServiceAlert</find>
       <find>getUserServiceDataNew</find>
+      <find>userSRData</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,7 +174,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -196,6 +195,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -257,11 +257,11 @@
     <list>
       <item itemvalue="Node.js.bin\www" />
       <item itemvalue="Node.js.ServiceModel.js" />
-      <item itemvalue="Node.js.services.js" />
-      <item itemvalue="Node.js.users.js" />
       <item itemvalue="Node.js.mango_test.js" />
-      <item itemvalue="Node.js.test.js" />
+      <item itemvalue="Node.js.services.js" />
       <item itemvalue="Node.js.testNew.js" />
+      <item itemvalue="Node.js.test.js" />
+      <item itemvalue="Node.js.users.js" />
     </list>
     <recent_temporary>
       <list>
@@ -356,14 +356,8 @@
       <workItem from="1558174981922" duration="5001000" />
       <workItem from="1558346524531" duration="2836000" />
       <workItem from="1558414055689" duration="1521000" />
-      <workItem from="1558444319354" duration="2273000" />
-    </task>
-    <task id="LOCAL-00063" summary="Add New Api">
-      <created>1554372116404</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1554372116404</updated>
+      <workItem from="1558444319354" duration="4984000" />
+      <workItem from="1558507896391" duration="1458000" />
     </task>
     <task id="LOCAL-00064" summary="Add New Api">
       <created>1554455122344</created>
@@ -701,11 +695,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558448513650</updated>
     </task>
-    <option name="localTasksCounter" value="112" />
+    <task id="LOCAL-00112" summary="Add New Api">
+      <created>1558449056241</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1558449056241</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="518525000" />
+    <option name="totallyTimeSpent" value="522694000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -722,7 +723,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" visible="true" weight="0.21543624" />
+      <window_info content_ui="combo" id="Project" order="3" visible="true" weight="0.21543624" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.7223796" />
@@ -734,7 +735,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5026846" side_tool="true" weight="0.6331445" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" weight="0.6331445" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4979592" visible="true" weight="0.6331445" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="14" weight="0.3286119" />
@@ -1049,15 +1050,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="428" column="41" selection-start-line="428" selection-start-column="41" selection-end-line="428" selection-end-column="41" />
+        <state relative-caret-position="48">
+          <caret line="441" column="21" selection-start-line="441" selection-start-column="21" selection-end-line="441" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="1099" column="77" selection-start-line="1099" selection-start-column="61" selection-end-line="1099" selection-end-column="77" />
+        <state relative-caret-position="6582">
+          <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
           <folding>
             <element signature="e#8318#9424#0" />
             <element signature="e#9481#10712#0" />

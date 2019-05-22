@@ -1167,7 +1167,9 @@ var UserService = {
                     var srData = {
                         "sr_id" : element.sr_id,
                         "cc_ids": userSRCCList,
-                        "cost_components_on":element.cost_components_on
+                        "cost_components_on":element.cost_components_on,
+                        "neighbourhood_offer": element.neighbourhood_offer,
+                        "neighbourhood_offer_rat": element.neighbourhood_offer_rat,
                     }
                     userSRData.push(srData)
                 });
@@ -1206,12 +1208,18 @@ var UserService = {
 
                             mainDocs.forEach(function (element) {
 
+
+                                var neighbourhood_offer ="";
+                                var neighbourhood_offer_rat ="";
                                 var sr_cost_components =[];
                                 var sr_cc_ids =[];
                                 userSRData.forEach(function (userElement) {
                                     if(userElement.sr_id == element.sr_id){
                                         sr_cost_components = userElement.cost_components_on;
                                         sr_cc_ids = userElement.cc_ids;
+                                        neighbourhood_offer = userElement.neighbourhood_offer;
+                                        neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+
                                     }
                                 });
 
@@ -1246,20 +1254,24 @@ var UserService = {
                                                 new_cost_item.push(cost_item_data)
                                             }
                                         });
+
+
                                     });
 
+                                    // console.log(neighbourhood_offer_rat+"------");
+                                    // console.log(neighbourhood_offer+"------");
+                                    var discountGive = 0;
+                                    if (neighbourhood_offer == "ON") {
+                                        discountGive = neighbourhood_offer_rat;
+                                    }
 
-                                    // var discountGive = 0;
-                                    // if (docs[0].discount.ds_check_box == "ON") {
-                                    //     discountGive = docs[0].discount.ds_rate_per_item;
-                                    // }
-                                    //
-                                    // var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                                    // var discountAfterPrice = totalCost - discountAmount;
+                                    var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                    var discountAfterPrice = totalCost - discountAmount;
 
-                                    // comman.getServiceKaikiliCommission(element.sr_id,function (data) {
-                                    //     // kaikili_commission = data;
-                                        console.log(element.services.sr_commission+"------");
+                                    // // comman.getServiceKaikiliCommission(element.sr_id,function (data) {
+                                    // //     // kaikili_commission = data;
+                                    //     console.log(element.services.sr_commission+"------");
+
                                     // });
 
                                     var costData = {
@@ -1278,8 +1290,8 @@ var UserService = {
                                         "creationDate": element.creationDate,
                                         "totalCost": totalCost,
                                         "kaikili_commission": element.services.sr_commission,
-                                        "discountGive": "",
-                                        "discountAfterPrice": ""
+                                        "discountGive": discountGive,
+                                        "discountAfterPrice": discountAfterPrice
 
                                     };
                                     newAlert_components.push(costData)
