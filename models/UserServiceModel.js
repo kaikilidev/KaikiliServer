@@ -1317,8 +1317,71 @@ var UserService = {
                 callback(status);
             }
         });
+    },
 
-    }
+    SPUserShoutingSendCustomerInfo: function (req, callback) {
+
+        var userSRSendCUAlertData = new Array();
+        userSRSendCUAlertData = req.body;
+        var uploadData = true;
+        var count = 0;
+
+        userSRSendCUAlertData.forEach(function (data){
+
+            comman.getNextSequenceUserID("qr_service", function (result) {
+
+                var newAlertRequirement = {
+                    sp_cp_alert_send_id: "QR0" + result,
+                    comment: data.comment,
+                    address: data.address,
+                    sr_title: data.sr_title,
+                    sr_id: data.sr_id,
+                    cost_item: data.cost_item,
+                    cu_id: data.cu_id,
+                    dist: data.dist,
+                    longitude: data.longitude,
+                    latitude: data.latitude,
+                    totalCost: data.totalCost,
+                    kaikili_commission: data.kaikili_commission,
+                    discountGive: data.discountGive,
+                    discountAfterPrice: data.discountAfterPrice,
+                    creationDate: new Date().toISOString()
+                };
+
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                    var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+                    collection.insert(newQuoteRequirement, function (err, records) {
+                        if (err) {
+                            uploadData = false;
+                        }
+                        count++;
+                    });
+                });
+
+            });
+
+        });
+        if(count == userSRSendCUAlertData.length) {
+            if (!uploadData) {
+                console.log(err);
+                var status = {
+                    status: 0,
+                    message: "Failed"
+                };
+                console.log(status);
+                callback(status);
+            } else {
+                var status = {
+                    status: 1,
+                    message: "Successfully add user address",
+                    data: records
+                };
+                console.log(status);
+                callback(status);
+            }
+        }
+
+    },
 
 }
 module.exports = UserService;

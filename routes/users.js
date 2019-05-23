@@ -452,6 +452,19 @@ router.post('/getUserShoutingData', function (req, res, next) {
 
 
 
+router.post('/getUserShoutingSendData', function (req, res, next) {
+    userServiceModel.SPUserShoutingSendCustomerInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 
 
 
