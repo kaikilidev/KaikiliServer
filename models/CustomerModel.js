@@ -657,7 +657,7 @@ var Customer = {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
-            collection.find({cust_id: cust_id}).sort(mysort).toArray(function (err, docs) {
+            collection.find({cust_id: cust_id,cp_review: "false"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
