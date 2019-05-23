@@ -1328,10 +1328,10 @@ var UserService = {
 
         userSRSendCUAlertData.forEach(function (data){
 
-            comman.getNextSequenceUserID("qr_service", function (result) {
+            comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
 
                 var newAlertRequirement = {
-                    sp_cp_alert_send_id: "QR0" + result,
+                    sp_cp_alert_send_id: "SHOUT0" + result,
                     comment: data.comment,
                     address: data.address,
                     sr_title: data.sr_title,
