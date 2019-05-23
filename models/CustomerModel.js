@@ -657,6 +657,7 @@ var Customer = {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
+            var collectionAlert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
             collection.find({cust_id: cust_id,cp_review: "false"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -668,9 +669,7 @@ var Customer = {
                     callback(status);
 
                 } else {
-
                     collectionQuote.find({cu_id: cust_id}).sort({creationDate:-1}).toArray(function (err, docsQuote) {
-
                         var status = {
                             status: 1,
                             message: "Success Get all Transition service to Mongodb",
@@ -681,6 +680,44 @@ var Customer = {
                     });
                 }
             });
+
+            // var cursorSearch = collection.aggregate([
+            //     {$match: {cust_id: cust_id,cp_review: "false"}},
+            //     {
+            //         $lookup: {
+            //             from: config.collections.cu_quote_request,
+            //             localField: "sp_id",
+            //             foreignField: "cu_id",
+            //             as: "userprofile"
+            //         }
+            //     },
+            //     {
+            //         $unwind: "$userprofile"
+            //     }, {
+            //         $lookup: {
+            //             from: config.collections.sp_personal_info,
+            //             localField: "sp_id",
+            //             foreignField: "sp_id",
+            //             as: "profile"
+            //         }
+            //     }, {
+            //         $unwind: "$profile"
+            //     }, {
+            //         $lookup: {
+            //             from: config.collections.add_services,
+            //             localField: "sr_id",
+            //             foreignField: "sr_id",
+            //             as: "services"
+            //         }
+            //     }, {
+            //         $unwind: "$services"
+            //     }
+            // ]);
+            //
+            // cursorSearch.toArray(function (err, mainDocs) {
+            //     // console.log("----" + mainDocs.length);
+            //     return callBack(mainDocs);
+            // });
 
         });
     },

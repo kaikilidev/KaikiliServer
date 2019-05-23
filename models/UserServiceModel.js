@@ -1350,36 +1350,37 @@ var UserService = {
 
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                     var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-                    collection.insert(newQuoteRequirement, function (err, records) {
+                    collection.insertOne(newAlertRequirement, function (err, records) {
                         if (err) {
                             uploadData = false;
                         }
                         count++;
+                        if(count == userSRSendCUAlertData.length) {
+                            if (!uploadData) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add user address",
+                                    data: records
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        }
+
                     });
                 });
 
             });
 
         });
-        if(count == userSRSendCUAlertData.length) {
-            if (!uploadData) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                console.log(status);
-                callback(status);
-            } else {
-                var status = {
-                    status: 1,
-                    message: "Successfully add user address",
-                    data: records
-                };
-                console.log(status);
-                callback(status);
-            }
-        }
 
     },
 
