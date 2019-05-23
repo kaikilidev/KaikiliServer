@@ -1208,7 +1208,6 @@ var UserService = {
 
                             mainDocs.forEach(function (element) {
 
-
                                 var neighbourhood_offer ="";
                                 var neighbourhood_offer_rat ="";
                                 var sr_cost_components =[];
@@ -1219,7 +1218,6 @@ var UserService = {
                                         sr_cc_ids = userElement.cc_ids;
                                         neighbourhood_offer = userElement.neighbourhood_offer;
                                         neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
-
                                     }
                                 });
 
@@ -1268,13 +1266,10 @@ var UserService = {
                                     var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
                                     var discountAfterPrice = totalCost - discountAmount;
 
-                                    // // comman.getServiceKaikiliCommission(element.sr_id,function (data) {
-                                    // //     // kaikili_commission = data;
-                                    //     console.log(element.services.sr_commission+"------");
 
-                                    // });
 
                                     var costData = {
+                                        "id": element._id,
                                         "comment": element.comment,
                                         "address": element.address,
                                         "sr_title": element.sr_title,
