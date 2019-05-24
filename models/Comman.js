@@ -50,7 +50,7 @@ var Comman = {
             var getData = null;
             var query = {sp_id: spid};
             autoIdCollection.findOne(query, function (err, doc) {
-            //    console.log(doc);
+                //    console.log(doc);
                 getData = {
                     "radius": doc.radius,
                     "latitude": doc.coordinatePoint.latitude,
@@ -90,7 +90,7 @@ var Comman = {
         });
     },
 
-    getSPUserCCRatData(spList, sr_id,cc_id, callBack) {
+    getSPUserCCRatData(spList, sr_id, cc_id, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             var cursorSearch = autoIdCollection.aggregate([
@@ -100,7 +100,7 @@ var Comman = {
                         sr_id: sr_id,
                         "cost_components_on.cc_id": cc_id
                     }
-                },{
+                }, {
                     $project: {
                         cost_components_on: {
                             $filter: {
@@ -115,7 +115,7 @@ var Comman = {
             ]);
 
             cursorSearch.toArray(function (err, mainDocs) {
-               // console.log("----" + mainDocs.length);
+                // console.log("----" + mainDocs.length);
                 return callBack(mainDocs);
             });
         });
@@ -127,15 +127,42 @@ var Comman = {
         // console.log("----" + query);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-            var cursorSearch = collection.find({sp_id: spid,"sp_sr_status": "ON"}
-            );//,{sr_id:1}
+            // var cursorSearch = collection.find({sp_id: spid,"sp_sr_status": "ON"}
+            // );//,{sr_id:1}
+
+
+            var cursorSearch = collection.aggregate([
+                {$match: {sp_id: spid, "sp_sr_status": "ON"}},
+                {
+                    $lookup: {
+                        from: config.collections.sp_sr_profile,
+                        localField: "sp_id",
+                        foreignField: "sp_id",
+                        as: "userprofile"
+                    }
+                },
+                {
+                    $unwind: "$userprofile"
+                // }, {
+                //     $lookup: {
+                //         from: config.collections.sp_personal_info,
+                //         localField: "sp_id",
+                //         foreignField: "sp_id",
+                //         as: "profile"
+                //     }
+                // }, {
+                //     $unwind: "$profile"
+                }
+            ]);
+
+
             cursorSearch.toArray(function (err, mainDocs) {
                 return callBack(mainDocs);
             });
         });
     },
 
-    getSPUserInformationData(sp_id,sr_id, callBack) {
+    getSPUserInformationData(sp_id, sr_id, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             var cursorSearch = autoIdCollection.aggregate([

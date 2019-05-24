@@ -1152,7 +1152,8 @@ var UserService = {
         console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
-            console.log(result.length + "------");
+            console.log(result.length + "  size------");
+
             if (result.length > 0) {
                 var newAlert_components = new Array();
                 var ctr = 0;
@@ -1177,7 +1178,8 @@ var UserService = {
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                         var cursorIndex = collection.createIndex({location: "2dsphere"});
-                        var radius = (parseFloat("5.0") * parseFloat("1609.34"));
+
+                        var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
 
                         var cursorSearch = collection.aggregate([
                             {
