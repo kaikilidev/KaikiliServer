@@ -441,46 +441,48 @@ var Customer = {
 
 
     addServiceAlertData: function (req, callback) {
+        comman.getNextSequenceUserID("cu_alert_id", function (result) {
+            //  console.log(result);
+            var newServiceAlert = {
+                cp_alert_id: "CP-ALERT0" + result,
+                comment: req.body.comment,
+                address: req.body.address,
+                sr_id: req.body.sr_id,
+                sr_title: req.body.sr_title,
+                cost_item: req.body.cost_item,
+                cu_id: req.body.cu_id,
+                cc_ids: req.body.cc_ids,
+                sr_type: req.body.sr_type,
+                location: {
+                    coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
+                    type: "Point"
+                },
+                alert_active: req.body.alert_active,
+                creationDate: new Date().toISOString()
+            };
 
-        //  console.log(result);
-        var newServiceAlert = {
-            comment: req.body.comment,
-            address: req.body.address,
-            sr_id: req.body.sr_id,
-            sr_title: req.body.sr_title,
-            cost_item: req.body.cost_item,
-            cu_id: req.body.cu_id,
-            cc_ids: req.body.cc_ids,
-            sr_type: req.body.sr_type,
-            location: {
-                coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
-                type: "Point"
-            },
-            alert_active: req.body.alert_active,
-            creationDate: new Date().toISOString()
-        };
 
-
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
-            collectionSP.insert(newServiceAlert, function (err, records) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Successfully add your Service alert information are store.",
-                        data: records
-                    };
-                    console.log(status);
-                    callback(status);
-                }
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+                collectionSP.insert(newServiceAlert, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add your Service alert information are store.",
+                            data: records
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
             });
         });
     },

@@ -1271,6 +1271,7 @@ var UserService = {
 
 
                                     var costData = {
+                                        "cp_alert_id": element.cp_alert_id,
                                         "id": element._id,
                                         "comment": element.comment,
                                         "address": element.address,
@@ -1376,7 +1377,6 @@ var UserService = {
                                 callback(status);
                             }
                         }
-
                     });
                 });
 
