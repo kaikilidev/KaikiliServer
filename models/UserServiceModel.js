@@ -1030,14 +1030,15 @@ var UserService = {
                                             // var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
                                             // console.log("------apMinPri >" + apMinPri);
                                             var avg = 1;
-                                            if(userSPidSetRate.length>2){
-                                            if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
+                                            if (userSPidSetRate.length > 2) {
+                                                if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
 
-                                                var n = userSPidSetRate.length;
-                                                avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
-                                                var std = math.std(userSPidSetRate);
-                                                console.log("------std >" + std);
-                                            }}else {
+                                                    var n = userSPidSetRate.length;
+                                                    avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
+                                                    var std = math.std(userSPidSetRate);
+                                                    console.log("------std >" + std);
+                                                }
+                                            } else {
                                                 avg = elementCost.average;
                                             }
 
@@ -1166,15 +1167,17 @@ var UserService = {
                         userSRCCList.push(elementSub.cc_id);
                     });
                     var srData = {
-                        "sr_id" : element.sr_id,
+                        "sr_id": element.sr_id,
                         "cc_ids": userSRCCList,
-                        "cost_components_on":element.cost_components_on,
+                        "cost_components_on": element.cost_components_on,
                         "neighbourhood_offer": element.neighbourhood_offer,
                         "neighbourhood_offer_rat": element.neighbourhood_offer_rat,
                     }
                     userSRData.push(srData)
                 });
+                comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
 
+                    console.log(resultSendAlert + "-------- out");
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                         var cursorIndex = collection.createIndex({location: "2dsphere"});
@@ -1192,6 +1195,7 @@ var UserService = {
                                     maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                                     distanceField: "dist", //give values in metre
                                     query: {sr_id: {$in: userSRidList}}//{services: sr_id}// cost_comps: cc_ids
+                                    // ,cp_alert_id:{$out:resultSendAlert}
                                 }
                             }, {
                                 $lookup: {
@@ -1203,113 +1207,116 @@ var UserService = {
                             }, {
                                 $unwind: "$services"
                             }
-                            ]);
+                        ]);
 
                         cursorSearch.toArray(function (err, mainDocs) {
-                            // console.log("----" + mainDocs.length);
+                            console.log("----" + mainDocs.length);
 
                             mainDocs.forEach(function (element) {
-
-                                var neighbourhood_offer ="";
-                                var neighbourhood_offer_rat ="";
-                                var sr_cost_components =[];
-                                var sr_cc_ids =[];
-                                userSRData.forEach(function (userElement) {
-                                    if(userElement.sr_id == element.sr_id){
-                                        sr_cost_components = userElement.cost_components_on;
-                                        sr_cc_ids = userElement.cc_ids;
-                                        neighbourhood_offer = userElement.neighbourhood_offer;
-                                        neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
-                                    }
-                                });
-
-                                var allElement = true;
-                                element.cc_ids.forEach(function (ccid){
-                                    if(!sr_cc_ids.includes(ccid)){
-                                        allElement = false
-                                    }
-                                });
-
-                                if(allElement){
-
-                                    var new_cost_item = new Array();
-                                    var totalCost = 0;
-                                    element.cost_item.forEach(function (ccid_item){
-                                        sr_cost_components.forEach(function (sr_ccid_item){
-                                            if(sr_ccid_item.cc_id ==  ccid_item.cc_id){
-                                                // console.log("----->"+sr_ccid_item.cc_sp_title);
-                                                var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
-                                                totalCost = totalCost + cost;
-                                                var cost_item_data = {
-                                                    "cc_id": ccid_item.cc_id,
-                                                    "cc_cu_title": ccid_item.cc_cu_title,
-                                                    "cc_sp_title": ccid_item.cc_sp_title,
-                                                    "cc_per_item_qut": ccid_item.cc_per_item_qut,
-                                                    "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
-                                                    "cc_per_item_cost": cost,
-                                                    "hcc_id": ccid_item.hcc_id,
-                                                    "hcc_title": ccid_item.hcc_title,
-                                                    "show_order": ccid_item.show_order
-                                                }
-                                                new_cost_item.push(cost_item_data)
-                                            }
-                                        });
-
-
+                                if (!resultSendAlert.includes(element.cp_alert_id)) {
+                                    var neighbourhood_offer = "";
+                                    var neighbourhood_offer_rat = "";
+                                    var sr_cost_components = [];
+                                    var sr_cc_ids = [];
+                                    userSRData.forEach(function (userElement) {
+                                        if (userElement.sr_id == element.sr_id) {
+                                            sr_cost_components = userElement.cost_components_on;
+                                            sr_cc_ids = userElement.cc_ids;
+                                            neighbourhood_offer = userElement.neighbourhood_offer;
+                                            neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                                        }
                                     });
 
-                                    // console.log(neighbourhood_offer_rat+"------");
-                                    // console.log(neighbourhood_offer+"------");
-                                    var discountGive = 0;
-                                    if (neighbourhood_offer == "ON") {
-                                        discountGive = neighbourhood_offer_rat;
+                                    var allElement = true;
+                                    element.cc_ids.forEach(function (ccid) {
+                                        if (!sr_cc_ids.includes(ccid)) {
+                                            allElement = false
+                                        }
+                                    });
+
+                                    if (allElement) {
+
+                                        var new_cost_item = new Array();
+                                        var totalCost = 0;
+                                        element.cost_item.forEach(function (ccid_item) {
+                                            sr_cost_components.forEach(function (sr_ccid_item) {
+                                                if (sr_ccid_item.cc_id == ccid_item.cc_id) {
+                                                    // console.log("----->"+sr_ccid_item.cc_sp_title);
+                                                    var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                                                    totalCost = totalCost + cost;
+                                                    var cost_item_data = {
+                                                        "cc_id": ccid_item.cc_id,
+                                                        "cc_cu_title": ccid_item.cc_cu_title,
+                                                        "cc_sp_title": ccid_item.cc_sp_title,
+                                                        "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                                                        "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                                                        "cc_per_item_cost": cost,
+                                                        "hcc_id": ccid_item.hcc_id,
+                                                        "hcc_title": ccid_item.hcc_title,
+                                                        "show_order": ccid_item.show_order
+                                                    }
+                                                    new_cost_item.push(cost_item_data)
+                                                }
+                                            });
+
+
+                                        });
+
+                                        // console.log(neighbourhood_offer_rat+"------");
+                                        // console.log(neighbourhood_offer+"------");
+                                        var discountGive = 0;
+                                        if (neighbourhood_offer == "ON") {
+                                            discountGive = neighbourhood_offer_rat;
+                                        }
+
+                                        var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                        var discountAfterPrice = totalCost - discountAmount;
+
+
+                                        console.log("----3232 " + element.cp_alert_id);
+                                        var costData = {
+                                            "cp_alert_id": element.cp_alert_id,
+                                            "id": element._id,
+                                            "comment": element.comment,
+                                            "address": element.address,
+                                            "sr_title": element.sr_title,
+                                            "sr_id": element.sr_id,
+                                            // "cost_item": element.cost_item,
+                                            "cost_item": new_cost_item,
+                                            "cu_id": element.cu_id,
+                                            // "cc_ids": element.cc_ids,
+                                            // "sr_cc_ids": sr_cc_ids,
+                                            "dist": element.dist,
+                                            "longitude": element.location.coordinates[0],
+                                            "latitude": element.location.coordinates[1],
+                                            "creationDate": element.creationDate,
+                                            "totalCost": totalCost,
+                                            "kaikili_commission": element.services.sr_commission,
+                                            "discountGive": discountGive,
+                                            "discountAfterPrice": discountAfterPrice
+
+                                        };
+                                        newAlert_components.push(costData)
                                     }
 
-                                    var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                                    var discountAfterPrice = totalCost - discountAmount;
-
-
-                                    console.log("----3232 " +element.cp_alert_id);
-                                    var costData = {
-                                        "cp_alert_id": element.cp_alert_id,
-                                        "id": element._id,
-                                        "comment": element.comment,
-                                        "address": element.address,
-                                        "sr_title": element.sr_title,
-                                        "sr_id": element.sr_id,
-                                        // "cost_item": element.cost_item,
-                                        "cost_item": new_cost_item,
-                                        "cu_id": element.cu_id,
-                                        // "cc_ids": element.cc_ids,
-                                        // "sr_cc_ids": sr_cc_ids,
-                                        "dist": element.dist,
-                                        "longitude": element.location.coordinates[0],
-                                        "latitude": element.location.coordinates[1],
-                                        "creationDate": element.creationDate,
-                                        "totalCost": totalCost,
-                                        "kaikili_commission": element.services.sr_commission,
-                                        "discountGive": discountGive,
-                                        "discountAfterPrice": discountAfterPrice
-
-                                    };
-                                    newAlert_components.push(costData)
-                                }
-
-
-                                ctr++;
-                                if (ctr === mainDocs.length) {
-                                    var status = {
-                                        status: 1,
-                                        message: "Service Data",
-                                        data:newAlert_components
-                                    };
-                                    callback(status);
+                                    ctr++;
+                                    if (ctr === mainDocs.length) {
+                                        var status = {
+                                            status: 1,
+                                            message: "Service Data",
+                                            data: newAlert_components
+                                        };
+                                        callback(status);
+                                    }
+                                }else {
+                                    ctr++;
                                 }
                             });
 
                             // return callBack(mainDocs);
                         });
                     });
+                });
                 // console.log(status);
             } else {
                 var status = {
@@ -1333,7 +1340,7 @@ var UserService = {
         var count = 0;
 
 
-                  userSRSendCUAlertData.forEach(function (data){
+        userSRSendCUAlertData.forEach(function (data) {
             comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
                 var newAlertRequirement = {
                     cp_alert_id: data.cp_alert_id,
@@ -1365,7 +1372,7 @@ var UserService = {
                             uploadData = false;
                         }
                         count++;
-                        if(count == userSRSendCUAlertData.length) {
+                        if (count == userSRSendCUAlertData.length) {
                             if (!uploadData) {
                                 console.log(err);
                                 var status = {
@@ -1392,6 +1399,53 @@ var UserService = {
         });
 
     },
+
+
+    SPUsergetTowDayData: function (req, callback) {
+
+        comman.getAlreadySendShoutingId(req.body.sp_id, function (result) {
+            var status = {
+                status: 1,
+                message: "Successfully set information are default",
+                data: result
+            };
+            console.log(result);
+            callback(status);
+
+        });
+
+        //
+        // var sp_id = req.body.sp_id;
+        // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        //     var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+        //     // Update service record
+        //     collection.find({
+        //         "creationDate":
+        //             {
+        //                 $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+        //                 $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
+        //             },"sp_id":sp_id
+        //     }).toArray(function (err, docs) {
+        //         if (err) {
+        //             console.log(err);
+        //             var status = {
+        //                 status: 0,
+        //                 message: "Failed"
+        //             };
+        //             callback(status);
+        //         } else {
+        //             var status = {
+        //                 status: 1,
+        //                 message: "Successfully set information are default",
+        //                 data: docs
+        //             };
+        //             console.log(docs);
+        //             callback(status);
+        //         }
+        //     });
+        // });
+    },
+
 
 }
 module.exports = UserService;

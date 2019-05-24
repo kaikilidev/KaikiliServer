@@ -466,6 +466,18 @@ router.post('/getUserShoutingSendData', function (req, res, next) {
 
 
 
+router.post('/getUserPostData', function (req, res, next) {
+    userServiceModel.SPUsergetTowDayData(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 
 
 //Delete File not working

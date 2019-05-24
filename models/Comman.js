@@ -143,15 +143,15 @@ var Comman = {
                 },
                 {
                     $unwind: "$userprofile"
-                // }, {
-                //     $lookup: {
-                //         from: config.collections.sp_personal_info,
-                //         localField: "sp_id",
-                //         foreignField: "sp_id",
-                //         as: "profile"
-                //     }
-                // }, {
-                //     $unwind: "$profile"
+                    // }, {
+                    //     $lookup: {
+                    //         from: config.collections.sp_personal_info,
+                    //         localField: "sp_id",
+                    //         foreignField: "sp_id",
+                    //         as: "profile"
+                    //     }
+                    // }, {
+                    //     $unwind: "$profile"
                 }
             ]);
 
@@ -217,6 +217,44 @@ var Comman = {
             });
         });
     },
+
+
+    getAlreadySendShoutingId(sp_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var query = {
+                "creationDate":
+                    {
+                        $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                        $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
+                    }, "sp_id": sp_id
+            };
+            autoIdCollection.find(query).toArray(function (err, doc) {
+                var userSRidList = [];
+                console.log(doc.length);
+                if(doc.length>0){
+                    var count= 0
+                    doc.forEach(function (element) {
+                        userSRidList.push(element.cp_alert_id);
+                        console.log(element.cp_alert_id);
+                        // return callBack(doc);
+                        count ++
+                        if (doc.length == count) {
+                            console.log(userSRidList);
+                            return callBack(userSRidList);
+                        }
+                    });
+
+                }else {
+                    console.log(userSRidList);
+                    return callBack(userSRidList);
+                }
+
+
+            });
+        });
+    },
+
 
 }
 
