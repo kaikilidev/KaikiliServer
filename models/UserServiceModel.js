@@ -1152,7 +1152,7 @@ var UserService = {
         console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
-            console.log(result.length + "  size------");
+            // console.log(result.length + "  size------");
 
             if (result.length > 0) {
                 var newAlert_components = new Array();
@@ -1206,7 +1206,7 @@ var UserService = {
                             ]);
 
                         cursorSearch.toArray(function (err, mainDocs) {
-                            console.log("----" + mainDocs.length);
+                            // console.log("----" + mainDocs.length);
 
                             mainDocs.forEach(function (element) {
 
@@ -1237,7 +1237,7 @@ var UserService = {
                                     element.cost_item.forEach(function (ccid_item){
                                         sr_cost_components.forEach(function (sr_ccid_item){
                                             if(sr_ccid_item.cc_id ==  ccid_item.cc_id){
-                                                console.log("----->"+sr_ccid_item.cc_sp_title);
+                                                // console.log("----->"+sr_ccid_item.cc_sp_title);
                                                 var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
                                                 totalCost = totalCost + cost;
                                                 var cost_item_data = {
@@ -1269,7 +1269,7 @@ var UserService = {
                                     var discountAfterPrice = totalCost - discountAmount;
 
 
-
+                                    console.log("----3232 " +element.cp_alert_id);
                                     var costData = {
                                         "cp_alert_id": element.cp_alert_id,
                                         "id": element._id,
@@ -1324,20 +1324,27 @@ var UserService = {
 
     SPUserShoutingSendCustomerInfo: function (req, callback) {
 
-        var userSRSendCUAlertData = new Array();
-        userSRSendCUAlertData = req.body;
+        var userSRSendCUAlertData = req.body.shout_data;
+        var sp_id = req.body.sp_id;
+        var first_name = req.body.first_name;
+        var last_name = req.body.last_name;
+        var mobile_no = req.body.mobile_no;
         var uploadData = true;
         var count = 0;
 
-        userSRSendCUAlertData.forEach(function (data){
 
+                  userSRSendCUAlertData.forEach(function (data){
             comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
-
                 var newAlertRequirement = {
+                    cp_alert_id: data.cp_alert_id,
                     sp_cp_alert_send_id: "SHOUT0" + result,
                     comment: data.comment,
                     address: data.address,
                     sr_title: data.sr_title,
+                    sp_id: sp_id,
+                    first_name: first_name,
+                    last_name: last_name,
+                    mobile_no: mobile_no,
                     sr_id: data.sr_id,
                     cost_item: data.cost_item,
                     cu_id: data.cu_id,
