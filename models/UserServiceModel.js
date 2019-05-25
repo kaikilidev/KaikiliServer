@@ -1344,6 +1344,7 @@ var UserService = {
         var first_name = req.body.first_name;
         var last_name = req.body.last_name;
         var mobile_no = req.body.mobile_no;
+        var sp_images = "";
         var uploadData = true;
         var count = 0;
 
@@ -1357,9 +1358,10 @@ var UserService = {
                     address: data.address,
                     sr_title: data.sr_title,
                     sp_id: sp_id,
-                    first_name: first_name,
-                    last_name: last_name,
-                    mobile_no: mobile_no,
+                    sp_first_name: first_name,
+                    sp_last_name: last_name,
+                    sp_mobile_no: mobile_no,
+                    sp_images: sp_images,
                     sr_id: data.sr_id,
                     cost_item: data.cost_item,
                     cu_id: data.cu_id,
