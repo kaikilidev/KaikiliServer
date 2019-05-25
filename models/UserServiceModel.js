@@ -1314,6 +1314,24 @@ var UserService = {
                                         }
                                     } else {
                                         ctr++;
+                                        if (ctr === mainDocs.length) {
+
+                                            if(newAlert_components.length>0){
+                                                var status = {
+                                                    status: 1,
+                                                    message: "Service Data",
+                                                    data: newAlert_components
+                                                };
+                                                callback(status);
+                                            }else {
+                                                var status = {
+                                                    status: 0,
+                                                    message: "No Service Data"
+                                                };
+                                                callback(status);
+                                            }
+
+                                        }
                                     }
                                 });
                             } else {
