@@ -1076,6 +1076,8 @@ var UserService = {
                                                             "minimum_charge": docs1[0].minimum_charge,
                                                             "quote_accept": docs1[0].quote_accept,
                                                             "threshould_price": docs[0].threshould_price,
+                                                            "type_of_service": docs[0].type_of_service,
+
                                                             "cost_components": newCost_components,
                                                             // "cost_components": docs[0].cost_components,
                                                             "notes": docs[0].notes
@@ -1101,6 +1103,7 @@ var UserService = {
                                                             "threshould_price": docs[0].threshould_price,
                                                             "neighbourhood_offer": "OFF",
                                                             "neighbourhood_offer_rat": "",
+                                                            "type_of_service": docs[0].type_of_service,
                                                             "minimum_charge": "",
                                                             "quote_accept": "",
                                                             "cost_components": newCost_components,
