@@ -733,13 +733,17 @@ var Customer = {
         var cp_alert_id = req.body.cp_alert_id;
         var cu_id = req.body.cu_id;
         var alert_active = req.body.alert_active;
+        console.log("-----"+alert_active);
+        var updateTran = {
+            alert_active: alert_active
+        };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
             collectionSP.updateOne({
                 cp_alert_id: cp_alert_id,
                 cu_id: cu_id
-            }, {$set: {"alert_active": alert_active}}, function (err, records) {
+            }, {$set: updateTran}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -760,8 +764,6 @@ var Customer = {
             });
         });
     },
-
-
 
     customerAlertInfoDelete: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
