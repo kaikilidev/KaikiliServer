@@ -828,5 +828,44 @@ var Customer = {
         });
     },
 
+    customerRescheduledTransitionUpdateData: function (req, callback) {
+        var cust_id = req.body.cust_id;
+        var tran_id = req.body.tran_id;
+        var time = req.body.time;
+        var date = req.body.date;
+
+        var updateTran = {
+            time: time,
+            date: date,
+            sr_status: "Scheduled"
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            collectionSP.updateOne({
+                tran_id: tran_id,
+                cust_id: cust_id
+            }, {$set: updateTran},function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully getting data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 }
 module.exports = Customer;
