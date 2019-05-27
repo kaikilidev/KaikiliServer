@@ -682,7 +682,7 @@ var Customer = {
                             callback(status);
 
                         } else {
-                            collectionAlert.find({cu_id: cust_id}).sort({creationDate: -1}).toArray(function (err, shoutingData) {
+                            collectionAlert.find({cu_id: cust_id, sr_status: "Open"}).sort({creationDate: -1}).toArray(function (err, shoutingData) {
                                 var status = {
                                     status: 1,
                                     message: "Success Get all Transition service to Mongodb",
@@ -727,7 +727,6 @@ var Customer = {
 
         });
     },
-
 
     customerAlertInfoUpdate: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
@@ -858,6 +857,42 @@ var Customer = {
                     var status = {
                         status: 1,
                         message: "Successfully getting data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
+    customerShoutingUpdateData: function (req, callback) {
+        var cp_alert_id = req.body.cp_alert_id;
+        var sr_status = req.body.sr_status;
+        var cu_id = req.body.cu_id;
+
+        var updateTran = {
+            sr_status: sr_status,
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            collectionSP.updateOne({
+                cp_alert_id: cp_alert_id,
+                cu_id: cu_id
+            }, {$set: updateTran},function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully Update data.",
                         data: records
                     };
                     console.log(status);
