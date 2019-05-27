@@ -75,7 +75,6 @@ var Customer = {
 
     },
 
-
     checkCUUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -726,6 +725,73 @@ var Customer = {
                 }
             });
 
+        });
+    },
+
+
+    customerAlertInfoUpdate: function (req, callback) {
+        var cp_alert_id = req.body.cp_alert_id;
+        var cu_id = req.body.cu_id;
+        var alert_active = req.body.alert_active;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            collectionSP.updateOne({
+                cp_alert_id: cp_alert_id,
+                cu_id: cu_id
+            }, {$set: {"alert_active": alert_active}}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully update shouting activity.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
+
+
+    customerAlertInfoDelete: function (req, callback) {
+        var cp_alert_id = req.body.cp_alert_id;
+        var cu_id = req.body.cu_id;
+        var alert_active = req.body.alert_active;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            collectionSP.deleteOne({
+                cp_alert_id: cp_alert_id,
+                cu_id: cu_id
+            },  function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully remove shouting data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
         });
     },
 

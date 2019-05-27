@@ -194,6 +194,32 @@ router.post('/getCustomerAlertData', function (req, res, next) {
     });
 });
 
+router.post('/customerAlertUpdate', function (req, res, next) {
+    console.log("call customerAlertInfoUpdate-----1");
+    customerModel.customerAlertInfoUpdate(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/customerAlertDelete', function (req, res, next) {
+    console.log("call customerAlertInfoDelete-----1");
+    customerModel.customerAlertInfoDelete(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
 
 
 
