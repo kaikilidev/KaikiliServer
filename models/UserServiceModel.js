@@ -1383,6 +1383,7 @@ var UserService = {
                     sp_last_name: last_name,
                     sp_mobile_no: mobile_no,
                     sp_images: sp_images,
+                    sr_status: "Open",
                     sr_id: data.sr_id,
                     cost_item: data.cost_item,
                     cu_id: data.cu_id,
