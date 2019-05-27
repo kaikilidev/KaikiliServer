@@ -797,5 +797,36 @@ var Customer = {
         });
     },
 
+    customerRescheduledTransitionData: function (req, callback) {
+        var cust_id = req.body.cust_id;
+        var tran_id = req.body.tran_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_reschedule);
+            collectionSP.findOne({
+                tran_id: tran_id,
+                cust_id: cust_id
+            },  function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully getting data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 }
 module.exports = Customer;
