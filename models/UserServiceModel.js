@@ -1197,7 +1197,7 @@ var UserService = {
                                     key: "location",
                                     maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                                     distanceField: "dist", //give values in metre
-                                    query: {sr_id: {$in: userSRidList}, "alert_active": "true"}//{services: sr_id}// cost_comps: cc_ids
+                                    query: {sr_id: {$in: userSRidList}, alert_active: "true"}//{services: sr_id}// cost_comps: cc_ids
                                     // ,cp_alert_id:{$out:resultSendAlert}
                                 }
                             }, {
@@ -1288,6 +1288,7 @@ var UserService = {
                                                 // "cost_item": element.cost_item,
                                                 "cost_item": new_cost_item,
                                                 "cu_id": element.cu_id,
+                                                "alert_active": element.alert_active,
                                                 // "cc_ids": element.cc_ids,
                                                 // "sr_cc_ids": sr_cc_ids,
                                                 "dist": element.dist,

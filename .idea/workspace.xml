@@ -9,7 +9,6 @@
       <change afterPath="$PROJECT_DIR$/public/SPProfile/1551347068322.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/public/SPProfile/SP013.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -80,8 +79,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="1199" column="94" selection-start-line="1199" selection-start-column="94" selection-end-line="1199" selection-end-column="94" />
+            <state relative-caret-position="295">
+              <caret line="1300" column="88" lean-forward="true" selection-start-line="1300" selection-start-column="88" selection-end-line="1300" selection-end-column="88" />
               <folding>
                 <element signature="e#25041#26868#0" />
                 <element signature="e#26922#28005#0" />
@@ -424,14 +423,7 @@
       <workItem from="1558607236969" duration="13971000" />
       <workItem from="1558687870625" duration="19021000" />
       <workItem from="1558775659185" duration="8252000" />
-      <workItem from="1558951255604" duration="3964000" />
-    </task>
-    <task id="LOCAL-00082" summary="Add New Api">
-      <created>1556029475511</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1556029475512</updated>
+      <workItem from="1558951255604" duration="4466000" />
     </task>
     <task id="LOCAL-00083" summary="Add New Api">
       <created>1556029827405</created>
@@ -769,11 +761,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558953832244</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="Add New Api">
+      <created>1558955837689</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1558955837689</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="570848000" />
+    <option name="totallyTimeSpent" value="571350000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1163,8 +1162,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="1199" column="94" selection-start-line="1199" selection-start-column="94" selection-end-line="1199" selection-end-column="94" />
+        <state relative-caret-position="295">
+          <caret line="1300" column="88" lean-forward="true" selection-start-line="1300" selection-start-column="88" selection-end-line="1300" selection-end-column="88" />
           <folding>
             <element signature="e#25041#26868#0" />
             <element signature="e#26922#28005#0" />
