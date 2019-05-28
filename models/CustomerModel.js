@@ -963,7 +963,7 @@ var Customer = {
     // 28-5-2019 created Api (Customer transaction history )
     customerCompletedService: function (req, callback) {
         var cu_id = req.body.cu_id;
-        console.log(sp_id);
+        console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: -1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);

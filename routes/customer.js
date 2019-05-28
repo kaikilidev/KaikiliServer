@@ -281,7 +281,7 @@ router.post('/customerToServiceReview', function (req, res, next) {
 
 
 router.post('/customerCompletedAllService', function (req, res, next) {
-    console.log("call customerTransitionRescheduledData-----1");
+    console.log("call customerCompletedService-----1");
     customerModel.customerCompletedService(req, function (err, result) {
         if (err) {
             res.json(err);
