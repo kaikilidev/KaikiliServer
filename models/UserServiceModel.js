@@ -666,7 +666,7 @@ var UserService = {
             console.log(err);
             collection.find({
                 sp_id: sp_id,
-                sr_status: "Completed"
+                sr_status: { $in: ["Cancelled","Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);

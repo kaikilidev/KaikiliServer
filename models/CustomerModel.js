@@ -958,5 +958,41 @@ var Customer = {
             });
         });
     },
+
+
+    // 28-5-2019 created Api (Customer transaction history )
+    customerCompletedService: function (req, callback) {
+        var cu_id = req.body.cu_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var mysort = {updateDate: -1};
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            console.log(err);
+            collection.find({
+                cust_id: cu_id,
+                sr_status: { $in: ["Cancelled","Completed"]}
+            }).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service list",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
 }
 module.exports = Customer;
