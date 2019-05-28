@@ -728,6 +728,7 @@ var Customer = {
         });
     },
 
+    // 27-5-2019 created Api (Customer Shouting activated/deactivated update)
     customerAlertInfoUpdate: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
         var cu_id = req.body.cu_id;
@@ -764,6 +765,7 @@ var Customer = {
         });
     },
 
+    // 27-5-2019 created Api (Customer Shouting delete Api)
     customerAlertInfoDelete: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
         var cu_id = req.body.cu_id;
@@ -796,6 +798,7 @@ var Customer = {
         });
     },
 
+    // 27-5-2019 created Api (Customer Rescheduled job data getting api)
     customerRescheduledTransitionData: function (req, callback) {
         var cust_id = req.body.cust_id;
         var tran_id = req.body.tran_id;
@@ -827,6 +830,7 @@ var Customer = {
         });
     },
 
+    // 27-5-2019 created Api (Customer Rescheduled job data updating)
     customerRescheduledTransitionUpdateData: function (req, callback) {
         var cust_id = req.body.cust_id;
         var tran_id = req.body.tran_id;
@@ -866,6 +870,7 @@ var Customer = {
         });
     },
 
+    // 27-5-2019 created Api (Customer Shouting SR status update)
     customerShoutingUpdateData: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
         var sr_status = req.body.sr_status;
@@ -902,5 +907,56 @@ var Customer = {
         });
     },
 
+    // 28-5-2019 created Api (Customer to give review )
+    customerAddToServiceReview: function (req, callback) {
+
+        var tran_id = req.body.tran_id;
+        var reviewAdd = {
+            cust_id: req.body.cust_id,
+            sp_id: req.body.sp_id,
+            tran_id: req.body.tran_id,
+            sr_id: req.body.sr_id,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            creationDate: new Date().toISOString()
+        };
+
+        var updateTran = {
+            cp_review: "true",
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
+            collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you fore review."
+                    };
+
+                    var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                    collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log();
+                            // callback(status);
+                        }
+                    });
+
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    },
 }
 module.exports = Customer;
