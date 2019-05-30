@@ -536,11 +536,13 @@ var Customer = {
     serviceBookUser: function (req, callback) {
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
+
             var newBookServiceUser = {
                 tran_id: "TR0" + result,
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
+                type_of_service: req.body.type_of_service,
                 sr_title: req.body.sr_title,
                 time: req.body.time,
                 date: req.body.date,
@@ -565,6 +567,7 @@ var Customer = {
                 cp_review: req.body.cp_review,
                 sp_review: req.body.sp_review,
                 distance: req.body.distance,
+                sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toISOString()
             };
 
