@@ -959,7 +959,6 @@ var Customer = {
         });
     },
 
-
     // 28-5-2019 created Api (Customer transaction history )
     customerCompletedService: function (req, callback) {
         var cu_id = req.body.cu_id;
