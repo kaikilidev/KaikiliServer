@@ -268,9 +268,7 @@ var Customer = {
         console.log(longitude + " --- " + req.body.cc_ids);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-
             var cursorIndex = collection.createIndex({location: "2dsphere"});
-
             console.log("----------" + cc_ids);
             var cursorSearch = collection.aggregate([
                 {
@@ -393,6 +391,8 @@ var Customer = {
                                             avg_response: docs[0].userprofile.avg_response,
                                             avg_rating: docs[0].userprofile.avg_rating,
                                             sp_image: docs[0].userprofile.profile_image,
+                                            sp_service_area: docs[0].userprofile.service_area,
+                                            sp_coordinatePoint: docs[0].userprofile.coordinatePoint,
                                             sp_first_name: docs[0].profile.first_name,
                                             sp_last_name: docs[0].profile.last_name,
                                             sp_mobile_no: docs[0].profile.mobile_no
@@ -452,6 +452,8 @@ var Customer = {
                 cu_id: req.body.cu_id,
                 cc_ids: req.body.cc_ids,
                 sr_type: req.body.sr_type,
+                type_of_service: req.body.type_of_service,
+
                 location: {
                     coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
                     type: "Point"
@@ -500,6 +502,7 @@ var Customer = {
                 sr_name: req.body.sr_name,
                 time: req.body.time,
                 date: req.body.date,
+                type_of_service: req.body.type_of_service,
                 creationDate: new Date().toISOString()
             };
 
