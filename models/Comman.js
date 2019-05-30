@@ -61,6 +61,18 @@ var Comman = {
         });
     },
 
+    getCustomerData(cuid, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.cu_profile);
+            var getData = null;
+            var query = {cu_id: cuid};
+            autoIdCollection.findOne(query, function (err, doc) {
+                //    console.log(doc);
+                return callBack(doc);
+            });
+        });
+    },
+
 
     getSPUserRadiusLocationOtherSP(spid, srid, callBack) {
         module.exports.getSPUserLocation(spid, function (result) {

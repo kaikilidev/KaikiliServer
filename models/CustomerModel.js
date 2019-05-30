@@ -442,6 +442,10 @@ var Customer = {
     addServiceAlertData: function (req, callback) {
         comman.getNextSequenceUserID("cu_alert_id", function (result) {
             //  console.log(result);
+
+          comman.getCustomerData(req.body.cu_id,function (CU_data) {
+
+
             var newServiceAlert = {
                 cp_alert_id: "CP-ALERT0" + result,
                 comment: req.body.comment,
@@ -450,6 +454,9 @@ var Customer = {
                 sr_title: req.body.sr_title,
                 cost_item: req.body.cost_item,
                 cu_id: req.body.cu_id,
+                cu_first_name: CU_data.first_name,
+                cu_last_name: CU_data.last_name,
+                mobile_no: CU_data.mobile_no,
                 cc_ids: req.body.cc_ids,
                 sr_type: req.body.sr_type,
                 type_of_service: req.body.type_of_service,
@@ -485,6 +492,8 @@ var Customer = {
                     }
                 });
             });
+
+          });
         });
     },
 
