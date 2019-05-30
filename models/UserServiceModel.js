@@ -1369,7 +1369,7 @@ var UserService = {
         var sp_id = req.body.sp_id;
         var first_name = req.body.first_name;
         var last_name = req.body.last_name;
-        var mobile_no = req.body.mobile_no;
+        var sp_mobile_no = req.body.sp_mobile_no;
         var sp_images = "";
         var uploadData = true;
         var count = 0;
@@ -1386,8 +1386,12 @@ var UserService = {
                     sp_id: sp_id,
                     sp_first_name: first_name,
                     sp_last_name: last_name,
-                    sp_mobile_no: mobile_no,
+                    sp_mobile_no: sp_mobile_no,
                     sp_images: sp_images,
+                    cu_first_name:data.cu_first_name,
+                    cu_last_name: data.cu_last_name,
+                    cu_mobile_no: data.mobile_no,
+                    type_of_service: data.type_of_service,
                     sr_status: "Open",
                     sr_id: data.sr_id,
                     cost_item: data.cost_item,
