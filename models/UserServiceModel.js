@@ -666,7 +666,7 @@ var UserService = {
             console.log(err);
             collection.find({
                 sp_id: sp_id,
-                sr_status: { $in: ["Cancelled","Completed"]}
+                sr_status: {$in: ["Cancelled", "Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -1269,12 +1269,13 @@ var UserService = {
                                             // console.log(neighbourhood_offer_rat+"------");
                                             // console.log(neighbourhood_offer+"------");
                                             var discountGive = 0;
+                                            var discountAmount = 0;
+                                            var discountAfterPrice = 0;
                                             if (neighbourhood_offer == "ON") {
                                                 discountGive = neighbourhood_offer_rat;
+                                                discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                                discountAfterPrice = totalCost - discountAmount;
                                             }
-
-                                            var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                                            var discountAfterPrice = totalCost - discountAmount;
 
 
                                             console.log("----3232 " + element.cp_alert_id);
@@ -1297,7 +1298,7 @@ var UserService = {
                                                 "creationDate": element.creationDate,
                                                 "totalCost": totalCost,
                                                 "kaikili_commission": element.services.sr_commission,
-                                                "type_of_service":element.services.type_of_service,
+                                                "type_of_service": element.services.type_of_service,
                                                 "cu_first_name": element.cu_first_name,
                                                 "cu_last_name": element.cu_last_name,
                                                 "mobile_no": element.mobile_no,
@@ -1321,14 +1322,14 @@ var UserService = {
                                         ctr++;
                                         if (ctr === mainDocs.length) {
 
-                                            if(newAlert_components.length>0){
+                                            if (newAlert_components.length > 0) {
                                                 var status = {
                                                     status: 1,
                                                     message: "Service Data",
                                                     data: newAlert_components
                                                 };
                                                 callback(status);
-                                            }else {
+                                            } else {
                                                 var status = {
                                                     status: 0,
                                                     message: "No Service Data"
@@ -1388,7 +1389,7 @@ var UserService = {
                     sp_last_name: last_name,
                     sp_mobile_no: sp_mobile_no,
                     sp_images: sp_images,
-                    cu_first_name:data.cu_first_name,
+                    cu_first_name: data.cu_first_name,
                     cu_last_name: data.cu_last_name,
                     cu_mobile_no: data.mobile_no,
                     type_of_service: data.type_of_service,
