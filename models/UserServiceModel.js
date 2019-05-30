@@ -1297,6 +1297,7 @@ var UserService = {
                                                 "creationDate": element.creationDate,
                                                 "totalCost": totalCost,
                                                 "kaikili_commission": element.services.sr_commission,
+                                                "type_of_service":element.services.type_of_service,
                                                 "discountGive": discountGive,
                                                 "discountAfterPrice": discountAfterPrice
 
