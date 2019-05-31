@@ -1153,7 +1153,7 @@ var UserService = {
         var latitude = req.body.latitude;
         var longitude = req.body.longitude;
 
-        console.log(sp_id + " - " + latitude + " - " + longitude);
+     //   console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
             // console.log(result.length + "  size------");
@@ -1169,19 +1169,20 @@ var UserService = {
                     element.cost_components_on.forEach(function (elementSub) {
                         userSRCCList.push(elementSub.cc_id);
                     });
+
                     var srData = {
                         "sr_id": element.sr_id,
                         "cc_ids": userSRCCList,
                         "service_area":element.userprofile.service_area,
                         "cost_components_on": element.cost_components_on,
                         "neighbourhood_offer": element.neighbourhood_offer,
-                        "neighbourhood_offer_rat": element.neighbourhood_offer_rat,
+                        "neighbourhood_offer_rat": element.neighbourhood_offer_rat
                     }
                     userSRData.push(srData)
                 });
                 comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
 
-                    console.log(resultSendAlert + "-------- out");
+                    // console.log(resultSendAlert + "-------- out");
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                         var cursorIndex = collection.createIndex({location: "2dsphere"});
@@ -1214,7 +1215,7 @@ var UserService = {
                         ]);
 
                         cursorSearch.toArray(function (err, mainDocs) {
-                            console.log("----" + mainDocs.length);
+                            // console.log("----" + mainDocs.length);
 
                             if (mainDocs.length > 0) {
                                 mainDocs.forEach(function (element) {
@@ -1233,6 +1234,7 @@ var UserService = {
                                                 service_area = userElement.service_area;
                                             }
                                         });
+
 
                                         var allElement = true;
                                         element.cc_ids.forEach(function (ccid) {
@@ -1281,7 +1283,8 @@ var UserService = {
                                             }
 
 
-                                            console.log("----3232 " + element.cp_alert_id);
+                                            // console.log("----3232 " + element.cp_alert_id);
+                                            // console.log(service_area+"---------");
                                             var costData = {
                                                 "cp_alert_id": element.cp_alert_id,
                                                 "id": element._id,
@@ -1307,7 +1310,7 @@ var UserService = {
                                                 "mobile_no": element.mobile_no,
                                                 "discountGive": discountGive,
                                                 "discountAfterPrice": discountAfterPrice,
-                                                 "service_area":"service_area"
+                                                 "service_area":service_area
 
                                             };
                                             newAlert_components.push(costData)
