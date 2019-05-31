@@ -1410,6 +1410,7 @@ var UserService = {
                     totalCost: data.totalCost,
                     kaikili_commission: data.kaikili_commission,
                     discountGive: data.discountGive,
+                    service_area: data.service_area,
                     discountAfterPrice: data.discountAfterPrice,
                     creationDate: new Date().toISOString()
                 };
