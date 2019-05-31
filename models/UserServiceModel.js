@@ -1172,6 +1172,7 @@ var UserService = {
                     var srData = {
                         "sr_id": element.sr_id,
                         "cc_ids": userSRCCList,
+                        "service_area":element.userprofile.service_area,
                         "cost_components_on": element.cost_components_on,
                         "neighbourhood_offer": element.neighbourhood_offer,
                         "neighbourhood_offer_rat": element.neighbourhood_offer_rat,
@@ -1220,6 +1221,7 @@ var UserService = {
                                     if (!resultSendAlert.includes(element.cp_alert_id)) {
                                         var neighbourhood_offer = "";
                                         var neighbourhood_offer_rat = "";
+                                        var service_area = "";
                                         var sr_cost_components = [];
                                         var sr_cc_ids = [];
                                         userSRData.forEach(function (userElement) {
@@ -1228,6 +1230,7 @@ var UserService = {
                                                 sr_cc_ids = userElement.cc_ids;
                                                 neighbourhood_offer = userElement.neighbourhood_offer;
                                                 neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                                                service_area = userElement.service_area;
                                             }
                                         });
 
@@ -1303,7 +1306,8 @@ var UserService = {
                                                 "cu_last_name": element.cu_last_name,
                                                 "mobile_no": element.mobile_no,
                                                 "discountGive": discountGive,
-                                                "discountAfterPrice": discountAfterPrice
+                                                "discountAfterPrice": discountAfterPrice,
+                                                 "service_area":"service_area"
 
                                             };
                                             newAlert_components.push(costData)
