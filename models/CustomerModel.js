@@ -7,6 +7,8 @@ var bcrypt = require('bcrypt');
 
 
 var Customer = {
+
+    // Create new Customer Api
     addNewUser: function (req, callback) {
         comman.getNextSequenceUserID("cu_user", function (result) {
             //  console.log(result);
@@ -19,6 +21,8 @@ var Customer = {
                 gender: req.body.gender,
                 mobile_no: req.body.mobile_no,
                 password: req.body.password,
+                cu_image: req.body.cu_image,
+
                 creationDate: new Date().toISOString()
             };
 
@@ -75,6 +79,7 @@ var Customer = {
 
     },
 
+    //Mobiel No to Check User are are there
     checkCUUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -112,6 +117,7 @@ var Customer = {
     },
 
 
+    //Customer Login
     CUUserLogin: function (req, callback) {
 
         var email = req.body.email;
