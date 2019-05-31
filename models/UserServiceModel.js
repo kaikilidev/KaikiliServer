@@ -661,7 +661,7 @@ var UserService = {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-            var mysort = {updateDate: -1};
+            var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({

@@ -985,7 +985,7 @@ var Customer = {
         var cu_id = req.body.cu_id;
         console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-            var mysort = {updateDate: -1};
+            var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({
