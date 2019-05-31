@@ -990,7 +990,7 @@ var Customer = {
             console.log(err);
             collection.find({
                 cust_id: cu_id,
-                sr_status: { $in: ["Cancelled","Completed"]}
+                sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);

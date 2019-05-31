@@ -243,7 +243,7 @@ var UserService = {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-            var mysort = {updateDate: -1};
+            var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({
@@ -666,7 +666,7 @@ var UserService = {
             console.log(err);
             collection.find({
                 sp_id: sp_id,
-                sr_status: {$in: ["Cancelled", "Completed"]}
+                sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
