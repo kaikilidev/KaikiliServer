@@ -666,7 +666,7 @@ var UserService = {
             console.log(err);
             collection.find({
                 sp_id: sp_id,
-                sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -1148,12 +1148,14 @@ var UserService = {
 
     },
 
+
+    // Nearest customer find in service provider location and work area 1-6-2019 changed
     getUserNearestShoutingData: function (req, callback) {
         var sp_id = req.body.sp_id;
         var latitude = req.body.latitude;
         var longitude = req.body.longitude;
 
-     //   console.log(sp_id + " - " + latitude + " - " + longitude);
+        //   console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
             // console.log(result.length + "  size------");
@@ -1162,6 +1164,8 @@ var UserService = {
                 var newAlert_components = new Array();
                 var ctr = 0;
                 var userSRidList = [];
+                var userLocationLatitude = "";
+                var userLocationLongitude = "";
                 var userSRData = new Array();
                 result.forEach(function (element) {
                     userSRidList.push(element.sr_id);
@@ -1169,198 +1173,189 @@ var UserService = {
                     element.cost_components_on.forEach(function (elementSub) {
                         userSRCCList.push(elementSub.cc_id);
                     });
+                    userLocationLatitude = element.userprofile.coordinatePoint.latitude;
+                    userLocationLongitude = element.userprofile.coordinatePoint.longitude;
 
                     var srData = {
                         "sr_id": element.sr_id,
                         "cc_ids": userSRCCList,
-                        "service_area":element.userprofile.service_area,
+                        "service_area": element.userprofile.service_area,
                         "cost_components_on": element.cost_components_on,
                         "neighbourhood_offer": element.neighbourhood_offer,
                         "neighbourhood_offer_rat": element.neighbourhood_offer_rat
                     }
                     userSRData.push(srData)
                 });
+
                 comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
 
                     // console.log(resultSendAlert + "-------- out");
+
+                    console.log(userLocationLongitude + " -----userLocationLongitude");
+                    console.log(userLocationLatitude + " -----userLocationLatitude");
+
+
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                         var cursorIndex = collection.createIndex({location: "2dsphere"});
 
                         var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
 
-                        var cursorSearch = collection.aggregate([
-                            {
-                                $geoNear: {
-                                    near: {
-                                        type: "Point",
-                                        coordinates: [parseFloat(longitude), parseFloat(latitude)]
-                                    },
-                                    key: "location",
-                                    maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
-                                    distanceField: "dist", //give values in metre
-                                    query: {sr_id: {$in: userSRidList}, alert_active: "true"}//{services: sr_id}// cost_comps: cc_ids
-                                    // ,cp_alert_id:{$out:resultSendAlert}
-                                }
-                            }, {
-                                $lookup: {
-                                    from: config.collections.add_services,
-                                    localField: "sr_id",
-                                    foreignField: "sr_id",
-                                    as: "services"
-                                }
-                            }, {
-                                $unwind: "$services"
-                            }
-                        ]);
 
-                        cursorSearch.toArray(function (err, mainDocs) {
-                            // console.log("----" + mainDocs.length);
+                        var cursorSearchMain = new Array();
+                        var cursorSearchMain2 = new Array();
 
-                            if (mainDocs.length > 0) {
-                                mainDocs.forEach(function (element) {
-                                    if (!resultSendAlert.includes(element.cp_alert_id)) {
-                                        var neighbourhood_offer = "";
-                                        var neighbourhood_offer_rat = "";
-                                        var service_area = "";
-                                        var sr_cost_components = [];
-                                        var sr_cc_ids = [];
-                                        userSRData.forEach(function (userElement) {
-                                            if (userElement.sr_id == element.sr_id) {
-                                                sr_cost_components = userElement.cost_components_on;
-                                                sr_cc_ids = userElement.cc_ids;
-                                                neighbourhood_offer = userElement.neighbourhood_offer;
-                                                neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
-                                                service_area = userElement.service_area;
-                                            }
-                                        });
+                        comman.getShoutingDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
+                            cursorSearchMain = cursorSearchData;
 
+                            comman.getShoutingDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
 
-                                        var allElement = true;
-                                        element.cc_ids.forEach(function (ccid) {
-                                            if (!sr_cc_ids.includes(ccid)) {
-                                                allElement = false
-                                            }
-                                        });
+                                cursorSearchMain2 = cursorSearch2;
+                                var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
+                                console.log("----aaa--" + newDataFilter.length);
 
-                                        if (allElement) {
+                                if (newDataFilter.length > 0) {
 
-                                            var new_cost_item = new Array();
-                                            var totalCost = 0;
-                                            element.cost_item.forEach(function (ccid_item) {
-                                                sr_cost_components.forEach(function (sr_ccid_item) {
-                                                    if (sr_ccid_item.cc_id == ccid_item.cc_id) {
-                                                        // console.log("----->"+sr_ccid_item.cc_sp_title);
-                                                        var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
-                                                        totalCost = totalCost + cost;
-                                                        var cost_item_data = {
-                                                            "cc_id": ccid_item.cc_id,
-                                                            "cc_cu_title": ccid_item.cc_cu_title,
-                                                            "cc_sp_title": ccid_item.cc_sp_title,
-                                                            "cc_per_item_qut": ccid_item.cc_per_item_qut,
-                                                            "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
-                                                            "cc_per_item_cost": cost,
-                                                            "hcc_id": ccid_item.hcc_id,
-                                                            "hcc_title": ccid_item.hcc_title,
-                                                            "show_order": ccid_item.show_order
-                                                        }
-                                                        new_cost_item.push(cost_item_data)
-                                                    }
-                                                });
+                                    newDataFilter.forEach(function (element) {
 
-
+                                        if (!resultSendAlert.includes(element.cp_alert_id)) {
+                                            var neighbourhood_offer = "";
+                                            var neighbourhood_offer_rat = "";
+                                            var service_area = "";
+                                            var sr_cost_components = [];
+                                            var sr_cc_ids = [];
+                                            userSRData.forEach(function (userElement) {
+                                                if (userElement.sr_id == element.sr_id) {
+                                                    sr_cost_components = userElement.cost_components_on;
+                                                    sr_cc_ids = userElement.cc_ids;
+                                                    neighbourhood_offer = userElement.neighbourhood_offer;
+                                                    neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                                                    service_area = userElement.service_area;
+                                                }
                                             });
 
-                                            // console.log(neighbourhood_offer_rat+"------");
-                                            // console.log(neighbourhood_offer+"------");
-                                            var discountGive = 0;
-                                            var discountAmount = 0;
-                                            var discountAfterPrice = 0;
-                                            if (neighbourhood_offer == "ON") {
-                                                discountGive = neighbourhood_offer_rat;
-                                                discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                                                discountAfterPrice = totalCost - discountAmount;
+                                            var allElement = true;
+                                            console.log("----11" + element.cc_ids);
+                                            element.cc_ids.forEach(function (ccid) {
+                                                if (!sr_cc_ids.includes(ccid)) {
+                                                    allElement = false
+                                                }
+                                            });
+
+                                            if (allElement) {
+                                                var new_cost_item = new Array();
+                                                var totalCost = 0;
+                                                element.cost_item.forEach(function (ccid_item) {
+                                                    sr_cost_components.forEach(function (sr_ccid_item) {
+                                                        if (sr_ccid_item.cc_id == ccid_item.cc_id) {
+                                                            // console.log("----->"+sr_ccid_item.cc_sp_title);
+                                                            var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                                                            totalCost = totalCost + cost;
+                                                            var cost_item_data = {
+                                                                "cc_id": ccid_item.cc_id,
+                                                                "cc_cu_title": ccid_item.cc_cu_title,
+                                                                "cc_sp_title": ccid_item.cc_sp_title,
+                                                                "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                                                                "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                                                                "cc_per_item_cost": cost,
+                                                                "hcc_id": ccid_item.hcc_id,
+                                                                "hcc_title": ccid_item.hcc_title,
+                                                                "show_order": ccid_item.show_order
+                                                            }
+                                                            new_cost_item.push(cost_item_data)
+                                                        }
+                                                    });
+                                                });
+
+                                                // console.log(neighbourhood_offer_rat+"------");
+                                                // console.log(neighbourhood_offer+"------");
+                                                var discountGive = 0;
+                                                var discountAmount = 0;
+                                                var discountAfterPrice = 0;
+                                                if (neighbourhood_offer == "ON") {
+                                                    discountGive = neighbourhood_offer_rat;
+                                                    discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                                    discountAfterPrice = totalCost - discountAmount;
+                                                }
+
+                                                var costData = {
+                                                    "cp_alert_id": element.cp_alert_id,
+                                                    "id": element._id,
+                                                    "comment": element.comment,
+                                                    "address": element.address,
+                                                    "sr_title": element.sr_title,
+                                                    "sr_id": element.sr_id,
+                                                    // "cost_item": element.cost_item,
+                                                    "cost_item": new_cost_item,
+                                                    "cu_id": element.cu_id,
+                                                    "alert_active": element.alert_active,
+                                                    // "cc_ids": element.cc_ids,
+                                                    // "sr_cc_ids": sr_cc_ids,
+                                                    "dist": element.dist,
+                                                    "longitude": element.location.coordinates[0],
+                                                    "latitude": element.location.coordinates[1],
+                                                    "creationDate": element.creationDate,
+                                                    "totalCost": totalCost,
+                                                    "kaikili_commission": element.services.sr_commission,
+                                                    "type_of_service": element.services.type_of_service,
+                                                    "cu_first_name": element.cu_first_name,
+                                                    "cu_last_name": element.cu_last_name,
+                                                    "mobile_no": element.mobile_no,
+                                                    "discountGive": discountGive,
+                                                    "discountAfterPrice": discountAfterPrice,
+                                                    "service_area": service_area
+
+                                                };
+                                                newAlert_components.push(costData)
                                             }
 
-
-                                            // console.log("----3232 " + element.cp_alert_id);
-                                            // console.log(service_area+"---------");
-                                            var costData = {
-                                                "cp_alert_id": element.cp_alert_id,
-                                                "id": element._id,
-                                                "comment": element.comment,
-                                                "address": element.address,
-                                                "sr_title": element.sr_title,
-                                                "sr_id": element.sr_id,
-                                                // "cost_item": element.cost_item,
-                                                "cost_item": new_cost_item,
-                                                "cu_id": element.cu_id,
-                                                "alert_active": element.alert_active,
-                                                // "cc_ids": element.cc_ids,
-                                                // "sr_cc_ids": sr_cc_ids,
-                                                "dist": element.dist,
-                                                "longitude": element.location.coordinates[0],
-                                                "latitude": element.location.coordinates[1],
-                                                "creationDate": element.creationDate,
-                                                "totalCost": totalCost,
-                                                "kaikili_commission": element.services.sr_commission,
-                                                "type_of_service": element.services.type_of_service,
-                                                "cu_first_name": element.cu_first_name,
-                                                "cu_last_name": element.cu_last_name,
-                                                "mobile_no": element.mobile_no,
-                                                "discountGive": discountGive,
-                                                "discountAfterPrice": discountAfterPrice,
-                                                 "service_area":service_area
-
-                                            };
-                                            newAlert_components.push(costData)
-                                        }
-
-                                        ctr++;
-                                        if (ctr === mainDocs.length) {
-                                            var status = {
-                                                status: 1,
-                                                message: "Service Data",
-                                                data: newAlert_components
-                                            };
-                                            callback(status);
-                                        }
-                                    } else {
-                                        ctr++;
-                                        if (ctr === mainDocs.length) {
-
-                                            if (newAlert_components.length > 0) {
+                                            ctr++;
+                                            if (ctr === newDataFilter.length) {
                                                 var status = {
                                                     status: 1,
                                                     message: "Service Data",
                                                     data: newAlert_components
                                                 };
                                                 callback(status);
-                                            } else {
-                                                var status = {
-                                                    status: 0,
-                                                    message: "No Service Data"
-                                                };
-                                                callback(status);
                                             }
+                                        } else {
+                                            ctr++;
+                                            if (ctr === newDataFilter.length) {
 
+                                                if (newAlert_components.length > 0) {
+                                                    var status = {
+                                                        status: 1,
+                                                        message: "Service Data",
+                                                        data: newAlert_components
+                                                    };
+                                                    callback(status);
+                                                } else {
+                                                    var status = {
+                                                        status: 0,
+                                                        message: "No Service Data"
+                                                    };
+                                                    callback(status);
+                                                }
+
+                                            }
                                         }
-                                    }
-                                });
-                            } else {
-                                var status = {
-                                    status: 0,
-                                    message: "No Service Data"
-                                };
-                                // console.log(status);
-                                callback(status);
-                            }
-                            // return callBack(mainDocs);
+                                    });
+
+
+                                } else {
+                                    var status = {
+                                        status: 0,
+                                        message: "No Service Data"
+                                    };
+                                    // console.log(status);
+                                    callback(status);
+                                }
+                            });
                         });
                     });
+
                 });
-                // console.log(status);
-            } else {
+            }else {
                 var status = {
                     status: 0,
                     message: "No Service Data"
@@ -1370,6 +1365,8 @@ var UserService = {
             }
         });
     },
+
+
 
     SPUserShoutingSendCustomerInfo: function (req, callback) {
 
@@ -1448,7 +1445,8 @@ var UserService = {
 
         });
 
-    },
+    }
+    ,
 
 
     SPUsergetTowDayData: function (req, callback) {
@@ -1494,7 +1492,8 @@ var UserService = {
         //         }
         //     });
         // });
-    },
+    }
+    ,
 
 
 }

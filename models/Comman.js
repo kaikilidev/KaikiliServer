@@ -155,6 +155,16 @@ var Comman = {
                 },
                 {
                     $unwind: "$userprofile"
+                    }, {
+                        $lookup: {
+                            from: config.collections.add_services,
+                            localField: "sr_id",
+                            foreignField: "sr_id",
+                            as: "services"
+                        }
+                    }, {
+                        $unwind: "$services"
+
                     // }, {
                     //     $lookup: {
                     //         from: config.collections.sp_personal_info,
@@ -267,6 +277,46 @@ var Comman = {
         });
     },
 
+    getShoutingDataFilter1(longitude,latitude,userSRidList,radius,type_of_service, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {
+                            type: "Point",
+                            coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                        },
+                        key: "location",
+                        maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {
+                            sr_id: {$in: userSRidList},
+                            alert_active: "true",
+                            type_of_service: type_of_service
+                        }//{services: sr_id}// cost_comps: cc_ids
+                        // ,cp_alert_id:{$out:resultSendAlert}
+                    }
+                }, {
+                    $lookup: {
+                        from: config.collections.add_services,
+                        localField: "sr_id",
+                        foreignField: "sr_id",
+                        as: "services"
+                    }
+                }, {
+                    $unwind: "$services"
+                }
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log("----" + mainDocs.length);
+                return callBack(mainDocs);
+            });
+        });
+    },
 
 }
 
