@@ -958,13 +958,44 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Thank you fore review."
-                    };
+                    // var status = {
+                    //     status: 1,
+                    //     message: "Thank you fore review."
+                    // };
 
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
+
+                        collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
+                            var cursorRating = collectionPaymentSettlement.aggregate([
+                                {$match: {cust_id: req.body.cust_id}},
+                                {
+                                    $group: {
+                                        _id: "_id",
+                                        rating: {$avg: "$rating"}
+                                    }
+                                }
+                            ]);
+                            cursorRating.toArray(function (err, docs) {
+                                console.log(docs[0]);
+                                var updateRating = {
+                                    avg_rating: docs[0].rating,
+                                };
+                                var spProfileUpdate = db.db(config.dbName).collection(config.collections.cu_profile);
+                                spProfileUpdate.updateOne({cu_id: req.body.cust_id}, {$set: updateRating}, function (err, docs) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Thank you fore review."
+                                    };
+
+                                    console.log();
+                                    callback(status);
+
+                                });
+                            });
+
+                        });
+
                         if (err) {
                             console.log(err);
                         } else {
