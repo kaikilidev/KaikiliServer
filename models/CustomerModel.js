@@ -23,7 +23,6 @@ var Customer = {
                 password: req.body.password,
                 cu_image: req.body.cu_image,
                 avg_rating: req.body.avg_rating,
-
                 creationDate: new Date().toISOString()
             };
 
