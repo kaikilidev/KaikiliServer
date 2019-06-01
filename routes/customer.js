@@ -295,6 +295,21 @@ router.post('/customerCompletedAllService', function (req, res, next) {
 
 
 
+router.post('/getCustomerDataInfo', function (req, res, next) {
+    console.log("call getCustomerData-----1");
+    customerModel.getCustomerData(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+getCustomerData
 
 
 
