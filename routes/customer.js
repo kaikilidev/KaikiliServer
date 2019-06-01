@@ -309,7 +309,7 @@ router.post('/getCustomerDataInfo', function (req, res, next) {
 });
 
 
-getCustomerData
+
 
 
 
