@@ -23,6 +23,7 @@ var Customer = {
                 password: req.body.password,
                 cu_image: req.body.cu_image,
                 avg_rating: req.body.avg_rating,
+                fcm_token: req.body.fcm_token,
                 creationDate: new Date().toISOString()
             };
 
@@ -82,6 +83,7 @@ var Customer = {
     //Mobiel No to Check User are are there
     checkCUUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
+        var fcm_token = req.body.fcm_token;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
             collectionSP.find({mobile_no: mobile_no}).toArray(function (err, docs) {
@@ -96,11 +98,15 @@ var Customer = {
                 } else {
                     // assert.equal(1, docs.length);
                     if (docs.length == 1) {
+
+                        collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
+                         (err, records)  {
+                            console.log(records);
+                        });
                         var status = {
                             status: 1,
                             message: "Successfully data getting",
                             data: docs[0]
-
                         };
                     } else {
                         var status = {
@@ -122,6 +128,7 @@ var Customer = {
 
         var email = req.body.email;
         var password = req.body.password;
+        var fcm_token = req.body.fcm_token;
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionCU = db.db(config.dbName).collection(config.collections.cu_profile);
@@ -140,6 +147,11 @@ var Customer = {
 
                         bcrypt.compare(password, docs[0].password, function (err, res) {
                             if (res) {
+
+                                collectionCU.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
+                                    (err, records)  {
+                                    console.log(records);
+                                });
                                 // Passwords match
                                 var status = {
                                     status: 1,
