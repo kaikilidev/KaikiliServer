@@ -322,13 +322,13 @@ var Comman = {
     },
 
     sendCustomerNotification(cu_id,messages,callBack){
-
+        console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
 
             var query = {cu_id: cu_id};
             collectionSP.findOne(query, function (err, doc) {
-
+                console.log(doc);
                 var token = doc.fcm_token;
                 var message = {
                     data: {    //This is only optional, you can send any data
