@@ -442,6 +442,20 @@ var Users = {
     },
 
 
+    // snedCustomerNotification: function (req,callback) {
+    //     console.log("call snedCustomerNotification ");
+    //     var message = "send testing notification ";
+    //
+    //    comman.sendCustomerNotification("CU022",message,function (result) {
+    //        var status = {
+    //            status: 1,
+    //            message: "Service Data",
+    //            data: result
+    //        };
+    //        callback(status);
+    //     })
+    //
+    // }
 
 }
 module.exports = Users;

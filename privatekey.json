@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "kaikili-customer",
+  "private_key_id": "dfc8d2a76f75a37b601c974201009e35e9124ea6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDyM58wuu6wVDaz\nMLu0e1joh6NLHiwSL7SAz4eRSYiZYQ0QP/zLkYgGN9M37ZCx1nu7em3zAhFZX742\nkd9fFL7Bs4sMwQljNlvKJ/zfEvBeP3J5V6ZOlhJTsnzUC2BV8UM5Z9YJm7JAMki0\nVdF2yScbg08Q5xXoynP0gklMpgexq2lWPF3iPrlANzhGBzDopyNbVzof8vZQzgmF\nCJ6IaEz5xCGzFWwKdCkuaHnMVKVgqSKmHeGWlf3QPm4Txo36msSOHYSpU5zdUmIh\nLICvf8gF1FEN4CNg+KLdAQlwzWIPC7MHUH7tEebhpjYRf1zlrccqtMuCtqiX97yM\nCO2hgfrdAgMBAAECggEADLpRv0nTiUijpz8EXjOtNGsMVcI8JqiDH9HIGgZ3Ozgy\na4wxSLFZKJp+aw388JuI3Q1OAds19jBl2pBH4MNCUwOQZxct2xzcLf9z9nUUVJ+Y\n8G9+udqBFAzpKmt+oIWRNs8SHGcmMuFxmKh53XgsqfF4kjbSm+0nss219GU1Okzh\niwgu7NQy3cdyjm5cWb/zzZNvc5hlUwfz5J06YFZHtaYcP+Jotu4EpSAQeIgE3vYH\ngibLHM4J4npkW67mwgBKxk9rmr0UI6oQSWj6yRBMzS0JURCghUdiXjTdMNPcnbZA\nDMsjdsWLi48TXfzjC/am0rYQxfGkwm/fnIqAAp7CsQKBgQD+JW6TjI6Erwq6Ubsy\nYwpGLdoyzvmL0WCKV76S1+Zy0XR7YEKsyNJ5diIa+9PT/WngYBza0FtcNuzSOK8E\nQ7OcKgVBa9A/L/iNRyyPri6UalqxPf/bJWczXAMEiE8bgIdXWUskGpQAEIAKUP7+\nknL65eJNnN1VoIOAVUfDyeYv6wKBgQDz9+LBVvFXzVwKJ16E6AGLAFneD0anMgb/\nlK0hk1H6klJ7XCPfkNCyKYEfcG37YwgRy6F9cDcpJHKy5KlYSnLYN1USnX/hosfY\nwYZRyExOQdexMr34tEpmdzzM4nfspX7gD+cCE4giy5o1fBjSOFgGvcTaXcpBty8a\nSaBqk5yWVwKBgQDGNRtQJ8be5EVRmnyMh4Fzyj7qcVFeIiVQv635iDhKQ+C8eA6I\nAvdjkyZ2NQC3zGPOgib+4JDgElYQffTBNqvVl1AR/aukHB2U0XWHeSkKxweEQ/5P\nQ5SBEbmox0YrBMqI7TMVLUVP5450fUbh9AWId9FPBo/4P/9PDzOxFr1XkQKBgBXI\n4Lqa5NoOQFW3xjzf6qNa2Kt3ebucP/u6bus8mGljf3H8fEeOStRd2GXSSD/WS/Yq\n1LS6vHI0CvnmaSi1HSQpbLNI1Q501puITFIpLIcgYf40pbn7f1k+9HLnFgZPkNC5\nGsuYquNQguibuCutVE7lyxokndbYYKBcSrK5k5XpAoGBAOQc1SXq5rVnsgOD1rEm\nzDu5FTRM3PApoGuO2jFfILzXLHhr5oewGDdpc3+wCgXYvaMXofy+AI+vMsMc7h54\n32X38ij2Ym2I9L7BEBD0YfrKoK5cVEl1UqCbXAZp8yLX6mnMSkxVLJmXoOewbe8/\nwPQ7eEA+8rK7cCsKtIpJNzan\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-ytkle@kaikili-customer.iam.gserviceaccount.com",
+  "client_id": "110915131421984928842",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ytkle%40kaikili-customer.iam.gserviceaccount.com"
+}

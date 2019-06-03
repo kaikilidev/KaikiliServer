@@ -380,6 +380,19 @@ var UserService = {
 
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                        var message = ""
+                        if(req.body.sr_status == "Progress"){
+                             message = "Service provider on way.";
+                        }else if(req.body.sr_status == "Cancel-New-Sp"){
+                            message = "Service provider to cancel job.";
+                        }else if(req.body.sr_status == "Scheduled"){
+                            message = "Service provider accept your job.";
+                        }else if(req.body.sr_status == "Rescheduled"){
+                            message = "Service provider rescheduled your job.";
+                        }
+
+                        comman.sendCustomerNotification(docs[0].cust_id,message,function (result) {});
+
                         var messagesBody = {
                             author: docs[0].sp_id,
                             author_type: "SP",
@@ -671,7 +684,7 @@ var UserService = {
         });
 },
 
-userCompletedService: function (req, callback) {
+    userCompletedService: function (req, callback) {
     var sp_id = req.body.sp_id;
     console.log(sp_id);
     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {

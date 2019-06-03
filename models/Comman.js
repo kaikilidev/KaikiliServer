@@ -3,6 +3,10 @@ var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 
+var fcm = require('fcm-notification');
+var path = require('../privatekey.json');
+var fcmCustomer = new fcm(path);
+
 
 var Comman = {
 
@@ -19,7 +23,6 @@ var Comman = {
             });
         });
     },
-
 
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2, callBack) {
         console.log(lat1 + "-------" + lon1 + " ------" + lat2);
@@ -317,6 +320,42 @@ var Comman = {
             });
         });
     },
+
+    sendCustomerNotification(cu_id,messages,callBack){
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
+
+            var query = {cu_id: cu_id};
+            collectionSP.findOne(query, function (err, doc) {
+
+                var token = doc.fcm_token;
+                var message = {
+                    data: {    //This is only optional, you can send any data
+                        score: '850',
+                        time: '2:45'
+                    },
+                    notification:{
+                        title : "Kaikili-Customer App",
+                        body : messages
+                    },
+                    token : token
+                };
+
+                console.log(message);
+                fcmCustomer.send(message, function(err, response) {
+                    if(err){
+                        console.log('error found', err);
+                        return callBack(err);
+                    }else {
+                        console.log('response here', response);
+                        return callBack(response);
+                    }
+                });
+            });
+        });
+
+    }
 
 }
 
