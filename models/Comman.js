@@ -2,10 +2,15 @@ var mongo = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
+//
+// var fcm = require('fcm-notification');
+// var path = require('../privatekey.json');
+// var fcmCustomer = new fcm(path);
 
-var fcm = require('fcm-notification');
-var path = require('../privatekey.json');
-var fcmCustomer = new fcm(path);
+
+var FCM = require('fcm-node');
+var serverKey = 'AAAAp-oVPJM:APA91bHsnGHRXcGZerqPmuAEqhfnRquLlC_MFt3jaFpp-D5mbWOWpiz__meGbmWj9XpgHFFc_xw2KzgSOlAhFIOfpnxjBxmN6uyOqBwRWHZzQ2-qeKCINpvKWFMGwFgCvV1qhk_sYpcI'; //put your server key here
+var fcm = new FCM(serverKey);
 
 
 var Comman = {
@@ -330,28 +335,69 @@ var Comman = {
             collectionSP.findOne(query, function (err, doc) {
                 console.log(doc);
                 var token = doc.fcm_token;
-                var message = {
-                    data: {    //This is only optional, you can send any data
-                        score: '850',
-                        time: '2:45'
+
+
+                var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                    to: token,
+                    collapse_key: 'your_collapse_key',
+
+                    notification: {
+                        title: 'Title of your push notification',
+                        body: 'Body of your push notification'
                     },
-                    notification:{
-                        title : "Kaikili-Customer App",
-                        body : messages
-                    },
-                    token : token
+
+                    data: {  //you can send only notification or only data(or include both)
+                        my_key: 'my value',
+                        my_another_key: 'my another value'
+                    }
                 };
 
-                console.log(message);
-                fcmCustomer.send(message, function(err, response) {
-                    if(err){
-                        console.log('error found', err);
-                        return callBack(err);
-                    }else {
-                        console.log('response here', response);
-                        return callBack(response);
+                fcm.send(message, function(err, response){
+                    if (err) {
+                        console.log("Something has gone wrong!");
+
+                        var status = {
+                            status: 0,
+                            message: "Something has gone wrong!",
+                        };
+                        // console.log(status);
+                        return callBack(status);
+                    } else {
+                        // console.log("Successfully sent with response: ", response);
+                        // return callBack(response);
+                        var status = {
+                            status: 1,
+                            message: "Successfully sent with response:!"
+                            // response : response
+                        };
+                        // console.log(status);
+                        return callBack(status);
                     }
                 });
+
+                //
+                // var message = {
+                //     data: {    //This is only optional, you can send any data
+                //         score: '850',
+                //         time: '2:45'
+                //     },
+                //     notification:{
+                //         title : "Kaikili-Customer App",
+                //         body : messages
+                //     },
+                //     token : token
+                // };
+                //
+                // console.log(message);
+                // fcmCustomer.send(message, function(err, response) {
+                //     if(err){
+                //         console.log('error found', err);
+                //         return callBack(err);
+                //     }else {
+                //         console.log('response here', response);
+                //         return callBack(response);
+                //     }
+                // });
             });
         });
 

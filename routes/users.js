@@ -480,11 +480,11 @@ router.post('/getUserPostData', function (req, res, next) {
 });
 
 
-router.post('/TestSendNotification', function (req, res, next) {
+router.get('/TestSendNotification', function (req,  next) {
 
     comman.sendCustomerNotification("CU025","Test data Notification",function (result) {
         console.log(result);
-        res.json(result)
+        // res.json(result)
     });
 
 
