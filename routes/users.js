@@ -3,6 +3,7 @@ var router = express.Router();
 var userServiceModel = require('../models/UserServiceModel');
 var usersModel = require('../models/UsersModel');
 var configDB = require('../db_config.json');
+var comman = require('../models/Comman');
 
 const multerSettings = require("../models/Multer-settings");
 const Bluebird = require("bluebird");
@@ -478,6 +479,16 @@ router.post('/getUserPostData', function (req, res, next) {
     });
 });
 
+
+router.post('/TestSendNotification', function (req, res, next) {
+
+    comman.sendCustomerNotification("CU025","Test data Notification",function (result) {
+        console.log(result);
+        res.json(result)
+    });
+
+
+});
 
 
 //Delete File not working
