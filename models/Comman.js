@@ -326,7 +326,7 @@ var Comman = {
         });
     },
 
-    sendCustomerNotification(cu_id,messages,callBack){
+    sendCustomerNotification(cu_id,tran_id,messages){
         console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
@@ -336,18 +336,18 @@ var Comman = {
                 console.log(doc);
                 var token = doc.fcm_token;
 
-
                 var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                     to: token,
                     collapse_key: 'your_collapse_key',
 
                     notification: {
-                        title: 'Title of your push notification',
-                        body: 'Body of your push notification'
+                        title : "Kaikili-Customer App",
+                        body : messages
                     },
 
                     data: {  //you can send only notification or only data(or include both)
-                        my_key: 'my value',
+                        tran_id: tran_id,
+                        messages : messages,
                         my_another_key: 'my another value'
                     }
                 };
@@ -360,44 +360,19 @@ var Comman = {
                             status: 0,
                             message: "Something has gone wrong!",
                         };
-                        // console.log(status);
-                        return callBack(status);
+                        // return callBack(status);
                     } else {
                         // console.log("Successfully sent with response: ", response);
                         // return callBack(response);
                         var status = {
                             status: 1,
                             message: "Successfully sent with response:!"
-                            // response : response
                         };
                         // console.log(status);
-                        return callBack(status);
+                        // return callBack(status);
                     }
                 });
 
-                //
-                // var message = {
-                //     data: {    //This is only optional, you can send any data
-                //         score: '850',
-                //         time: '2:45'
-                //     },
-                //     notification:{
-                //         title : "Kaikili-Customer App",
-                //         body : messages
-                //     },
-                //     token : token
-                // };
-                //
-                // console.log(message);
-                // fcmCustomer.send(message, function(err, response) {
-                //     if(err){
-                //         console.log('error found', err);
-                //         return callBack(err);
-                //     }else {
-                //         console.log('response here', response);
-                //         return callBack(response);
-                //     }
-                // });
             });
         });
 
