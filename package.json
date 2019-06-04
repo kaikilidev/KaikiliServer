@@ -22,8 +22,6 @@
     "streamifier": "^0.1.1",
     "bcrypt": "^3.0.4",
     "mathjs": "5.10.0",
-    "fcm-notification": "2.0.0"
+    "fcm-notification": "^2.0.0"
   }
 }
-
-
