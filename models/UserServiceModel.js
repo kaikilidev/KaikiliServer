@@ -391,7 +391,9 @@ var UserService = {
                             message = "Service provider rescheduled your job.";
                         }
 
-                        comman.sendCustomerNotification(docs[0].cust_id,message,function (result) {});
+                        comman.sendCustomerNotification(docs[0].cust_id,message,function (result) {
+                            console.log(result);
+                        });
 
                         var messagesBody = {
                             author: docs[0].sp_id,
