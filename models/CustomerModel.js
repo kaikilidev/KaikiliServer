@@ -86,7 +86,7 @@ var Customer = {
         var fcm_token = req.body.fcm_token;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-            collectionSP.find({mobile_no: mobile_no}).toArray(function (err, docs) {
+            collectionSP.findOne({mobile_no: mobile_no} ,function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -97,23 +97,33 @@ var Customer = {
                     callback(status);
                 } else {
                     // assert.equal(1, docs.length);
-                    if (docs.length == 1) {
+                    // if (docs.length == 1) {
 
                         collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
                          (err, records)  {
                             console.log(records);
                         });
-                        var status = {
-                            status: 1,
-                            message: "Successfully data getting",
-                            data: docs[0]
-                        };
-                    } else {
-                        var status = {
-                            status: 0,
-                            message: "No User"
-                        };
-                    }
+
+
+                        if(docs === undefined  || docs === null ){
+                            var status = {
+                                        status: 0,
+                                        message: "No User"
+                                    };
+                        }else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully data getting",
+                                data: docs
+                            };
+                        }
+
+                    // } else {
+                    //     var status = {
+                    //         status: 0,
+                    //         message: "No User"
+                    //     };
+                    // }
 
                     console.log(status);
                     callback(status);
