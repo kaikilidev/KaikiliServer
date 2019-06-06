@@ -905,7 +905,8 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                    collectionSP.find({tran_id: tran_id}).toArray(function (err, docs) {
+                        console.log(docs);
                         var message = "Customer accept rescheduled date."
                         comman.sendServiceNotification(docs[0].sp_id, tran_id, message);
                     });
