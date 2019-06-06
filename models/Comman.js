@@ -9,11 +9,12 @@ var config = require('../db_config.json');
 
 
 var FCM = require('fcm-node');
+var FCMService = require('fcm-node');
 var serverKey = 'AAAAIB3B0Us:APA91bH1uxjAY72zwVjvMVpC14aWHnEf6th0IBR4-_vdVqV9DVlgeYovC_bpffeltLa1qUdTPcOykYGJZ95AU63ghQ_R-xP3XCRDmwz2GJ72YHQbrFLnLAkBuMvjLHySCWdxTRQ1gx5l'; //put your server key here
 var fcm = new FCM(serverKey);
 
-var serverKeyService = 'AAAAIB3B0Us:APA91bH1uxjAY72zwVjvMVpC14aWHnEf6th0IBR4-_vdVqV9DVlgeYovC_bpffeltLa1qUdTPcOykYGJZ95AU63ghQ_R-xP3XCRDmwz2GJ72YHQbrFLnLAkBuMvjLHySCWdxTRQ1gx5l'; //put your server key here
-var fcmService = new FCM(serverKeyService);
+var serverKeyService = 'AAAAzU2n6L8:APA91bH-WeHoUgdNyR8hlvcpeSerfuG3R39GkiaXFTuhoRLERYy1EaC5YASotfQCFWxiwOPP18NTq0SV3Z6IFPRopyt6a6RsbD6faK9P9cbxGX-JGTiYTv5YsTsfqjAFp_EFDQ191KBe'; //put your server key here
+var fcmService = new FCMService(serverKeyService);
 
 
 var Comman = {
