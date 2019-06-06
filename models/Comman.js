@@ -9,7 +9,7 @@ var config = require('../db_config.json');
 
 
 var FCM = require('fcm-node');
-var serverKey = 'AAAAp-oVPJM:APA91bHsnGHRXcGZerqPmuAEqhfnRquLlC_MFt3jaFpp-D5mbWOWpiz__meGbmWj9XpgHFFc_xw2KzgSOlAhFIOfpnxjBxmN6uyOqBwRWHZzQ2-qeKCINpvKWFMGwFgCvV1qhk_sYpcI'; //put your server key here
+var serverKey = 'AAAAIB3B0Us:APA91bH1uxjAY72zwVjvMVpC14aWHnEf6th0IBR4-_vdVqV9DVlgeYovC_bpffeltLa1qUdTPcOykYGJZ95AU63ghQ_R-xP3XCRDmwz2GJ72YHQbrFLnLAkBuMvjLHySCWdxTRQ1gx5l'; //put your server key here
 var fcm = new FCM(serverKey);
 
 
@@ -333,9 +333,9 @@ var Comman = {
 
             var query = {cu_id: cu_id};
             collectionSP.findOne(query, function (err, doc) {
-                console.log(doc);
+                console.log("----->"+doc);
                 var token = doc.fcm_token;
-
+                console.log("----->"+token);
                 var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                     to: token,
                     collapse_key: 'your_collapse_key',
@@ -354,6 +354,7 @@ var Comman = {
 
                 fcm.send(message, function(err, response){
                     if (err) {
+                        console.log(err);
                         console.log("Something has gone wrong!");
 
                         var status = {

@@ -381,17 +381,19 @@ var UserService = {
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
                         var message = ""
-                        if(req.body.sr_status == "Progress"){
-                             message = "Service provider on way.";
-                        }else if(req.body.sr_status == "Cancel-New-Sp"){
+                        if (req.body.sr_status == "Progress") {
+                            message = "Service provider on way.";
+                        } else if (req.body.sr_status == "Cancel-New-Sp") {
                             message = "Service provider to cancel job.";
-                        }else if(req.body.sr_status == "Scheduled"){
+                        } else if (req.body.sr_status == "Scheduled") {
                             message = "Service provider accept your job.";
-                        }else if(req.body.sr_status == "Rescheduled"){
+                        } else if (req.body.sr_status == "Rescheduled") {
                             message = "Service provider rescheduled your job.";
+                        } else if (req.body.sr_status == "Cancel-Scheduled-Sp") {
+                            message = "Service provider Cancelled your job.";
                         }
 
-                        comman.sendCustomerNotification(docs[0].cust_id,tran_id,message);
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message);
 
 
                         var messagesBody = {
@@ -683,780 +685,99 @@ var UserService = {
                 }
             });
         });
-},
+    },
 
     userCompletedService: function (req, callback) {
-    var sp_id = req.body.sp_id;
-    console.log(sp_id);
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-        var mysort = {updateDate: 1};
-        var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
-        console.log(err);
-        collection.find({
-            sp_id: sp_id,
-            sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
-        }).sort(mysort).toArray(function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                // console.log(status);
-                callback(status);
-
-            } else {
-                var status = {
-                    status: 1,
-                    message: "Success Get all Transition service list",
-                    data: docs
-                };
-                callback(status);
-            }
-        });
-
-    });
-}
-,
-
-getSingleTransitionInfo: function (req, callback) {
-    var tran_id = req.body.tran_id;
-
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-
-        // Update service record
-        collection.findOne({tran_id: tran_id}, function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                console.log(status);
-                callback(status);
-            } else {
-                var status = {
-                    status: 1,
-                    message: "Success upload to service to server",
-                    data: docs
-                };
-
-                console.log();
-                callback(status);
-
-            }
-        });
-    });
-}
-,
-
-userAddBankInfo: function (req, callback) {
-
-    var bankInfoAdd = {
-        sp_id: req.body.sp_id,
-        card_no: req.body.card_no,
-        bank_name: req.body.bank_name,
-        card_holder_name: req.body.card_holder_name,
-        month: req.body.month,
-        year: req.body.year,
-        cvc: req.body.cvc,
-        isUsed: "true",
-        creationDate: new Date().toISOString()
-    };
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
-        collection.updateMany({sp_id: req.body.sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
-
-            console.log(docs);
-
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
-                collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        console.log(status);
-                        callback(status);
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Thank you fore add new card."
-                        };
-
-                        console.log();
-                        callback(status);
-                    }
-                });
-            });
-        });
-    });
-}
-,
-
-SPUserBankInfoList: function (req, callback) {
-
-    var sp_id = req.body.sp_id;
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
-        var mysort = {creationDate: -1};
-
-        bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "l  "
-                };
-                console.log(status);
-                callback(status);
-            } else {
-                var status = {
-                    status: 1,
-                    message: "Thank you.",
-                    data: docs
-                };
-                console.log();
-                callback(status);
-            }
-        });
-    });
-}
-,
-
-SPUserDeleteBankInfo: function (req, callback) {
-
-    var sp_id = req.body.sp_id;
-    var pid = req.body.id;
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
-        var mysort = {creationDate: -1};
-        var myquery = {_id: ObjectID(pid), sp_id: sp_id};
-        bankdata.deleteOne(myquery, function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "l  "
-                };
-                console.log(status);
-                callback(status);
-            } else {
-                var status = {
-                    status: 1,
-                    message: "Deleted your bank information",
-                    data: docs
-                };
-                console.log();
-                callback(status);
-            }
-        });
-    });
-}
-,
-
-SPUserSetDefaultBankInfo: function (req, callback) {
-
-    var sp_id = req.body.sp_id;
-    var pid = req.body.id;
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
-        // Update service record
-        collection.updateMany({sp_id: sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                console.log(status);
-                callback(status);
-            } else {
-                // console.log(data);
-                collection.updateOne({
-                    _id: ObjectID(pid),
-                    sp_id: sp_id
-                }, {$set: {isUsed: "true"}}, function (err, docs) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        console.log(status);
-                        callback(status);
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Successfully set information are default",
-                            data: docs
-                        };
-                        console.log();
-                        callback(status);
-                    }
-                });
-            }
-        });
-    });
-}
-,
-
-userTransitionCancellation: function (req, callback) {
-    var tran_id = req.body.tran_id;
-    var reason = req.body.reason;
-
-    var serviceUpdate = {
-        sr_status: req.body.sr_status,
-        updateDate: new Date().toISOString()
-    };
-
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-
-        // Update service record
-        collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                console.log(status);
-                callback(status);
-            } else {
-
-                collection.find({tran_id: tran_id}).toArray(function (err, docs) {
-
-                    var messagesBody = {
-                        author: docs[0].sp_id,
-                        author_type: "SP",
-                        sp_delet: "0",
-                        cu_delte: "0",
-                        sp_read: "0",
-                        cu_read: "0",
-                        created_on: new Date().toISOString(),
-                        body: docs[0].sr_status + " - " + reason + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
-                    };
-                    console.log(docs);
-                    var cancellation = {
-                        sp_id: docs[0].sp_id,
-                        sr_id: docs[0].sr_id,
-                        cust_id: docs[0].cust_id,
-                        tran_id: docs[0].tran_id,
-                        reason: reason,
-                        created_on: new Date().toISOString(),
-                    };
-
-                    var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                    collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed"
-                            };
-                            console.log();
-                            callback(status);
-                        } else {
-                            var collectionCancellation = db.db(config.dbName).collection(config.collections.sp_cu_cancellation);
-                            collectionCancellation.insert(cancellation, function (err, docs) {
-
-                                if (err) {
-                                    console.log(err);
-                                    var status = {
-                                        status: 0,
-                                        message: "Failed"
-                                    };
-                                    console.log();
-                                    callback(status);
-                                } else {
-                                    var status = {
-                                        status: 1,
-                                        message: "Success upload to service to server",
-                                    };
-                                    console.log();
-                                    callback(status);
-                                }
-                            });
-                        }
-                    });
-
-                });
-
-
-            }
-        });
-    });
-}
-,
-
-getUserServiceCatalogueData: function (req, callback) {
-    var sp_id = req.body.sp_id;
-    var sr_id = req.body.sr_id;
-
-    // console.log(sr_id);
-    // console.log(sp_id);
-    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collectionService = db.db(config.dbName).collection(config.collections.add_services);
-        var collectionProvider = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
-        collectionService.find({
-            "sr_availability": "ON",
-            sr_id: sr_id,
-            "deleted": "0"
-        }).toArray(function (err, docs) {
-            if (err) {
-                console.log(err);
-                var status = {
-                    status: 0,
-                    message: "Failed"
-                };
-                // console.log(status);
-                callback(status);
-
-            } else {
-                if (docs.length > 0) {
-                    collectionProvider.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs1) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed"
-                            };
-                            // console.log(status);
-                            callback(status);
-
-                        } else {
-                            var userSPidList = [];
-                            comman.getSPUserRadiusLocationOtherSP(sp_id, sr_id, function (result) {
-                                //  console.log("---->>" + result.length);
-                                result.forEach(function (element) {
-                                    //  console.log(element.sp_id);
-                                    if (element.sp_id != sp_id) {
-                                        userSPidList.push(element.sp_id);
-                                    }
-                                });
-                                // console.log("------>" + userSPidList);
-                                var newCost_components = new Array();
-                                var ctr = 0;
-                                docs[0].cost_components.forEach(function (elementCost) {
-                                    //  console.log(elementCost.sp_id);
-                                    comman.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
-                                        var userSPidSetRate = [];
-                                        resultCost.forEach(function (element) {
-                                            userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
-                                        });
-                                        // console.log("------1>" + elementCost.cc_id);
-                                        // console.log("------2>" + userSPidSetRate);
-                                        // console.log("------min >" + math.min(userSPidSetRate));
-                                        // console.log("------max >" + math.max(userSPidSetRate));
-                                        // console.log("------sum >" + math.sum(userSPidSetRate));
-                                        // console.log("------threshould_price >" + docs[0].threshould_price);
-                                        // console.log("------avg >" + (math.sum(userSPidSetRate) / userSPidSetRate.length));
-                                        // var minPri = math.min(userSPidSetRate);
-                                        // var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
-                                        // console.log("------apMinPri >" + apMinPri);
-                                        var avg = 1;
-                                        if (userSPidSetRate.length > 2) {
-                                            if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
-
-                                                var n = userSPidSetRate.length;
-                                                avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
-                                                var std = math.std(userSPidSetRate);
-                                                console.log("------std >" + std);
-                                            }
-                                        } else {
-                                            avg = elementCost.average;
-                                        }
-
-                                        var costData = {
-                                            "cc_id": elementCost.cc_id,
-                                            "cc_cu_title": elementCost.cc_cu_title,
-                                            "cc_sp_title": elementCost.cc_sp_title,
-                                            "cc_status": elementCost.cc_status,
-                                            "hcc_id": elementCost.hcc_id,
-                                            "hcc_title": elementCost.hcc_title,
-                                            "required_field": elementCost.required_field,
-                                            "show_order": elementCost.show_order,
-                                            "avg_rate": avg
-                                        };
-                                        // console.log("------set new cost >"+costData);
-                                        newCost_components.push(costData);
-
-                                        ctr++;
-                                        if (ctr === docs[0].cost_components.length) {
-                                            if (docs1.length > 0) {
-                                                var status = {
-                                                    status: 1,
-                                                    data: {
-                                                        "_id": docs[0]._id,
-                                                        "sp_id": sp_id,
-                                                        "sr_id": sr_id,
-                                                        "sr_title": docs[0].sr_title,
-                                                        "sr_type": docs[0].sr_type,
-                                                        "cost_components_on": docs1[0].cost_components_on,
-                                                        "cost_components_off": docs1[0].cost_components_off,
-                                                        "sp_sr_status": docs1[0].sp_sr_status,
-                                                        "discount": docs1[0].discount,
-                                                        "neighbourhood_offer": docs1[0].neighbourhood_offer,
-                                                        "neighbourhood_offer_rat": docs1[0].neighbourhood_offer_rat,
-                                                        "minimum_charge": docs1[0].minimum_charge,
-                                                        "quote_accept": docs1[0].quote_accept,
-                                                        "threshould_price": docs[0].threshould_price,
-                                                        "type_of_service": docs[0].type_of_service,
-
-                                                        "cost_components": newCost_components,
-                                                        // "cost_components": docs[0].cost_components,
-                                                        "notes": docs[0].notes
-                                                    },
-                                                    message: "Success Get all service to Mongodb",
-                                                    // serviceData:docs,
-                                                    // userData: docs1,
-                                                };
-                                                callback(status);
-                                            } else {
-                                                var status = {
-                                                    status: 1,
-                                                    data: {
-                                                        "_id": docs[0]._id,
-                                                        "sp_id": sp_id,
-                                                        "sr_id": sr_id,
-                                                        "sr_title": docs[0].sr_title,
-                                                        "sr_type": docs[0].sr_type,
-                                                        "cost_components_on": [],
-                                                        "cost_components_off": [],
-                                                        "sp_sr_status": "ON",
-                                                        "discount": docs[0].discount,
-                                                        "threshould_price": docs[0].threshould_price,
-                                                        "neighbourhood_offer": "OFF",
-                                                        "neighbourhood_offer_rat": "",
-                                                        "type_of_service": docs[0].type_of_service,
-                                                        "minimum_charge": "",
-                                                        "quote_accept": "",
-                                                        "cost_components": newCost_components,
-                                                        // "cost_components": docs[0].cost_components,
-                                                        "notes": docs[0].notes
-                                                    },
-                                                    message: "Success Get all service to Mongodb",
-                                                    // serviceData:docs,
-                                                    // userData: docs1,
-                                                };
-                                                callback(status);
-                                            }
-                                        }
-
-                                        //console.log("------cost  size >"+newCost_components.length);
-                                    });
-
-                                });
-                                // console.log("------cost  size 1>"+newCost_components.length);
-
-
-                            });
-
-
-                        }
-                    });
-
-                } else {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var mysort = {updateDate: 1};
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            console.log(err);
+            collection.find({
+                sp_id: sp_id,
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
+            }).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
                     var status = {
                         status: 0,
-                        message: "No Service Data"
+                        message: "Failed"
                     };
                     // console.log(status);
                     callback(status);
-                }
-            }
 
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success Get all Transition service list",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
 
         });
-    });
+    }
+    ,
+
+    getSingleTransitionInfo: function (req, callback) {
+        var tran_id = req.body.tran_id;
 
 
-}
-,
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
+            // Update service record
+            collection.findOne({tran_id: tran_id}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        data: docs
+                    };
 
-// Nearest customer find in service provider location and work area 1-6-2019 changed
-getUserNearestShoutingData: function (req, callback) {
-    var sp_id = req.body.sp_id;
-    var latitude = req.body.latitude;
-    var longitude = req.body.longitude;
+                    console.log();
+                    callback(status);
 
-    //   console.log(sp_id + " - " + latitude + " - " + longitude);
-
-    comman.getSPUserServiceData(sp_id, function (result) {
-        // console.log(result.length + "  size------");
-
-        if (result.length > 0) {
-            var newAlert_components = new Array();
-            var ctr = 0;
-            var userSRidList = [];
-            var userLocationLatitude = "";
-            var userLocationLongitude = "";
-            var userSRData = new Array();
-            result.forEach(function (element) {
-                userSRidList.push(element.sr_id);
-                var userSRCCList = [];
-                element.cost_components_on.forEach(function (elementSub) {
-                    userSRCCList.push(elementSub.cc_id);
-                });
-                userLocationLatitude = element.userprofile.coordinatePoint.latitude;
-                userLocationLongitude = element.userprofile.coordinatePoint.longitude;
-
-                var srData = {
-                    "sr_id": element.sr_id,
-                    "cc_ids": userSRCCList,
-                    "service_area": element.userprofile.service_area,
-                    "cost_components_on": element.cost_components_on,
-                    "neighbourhood_offer": element.neighbourhood_offer,
-                    "neighbourhood_offer_rat": element.neighbourhood_offer_rat
                 }
-                userSRData.push(srData)
             });
+        });
+    }
+    ,
 
-            comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
+    userAddBankInfo: function (req, callback) {
 
-                // console.log(resultSendAlert + "-------- out");
+        var bankInfoAdd = {
+            sp_id: req.body.sp_id,
+            card_no: req.body.card_no,
+            bank_name: req.body.bank_name,
+            card_holder_name: req.body.card_holder_name,
+            month: req.body.month,
+            year: req.body.year,
+            cvc: req.body.cvc,
+            isUsed: "true",
+            creationDate: new Date().toISOString()
+        };
 
-                console.log(userLocationLongitude + " -----userLocationLongitude");
-                console.log(userLocationLatitude + " -----userLocationLatitude");
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            collection.updateMany({sp_id: req.body.sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
 
+                console.log(docs);
 
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-                    var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
-                    var cursorIndex = collection.createIndex({location: "2dsphere"});
-
-                    var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
-
-
-                    var cursorSearchMain = new Array();
-                    var cursorSearchMain2 = new Array();
-
-                    comman.getShoutingDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
-                        cursorSearchMain = cursorSearchData;
-
-                        comman.getShoutingDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
-
-                            cursorSearchMain2 = cursorSearch2;
-                            var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
-                            console.log("----aaa--" + newDataFilter.length);
-
-                            if (newDataFilter.length > 0) {
-
-                                newDataFilter.forEach(function (element) {
-
-                                    if (!resultSendAlert.includes(element.cp_alert_id)) {
-                                        var neighbourhood_offer = "";
-                                        var neighbourhood_offer_rat = "";
-                                        var service_area = "";
-                                        var sr_cost_components = [];
-                                        var sr_cc_ids = [];
-                                        userSRData.forEach(function (userElement) {
-                                            if (userElement.sr_id == element.sr_id) {
-                                                sr_cost_components = userElement.cost_components_on;
-                                                sr_cc_ids = userElement.cc_ids;
-                                                neighbourhood_offer = userElement.neighbourhood_offer;
-                                                neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
-                                                service_area = userElement.service_area;
-                                            }
-                                        });
-
-                                        var allElement = true;
-                                        console.log("----11" + element.cc_ids);
-                                        element.cc_ids.forEach(function (ccid) {
-                                            if (!sr_cc_ids.includes(ccid)) {
-                                                allElement = false
-                                            }
-                                        });
-
-                                        if (allElement) {
-                                            var new_cost_item = new Array();
-                                            var totalCost = 0;
-                                            element.cost_item.forEach(function (ccid_item) {
-                                                sr_cost_components.forEach(function (sr_ccid_item) {
-                                                    if (sr_ccid_item.cc_id == ccid_item.cc_id) {
-                                                        // console.log("----->"+sr_ccid_item.cc_sp_title);
-                                                        var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
-                                                        totalCost = totalCost + cost;
-                                                        var cost_item_data = {
-                                                            "cc_id": ccid_item.cc_id,
-                                                            "cc_cu_title": ccid_item.cc_cu_title,
-                                                            "cc_sp_title": ccid_item.cc_sp_title,
-                                                            "cc_per_item_qut": ccid_item.cc_per_item_qut,
-                                                            "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
-                                                            "cc_per_item_cost": cost,
-                                                            "hcc_id": ccid_item.hcc_id,
-                                                            "hcc_title": ccid_item.hcc_title,
-                                                            "show_order": ccid_item.show_order
-                                                        }
-                                                        new_cost_item.push(cost_item_data)
-                                                    }
-                                                });
-                                            });
-
-                                            // console.log(neighbourhood_offer_rat+"------");
-                                            // console.log(neighbourhood_offer+"------");
-                                            var discountGive = 0;
-                                            var discountAmount = 0;
-                                            var discountAfterPrice = 0;
-                                            if (neighbourhood_offer == "ON") {
-                                                discountGive = neighbourhood_offer_rat;
-                                                discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                                                discountAfterPrice = totalCost - discountAmount;
-                                            }
-
-                                            var costData = {
-                                                "cp_alert_id": element.cp_alert_id,
-                                                "id": element._id,
-                                                "comment": element.comment,
-                                                "address": element.address,
-                                                "sr_title": element.sr_title,
-                                                "sr_id": element.sr_id,
-                                                // "cost_item": element.cost_item,
-                                                "cost_item": new_cost_item,
-                                                "cu_id": element.cu_id,
-                                                "alert_active": element.alert_active,
-                                                // "cc_ids": element.cc_ids,
-                                                // "sr_cc_ids": sr_cc_ids,
-                                                "dist": element.dist,
-                                                "longitude": element.location.coordinates[0],
-                                                "latitude": element.location.coordinates[1],
-                                                "creationDate": element.creationDate,
-                                                "totalCost": totalCost,
-                                                "kaikili_commission": element.services.sr_commission,
-                                                "type_of_service": element.services.type_of_service,
-                                                "cu_first_name": element.cu_first_name,
-                                                "cu_last_name": element.cu_last_name,
-                                                "mobile_no": element.mobile_no,
-                                                "discountGive": discountGive,
-                                                "discountAfterPrice": discountAfterPrice,
-                                                "service_area": service_area
-
-                                            };
-                                            newAlert_components.push(costData)
-                                        }
-
-                                        ctr++;
-                                        if (ctr === newDataFilter.length) {
-                                            var status = {
-                                                status: 1,
-                                                message: "Service Data",
-                                                data: newAlert_components
-                                            };
-                                            callback(status);
-                                        }
-                                    } else {
-                                        ctr++;
-                                        if (ctr === newDataFilter.length) {
-
-                                            if (newAlert_components.length > 0) {
-                                                var status = {
-                                                    status: 1,
-                                                    message: "Service Data",
-                                                    data: newAlert_components
-                                                };
-                                                callback(status);
-                                            } else {
-                                                var status = {
-                                                    status: 0,
-                                                    message: "No Service Data"
-                                                };
-                                                callback(status);
-                                            }
-
-                                        }
-                                    }
-                                });
-
-
-                            } else {
-                                var status = {
-                                    status: 0,
-                                    message: "No Service Data"
-                                };
-                                // console.log(status);
-                                callback(status);
-                            }
-                        });
-                    });
-                });
-
-            });
-        } else {
-            var status = {
-                status: 0,
-                message: "No Service Data"
-            };
-            // console.log(status);
-            callback(status);
-        }
-    });
-}
-,
-
-
-SPUserShoutingSendCustomerInfo: function (req, callback) {
-
-    var userSRSendCUAlertData = req.body.shout_data;
-    var sp_id = req.body.sp_id;
-    var first_name = req.body.first_name;
-    var last_name = req.body.last_name;
-    var sp_mobile_no = req.body.sp_mobile_no;
-    var sp_images = "";
-    var uploadData = true;
-    var count = 0;
-
-
-    userSRSendCUAlertData.forEach(function (data) {
-        comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
-            var newAlertRequirement = {
-                cp_alert_id: data.cp_alert_id,
-                sp_cp_alert_send_id: "SHOUT0" + result,
-                comment: data.comment,
-                address: data.address,
-                sr_title: data.sr_title,
-                sp_id: sp_id,
-                sp_first_name: first_name,
-                sp_last_name: last_name,
-                sp_mobile_no: sp_mobile_no,
-                sp_images: sp_images,
-                cu_first_name: data.cu_first_name,
-                cu_last_name: data.cu_last_name,
-                cu_mobile_no: data.mobile_no,
-                type_of_service: data.type_of_service,
-                sr_status: "Open",
-                sr_id: data.sr_id,
-                cost_item: data.cost_item,
-                cu_id: data.cu_id,
-                dist: data.dist,
-                longitude: data.longitude,
-                latitude: data.latitude,
-                totalCost: data.totalCost,
-                kaikili_commission: data.kaikili_commission,
-                discountGive: data.discountGive,
-                service_area: data.service_area,
-                discountAfterPrice: data.discountAfterPrice,
-                creationDate: new Date().toISOString()
-            };
-
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-                var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-                collection.insertOne(newAlertRequirement, function (err, records) {
-                    if (err) {
-                        uploadData = false;
-                    }
-                    count++;
-                    if (count == userSRSendCUAlertData.length) {
-                        if (!uploadData) {
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
+                    collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
+                        if (err) {
                             console.log(err);
                             var status = {
                                 status: 0,
@@ -1467,69 +788,753 @@ SPUserShoutingSendCustomerInfo: function (req, callback) {
                         } else {
                             var status = {
                                 status: 1,
-                                message: "Successfully add user address",
-                                data: records
+                                message: "Thank you fore add new card."
+                            };
+
+                            console.log();
+                            callback(status);
+                        }
+                    });
+                });
+            });
+        });
+    }
+    ,
+
+    SPUserBankInfoList: function (req, callback) {
+
+        var sp_id = req.body.sp_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            var mysort = {creationDate: -1};
+
+            bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you.",
+                        data: docs
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    }
+    ,
+
+    SPUserDeleteBankInfo: function (req, callback) {
+
+        var sp_id = req.body.sp_id;
+        var pid = req.body.id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            var mysort = {creationDate: -1};
+            var myquery = {_id: ObjectID(pid), sp_id: sp_id};
+            bankdata.deleteOne(myquery, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Deleted your bank information",
+                        data: docs
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    }
+    ,
+
+    SPUserSetDefaultBankInfo: function (req, callback) {
+
+        var sp_id = req.body.sp_id;
+        var pid = req.body.id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
+            // Update service record
+            collection.updateMany({sp_id: sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    // console.log(data);
+                    collection.updateOne({
+                        _id: ObjectID(pid),
+                        sp_id: sp_id
+                    }, {$set: {isUsed: "true"}}, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
                             };
                             console.log(status);
                             callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully set information are default",
+                                data: docs
+                            };
+                            console.log();
+                            callback(status);
                         }
+                    });
+                }
+            });
+        });
+    }
+    ,
+
+    userTransitionCancellation: function (req, callback) {
+        var tran_id = req.body.tran_id;
+        var reason = req.body.reason;
+
+        var serviceUpdate = {
+            sr_status: req.body.sr_status,
+            updateDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+
+                        var message = "Service provider Cancelled your job.";
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message);
+
+                        var messagesBody = {
+                            author: docs[0].sp_id,
+                            author_type: "SP",
+                            sp_delet: "0",
+                            cu_delte: "0",
+                            sp_read: "0",
+                            cu_read: "0",
+                            created_on: new Date().toISOString(),
+                            body: docs[0].sr_status + " - " + reason + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                        };
+                        console.log(docs);
+                        var cancellation = {
+                            sp_id: docs[0].sp_id,
+                            sr_id: docs[0].sr_id,
+                            cust_id: docs[0].cust_id,
+                            tran_id: docs[0].tran_id,
+                            reason: reason,
+                            created_on: new Date().toISOString(),
+                        };
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log();
+                                callback(status);
+                            } else {
+                                var collectionCancellation = db.db(config.dbName).collection(config.collections.sp_cu_cancellation);
+                                collectionCancellation.insert(cancellation, function (err, docs) {
+
+                                    if (err) {
+                                        console.log(err);
+                                        var status = {
+                                            status: 0,
+                                            message: "Failed"
+                                        };
+                                        console.log();
+                                        callback(status);
+                                    } else {
+                                        var status = {
+                                            status: 1,
+                                            message: "Success upload to service to server",
+                                        };
+                                        console.log();
+                                        callback(status);
+                                    }
+                                });
+                            }
+                        });
+
+                    });
+
+
+                }
+            });
+        });
+    }
+    ,
+
+    getUserServiceCatalogueData: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var sr_id = req.body.sr_id;
+
+        // console.log(sr_id);
+        // console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionService = db.db(config.dbName).collection(config.collections.add_services);
+            var collectionProvider = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+            collectionService.find({
+                "sr_availability": "ON",
+                sr_id: sr_id,
+                "deleted": "0"
+            }).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    if (docs.length > 0) {
+                        collectionProvider.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs1) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                // console.log(status);
+                                callback(status);
+
+                            } else {
+                                var userSPidList = [];
+                                comman.getSPUserRadiusLocationOtherSP(sp_id, sr_id, function (result) {
+                                    //  console.log("---->>" + result.length);
+                                    result.forEach(function (element) {
+                                        //  console.log(element.sp_id);
+                                        if (element.sp_id != sp_id) {
+                                            userSPidList.push(element.sp_id);
+                                        }
+                                    });
+                                    // console.log("------>" + userSPidList);
+                                    var newCost_components = new Array();
+                                    var ctr = 0;
+                                    docs[0].cost_components.forEach(function (elementCost) {
+                                        //  console.log(elementCost.sp_id);
+                                        comman.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
+                                            var userSPidSetRate = [];
+                                            resultCost.forEach(function (element) {
+                                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                                            });
+                                            // console.log("------1>" + elementCost.cc_id);
+                                            // console.log("------2>" + userSPidSetRate);
+                                            // console.log("------min >" + math.min(userSPidSetRate));
+                                            // console.log("------max >" + math.max(userSPidSetRate));
+                                            // console.log("------sum >" + math.sum(userSPidSetRate));
+                                            // console.log("------threshould_price >" + docs[0].threshould_price);
+                                            // console.log("------avg >" + (math.sum(userSPidSetRate) / userSPidSetRate.length));
+                                            // var minPri = math.min(userSPidSetRate);
+                                            // var apMinPri = (math.min(userSPidSetRate) * docs[0].threshould_price) / 100;
+                                            // console.log("------apMinPri >" + apMinPri);
+                                            var avg = 1;
+                                            if (userSPidSetRate.length > 2) {
+                                                if ((math.sum(userSPidSetRate) / userSPidSetRate.length) >= 1) {
+
+                                                    var n = userSPidSetRate.length;
+                                                    avg = (math.sum(userSPidSetRate) / userSPidSetRate.length)
+                                                    var std = math.std(userSPidSetRate);
+                                                    console.log("------std >" + std);
+                                                }
+                                            } else {
+                                                avg = elementCost.average;
+                                            }
+
+                                            var costData = {
+                                                "cc_id": elementCost.cc_id,
+                                                "cc_cu_title": elementCost.cc_cu_title,
+                                                "cc_sp_title": elementCost.cc_sp_title,
+                                                "cc_status": elementCost.cc_status,
+                                                "hcc_id": elementCost.hcc_id,
+                                                "hcc_title": elementCost.hcc_title,
+                                                "required_field": elementCost.required_field,
+                                                "show_order": elementCost.show_order,
+                                                "avg_rate": avg
+                                            };
+                                            // console.log("------set new cost >"+costData);
+                                            newCost_components.push(costData);
+
+                                            ctr++;
+                                            if (ctr === docs[0].cost_components.length) {
+                                                if (docs1.length > 0) {
+                                                    var status = {
+                                                        status: 1,
+                                                        data: {
+                                                            "_id": docs[0]._id,
+                                                            "sp_id": sp_id,
+                                                            "sr_id": sr_id,
+                                                            "sr_title": docs[0].sr_title,
+                                                            "sr_type": docs[0].sr_type,
+                                                            "cost_components_on": docs1[0].cost_components_on,
+                                                            "cost_components_off": docs1[0].cost_components_off,
+                                                            "sp_sr_status": docs1[0].sp_sr_status,
+                                                            "discount": docs1[0].discount,
+                                                            "neighbourhood_offer": docs1[0].neighbourhood_offer,
+                                                            "neighbourhood_offer_rat": docs1[0].neighbourhood_offer_rat,
+                                                            "minimum_charge": docs1[0].minimum_charge,
+                                                            "quote_accept": docs1[0].quote_accept,
+                                                            "threshould_price": docs[0].threshould_price,
+                                                            "type_of_service": docs[0].type_of_service,
+
+                                                            "cost_components": newCost_components,
+                                                            // "cost_components": docs[0].cost_components,
+                                                            "notes": docs[0].notes
+                                                        },
+                                                        message: "Success Get all service to Mongodb",
+                                                        // serviceData:docs,
+                                                        // userData: docs1,
+                                                    };
+                                                    callback(status);
+                                                } else {
+                                                    var status = {
+                                                        status: 1,
+                                                        data: {
+                                                            "_id": docs[0]._id,
+                                                            "sp_id": sp_id,
+                                                            "sr_id": sr_id,
+                                                            "sr_title": docs[0].sr_title,
+                                                            "sr_type": docs[0].sr_type,
+                                                            "cost_components_on": [],
+                                                            "cost_components_off": [],
+                                                            "sp_sr_status": "ON",
+                                                            "discount": docs[0].discount,
+                                                            "threshould_price": docs[0].threshould_price,
+                                                            "neighbourhood_offer": "OFF",
+                                                            "neighbourhood_offer_rat": "",
+                                                            "type_of_service": docs[0].type_of_service,
+                                                            "minimum_charge": "",
+                                                            "quote_accept": "",
+                                                            "cost_components": newCost_components,
+                                                            // "cost_components": docs[0].cost_components,
+                                                            "notes": docs[0].notes
+                                                        },
+                                                        message: "Success Get all service to Mongodb",
+                                                        // serviceData:docs,
+                                                        // userData: docs1,
+                                                    };
+                                                    callback(status);
+                                                }
+                                            }
+
+                                            //console.log("------cost  size >"+newCost_components.length);
+                                        });
+
+                                    });
+                                    // console.log("------cost  size 1>"+newCost_components.length);
+
+
+                                });
+
+
+                            }
+                        });
+
+                    } else {
+                        var status = {
+                            status: 0,
+                            message: "No Service Data"
+                        };
+                        // console.log(status);
+                        callback(status);
                     }
+                }
+
+
+            });
+        });
+
+
+    }
+    ,
+
+
+// Nearest customer find in service provider location and work area 1-6-2019 changed
+    getUserNearestShoutingData: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+
+        //   console.log(sp_id + " - " + latitude + " - " + longitude);
+
+        comman.getSPUserServiceData(sp_id, function (result) {
+            // console.log(result.length + "  size------");
+
+            if (result.length > 0) {
+                var newAlert_components = new Array();
+                var ctr = 0;
+                var userSRidList = [];
+                var userLocationLatitude = "";
+                var userLocationLongitude = "";
+                var userSRData = new Array();
+                result.forEach(function (element) {
+                    userSRidList.push(element.sr_id);
+                    var userSRCCList = [];
+                    element.cost_components_on.forEach(function (elementSub) {
+                        userSRCCList.push(elementSub.cc_id);
+                    });
+                    userLocationLatitude = element.userprofile.coordinatePoint.latitude;
+                    userLocationLongitude = element.userprofile.coordinatePoint.longitude;
+
+                    var srData = {
+                        "sr_id": element.sr_id,
+                        "cc_ids": userSRCCList,
+                        "service_area": element.userprofile.service_area,
+                        "cost_components_on": element.cost_components_on,
+                        "neighbourhood_offer": element.neighbourhood_offer,
+                        "neighbourhood_offer_rat": element.neighbourhood_offer_rat
+                    }
+                    userSRData.push(srData)
                 });
+
+                comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
+
+                    // console.log(resultSendAlert + "-------- out");
+
+                    console.log(userLocationLongitude + " -----userLocationLongitude");
+                    console.log(userLocationLatitude + " -----userLocationLatitude");
+
+
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                        var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
+                        var cursorIndex = collection.createIndex({location: "2dsphere"});
+
+                        var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
+
+
+                        var cursorSearchMain = new Array();
+                        var cursorSearchMain2 = new Array();
+
+                        comman.getShoutingDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
+                            cursorSearchMain = cursorSearchData;
+
+                            comman.getShoutingDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
+
+                                cursorSearchMain2 = cursorSearch2;
+                                var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
+                                console.log("----aaa--" + newDataFilter.length);
+
+                                if (newDataFilter.length > 0) {
+
+                                    newDataFilter.forEach(function (element) {
+
+                                        if (!resultSendAlert.includes(element.cp_alert_id)) {
+                                            var neighbourhood_offer = "";
+                                            var neighbourhood_offer_rat = "";
+                                            var service_area = "";
+                                            var sr_cost_components = [];
+                                            var sr_cc_ids = [];
+                                            userSRData.forEach(function (userElement) {
+                                                if (userElement.sr_id == element.sr_id) {
+                                                    sr_cost_components = userElement.cost_components_on;
+                                                    sr_cc_ids = userElement.cc_ids;
+                                                    neighbourhood_offer = userElement.neighbourhood_offer;
+                                                    neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                                                    service_area = userElement.service_area;
+                                                }
+                                            });
+
+                                            var allElement = true;
+                                            console.log("----11" + element.cc_ids);
+                                            element.cc_ids.forEach(function (ccid) {
+                                                if (!sr_cc_ids.includes(ccid)) {
+                                                    allElement = false
+                                                }
+                                            });
+
+                                            if (allElement) {
+                                                var new_cost_item = new Array();
+                                                var totalCost = 0;
+                                                element.cost_item.forEach(function (ccid_item) {
+                                                    sr_cost_components.forEach(function (sr_ccid_item) {
+                                                        if (sr_ccid_item.cc_id == ccid_item.cc_id) {
+                                                            // console.log("----->"+sr_ccid_item.cc_sp_title);
+                                                            var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                                                            totalCost = totalCost + cost;
+                                                            var cost_item_data = {
+                                                                "cc_id": ccid_item.cc_id,
+                                                                "cc_cu_title": ccid_item.cc_cu_title,
+                                                                "cc_sp_title": ccid_item.cc_sp_title,
+                                                                "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                                                                "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                                                                "cc_per_item_cost": cost,
+                                                                "hcc_id": ccid_item.hcc_id,
+                                                                "hcc_title": ccid_item.hcc_title,
+                                                                "show_order": ccid_item.show_order
+                                                            }
+                                                            new_cost_item.push(cost_item_data)
+                                                        }
+                                                    });
+                                                });
+
+                                                // console.log(neighbourhood_offer_rat+"------");
+                                                // console.log(neighbourhood_offer+"------");
+                                                var discountGive = 0;
+                                                var discountAmount = 0;
+                                                var discountAfterPrice = 0;
+                                                if (neighbourhood_offer == "ON") {
+                                                    discountGive = neighbourhood_offer_rat;
+                                                    discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                                    discountAfterPrice = totalCost - discountAmount;
+                                                }
+
+                                                var costData = {
+                                                    "cp_alert_id": element.cp_alert_id,
+                                                    "id": element._id,
+                                                    "comment": element.comment,
+                                                    "address": element.address,
+                                                    "sr_title": element.sr_title,
+                                                    "sr_id": element.sr_id,
+                                                    // "cost_item": element.cost_item,
+                                                    "cost_item": new_cost_item,
+                                                    "cu_id": element.cu_id,
+                                                    "alert_active": element.alert_active,
+                                                    // "cc_ids": element.cc_ids,
+                                                    // "sr_cc_ids": sr_cc_ids,
+                                                    "dist": element.dist,
+                                                    "longitude": element.location.coordinates[0],
+                                                    "latitude": element.location.coordinates[1],
+                                                    "creationDate": element.creationDate,
+                                                    "totalCost": totalCost,
+                                                    "kaikili_commission": element.services.sr_commission,
+                                                    "type_of_service": element.services.type_of_service,
+                                                    "cu_first_name": element.cu_first_name,
+                                                    "cu_last_name": element.cu_last_name,
+                                                    "mobile_no": element.mobile_no,
+                                                    "discountGive": discountGive,
+                                                    "discountAfterPrice": discountAfterPrice,
+                                                    "service_area": service_area
+
+                                                };
+                                                newAlert_components.push(costData)
+                                            }
+
+                                            ctr++;
+                                            if (ctr === newDataFilter.length) {
+                                                var status = {
+                                                    status: 1,
+                                                    message: "Service Data",
+                                                    data: newAlert_components
+                                                };
+                                                callback(status);
+                                            }
+                                        } else {
+                                            ctr++;
+                                            if (ctr === newDataFilter.length) {
+
+                                                if (newAlert_components.length > 0) {
+                                                    var status = {
+                                                        status: 1,
+                                                        message: "Service Data",
+                                                        data: newAlert_components
+                                                    };
+                                                    callback(status);
+                                                } else {
+                                                    var status = {
+                                                        status: 0,
+                                                        message: "No Service Data"
+                                                    };
+                                                    callback(status);
+                                                }
+
+                                            }
+                                        }
+                                    });
+
+
+                                } else {
+                                    var status = {
+                                        status: 0,
+                                        message: "No Service Data"
+                                    };
+                                    // console.log(status);
+                                    callback(status);
+                                }
+                            });
+                        });
+                    });
+
+                });
+            } else {
+                var status = {
+                    status: 0,
+                    message: "No Service Data"
+                };
+                // console.log(status);
+                callback(status);
+            }
+        });
+    }
+    ,
+
+
+    SPUserShoutingSendCustomerInfo: function (req, callback) {
+
+        var userSRSendCUAlertData = req.body.shout_data;
+        var sp_id = req.body.sp_id;
+        var first_name = req.body.first_name;
+        var last_name = req.body.last_name;
+        var sp_mobile_no = req.body.sp_mobile_no;
+        var sp_images = "";
+        var uploadData = true;
+        var count = 0;
+
+
+        userSRSendCUAlertData.forEach(function (data) {
+            comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
+                var newAlertRequirement = {
+                    cp_alert_id: data.cp_alert_id,
+                    sp_cp_alert_send_id: "SHOUT0" + result,
+                    comment: data.comment,
+                    address: data.address,
+                    sr_title: data.sr_title,
+                    sp_id: sp_id,
+                    sp_first_name: first_name,
+                    sp_last_name: last_name,
+                    sp_mobile_no: sp_mobile_no,
+                    sp_images: sp_images,
+                    cu_first_name: data.cu_first_name,
+                    cu_last_name: data.cu_last_name,
+                    cu_mobile_no: data.mobile_no,
+                    type_of_service: data.type_of_service,
+                    sr_status: "Open",
+                    sr_id: data.sr_id,
+                    cost_item: data.cost_item,
+                    cu_id: data.cu_id,
+                    dist: data.dist,
+                    longitude: data.longitude,
+                    latitude: data.latitude,
+                    totalCost: data.totalCost,
+                    kaikili_commission: data.kaikili_commission,
+                    discountGive: data.discountGive,
+                    service_area: data.service_area,
+                    discountAfterPrice: data.discountAfterPrice,
+                    creationDate: new Date().toISOString()
+                };
+
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                    var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+                    collection.insertOne(newAlertRequirement, function (err, records) {
+                        if (err) {
+                            uploadData = false;
+                        }
+                        count++;
+                        if (count == userSRSendCUAlertData.length) {
+                            if (!uploadData) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add user address",
+                                    data: records
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        }
+                    });
+                });
+
             });
 
         });
 
-    });
-
-}
-,
+    }
+    ,
 
 
-SPUsergetTowDayData: function (req, callback) {
+    SPUsergetTowDayData: function (req, callback) {
 
-    comman.getAlreadySendShoutingId(req.body.sp_id, function (result) {
-        var status = {
-            status: 1,
-            message: "Successfully set information are default",
-            data: result
-        };
-        console.log(result);
-        callback(status);
+        comman.getAlreadySendShoutingId(req.body.sp_id, function (result) {
+            var status = {
+                status: 1,
+                message: "Successfully set information are default",
+                data: result
+            };
+            console.log(result);
+            callback(status);
 
-    });
+        });
 
-    //
-    // var sp_id = req.body.sp_id;
-    // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-    //     var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-    //     // Update service record
-    //     collection.find({
-    //         "creationDate":
-    //             {
-    //                 $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
-    //                 $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
-    //             },"sp_id":sp_id
-    //     }).toArray(function (err, docs) {
-    //         if (err) {
-    //             console.log(err);
-    //             var status = {
-    //                 status: 0,
-    //                 message: "Failed"
-    //             };
-    //             callback(status);
-    //         } else {
-    //             var status = {
-    //                 status: 1,
-    //                 message: "Successfully set information are default",
-    //                 data: docs
-    //             };
-    //             console.log(docs);
-    //             callback(status);
-    //         }
-    //     });
-    // });
-}
-,
+        //
+        // var sp_id = req.body.sp_id;
+        // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        //     var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+        //     // Update service record
+        //     collection.find({
+        //         "creationDate":
+        //             {
+        //                 $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+        //                 $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
+        //             },"sp_id":sp_id
+        //     }).toArray(function (err, docs) {
+        //         if (err) {
+        //             console.log(err);
+        //             var status = {
+        //                 status: 0,
+        //                 message: "Failed"
+        //             };
+        //             callback(status);
+        //         } else {
+        //             var status = {
+        //                 status: 1,
+        //                 message: "Successfully set information are default",
+        //                 data: docs
+        //             };
+        //             console.log(docs);
+        //             callback(status);
+        //         }
+        //     });
+        // });
+    }
+    ,
 
 
 }

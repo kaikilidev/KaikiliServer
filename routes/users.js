@@ -481,7 +481,7 @@ router.post('/getUserPostData', function (req, res, next) {
 
 
 router.get('/TestSendNotification', function (req,  next) {
-    comman.sendCustomerNotification("CU025","TR095","Test data Notification");
+    comman.sendCustomerNotification("CU033","TR0100","Test data Notification");
 });
 
 
