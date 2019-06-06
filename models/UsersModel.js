@@ -19,6 +19,7 @@ var Users = {
                 gender: req.body.gender,
                 mobile_no: req.body.mobile_no,
                 password: req.body.password,
+                fcm_token: req.body.fcm_token,
                 creationDate: new Date().toISOString()
             };
 
@@ -252,6 +253,7 @@ var Users = {
 
     checkSPUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
+        var fcm_token = req.body.fcm_token;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.find({mobile_no: mobile_no}).toArray(function (err, docs) {
@@ -265,12 +267,18 @@ var Users = {
                     callback(status);
                 } else {
                     // assert.equal(1, docs.length);
+
+                    collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
+                        (err, records)  {
+                        console.log(records);
+                    });
+
+
                     if (docs.length == 1) {
                         var status = {
                             status: 1,
                             message: "Successfully data getting",
                             data: docs[0]
-
                         };
                     } else {
                         var status = {
@@ -389,6 +397,7 @@ var Users = {
 
         var email = req.body.email;
         var password = req.body.password;
+        var fcm_token = req.body.fcm_token;
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -407,6 +416,11 @@ var Users = {
 
                         bcrypt.compare(password, docs[0].password, function(err, res) {
                             if(res) {
+
+                                collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
+                                    (err, records)  {
+                                    console.log(records);
+                                });
                                 // Passwords match
                                 var status = {
                                     status: 1,

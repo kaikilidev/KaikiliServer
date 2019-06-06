@@ -158,7 +158,7 @@ var Customer = {
                         bcrypt.compare(password, docs[0].password, function (err, res) {
                             if (res) {
 
-                                collectionCU.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
+                                collectionCU.updateOne({mobile_no: docs[0].mobile_no},{ $set: { fcm_token : fcm_token } },function
                                     (err, records)  {
                                     console.log(records);
                                 });
