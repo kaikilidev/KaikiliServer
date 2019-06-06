@@ -573,7 +573,7 @@ var Customer = {
     serviceBookUser: function (req, callback) {
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
-
+            var tran_id = "TR0" + result;
             var newBookServiceUser = {
                 tran_id: "TR0" + result,
                 address: req.body.address,
@@ -647,6 +647,10 @@ var Customer = {
                                 // console.log(docs);
                             }
                         });
+
+                        var message = "Customer Create New Service"
+
+                        comman.sendServiceNotification(req.body.sp_id, tran_id, message);
 
                         var status = {
                             status: 1,
@@ -901,6 +905,10 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                        var message = "Customer accept rescheduled date."
+                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message);
+                    });
                     var status = {
                         status: 1,
                         message: "Successfully getting data.",
@@ -1091,6 +1099,111 @@ var Customer = {
                     };
                     console.log(status);
                     callback(status);
+                }
+            });
+        });
+    },
+
+
+    customerTransitionUpdate: function (req, callback) {
+        var tran_id = req.body.tran_id;
+        var dateNew1 = req.body.dateNew1;
+        var timeNew1 = req.body.timeNew1;
+        var timeNew2 = req.body.timeNew2;
+        var dateNew2 = req.body.dateNew2;
+
+        var serviceUpdate = {
+            sr_status: req.body.sr_status,
+            updateDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+
+            // Update service record
+            collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        data: docs
+                    };
+
+
+                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                        var message = ""
+                        if (req.body.sr_status == "Progress") {
+                            message = "Customer provider on way.";
+                        } else if (req.body.sr_status == "Cancel-New-Sp") {
+                            message = "Customer provider to cancel job.";
+                        } else if (req.body.sr_status == "Scheduled") {
+                            message = "Customer provider accept your job.";
+                        } else if (req.body.sr_status == "Cancel-Scheduled-Cp") {
+                            message = "Customer provider Cancelled your job.";
+                        }
+
+                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message);
+
+
+                        var messagesBody = {
+                            author: docs[0].sp_id,
+                            author_type: "SP",
+                            sp_delet: "0",
+                            cu_delte: "0",
+                            sp_read: "0",
+                            cu_read: "0",
+                            created_on: new Date().toISOString(),
+                            body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                        };
+
+                        var rescheduled = {
+                            sp_id: docs[0].sp_id,
+                            sr_id: docs[0].sr_id,
+                            cust_id: docs[0].cust_id,
+                            tran_id: docs[0].tran_id,
+                            date: docs[0].date,
+                            time: docs[0].time,
+                            dateNew1: dateNew1,
+                            timeNew1: timeNew1,
+                            dateNew2: dateNew2,
+                            timeNew2: timeNew2,
+                            created_on: new Date().toISOString(),
+                        };
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in Notification");
+                                // console.log(docs);
+                            }
+                        });
+
+                        if (req.body.sr_status == "Rescheduled") {
+                            var collectionRescheduled = db.db(config.dbName).collection(config.collections.cu_sp_reschedule);
+                            collectionRescheduled.insert(rescheduled, function (err, docs) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Inserted Reschedule data in server");
+                                    // console.log(docs);
+                                }
+                            });
+                        }
+
+                    });
+                    console.log();
+                    callback(status);
+
                 }
             });
         });

@@ -12,6 +12,9 @@ var FCM = require('fcm-node');
 var serverKey = 'AAAAIB3B0Us:APA91bH1uxjAY72zwVjvMVpC14aWHnEf6th0IBR4-_vdVqV9DVlgeYovC_bpffeltLa1qUdTPcOykYGJZ95AU63ghQ_R-xP3XCRDmwz2GJ72YHQbrFLnLAkBuMvjLHySCWdxTRQ1gx5l'; //put your server key here
 var fcm = new FCM(serverKey);
 
+var serverKeyService = 'AAAAIB3B0Us:APA91bH1uxjAY72zwVjvMVpC14aWHnEf6th0IBR4-_vdVqV9DVlgeYovC_bpffeltLa1qUdTPcOykYGJZ95AU63ghQ_R-xP3XCRDmwz2GJ72YHQbrFLnLAkBuMvjLHySCWdxTRQ1gx5l'; //put your server key here
+var fcmService = new FCM(serverKeyService);
+
 
 var Comman = {
 
@@ -353,6 +356,59 @@ var Comman = {
                 };
 
                 fcm.send(message, function(err, response){
+                    if (err) {
+                        console.log(err);
+                        console.log("Something has gone wrong!");
+
+                        var status = {
+                            status: 0,
+                            message: "Something has gone wrong!",
+                        };
+                        // return callBack(status);
+                    } else {
+                        // console.log("Successfully sent with response: ", response);
+                        // return callBack(response);
+                        var status = {
+                            status: 1,
+                            message: "Successfully sent with response:!"
+                        };
+                        // console.log(status);
+                        // return callBack(status);
+                    }
+                });
+
+            });
+        });
+
+    },
+
+    sendServiceNotification(sp_id,tran_id,messages){
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+
+            var query = {sp_id: sp_id};
+            collectionSP.findOne(query, function (err, doc) {
+                console.log("----->"+doc);
+                var token = doc.fcm_token;
+                console.log("----->"+token);
+                var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                    to: token,
+                    collapse_key: 'your_collapse_key',
+
+                    notification: {
+                        title : "Kaikili-Service App",
+                        body : messages
+                    },
+
+                    data: {  //you can send only notification or only data(or include both)
+                        tran_id: tran_id,
+                        messages : messages,
+                        my_another_key: 'my another value'
+                    }
+                };
+
+                fcmService.send(message, function(err, response){
                     if (err) {
                         console.log(err);
                         console.log("Something has gone wrong!");
