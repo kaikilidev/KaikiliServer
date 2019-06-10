@@ -393,7 +393,7 @@ var UserService = {
                             message = "Service provider Cancelled your job.";
                         }
 
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message);
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message,req.body.sr_status);
 
 
                         var messagesBody = {
@@ -938,7 +938,7 @@ var UserService = {
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
                         var message = "Service provider Cancelled your job.";
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message);
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message,req.body.sr_status);
 
                         var messagesBody = {
                             author: docs[0].sp_id,
