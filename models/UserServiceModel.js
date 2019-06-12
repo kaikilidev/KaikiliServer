@@ -1459,7 +1459,7 @@ var UserService = {
                         if (err) {
                             uploadData = false;
                         } else {
-                            comman.sendCustomerNotification(newAlertRequirement.cust_id, newAlertRequirement.sp_cp_alert_send_id, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                            comman.sendCustomerNotification(data.cu_id,"SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
 
                             count++;
                             if (count == userSRSendCUAlertData.length) {
