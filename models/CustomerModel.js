@@ -1211,13 +1211,12 @@ var Customer = {
 
     // 11-6-2019 created Api (Customer Shouting single data)
     getCustomerSingleAlertTransition: function (req, callback) {
-        var cp_alert_id = req.body.cp_alert_id;
+        var sp_cp_alert_send_id = req.body.sp_cp_alert_send_id;
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
             collectionSP.findOne({
-                cp_alert_id: cp_alert_id
-
+                sp_cp_alert_send_id: sp_cp_alert_send_id
             }, function (err, records) {
                 if (err) {
                     console.log(err);
