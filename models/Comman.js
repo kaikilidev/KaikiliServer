@@ -330,7 +330,7 @@ var Comman = {
         });
     },
 
-    sendCustomerNotification(cu_id,tran_id,messages,sr_status){
+    sendCustomerNotification(cu_id,tran_id,messages,sr_status,type){
         console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
@@ -352,6 +352,7 @@ var Comman = {
 
                     data: {  //you can send only notification or only data(or include both)
                         tran_id: tran_id,
+                        type: type,
                         messages : messages,
                         sr_status : sr_status,
                         my_another_key: 'my another value'
@@ -385,7 +386,7 @@ var Comman = {
 
     },
 
-    sendServiceNotification(sp_id,tran_id,messages,sr_status){
+    sendServiceNotification(sp_id,tran_id,messages,sr_status,type){
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -408,6 +409,7 @@ var Comman = {
                     data: {  //you can send only notification or only data(or include both)
                         tran_id: tran_id,
                         messages : messages,
+                        type: type,
                         sr_status : sr_status,
                         my_another_key: 'my another value'
                     }

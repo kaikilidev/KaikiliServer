@@ -393,7 +393,7 @@ var UserService = {
                             message = "Service provider Cancelled your job.";
                         }
 
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message,req.body.sr_status);
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
 
 
                         var messagesBody = {
@@ -938,7 +938,7 @@ var UserService = {
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
                         var message = "Service provider Cancelled your job.";
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message,req.body.sr_status);
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
 
                         var messagesBody = {
                             author: docs[0].sp_id,
@@ -1458,25 +1458,28 @@ var UserService = {
                     collection.insertOne(newAlertRequirement, function (err, records) {
                         if (err) {
                             uploadData = false;
-                        }
-                        count++;
-                        if (count == userSRSendCUAlertData.length) {
-                            if (!uploadData) {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Failed"
-                                };
-                                console.log(status);
-                                callback(status);
-                            } else {
-                                var status = {
-                                    status: 1,
-                                    message: "Successfully add user address",
-                                    data: records
-                                };
-                                console.log(status);
-                                callback(status);
+                        } else {
+                            comman.sendCustomerNotification(newAlertRequirement.cust_id, newAlertRequirement.sp_cp_alert_send_id, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+
+                            count++;
+                            if (count == userSRSendCUAlertData.length) {
+                                if (!uploadData) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed"
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully add user address",
+                                        data: records
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                }
                             }
                         }
                     });

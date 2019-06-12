@@ -649,7 +649,7 @@ var Customer = {
                         });
 
                         var message = "Customer Create New Service"
-                        comman.sendServiceNotification(req.body.sp_id, tran_id, message,req.body.sr_status);
+                        comman.sendServiceNotification(req.body.sp_id, tran_id, message,req.body.sr_status,"tran");
 
                         var status = {
                             status: 1,
@@ -907,7 +907,7 @@ var Customer = {
                     collectionSP.find({tran_id: tran_id}).toArray(function (err, docs) {
                         console.log(docs);
                         var message = "Customer accept rescheduled date."
-                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,"Scheduled");
+                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,"Scheduled","tran");
                     });
                     var status = {
                         status: 1,
@@ -1150,7 +1150,7 @@ var Customer = {
                             message = "Customer provider Cancelled your job.";
                         }
 
-                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status);
+                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
 
 
                         var messagesBody = {
