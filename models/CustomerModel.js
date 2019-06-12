@@ -473,7 +473,6 @@ var Customer = {
 
           comman.getCustomerData(req.body.cu_id,function (CU_data) {
 
-
             var newServiceAlert = {
                 cp_alert_id: "CP-ALERT0" + result,
                 comment: req.body.comment,
@@ -1208,6 +1207,39 @@ var Customer = {
             });
         });
     },
+
+
+    // 11-6-2019 created Api (Customer Shouting single data)
+    getCustomerSingleAlertTransition: function (req, callback) {
+        var cp_alert_id = req.body.cp_alert_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            collectionSP.findOne({
+                cp_alert_id: cp_alert_id
+
+            }, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully Update data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 
 }
 module.exports = Customer;
