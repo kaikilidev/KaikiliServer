@@ -583,18 +583,18 @@ var UserService = {
                             }
                         });
 
-                        var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
-                        transactionCompleted.insertOne(docs[0], function (err, docs) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-                                transaction.removeOne({tran_id: tran_id}, function (err, docs) {
-                                    console.log(docs);
-                                });
-                                console.log("Update in payment Settlement ");
-                            }
-                        });
+                        // var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+                        // transactionCompleted.insertOne(docs[0], function (err, docs) {
+                        //     if (err) {
+                        //         console.log(err);
+                        //     } else {
+                        //         var transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                        //         transaction.removeOne({tran_id: tran_id}, function (err, docs) {
+                        //             console.log(docs);
+                        //         });
+                        //         console.log("Update in payment Settlement ");
+                        //     }
+                        // });
 
                     });
 
