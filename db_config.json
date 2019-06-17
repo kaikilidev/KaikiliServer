@@ -24,7 +24,8 @@
     "cu_quote_request": "cu_quote_request",
     "cu_service_alert": "cu_service_alert",
     "sp_cu_send_shout": "sp_cu_send_shout",
-    "sp_cu_review": "sp_cu_review"
+    "sp_cu_review": "sp_cu_review",
+    "cu_sp_transaction_completed": "cu_sp_transaction_completed"
   }
 
 }

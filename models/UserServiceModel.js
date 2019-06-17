@@ -527,6 +527,8 @@ var UserService = {
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
+
+
                         var messagesBody = {
                             author: docs[0].sp_id,
                             author_type: "SP",
@@ -538,6 +540,7 @@ var UserService = {
                             body: +"Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
+                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");
 
                         var paymentSettlementBody = {
                             cust_id: docs[0].cust_id,
@@ -576,6 +579,19 @@ var UserService = {
                             if (err) {
                                 console.log(err);
                             } else {
+                                console.log("Update in payment Settlement ");
+                            }
+                        });
+
+                        var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+                        transactionCompleted.insertOne(docs[0], function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                var transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                transaction.removeOne({tran_id: tran_id}, function (err, docs) {
+                                    console.log(docs);
+                                });
                                 console.log("Update in payment Settlement ");
                             }
                         });
