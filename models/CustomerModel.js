@@ -1062,12 +1062,39 @@ var Customer = {
                     callback(status);
 
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service list",
-                        data: docs
-                    };
-                    callback(status);
+
+                    var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                    cancellation.find({
+                        cust_id: cu_id,
+                        sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
+                    }).sort(mysort).toArray(function (err, docs1) {
+                        if (err) {
+                            if (docs.length > 0) {
+                                var status = {
+                                    status: 1,
+                                    message: "Success Get all Transition service list",
+                                    data: docs
+                                };
+                                callback(status);
+                            } else {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                callback(status);
+                                // console.log(status);
+                            }
+
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Success Get all Transition service list",
+                                data: docs.concat(docs1)
+                            };
+                            callback(status);
+                        }
+                    });
                 }
             });
 
