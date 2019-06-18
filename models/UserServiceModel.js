@@ -745,8 +745,7 @@ var UserService = {
             });
 
         });
-    }
-    ,
+    },
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -825,8 +824,7 @@ var UserService = {
                 });
             });
         });
-    }
-    ,
+    },
 
     SPUserBankInfoList: function (req, callback) {
 
@@ -856,8 +854,7 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
     SPUserDeleteBankInfo: function (req, callback) {
 
@@ -888,8 +885,7 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
     SPUserSetDefaultBankInfo: function (req, callback) {
 
@@ -935,8 +931,7 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
     userTransitionCancellation: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -961,11 +956,7 @@ var UserService = {
                     console.log(status);
                     callback(status);
                 } else {
-
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
-
-                        var message = "Service provider Cancelled your job.";
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
 
                         var messagesBody = {
                             author: docs[0].sp_id,
@@ -986,6 +977,19 @@ var UserService = {
                             reason: reason,
                             created_on: new Date().toISOString(),
                         };
+
+                        if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Cancel-Scheduled-Sp") {
+                            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                            var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                            bulkRemove.find({tran_id: tran_id}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    bulkRemove.removeOne({tran_id: tran_id});
+                                    var message = "Service provider Cancelled your job.";
+                                    comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
+                                }
+                            )
+                        }
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                         collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
