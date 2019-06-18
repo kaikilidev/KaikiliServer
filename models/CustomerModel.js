@@ -1149,7 +1149,9 @@ var Customer = {
                             message = "Customer provider Cancelled your job.";
                         }
 
-                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
+                        if (req.body.sr_status == "Progress" || req.body.sr_status == "Scheduled") {
+                            comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
+                        }
 
 
                         var messagesBody = {
@@ -1197,6 +1199,18 @@ var Customer = {
                                     // console.log(docs);
                                 }
                             });
+                        }
+
+                        if (req.body.sr_status == "Cancel-New-Cp" || req.body.sr_status == "Cancel-Scheduled-Cp") {
+                            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                            var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                            bulkRemove.find({tran_id: tran_id}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    bulkRemove.removeOne({tran_id: tran_id});
+                                    comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
+                                }
+                            )
                         }
 
                     });

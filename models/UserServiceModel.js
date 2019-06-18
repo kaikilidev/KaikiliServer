@@ -393,8 +393,9 @@ var UserService = {
                             message = "Service provider Cancelled your job.";
                         }
 
-                        comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
-
+                        if (req.body.sr_status == "Progress" || req.body.sr_status == "Scheduled" || req.body.sr_status == "Rescheduled") {
+                            comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
+                        }
 
                         var messagesBody = {
                             author: docs[0].sp_id,
@@ -443,6 +444,17 @@ var UserService = {
                             });
                         }
 
+                        if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Cancel-Scheduled-Sp") {
+                            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                            var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                            bulkRemove.find({tran_id: tran_id}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    bulkRemove.removeOne({tran_id: tran_id});
+                                    comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
+                                }
+                            )
+                        }
                     });
                     console.log();
                     callback(status);
@@ -526,7 +538,6 @@ var UserService = {
                     };
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
-
 
 
                         var messagesBody = {
@@ -739,8 +750,6 @@ var UserService = {
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
-
-
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
@@ -767,8 +776,10 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
+
+
 
     userAddBankInfo: function (req, callback) {
 
@@ -1475,7 +1486,7 @@ var UserService = {
                         if (err) {
                             uploadData = false;
                         } else {
-                            comman.sendCustomerNotification(data.cu_id,"SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                            comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
 
                             count++;
                             if (count == userSRSendCUAlertData.length) {
@@ -1552,8 +1563,38 @@ var UserService = {
         //         }
         //     });
         // });
-    }
-    ,
+    },
+
+    // Api Created 18-6-2019 Cancellation Transition Info
+    getSingleCancellationTransitionInfo: function (req, callback) {
+        var tran_id = req.body.tran_id;
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+
+            // Update service record
+            collection.findOne({tran_id: tran_id}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        data: docs
+                    };
+
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
 
 
 }

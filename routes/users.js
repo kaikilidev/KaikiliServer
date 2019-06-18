@@ -212,6 +212,23 @@ router.post('/getSingleTransitionInfo', function (req, res, next) {
 });
 
 
+router.post('/getSingleCancellationTransitionInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.getSingleCancellationTransitionInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
 router.post('/SPAddBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     userServiceModel.userAddBankInfo(req, function (err, result) {
