@@ -1284,6 +1284,185 @@ var Customer = {
         });
     },
 
+    reSearchServiceProvider: function (req, callback) {
+        var last_cancel_sp_id = req.body.last_cancel_sp_id;
+        var sr_id = req.body.sr_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+        var cc_ids = req.body.cc_ids;
+        var cost_item = req.body.cost_item;
+        console.log(longitude + " --- " + req.body.cc_ids);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                // console.log(mainDocs.length + "----------size");
+                if (err) {
+                    console.log(err + "----err");
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+
+                    var newArrData = new Array();
+                    var ctr = 0;
+                    var newArrServic = new Array();
+
+                    if (mainDocs.length > 0) {
+                        mainDocs.forEach(function (element) {
+                            var newRadius = element.radius * 1609.34;
+                            // var newRadius = 100;
+                            console.log(parseFloat(element.dist) + " <= " + parseFloat(newRadius));
+                            if (parseFloat(element.dist) <= parseFloat(newRadius)) {
+
+                                newArrData.push(element.sp_id);
+                                var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                                collection.aggregate([
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                    {
+                                        $lookup: {
+                                            from: config.collections.sp_sr_profile,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "userprofile"
+                                        }
+                                    },
+                                    {
+                                        $unwind: "$userprofile"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.sp_personal_info,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "profile"
+                                        }
+                                    }, {
+                                        $unwind: "$profile"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.add_services,
+                                            localField: "sr_id",
+                                            foreignField: "sr_id",
+                                            as: "services"
+                                        }
+                                    }, {
+                                        $unwind: "$services"
+                                    }
+                                ]).toArray(function (err, docs) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log(docs);
+                                        // var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        var children = docs[0].cost_components_on;
+                                        var newItemCost = new Array();
+                                        var totalCost = 0;
+                                        cost_item.forEach(function (element) {
+                                            var picked = children.filter(function (value) {
+                                                return value.cc_id == element.cc_id;
+                                            })
+                                            var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                            // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                            totalCost = totalCost + cost;
+                                            var dataCostItem = {
+                                                cc_id: element.cc_id,
+                                                cc_cu_title: element.cc_cu_title,
+                                                show_order: element.show_order,
+                                                cc_sp_title: element.cc_sp_title,
+                                                hcc_id: picked[0].hcc_id,
+                                                hcc_title: picked[0].hcc_title,
+                                                cc_per_item_qut: element.cc_per_item_qut,
+                                                cc_per_item_rate: picked[0].cc_rate_per_item,
+                                                cc_per_item_cost: cost,
+                                            };
+                                            newItemCost.push(dataCostItem);
+
+                                        });
+                                        // console.log("******");
+                                        var discountGive = 0;
+                                        if (docs[0].discount.ds_check_box == "ON") {
+                                            discountGive = docs[0].discount.ds_rate_per_item;
+                                        }
+
+                                        var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                        var discountAfterPrice = totalCost - discountAmount;
+                                        var dataShow = {
+                                            sp_id: docs[0].sp_id,
+                                            minimum_charge: docs[0].minimum_charge,
+                                            totalCost: totalCost,
+                                            kaikili_commission: docs[0].services.sr_commission,
+                                            itemCost: newItemCost,
+                                            discountGive: discountGive,
+                                            discountAfterPrice: discountAfterPrice,
+                                            dist: element.dist,
+                                            sp_about: docs[0].userprofile.about_sp_profile,
+                                            sp_workImage: docs[0].userprofile.workImages,
+                                            avg_response: docs[0].userprofile.avg_response,
+                                            avg_rating: docs[0].userprofile.avg_rating,
+                                            sp_image: docs[0].userprofile.profile_image,
+                                            sp_service_area: docs[0].userprofile.service_area,
+                                            sp_coordinatePoint: docs[0].userprofile.coordinatePoint,
+                                            sp_first_name: docs[0].profile.first_name,
+                                            sp_last_name: docs[0].profile.last_name,
+                                            sp_mobile_no: docs[0].profile.mobile_no
+
+                                        };
+                                        newArrServic.push(dataShow);
+                                        ctr++;
+                                        if (ctr === mainDocs.length) {
+                                            var status = {
+                                                status: 1,
+                                                message: "Success Get all Transition service list",
+                                                post_data: req.body,
+                                                data: newArrServic
+                                            };
+                                            callback(status);
+                                        }
+                                    }
+                                });
+                            } else {
+                                ctr++;
+                                if (ctr === mainDocs.length) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Success Get all Transition service list",
+                                        data: newArrServic
+                                    };
+                                    callback(status);
+
+                                }
+                            }
+                        });
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all service list",
+                            data: newArrServic
+                        };
+                        callback(status);
+                    }
+                }
+            });
+
+        });
+    },
 
 }
 module.exports = Customer;

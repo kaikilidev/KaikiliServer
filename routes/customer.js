@@ -112,6 +112,22 @@ router.post('/searchSProvider', function (req, res, next) {
     });
 });
 
+
+router.post('/reSearchSProvider', function (req, res, next) {
+    console.log("call searchServiceProvider-----1");
+    customerModel.reSearchServiceProvider(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 router.post('/searchQuoteProvider', function (req, res, next) {
     console.log("call searchQuoteProvider-----1");
     customerModel.searchQuoteProvider(req, function (err, result) {
