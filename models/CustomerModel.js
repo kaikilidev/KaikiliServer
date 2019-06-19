@@ -593,6 +593,9 @@ var Customer = {
                 txn_status: req.body.txn_status,
                 totalCost: req.body.totalCost,
                 itemCost: req.body.itemCost,
+                last_cancel_tran_id: req.body.last_cancel_tran_id,
+                last_cancel_sp_id: req.body.last_cancel_sp_id,
+                re_book: req.body.re_book,
                 minimum_charge: req.body.minimum_charge,
                 discount: req.body.discount,
                 kaikili_commission: req.body.kaikili_commission,
@@ -605,6 +608,7 @@ var Customer = {
                 distance: req.body.distance,
                 sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toISOString()
+
             };
 
             var notificationData = {
