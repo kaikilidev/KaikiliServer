@@ -86,7 +86,7 @@ var Customer = {
         var fcm_token = req.body.fcm_token;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-            collectionSP.findOne({mobile_no: mobile_no} ,function (err, docs) {
+            collectionSP.findOne({mobile_no: mobile_no}, function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -99,24 +99,24 @@ var Customer = {
                     // assert.equal(1, docs.length);
                     // if (docs.length == 1) {
 
-                        collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
-                         (err, records)  {
-                            console.log(records);
-                        });
+                    collectionSP.updateOne({mobile_no: mobile_no}, {$set: {fcm_token: fcm_token}}, function
+                        (err, records) {
+                        console.log(records);
+                    });
 
 
-                        if(docs === undefined  || docs === null ){
-                            var status = {
-                                        status: 0,
-                                        message: "No User"
-                                    };
-                        }else {
-                            var status = {
-                                status: 1,
-                                message: "Successfully data getting",
-                                data: docs
-                            };
-                        }
+                    if (docs === undefined || docs === null) {
+                        var status = {
+                            status: 0,
+                            message: "No User"
+                        };
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully data getting",
+                            data: docs
+                        };
+                    }
 
                     // } else {
                     //     var status = {
@@ -158,8 +158,8 @@ var Customer = {
                         bcrypt.compare(password, docs[0].password, function (err, res) {
                             if (res) {
 
-                                collectionCU.updateOne({mobile_no: docs[0].mobile_no},{ $set: { fcm_token : fcm_token } },function
-                                    (err, records)  {
+                                collectionCU.updateOne({mobile_no: docs[0].mobile_no}, {$set: {fcm_token: fcm_token}}, function
+                                    (err, records) {
                                     console.log(records);
                                 });
                                 // Passwords match
@@ -471,56 +471,56 @@ var Customer = {
         comman.getNextSequenceUserID("cu_alert_id", function (result) {
             //  console.log(result);
 
-          comman.getCustomerData(req.body.cu_id,function (CU_data) {
+            comman.getCustomerData(req.body.cu_id, function (CU_data) {
 
-            var newServiceAlert = {
-                cp_alert_id: "CP-ALERT0" + result,
-                comment: req.body.comment,
-                address: req.body.address,
-                sr_id: req.body.sr_id,
-                sr_title: req.body.sr_title,
-                cost_item: req.body.cost_item,
-                cu_id: req.body.cu_id,
-                cu_first_name: CU_data.first_name,
-                cu_last_name: CU_data.last_name,
-                mobile_no: CU_data.mobile_no,
-                cc_ids: req.body.cc_ids,
-                sr_type: req.body.sr_type,
-                type_of_service: req.body.type_of_service,
+                var newServiceAlert = {
+                    cp_alert_id: "CP-ALERT0" + result,
+                    comment: req.body.comment,
+                    address: req.body.address,
+                    sr_id: req.body.sr_id,
+                    sr_title: req.body.sr_title,
+                    cost_item: req.body.cost_item,
+                    cu_id: req.body.cu_id,
+                    cu_first_name: CU_data.first_name,
+                    cu_last_name: CU_data.last_name,
+                    mobile_no: CU_data.mobile_no,
+                    cc_ids: req.body.cc_ids,
+                    sr_type: req.body.sr_type,
+                    type_of_service: req.body.type_of_service,
 
-                location: {
-                    coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
-                    type: "Point"
-                },
-                alert_active: req.body.alert_active,
-                creationDate: new Date().toISOString()
-            };
+                    location: {
+                        coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
+                        type: "Point"
+                    },
+                    alert_active: req.body.alert_active,
+                    creationDate: new Date().toISOString()
+                };
 
 
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
-                collectionSP.insert(newServiceAlert, function (err, records) {
-                    if (err) {
-                        console.log(err);
-                        var status = {
-                            status: 0,
-                            message: "Failed"
-                        };
-                        console.log(status);
-                        callback(status);
-                    } else {
-                        var status = {
-                            status: 1,
-                            message: "Successfully add your Service alert information are store.",
-                            data: records
-                        };
-                        console.log(status);
-                        callback(status);
-                    }
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+                    collectionSP.insert(newServiceAlert, function (err, records) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully add your Service alert information are store.",
+                                data: records
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    });
                 });
-            });
 
-          });
+            });
         });
     },
 
@@ -628,6 +628,7 @@ var Customer = {
                 messages: []
             };
 
+
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                 collectionCU.insert(newBookServiceUser, function (err, records) {
@@ -651,8 +652,14 @@ var Customer = {
                             }
                         });
 
+                        var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                        req.body.last_cancel_tran_id.forEach(function (element) {
+                            collectionSP.update({tran_id: element}, {$set: {re_book: "true"}});
+                            }
+                        );
+
                         var message = "Customer Create New Service"
-                        comman.sendServiceNotification(req.body.sp_id, tran_id, message,req.body.sr_status,"tran");
+                        comman.sendServiceNotification(req.body.sp_id, tran_id, message, req.body.sr_status, "tran");
 
                         var status = {
                             status: 1,
@@ -731,7 +738,10 @@ var Customer = {
                             callback(status);
 
                         } else {
-                            collectionAlert.find({cu_id: cust_id, sr_status: "Open"}).sort({creationDate: -1}).toArray(function (err, shoutingData) {
+                            collectionAlert.find({
+                                cu_id: cust_id,
+                                sr_status: "Open"
+                            }).sort({creationDate: -1}).toArray(function (err, shoutingData) {
                                 var status = {
                                     status: 1,
                                     message: "Success Get all Transition service to Mongodb",
@@ -782,7 +792,7 @@ var Customer = {
         var cp_alert_id = req.body.cp_alert_id;
         var cu_id = req.body.cu_id;
         var alert_active = req.body.alert_active;
-        console.log("-----"+alert_active);
+        console.log("-----" + alert_active);
         var updateTran = {
             alert_active: alert_active
         };
@@ -825,7 +835,7 @@ var Customer = {
             collectionSP.deleteOne({
                 cp_alert_id: cp_alert_id,
                 cu_id: cu_id
-            },  function (err, records) {
+            }, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -857,7 +867,7 @@ var Customer = {
             collectionSP.findOne({
                 tran_id: tran_id,
                 cust_id: cust_id
-            },  function (err, records) {
+            }, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -897,7 +907,7 @@ var Customer = {
             collectionSP.updateOne({
                 tran_id: tran_id,
                 cust_id: cust_id
-            }, {$set: updateTran},function (err, records) {
+            }, {$set: updateTran}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -910,7 +920,7 @@ var Customer = {
                     collectionSP.find({tran_id: tran_id}).toArray(function (err, docs) {
                         console.log(docs);
                         var message = "Customer accept rescheduled date."
-                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message,"Scheduled","tran");
+                        comman.sendServiceNotification(docs[0].sp_id, tran_id, message, "Scheduled", "tran");
                     });
                     var status = {
                         status: 1,
@@ -939,7 +949,7 @@ var Customer = {
             collectionSP.updateOne({
                 cp_alert_id: cp_alert_id,
                 cu_id: cu_id
-            }, {$set: updateTran},function (err, records) {
+            }, {$set: updateTran}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -1054,7 +1064,7 @@ var Customer = {
             console.log(err);
             collection.find({
                 cust_id: cu_id,
-                sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -1070,7 +1080,7 @@ var Customer = {
                     var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                     cancellation.find({
                         cust_id: cu_id,
-                        sr_status: { $in: ["Cancel-New-Sp","Cancel-New-Cp","Cancel-Scheduled-Sp","Cancel-Scheduled-Cp","Completed"]}
+                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
                     }).sort(mysort).toArray(function (err, docs1) {
                         if (err) {
                             if (docs.length > 0) {
@@ -1112,7 +1122,7 @@ var Customer = {
         var cu_id = req.body.cu_id;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-            collectionSP.findOne({ cu_id: cu_id  },function (err, records) {
+            collectionSP.findOne({cu_id: cu_id}, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -1181,7 +1191,7 @@ var Customer = {
                         }
 
                         if (req.body.sr_status == "Progress" || req.body.sr_status == "Scheduled") {
-                            comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
+                            comman.sendServiceNotification(docs[0].sp_id, tran_id, message, req.body.sr_status, "tran");
                         }
 
 
@@ -1239,7 +1249,7 @@ var Customer = {
                                 function (doc) {
                                     bulkInsert.insertOne(doc);
                                     bulkRemove.removeOne({tran_id: tran_id});
-                                    comman.sendServiceNotification(docs[0].sp_id, tran_id, message,req.body.sr_status,"tran");
+                                    comman.sendServiceNotification(docs[0].sp_id, tran_id, message, req.body.sr_status, "tran");
                                 }
                             )
                         }
@@ -1284,6 +1294,7 @@ var Customer = {
         });
     },
 
+    //Create new Api ReBook Service 19-6-2019
     reSearchServiceProvider: function (req, callback) {
         var last_cancel_sp_id = req.body.last_cancel_sp_id;
         var sr_id = req.body.sr_id;
@@ -1424,7 +1435,11 @@ var Customer = {
                                             sp_mobile_no: docs[0].profile.mobile_no
 
                                         };
-                                        newArrServic.push(dataShow);
+
+                                        if (!last_cancel_sp_id.includes(docs[0].sp_id)) {
+                                            newArrServic.push(dataShow);
+                                        }
+
                                         ctr++;
                                         if (ctr === mainDocs.length) {
                                             var status = {
