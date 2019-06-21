@@ -2,6 +2,7 @@ var mongo = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
+const math = require('mathjs')
 //
 // var fcm = require('fcm-notification');
 // var path = require('../privatekey.json');
@@ -126,7 +127,7 @@ var Comman = {
                     }
                 }, {
                     $project: {
-                        cost_components_on: {
+                       cost_components_on: {
                             $filter: {
                                 input: "$cost_components_on",
                                 as: "cost_components_on",
@@ -139,7 +140,7 @@ var Comman = {
             ]);
 
             cursorSearch.toArray(function (err, mainDocs) {
-                // console.log("----" + mainDocs.length);
+                 console.log("----" + mainDocs);
                 return callBack(mainDocs);
             });
         });
@@ -167,15 +168,15 @@ var Comman = {
                 },
                 {
                     $unwind: "$userprofile"
-                    }, {
-                        $lookup: {
-                            from: config.collections.add_services,
-                            localField: "sr_id",
-                            foreignField: "sr_id",
-                            as: "services"
-                        }
-                    }, {
-                        $unwind: "$services"
+                }, {
+                    $lookup: {
+                        from: config.collections.add_services,
+                        localField: "sr_id",
+                        foreignField: "sr_id",
+                        as: "services"
+                    }
+                }, {
+                    $unwind: "$services"
 
                     // }, {
                     //     $lookup: {
@@ -266,20 +267,20 @@ var Comman = {
             autoIdCollection.find(query).toArray(function (err, doc) {
                 var userSRidList = [];
                 console.log(doc.length);
-                if(doc.length>0){
-                    var count= 0
+                if (doc.length > 0) {
+                    var count = 0
                     doc.forEach(function (element) {
                         userSRidList.push(element.cp_alert_id);
                         console.log(element.cp_alert_id);
                         // return callBack(doc);
-                        count ++
+                        count++
                         if (doc.length == count) {
                             console.log(userSRidList);
                             return callBack(userSRidList);
                         }
                     });
 
-                }else {
+                } else {
                     console.log(userSRidList);
                     return callBack(userSRidList);
                 }
@@ -289,7 +290,7 @@ var Comman = {
         });
     },
 
-    getShoutingDataFilter1(longitude,latitude,userSRidList,radius,type_of_service, callBack) {
+    getShoutingDataFilter1(longitude, latitude, userSRidList, radius, type_of_service, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
             var cursorIndex = collection.createIndex({location: "2dsphere"});
@@ -330,36 +331,36 @@ var Comman = {
         });
     },
 
-    sendCustomerNotification(cu_id,tran_id,messages,sr_status,type){
+    sendCustomerNotification(cu_id, tran_id, messages, sr_status, type) {
         console.log(cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
 
             var query = {cu_id: cu_id};
             collectionSP.findOne(query, function (err, doc) {
-                console.log("----->"+doc);
+                console.log("----->" + doc);
                 var token = doc.fcm_token;
-                console.log("----->"+token);
+                console.log("----->" + token);
                 var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                     to: token,
                     priority: "high",
                     collapse_key: 'your_collapse_key',
 
                     notification: {
-                        title : "Kaikili-Customer App",
-                        body : messages
+                        title: "Kaikili-Customer App",
+                        body: messages
                     },
 
                     data: {  //you can send only notification or only data(or include both)
                         tran_id: tran_id,
                         type: type,
-                        messages : messages,
-                        sr_status : sr_status,
+                        messages: messages,
+                        sr_status: sr_status,
                         my_another_key: 'my another value'
                     }
                 };
 
-                fcm.send(message, function(err, response){
+                fcm.send(message, function (err, response) {
                     if (err) {
                         console.log(err);
                         console.log("Something has gone wrong!");
@@ -386,36 +387,36 @@ var Comman = {
 
     },
 
-    sendServiceNotification(sp_id,tran_id,messages,sr_status,type){
+    sendServiceNotification(sp_id, tran_id, messages, sr_status, type) {
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
 
             var query = {sp_id: sp_id};
             collectionSP.findOne(query, function (err, doc) {
-                console.log("----->"+doc);
+                console.log("----->" + doc);
                 var token = doc.fcm_token;
-                console.log("----->"+token);
+                console.log("----->" + token);
                 var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                     to: token,
                     priority: "high",
                     collapse_key: 'your_collapse_key',
 
                     notification: {
-                        title : "Kaikili-Service App",
-                        body : messages
+                        title: "Kaikili-Service App",
+                        body: messages
                     },
 
                     data: {  //you can send only notification or only data(or include both)
                         tran_id: tran_id,
-                        messages : messages,
+                        messages: messages,
                         type: type,
-                        sr_status : sr_status,
+                        sr_status: sr_status,
                         my_another_key: 'my another value'
                     }
                 };
 
-                fcmService.send(message, function(err, response){
+                fcmService.send(message, function (err, response) {
                     if (err) {
                         console.log(err);
                         console.log("Something has gone wrong!");
@@ -439,8 +440,96 @@ var Comman = {
 
             });
         });
+    },
 
-    }
+    getSPUserRadiusLocationToAVG(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
+
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 160934,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                var userSPidList = [];
+                mainDocs.forEach(function (element) {
+                    userSPidList.push(element.sp_id);
+                });
+                var newCost_components = new Array();
+                var ctr = 0;
+                console.log(" --- " + userSPidList);
+                var totalCost = 0;
+                if(userSPidList.length>0) {
+                    cost_item.forEach(function (elementCost) {
+                        console.log(" --- 333" + elementCost);
+                        module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
+                            var userSPidSetRate = [];
+                            resultCost.forEach(function (element) {
+                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                            });
+
+                            var avg = 0;
+                            console.log("------std 11>" + userSPidSetRate);
+                            if (userSPidSetRate.length > 0) {
+                                var n = userSPidSetRate.length;
+                                avg = (math.sum(userSPidSetRate) / n)
+                                var std = math.std(userSPidSetRate);
+                                console.log("------std 33>" + std);
+                                avg = std;
+                            }
+
+                            var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
+                            totalCost = (totalCost + cost);
+
+                            var dataCostItem = {
+                                cc_id: elementCost.cc_id,
+                                cc_cu_title: elementCost.cc_cu_title,
+                                show_order: elementCost.show_order,
+                                cc_sp_title: elementCost.cc_sp_title,
+                                hcc_id: elementCost.hcc_id,
+                                hcc_title: elementCost.hcc_title,
+                                cc_per_item_qut: elementCost.cc_per_item_qut,
+                                cc_per_item_rate: avg.toFixed(2),
+                                cc_per_item_cost: cost.toFixed(2)
+
+                            };
+
+                            newCost_components.push(dataCostItem);
+
+                            ctr++;
+                            if (ctr === cc_ids.length) {
+
+                                var sendData = {
+                                    itemCost: newCost_components,
+                                    totalCost: totalCost.toFixed(2),
+                                    sp_ids: userSPidList
+                                };
+                                return callBack(sendData);
+                            }
+                        });
+                    });
+                }else {
+                    var sendData = {
+                        itemCost: 0,
+                        totalCost: 0,
+                        sp_ids: userSPidList
+                    };
+                    return callBack(sendData);
+                }
+            });
+        });
+    },
 
 }
 
