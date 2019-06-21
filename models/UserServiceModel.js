@@ -1174,10 +1174,10 @@ var UserService = {
                                                             "quote_accept": docs1[0].quote_accept,
                                                             "threshould_price": docs[0].threshould_price,
                                                             "type_of_service": docs[0].type_of_service,
-
-                                                            "cost_components": newCost_components,
+                                                            "preferred_provider": docs1[0].preferred_provider,
                                                             // "cost_components": docs[0].cost_components,
-                                                            "notes": docs[0].notes
+                                                            "notes": docs[0].notes,
+                                                            "cost_components": newCost_components
                                                         },
                                                         message: "Success Get all service to Mongodb",
                                                         // serviceData:docs,
