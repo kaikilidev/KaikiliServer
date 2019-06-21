@@ -1527,5 +1527,35 @@ var Customer = {
         });
     },
 
+
+
+    // 21-6-2019 created Api (Customer Book Preferred Provider Service)
+    postCustomerBookPreferredProviderService: function (req, callback) {
+        var serviceData = req.body;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            collectionSP.insertOne(serviceData , function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully Update data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 }
 module.exports = Customer;
