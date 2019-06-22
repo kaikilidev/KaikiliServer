@@ -773,6 +773,7 @@ var Customer = {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
             var collectionAlert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var collectionPPS = kdb.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             collection.find({cust_id: cust_id, cp_review: "false"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -800,14 +801,20 @@ var Customer = {
                                 cu_id: cust_id,
                                 sr_status: "Open"
                             }).sort({creationDate: -1}).toArray(function (err, shoutingData) {
-                                var status = {
-                                    status: 1,
-                                    message: "Success Get all Transition service to Mongodb",
-                                    data: docs,
-                                    dataQuote: docsQuote,
-                                    shoutingData: shoutingData
-                                };
-                                callback(status);
+
+                                collectionPPS.find({
+                                    cust_id: cust_id
+                                }).sort(mysort).toArray(function (err, docspps) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Success Get all Transition service to Mongodb",
+                                        data: docs,
+                                        dataQuote: docsQuote,
+                                        shoutingData: shoutingData,
+                                        docspps:docspps
+                                    };
+                                    callback(status);
+                                });
                             });
                         }
                     });
@@ -1573,7 +1580,6 @@ var Customer = {
     },
 
 
-
     // 21-6-2019 created Api (Customer Book Preferred Provider Service)
     postCustomerBookPreferredProviderService: function (req, callback) {
         comman.getNextSequenceUserID("pps_id", function (result) {
@@ -1610,7 +1616,7 @@ var Customer = {
             };
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-                collectionSP.insertOne(ppServiceData , function (err, records) {
+                collectionSP.insertOne(ppServiceData, function (err, records) {
                     if (err) {
                         console.log(err);
                         var status = {
