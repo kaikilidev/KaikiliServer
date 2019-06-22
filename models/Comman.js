@@ -621,7 +621,7 @@ var Comman = {
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-                collectionCU.insert(newBookServiceUser, function (err, records) {
+                collectionCU.insertOne(newBookServiceUser, function (err, records) {
                     if (err) {
                         console.log(err);
                         var status = {
@@ -629,11 +629,12 @@ var Comman = {
                             message: "Failed"
                         };
                         console.log(status);
-                        callback(status);
+                        // callback(status);
+                        return callBack(status);
                     } else {
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                        collectionNotification.insert(notificationData, function (err, docs) {
+                        collectionNotification.insertOne(notificationData, function (err, docs) {
                             if (err) {
                                 console.log(err);
                             } else {
@@ -659,7 +660,7 @@ var Comman = {
 
                         };
                         console.log(status);
-                        callback(status);
+                        return callBack(status);
                     }
                 });
             });

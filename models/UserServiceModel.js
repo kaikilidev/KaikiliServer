@@ -1698,7 +1698,7 @@ var UserService = {
                                 callback(status);
 
                             } else {
-                                // collection.removeOne({pps_id: pps_id});
+                                collection.removeOne({pps_id: pps_id});
                                 comman.getSPProfileData(sp_id, function (result) {
 
                                     var discount = {
