@@ -1758,5 +1758,38 @@ var UserService = {
         });
     },
 
+
+
+    // Api Created 22-6-2019 Preferred Provider Transition Info
+    getPreferredProviderInfo: function (req, callback) {
+        var pps_id = req.body.pps_id;
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+
+            // Update service record
+            collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        ppsdata: docs
+                    };
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
+
+
 }
 module.exports = UserService;
