@@ -1533,12 +1533,16 @@ var Customer = {
     postCustomerBookPreferredProviderService: function (req, callback) {
         comman.getNextSequenceUserID("pps_id", function (result) {
 
+
+
+
             var ppServiceData = {
                 pps_id: "PPS0" + result,
                 address: req.body.address,
                 comment: req.body.comment,
                 sr_id: req.body.sr_id,
                 type_of_service: req.body.type_of_service,
+                sr_title: req.body.sr_title,
                 time: req.body.time,
                 date: req.body.date,
                 cust_id: req.body.cust_id,
