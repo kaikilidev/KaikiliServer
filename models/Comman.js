@@ -481,13 +481,17 @@ var Comman = {
 
                             var avg = 0;
                             console.log("------std 11>" + userSPidSetRate);
-                            if (userSPidSetRate.length > 0) {
+                            if (userSPidSetRate.length > 1) {
                                 var n = userSPidSetRate.length;
                                 avg = (math.sum(userSPidSetRate) / n)
                                 var std = math.std(userSPidSetRate);
                                 console.log("------std 33>" + std);
                                 avg = std;
+                            }else if(userSPidSetRate.length == 1){
+                                var n = userSPidSetRate.length;
+                                avg = (math.sum(userSPidSetRate) / n)
                             }
+
 
                             var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
                             totalCost = (totalCost + cost);
