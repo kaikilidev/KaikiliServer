@@ -1203,6 +1203,7 @@ var UserService = {
                                                             "type_of_service": docs[0].type_of_service,
                                                             "minimum_charge": "",
                                                             "quote_accept": "",
+                                                            "preferred_provider": "",
                                                             "cost_components": newCost_components,
                                                             // "cost_components": docs[0].cost_components,
                                                             "notes": docs[0].notes
