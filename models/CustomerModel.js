@@ -1393,6 +1393,8 @@ var Customer = {
                     var newArrData = new Array();
                     var ctr = 0;
                     var newArrServic = new Array();
+                    var newPreferredArrServic = new Array();
+                    var newPreferredArrData = new Array();
 
                     if (mainDocs.length > 0) {
                         mainDocs.forEach(function (element) {
@@ -1470,6 +1472,16 @@ var Customer = {
                                             discountGive = docs[0].discount.ds_rate_per_item;
                                         }
 
+                                        if (docs[0].preferred_provider == "1") {
+                                            newPreferredArrServic.push(docs[0].sp_id);
+
+                                            var ppsData = {
+                                                sp_id: docs[0].sp_id,
+                                                dist: element.dist,
+                                            }
+                                            newPreferredArrData.push(ppsData);
+                                        }
+
                                         var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
                                         var discountAfterPrice = totalCost - discountAmount;
                                         var dataShow = {
@@ -1498,38 +1510,61 @@ var Customer = {
                                             newArrServic.push(dataShow);
                                         }
 
+
                                         ctr++;
                                         if (ctr === mainDocs.length) {
-                                            var status = {
-                                                status: 1,
-                                                message: "Success Get all Transition service list",
-                                                post_data: req.body,
-                                                data: newArrServic
-                                            };
-                                            callback(status);
+                                            comman.getSPUserRadiusLocationToAVG(cc_ids, sr_id, longitude, latitude, cost_item, function (result) {
+                                                console.log("------length >" + result.length);
+                                                var status = {
+                                                    status: 1,
+                                                    message: "Success Get all Transition service list",
+                                                    post_data: req.body,
+                                                    data: newArrServic,
+                                                    preferred_provider: newPreferredArrServic,
+                                                    pps_data: newPreferredArrData,
+                                                    preferred_data: result
+
+                                                };
+                                                callback(status);
+                                            });
                                         }
                                     }
                                 });
                             } else {
+
                                 ctr++;
                                 if (ctr === mainDocs.length) {
-                                    var status = {
-                                        status: 1,
-                                        message: "Success Get all Transition service list",
-                                        data: newArrServic
-                                    };
-                                    callback(status);
+                                    comman.getSPUserRadiusLocationToAVG(cc_ids, sr_id, longitude, latitude, cost_item, function (result) {
+                                        console.log("------length >" + result.length);
 
+                                        var status = {
+                                            status: 1,
+                                            message: "Success Get all Transition service list",
+                                            data: newArrServic,
+                                            preferred_provider: newPreferredArrServic,
+                                            pps_data: newPreferredArrData,
+                                            preferred_data: result
+                                        };
+                                        callback(status);
+                                    });
                                 }
+
                             }
                         });
                     } else {
-                        var status = {
-                            status: 1,
-                            message: "Success Get all service list",
-                            data: newArrServic
-                        };
-                        callback(status);
+                        comman.getSPUserRadiusLocationToAVG(cc_ids, sr_id, longitude, latitude, cost_item, function (result) {
+                            console.log("------length >" + result.length);
+
+                            var status = {
+                                status: 1,
+                                message: "Success Get all service list",
+                                data: newArrServic,
+                                preferred_provider: newPreferredArrServic,
+                                pps_data: newPreferredArrData,
+                                preferred_data: result
+                            };
+                            callback(status);
+                        });
                     }
                 }
             });
