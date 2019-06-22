@@ -327,6 +327,7 @@ var Customer = {
                     var ctr = 0;
                     var newArrServic = new Array();
                     var newPreferredArrServic = new Array();
+                    var newPreferredArrData = new Array();
 
 
                     if (mainDocs.length > 0) {
@@ -406,7 +407,13 @@ var Customer = {
                                         }
 
                                         if (docs[0].preferred_provider == "1") {
-                                            newPreferredArrServic.push(docs[0].sp_id)
+                                            newPreferredArrServic.push(docs[0].sp_id);
+
+                                            var ppsData = {
+                                                sp_id: docs[0].sp_id,
+                                                dist: element.dist,
+                                            }
+                                            newPreferredArrData.push(ppsData);
                                         }
 
                                         var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
@@ -445,6 +452,7 @@ var Customer = {
                                                     post_data: req.body,
                                                     data: newArrServic,
                                                     preferred_provider: newPreferredArrServic,
+                                                    pps_data: newPreferredArrData,
                                                     preferred_data: result
 
                                                 };
@@ -464,6 +472,7 @@ var Customer = {
                                             message: "Success Get all Transition service list",
                                             data: newArrServic,
                                             preferred_provider: newPreferredArrServic,
+                                            pps_data: newPreferredArrData,
                                             preferred_data: result
                                         };
                                         callback(status);
@@ -480,6 +489,7 @@ var Customer = {
                                 message: "Success Get all service list",
                                 data: newArrServic,
                                 preferred_provider: newPreferredArrServic,
+                                pps_data: newPreferredArrData,
                                 preferred_data: result
                             };
                             callback(status);
@@ -1533,9 +1543,6 @@ var Customer = {
     postCustomerBookPreferredProviderService: function (req, callback) {
         comman.getNextSequenceUserID("pps_id", function (result) {
 
-
-
-
             var ppServiceData = {
                 pps_id: "PPS0" + result,
                 address: req.body.address,
@@ -1563,7 +1570,8 @@ var Customer = {
                 coordinatePoint: req.body.coordinatePoint,
                 cp_review: req.body.cp_review,
                 sp_review: req.body.sp_review,
-                preferredProvider: req.body.preferredProvider
+                preferredProvider: req.body.preferredProvider,
+                pps_data: req.body.pps_data
             };
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
