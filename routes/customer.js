@@ -385,6 +385,21 @@ router.post('/customerBookPreferredProviderService', function (req, res, next) {
 
 
 
+router.post('/BookPPStoCancel', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    customerModel.postBookPPStoCancel(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 
 
 
