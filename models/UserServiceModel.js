@@ -244,6 +244,7 @@ var UserService = {
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: 1};
+            var collectionPPS = kdb.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
             collection.find({
@@ -261,12 +262,21 @@ var UserService = {
                     callback(status);
 
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service to Mongodb",
-                        data: docs
-                    };
-                    callback(status);
+
+                    collectionPPS.find({
+                        preferredProvider: sp_id
+                    }).sort(mysort).toArray(function (err, docspps) {
+
+
+                        var status = {
+                            status: 1,
+                            message: "Success Get all Transition service to Mongodb",
+                            data: docs,
+                            docspps: docspps
+                        };
+                        callback(status);
+
+                    });
                 }
             });
 
