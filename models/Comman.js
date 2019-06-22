@@ -531,6 +531,35 @@ var Comman = {
         });
     },
 
+
+    getSPProfileData(spid, callBack) {
+        // var query = {sp_id: spid};
+        // console.log("----" + query);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
+
+            var cursorSearch = collection.aggregate([
+                {$match: {sp_id: spid}},
+                {
+                    $lookup: {
+                        from: config.collections.sp_sr_profile,
+                        localField: "sp_id",
+                        foreignField: "sp_id",
+                        as: "userprofile"
+                    }
+                },{
+                    $unwind: "$userprofile"
+                }
+            ]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                return callBack(mainDocs);
+            });
+        });
+    },
+
+
 }
 
 module.exports = Comman;

@@ -1,6 +1,7 @@
 var mongo = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
+var customerModel = require('../models/CustomerModel.js');
 var config = require('../db_config.json');
 var comman = require('../models/Comman');
 // load math.js (using node.js)
@@ -1637,6 +1638,127 @@ var UserService = {
         });
     },
 
+
+    // Api Created 22-6-2019 kaikili preferred provider Transition Info
+    postSPupaterPPSInfo: function (req, callback) {
+        var pps_id = req.body.pps_id;
+        var sp_id = req.body.sp_id;
+        var statusData = req.body.status;
+        console.log(pps_id);
+        console.log(sp_id);
+        console.log(statusData);
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+
+
+                    console.log("------------------------------------>");
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+
+                        if (docs.length == 0) {
+
+                            var status = {
+                                status: 0,
+                                message: "This Service other service provider accepted."
+                            };
+
+                            console.log();
+                            callback(status);
+                        } else {
+                            var dist = "";
+                            docs[0].pps_data.forEach(function (ppsdata) {
+                                if (ppsdata.sp_id == sp_id) {
+                                    dist = ppsdata.dist;
+                                }
+                            });
+
+                            if (statusData == "Cancel") {
+
+                                collection.updateOne({pps_id: pps_id}, {$pull: {preferredProvider: sp_id}}, function (err, docs) {
+                                    console.log(docs + "----------1");
+                                });
+                                collection.updateOne({pps_id: pps_id}, {$pull: {pps_data: {sp_id: sp_id}}}, function (err, docs) {
+                                    console.log(docs + "----------2");
+                                });
+                                var status = {
+                                    status: 1,
+                                    message: "Cancel service provider."
+                                };
+
+                                console.log();
+                                callback(status);
+
+                            } else {
+                                collection.removeOne({pps_id: pps_id});
+                                comman.getSPProfileData(sp_id, function (result) {
+
+                                    var discount = {
+                                        ds_title: "Disount",
+                                        ds_rate_per_item: "0",
+                                        ds_per: "0"
+                                    };
+
+                                    var postJob = {
+                                        address: docs[0].address,
+                                        comment: docs[0].comment,
+                                        sr_id: docs[0].sr_id,
+                                        sr_title: docs[0].sr_title,
+                                        time: docs[0].time,
+                                        date: docs[0].date,
+                                        cust_id: docs[0].cust_id,
+                                        cust_first_name: docs[0].cust_first_name,
+                                        cust_last_name: docs[0].cust_last_name,
+                                        sr_status: "Scheduled",
+                                        txn_status: "",
+                                        minimum_charge: "0",
+                                        totalCost: docs[0].totalCost,
+                                        itemCost: docs[0].itemCost,
+                                        last_cancel_tran_id: docs[0].last_cancel_tran_id,
+                                        last_cancel_sp_id: docs[0].last_cancel_sp_id,
+                                        re_book: docs[0].re_book,
+                                        type_of_service: docs[0].type_of_service,
+                                        discount: discount,
+                                        kaikili_commission: docs[0].kaikili_commission,
+                                        sr_type: docs[0].sr_type,
+                                        sr_total: docs[0].sr_total,
+                                        sp_net_pay: docs[0].sp_net_pay,
+                                        coordinatePoint: docs[0].coordinatePoint,
+                                        cp_review: docs[0].cp_review,
+                                        sp_review: docs[0].sp_review,
+                                        sp_first_name: result[0].first_name,
+                                        sp_Last_name: result[0].last_name,
+                                        sp_id: sp_id,
+                                        sp_image: result[0].userprofile.profile_image,
+                                        sp_service_area: result[0].userprofile.service_area,
+                                        distance: dist
+                                    }
+                                    var status = {
+                                        status: 1,
+                                        message: "Cancel service provider.",
+                                        post:postJob
+                                    };
+                                    console.log();
+                                    callback(status);
+                                });
+                            }
+                        }
+                    }
+                }
+            );
+
+
+
+        });
+    },
 
 }
 module.exports = UserService;
