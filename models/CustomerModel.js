@@ -1621,6 +1621,12 @@ var Customer = {
                         callback(status);
                     } else {
 
+                        var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                        req.body.last_cancel_tran_id.forEach(function (element) {
+                                collectionSP.update({tran_id: element}, {$set: {re_book: "true"}});
+                            }
+                        );
+
                         req.body.preferredProvider.forEach(function (element) {
                             var message = "New kaikili preferred provider Job."
                             comman.sendServiceNotification(element, "PPS0" + result, message, "New", "pps");
