@@ -559,7 +559,112 @@ var Comman = {
         });
     },
 
+    getBookPPService(postData, callBack) {
+        module.exports.getNextSequenceUserID("tr_service", function (result) {
+            //  console.log(result);
+            var tran_id = "TR0" + result;
+            var newBookServiceUser = {
+                tran_id: "TR0" + result,
+                address: postData.address,
+                comment: postData.comment,
+                sr_id: postData.sr_id,
+                type_of_service: postData.type_of_service,
+                sr_title: postData.sr_title,
+                time: postData.time,
+                date: postData.date,
+                cust_id: postData.cust_id,
+                cust_first_name: postData.cust_first_name,
+                cust_last_name: postData.cust_last_name,
+                sp_first_name: postData.sp_first_name,
+                sp_Last_name: postData.sp_Last_name,
+                sp_id: postData.sp_id,
+                sp_image: postData.sp_image,
+                sr_status: postData.sr_status,
+                txn_status: postData.txn_status,
+                totalCost: postData.totalCost,
+                itemCost: postData.itemCost,
+                last_cancel_tran_id: postData.last_cancel_tran_id,
+                last_cancel_sp_id: postData.last_cancel_sp_id,
+                re_book: postData.re_book,
+                minimum_charge: postData.minimum_charge,
+                discount: postData.discount,
+                kaikili_commission: postData.kaikili_commission,
+                sr_type: postData.sr_type,
+                sr_total: postData.sr_total,
+                sp_net_pay: postData.sp_net_pay,
+                coordinatePoint: postData.coordinatePoint,
+                cp_review: postData.cp_review,
+                sp_review: postData.sp_review,
+                distance: postData.distance,
+                sp_service_area: postData.sp_service_area,
+                creationDate: new Date().toISOString()
 
+            };
+
+            var notificationData = {
+                tran_id: "TR0" + result,
+                sr_id: postData.sr_id,
+                sr_title: postData.sr_title,
+                time: postData.time,
+                date: postData.date,
+                cust_id: postData.cust_id,
+                cust_first_name: postData.cust_first_name,
+                cust_last_name: postData.cust_last_name,
+                sp_first_name: postData.sp_first_name,
+                sp_Last_name: postData.sp_Last_name,
+                sp_id: postData.sp_id,
+                sp_image: postData.sp_image,
+                creationDate: new Date().toISOString(),
+                messages: []
+            };
+
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                collectionCU.insert(newBookServiceUser, function (err, records) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+
+                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                        collectionNotification.insert(notificationData, function (err, docs) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Update in Notification");
+                                // console.log(docs);
+                            }
+                        });
+
+                        var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                        postData.last_cancel_tran_id.forEach(function (element) {
+                                collectionSP.update({tran_id: element}, {$set: {re_book: "true"}});
+                            }
+                        );
+
+                        var message = "Service provider accept service."
+                        module.exports.sendCustomerNotification(postData.cust_id, tran_id, message, postData.sr_status, "tran");
+
+                        var status = {
+                            status: 1,
+                            message: "Successfully add new service",
+                            data: records
+
+
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+        });
+    },
 }
 
 module.exports = Comman;

@@ -1741,13 +1741,11 @@ var UserService = {
                                         sp_service_area: result[0].userprofile.service_area,
                                         distance: dist
                                     }
-                                    var status = {
-                                        status: 1,
-                                        message: "Cancel service provider.",
-                                        post:postJob
-                                    };
-                                    console.log();
-                                    callback(status);
+
+                                    comman.getBookPPService(postJob,function (result) {
+                                        callback(result);
+                                    });
+
                                 });
                             }
                         }
