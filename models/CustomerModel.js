@@ -773,7 +773,7 @@ var Customer = {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
             var collectionAlert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-            var collectionPPS = kdb.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            var collectionPPS = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             collection.find({cust_id: cust_id, cp_review: "false"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
