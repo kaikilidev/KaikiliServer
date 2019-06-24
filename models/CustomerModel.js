@@ -1674,23 +1674,42 @@ var Customer = {
     postBookPPStoCancel: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             console.log(req.body.pps_id);
+
             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
             var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
 
-            bulkRemove.find({pps_id: req.body.pps_id}).forEach(
-                function (doc) {
-                    bulkInsert.insertOne(doc);
-                    bulkRemove.removeOne({pps_id: req.body.pps_id});
-                }
-            )
-
-            var status = {
-                status: 1,
-                message: "Successfully Update data."
+            var serviceUpdate = {
+                sr_status: "Cancel-New-Cp",
+                updateDate: new Date().toISOString()
             };
-            console.log(status);
-            callback(status);
 
+            // Update service record
+            bulkRemove.update({pps_id: req.body.pps_id}, {$set: serviceUpdate}, function (err, docs) {
+
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    bulkRemove.find({pps_id: req.body.pps_id}).forEach(
+                        function (doc) {
+                            bulkInsert.insertOne(doc);
+                            bulkRemove.removeOne({pps_id: req.body.pps_id});
+                        }
+                    )
+
+                    var status = {
+                        status: 1,
+                        message: "Successfully Update data."
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
         });
     },
 
