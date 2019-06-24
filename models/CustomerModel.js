@@ -1126,6 +1126,8 @@ var Customer = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+            var collectionPPS = kdb.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
             console.log(err);
             collection.find({
                 cust_id: cu_id,
@@ -1142,7 +1144,7 @@ var Customer = {
 
                 } else {
 
-                    var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+
                     cancellation.find({
                         cust_id: cu_id,
                         sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
@@ -1166,12 +1168,27 @@ var Customer = {
                             }
 
                         } else {
-                            var status = {
-                                status: 1,
-                                message: "Success Get all Transition service list",
-                                data: docs.concat(docs1)
-                            };
-                            callback(status);
+                            var listData = docs.concat(docs1);
+                            collectionPPS.find({cust_id: cu_id}).toArray(function (err, docspps) {
+
+                                if (err) {
+                                    var status = {
+                                        status: 1,
+                                        message: "Success Get all Transition service list",
+                                        data: listData,
+                                        ppsData: []
+                                    };
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Success Get all Transition service list",
+                                        data: listData,
+                                        ppsData: docspps
+                                    };
+                                    callback(status);
+                                }
+                            });
                         }
                     });
                 }
