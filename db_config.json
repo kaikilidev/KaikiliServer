@@ -27,7 +27,8 @@
     "sp_cu_review": "sp_cu_review",
     "cu_sp_transaction_completed": "cu_sp_transaction_completed",
     "cu_sp_transaction_cancellation": "cu_sp_transaction_cancellation",
-    "cp_sp_preferred_provider": "cp_sp_preferred_provider"
+    "cp_sp_preferred_provider": "cp_sp_preferred_provider",
+    "cu_sp_pps_cancellation": "cu_sp_pps_cancellation"
   }
 
 }

@@ -1656,8 +1656,10 @@ var Customer = {
     // 22-6-2019 created Api (Customer Book Preferred Provider Service Cancel)
     postBookPPStoCancel: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-            collectionSP.removeOne({pps_id : req.body.pps_id}, function (err, records) {
+            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+            var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            var isClear
+            bulkRemove.findOne({pps_id: req.body.pps_id}), function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -1667,7 +1669,8 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-
+                    bulkInsert.insertOne(records);
+                    bulkRemove.removeOne({pps_id: req.body.pps_id});
                     var status = {
                         status: 1,
                         message: "Successfully Update data.",
@@ -1676,7 +1679,7 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 }
-            });
+            };
         });
     },
 
