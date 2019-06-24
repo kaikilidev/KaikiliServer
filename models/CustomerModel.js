@@ -1656,30 +1656,24 @@ var Customer = {
     // 22-6-2019 created Api (Customer Book Preferred Provider Service Cancel)
     postBookPPStoCancel: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            console.log(req.body.pps_id);
             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
             var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-            var isClear
-            bulkRemove.findOne({pps_id: req.body.pps_id}), function (err, records) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    bulkInsert.insertOne(records);
+
+            bulkRemove.find({pps_id: req.body.pps_id}).forEach(
+                function (doc) {
+                    bulkInsert.insertOne(doc);
                     bulkRemove.removeOne({pps_id: req.body.pps_id});
-                    var status = {
-                        status: 1,
-                        message: "Successfully Update data.",
-                        data: records
-                    };
-                    console.log(status);
-                    callback(status);
                 }
+            )
+
+            var status = {
+                status: 1,
+                message: "Successfully Update data."
             };
+            console.log(status);
+            callback(status);
+
         });
     },
 
