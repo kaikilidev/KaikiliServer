@@ -1074,9 +1074,11 @@ var Customer = {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
 
-                        collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                        } else {
                             var cursorRating = collectionPaymentSettlement.aggregate([
-                                {$match: {cust_id: req.body.cust_id}},
+                                {$match: {sp_id: req.body.sp_id}},
                                 {
                                     $group: {
                                         _id: "_id",
@@ -1089,8 +1091,8 @@ var Customer = {
                                 var updateRating = {
                                     avg_rating: docs[0].rating,
                                 };
-                                var spProfileUpdate = db.db(config.dbName).collection(config.collections.cu_profile);
-                                spProfileUpdate.updateOne({cu_id: req.body.cust_id}, {$set: updateRating}, function (err, docs) {
+                                var spProfileUpdate = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+                                spProfileUpdate.updateOne({cu_id: req.body.sp_id}, {$set: updateRating}, function (err, docs) {
                                     var status = {
                                         status: 1,
                                         message: "Thank you fore review."
@@ -1101,25 +1103,16 @@ var Customer = {
 
                                 });
                             });
-
-                        });
-
-                        if (err) {
-                            console.log(err);
-                        } else {
                             console.log();
                             // callback(status);
                         }
                     });
-
-                    console.log();
-                    callback(status);
                 }
             });
         });
     },
 
-    // 28-5-2019 created Api (Customer transaction history )
+// 28-5-2019 created Api (Customer transaction history )
     customerCompletedService: function (req, callback) {
         var cu_id = req.body.cu_id;
         console.log(cu_id);
@@ -1195,9 +1188,10 @@ var Customer = {
             });
 
         });
-    },
+    }
+    ,
 
-    // 1-6-2019 created Api (Customer Shouting SR status update)
+// 1-6-2019 created Api (Customer Shouting SR status update)
     getCustomerData: function (req, callback) {
 
         console.log(req.body.cu_id);
@@ -1224,7 +1218,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     customerTransitionUpdate: function (req, callback) {
@@ -1343,10 +1338,11 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
-    // 11-6-2019 created Api (Customer Shouting single data)
+// 11-6-2019 created Api (Customer Shouting single data)
     getCustomerSingleAlertTransition: function (req, callback) {
         var sp_cp_alert_send_id = req.body.sp_cp_alert_send_id;
 
@@ -1374,9 +1370,10 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
-    //Create new Api ReBook Service 19-6-2019
+//Create new Api ReBook Service 19-6-2019
     reSearchServiceProvider: function (req, callback) {
         var last_cancel_sp_id = req.body.last_cancel_sp_id;
         var sr_id = req.body.sr_id;
@@ -1594,10 +1591,11 @@ var Customer = {
             });
 
         });
-    },
+    }
+    ,
 
 
-    // 21-6-2019 created Api (Customer Book Preferred Provider Service)
+// 21-6-2019 created Api (Customer Book Preferred Provider Service)
     postCustomerBookPreferredProviderService: function (req, callback) {
         comman.getNextSequenceUserID("pps_id", function (result) {
 
@@ -1668,9 +1666,10 @@ var Customer = {
 
 
         });
-    },
+    }
+    ,
 
-    // 22-6-2019 created Api (Customer Book Preferred Provider Service Cancel)
+// 22-6-2019 created Api (Customer Book Preferred Provider Service Cancel)
     postBookPPStoCancel: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             console.log(req.body.pps_id);
@@ -1711,7 +1710,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 }
 module.exports = Customer;

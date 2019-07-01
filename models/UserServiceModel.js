@@ -692,7 +692,7 @@ var UserService = {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     collection.updateOne({tran_id: tran_id}, {$set: updateTran}, function (err, docs) {
                         var cursorRating = collectionPaymentSettlement.aggregate([
-                            {$match: {sp_id: req.body.sp_id}},
+                            {$match: {cust_id: req.body.cust_id}},
                             {
                                 $group: {
                                     _id: "_id",
@@ -705,8 +705,8 @@ var UserService = {
                             var updateRating = {
                                 avg_rating: docs[0].rating,
                             };
-                            var spProfileUpdate = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-                            spProfileUpdate.updateOne({sp_id: req.body.sp_id}, {$set: updateRating}, function (err, docs) {
+                            var spProfileUpdate = db.db(config.dbName).collection(config.collections.cu_profile);
+                            spProfileUpdate.updateOne({cu_id: req.body.cust_id}, {$set: updateRating}, function (err, docs) {
                                 var status = {
                                     status: 1,
                                     message: "Thank you fore review."
