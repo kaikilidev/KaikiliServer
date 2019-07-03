@@ -127,7 +127,7 @@ var Comman = {
                     }
                 }, {
                     $project: {
-                       cost_components_on: {
+                        cost_components_on: {
                             $filter: {
                                 input: "$cost_components_on",
                                 as: "cost_components_on",
@@ -140,7 +140,7 @@ var Comman = {
             ]);
 
             cursorSearch.toArray(function (err, mainDocs) {
-                 console.log("----" + mainDocs);
+                console.log("----" + mainDocs);
                 return callBack(mainDocs);
             });
         });
@@ -470,7 +470,111 @@ var Comman = {
                 var ctr = 0;
                 console.log(" --- " + userSPidList);
                 var totalCost = 0;
-                if(userSPidList.length>0) {
+                if (userSPidList.length > 0) {
+                    cost_item.forEach(function (elementCost) {
+                        console.log(" --- 333" + elementCost);
+                        module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
+                            var userSPidSetRate = [];
+                            resultCost.forEach(function (element) {
+                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                            });
+
+                            var avg = 0;
+                            module.exports.getSR_AVGData(sr_id, elementCost.cc_id, function (resultCost) {
+
+                                console.log("----77" + resultCost[0].cost_components[0].average);
+                                avg = parseFloat(resultCost[0].cost_components[0].average);
+                                // const util = require('util');
+                                // console.log(util.inspect(resultCost, {showHidden: false, depth: null}))
+
+
+                                //Avg Code Nearest Service provider
+                                // console.log("------std 11>" + userSPidSetRate);
+                                // if (userSPidSetRate.length > 1) {
+                                //     var n = userSPidSetRate.length;
+                                //     avg = (math.sum(userSPidSetRate) / n)
+                                //     var std = math.std(userSPidSetRate);
+                                //     console.log("------std 33>" + std);
+                                //     avg = std;
+                                // }else if(userSPidSetRate.length == 1){
+                                //     var n = userSPidSetRate.length;
+                                //     avg = (math.sum(userSPidSetRate) / n)
+                                // }
+
+                                console.log("----55" + avg);
+                                var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
+                                totalCost = (totalCost + cost);
+
+                                var dataCostItem = {
+                                    cc_id: elementCost.cc_id,
+                                    cc_cu_title: elementCost.cc_cu_title,
+                                    show_order: elementCost.show_order,
+                                    cc_sp_title: elementCost.cc_sp_title,
+                                    hcc_id: elementCost.hcc_id,
+                                    hcc_title: elementCost.hcc_title,
+                                    cc_per_item_qut: elementCost.cc_per_item_qut,
+                                    cc_per_item_rate: avg.toFixed(2),
+                                    cc_per_item_cost: cost.toFixed(2)
+
+                                };
+
+                                newCost_components.push(dataCostItem);
+
+                                ctr++;
+                                if (ctr === cc_ids.length) {
+
+                                    var sendData = {
+                                        itemCost: newCost_components,
+                                        totalCost: totalCost.toFixed(2),
+                                        sp_ids: userSPidList
+                                    };
+                                    return callBack(sendData);
+                                }
+                            });
+                        });
+                    });
+                } else {
+                    var sendData = {
+                        itemCost: 0,
+                        totalCost: 0,
+                        sp_ids: userSPidList
+                    };
+                    return callBack(sendData);
+                }
+            });
+        });
+    },
+
+// old AVG get Cost-item to nearest Service provider
+    getSPUserRadiusLocationToAVG_OLD(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
+
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 160934,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                var userSPidList = [];
+                mainDocs.forEach(function (element) {
+                    userSPidList.push(element.sp_id);
+                });
+                var newCost_components = new Array();
+                var ctr = 0;
+                console.log(" --- " + userSPidList);
+                var totalCost = 0;
+                if (userSPidList.length > 0) {
                     cost_item.forEach(function (elementCost) {
                         console.log(" --- 333" + elementCost);
                         module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
@@ -487,7 +591,7 @@ var Comman = {
                                 var std = math.std(userSPidSetRate);
                                 console.log("------std 33>" + std);
                                 avg = std;
-                            }else if(userSPidSetRate.length == 1){
+                            } else if (userSPidSetRate.length == 1) {
                                 var n = userSPidSetRate.length;
                                 avg = (math.sum(userSPidSetRate) / n)
                             }
@@ -523,7 +627,7 @@ var Comman = {
                             }
                         });
                     });
-                }else {
+                } else {
                     var sendData = {
                         itemCost: 0,
                         totalCost: 0,
@@ -534,7 +638,6 @@ var Comman = {
             });
         });
     },
-
 
     getSPProfileData(spid, callBack) {
         // var query = {sp_id: spid};
@@ -551,7 +654,7 @@ var Comman = {
                         foreignField: "sp_id",
                         as: "userprofile"
                     }
-                },{
+                }, {
                     $unwind: "$userprofile"
                 }
             ]);
@@ -667,6 +770,35 @@ var Comman = {
                         return callBack(status);
                     }
                 });
+            });
+        });
+    },
+
+    getSR_AVGData(sr_id, cc_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.add_services);
+            var cursorSearch = autoIdCollection.aggregate([
+                {
+                    $match: {
+                        sr_id: sr_id
+                    }
+                }, {
+                    $project: {
+                        cost_components:
+                            {
+                                $filter: {
+                                    input: "$cost_components",
+                                    as: "cost_components",
+                                    cond: {$eq: ["$$cost_components.cc_id", cc_id]}
+                                }
+                            }
+                    }
+                }
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log("----55" + mainDocs[0].cost_components);
+                return callBack(mainDocs);
             });
         });
     },
