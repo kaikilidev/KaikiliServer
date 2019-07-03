@@ -535,7 +535,7 @@ var Comman = {
                     });
                 } else {
                     var sendData = {
-                        itemCost: 0,
+                        itemCost: [],
                         totalCost: 0,
                         sp_ids: userSPidList
                     };
