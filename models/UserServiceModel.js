@@ -565,6 +565,9 @@ var UserService = {
 
                         comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");
 
+
+
+
                         var paymentSettlementBody = {
                             cust_id: docs[0].cust_id,
                             cust_first_name: docs[0].cust_first_name,
@@ -594,6 +597,15 @@ var UserService = {
                                 console.log(err);
                             } else {
                                 console.log("Update in Notification");
+
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_completed_notification);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                                bulkRemove.find({tran_id: tran_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({tran_id: tran_id});
+                                    }
+                                )
                             }
                         });
 
