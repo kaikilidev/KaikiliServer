@@ -325,15 +325,12 @@ var UserService = {
     },
 
     getUserSingleNotification: function (req, callback) {
-        var sp_id = req.body.sp_id;
         var tran_id = req.body.tran_id;
-        var conversation_id = req.body.conversation_id;
-        console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             console.log(err);
-            collection.find({sp_id: sp_id, tran_id: tran_id, conversation_id: conversation_id}
+            collection.find({tran_id: tran_id}
             ).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
