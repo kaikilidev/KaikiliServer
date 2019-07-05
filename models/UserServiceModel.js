@@ -357,6 +357,50 @@ var UserService = {
         });
     },
 
+    userNotificationPost: function (req, callback) {
+
+        var tran_id = req.body.tran_id;
+        var sp_id = req.body.sp_id;
+        var body = req.body.message;
+
+        var messagesBody = {
+            author: sp_id,
+            author_type: "SP",
+            sp_delet: "0",
+            cu_delte: "0",
+            sp_read: "0",
+            cu_read: "0",
+            created_on: new Date().toISOString(),
+            body: body
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+            collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success to load bank info",
+                        data: docs
+                    };
+                    callback(status);
+                    // console.log("Update in Notification");
+                    // console.log(docs);
+                }
+            });
+
+        });
+
+    },
+
     userTransitionUpdate: function (req, callback) {
         var tran_id = req.body.tran_id;
         var dateNew1 = req.body.dateNew1;
@@ -475,49 +519,7 @@ var UserService = {
         });
     },
 
-    userNotificationPost: function (req, callback) {
 
-        var tran_id = req.body.tran_id;
-        var sp_id = req.body.sp_id;
-        var body = req.body.message;
-
-        var messagesBody = {
-            author: sp_id,
-            author_type: "SP",
-            sp_delet: "0",
-            cu_delte: "0",
-            sp_read: "0",
-            cu_read: "0",
-            created_on: new Date().toISOString(),
-            body: body
-        };
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-            collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    // console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Success to load bank info",
-                        data: docs
-                    };
-                    callback(status);
-                    // console.log("Update in Notification");
-                    // console.log(docs);
-                }
-            });
-
-        });
-
-    },
 
     userTransitionCompleted: function (req, callback) {
 
@@ -550,7 +552,6 @@ var UserService = {
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
 
-
                         var messagesBody = {
                             author: docs[0].sp_id,
                             author_type: "SP",
@@ -559,7 +560,7 @@ var UserService = {
                             sp_read: "0",
                             cu_read: "0",
                             created_on: new Date().toISOString(),
-                            body: +"Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            body: "Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
                         comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");
