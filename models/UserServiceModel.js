@@ -358,18 +358,35 @@ var UserService = {
 
         var tran_id = req.body.tran_id;
         var sp_id = req.body.sp_id;
+        var cu_id = req.body.cu_id;
         var body = req.body.message;
 
-        var messagesBody = {
-            author: sp_id,
-            author_type: "SP",
-            sp_delet: "0",
-            cu_delte: "0",
-            sp_read: "0",
-            cu_read: "0",
-            created_on: new Date().toISOString(),
-            body: body
-        };
+        var messagesBody;
+        if(sp_id == null){
+            messagesBody = {
+                author: cu_id,
+                author_type: "CU",
+                sp_delet: "0",
+                cu_delte: "0",
+                sp_read: "0",
+                cu_read: "0",
+                created_on: new Date().toISOString(),
+                body: body
+            };
+
+        }else {
+            messagesBody = {
+                author: sp_id,
+                author_type: "SP",
+                sp_delet: "0",
+                cu_delte: "0",
+                sp_read: "0",
+                cu_read: "0",
+                created_on: new Date().toISOString(),
+                body: body
+            };
+        }
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
             collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
