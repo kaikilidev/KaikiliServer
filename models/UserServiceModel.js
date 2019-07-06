@@ -6,6 +6,7 @@ var config = require('../db_config.json');
 var comman = require('../models/Comman');
 // load math.js (using node.js)
 const math = require('mathjs')
+const moment = require('moment')
 
 
 var UserService = {
@@ -433,12 +434,12 @@ var UserService = {
             // Update service record
             collection.update({tran_id: tran_id}, {$set: serviceUpdate}, function (err, docs) {
                 if (err) {
-                    console.log(err);
+                    // console.log(err);
                     var status = {
                         status: 0,
                         message: "Failed"
                     };
-                    console.log(status);
+                    // console.log(status);
                     callback(status);
                 } else {
                     var status = {
@@ -446,7 +447,6 @@ var UserService = {
                         message: "Success upload to service to server",
                         data: docs
                     };
-
 
                     collection.find({tran_id: tran_id}).toArray(function (err, docs) {
                         var message = ""
@@ -465,6 +465,58 @@ var UserService = {
                         if (req.body.sr_status == "Progress" || req.body.sr_status == "Scheduled" || req.body.sr_status == "Rescheduled") {
                             comman.sendCustomerNotification(docs[0].cust_id, tran_id, message, req.body.sr_status, "tran");
                         }
+
+                        var res_time = new Date().toISOString();
+                        var start_date = moment( docs[0].creationDate, 'YYYY-MM-DDTHH:mm:sssZ');
+                        var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:sssZ');
+                        var duration = moment.duration(end_date.diff(start_date));
+                        var timeMin = duration/60000;
+                        var response = {
+                            sp_id: docs[0].sp_id,
+                            tran_id: docs[0].tran_id,
+                            sr_id:  docs[0].sr_id,
+                            sr_book_time:  docs[0].creationDate,
+                            sp_response_time : res_time,
+                            time_diff: timeMin.toFixed(2),
+                            created_on: new Date().toISOString()
+                        };
+
+                        if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Scheduled" || req.body.sr_status == "Rescheduled") {
+                            var collectionSPresponse = db.db(config.dbName).collection(config.collections.sp_cu_response);
+                            collectionSPresponse.insertOne(response, function (err, spData) {
+
+                                var cursorRating = collectionSPresponse.aggregate([
+                                    {$match: { sp_id: docs[0].sp_id}},
+                                    {
+                                        $group: {
+                                            _id: "_id",
+                                            time_diff: {$avg: "$time_diff"}
+                                        }
+                                    }
+                                ]);
+                                cursorRating.toArray(function (err, docsnew) {
+                                    // console.log("11111--------"+docsnew[0]);
+                                    // console.log("22222--------"+docsnew[0].time_diff);
+                                    // console.log("spId--------"+docs[0].sp_id);
+                                    var updateRating = {
+                                        avg_response: Math.round(docsnew[0].time_diff)
+                                    };
+                                    var spProfileUpdate = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+                                    spProfileUpdate.updateOne({sp_id: docs[0].sp_id}, {$set: updateRating}, function (err, docs) {
+                                        // var status = {
+                                        //     status: 1,
+                                        //     message: "Thank you fore review."
+                                        // };
+
+                                        // console.log(err);
+                                        // console.log(docs);
+                                        // console.log(status);
+                                    });
+                                });
+                            });
+
+                        }
+
 
                         var messagesBody = {
                             author: docs[0].sp_id,
