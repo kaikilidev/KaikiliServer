@@ -638,7 +638,7 @@ var Comman = {
 
     getSPProfileData(spid, callBack) {
         // var query = {sp_id: spid};
-        // console.log("----" + query);
+        console.log("----" + spid);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
 

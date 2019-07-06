@@ -473,7 +473,7 @@ var Users = {
 
     getUserProfileInformation: function (req, callback) {
         var sp_id = req.body.sp_id;
-
+        console.log(sp_id+"-------"+req.body.sp_id);
         comman.getSPProfileData(sp_id, function (result) {
             var status = {
                 status: 1,
@@ -481,7 +481,7 @@ var Users = {
                 data: result
             };
             console.log(status);
-            
+            callback(status);
         });
 
 
