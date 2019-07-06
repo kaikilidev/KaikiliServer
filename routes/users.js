@@ -537,7 +537,7 @@ router.post('/getSpPreferredProviderInfoCancel', function (req, res, next) {
 
 
 router.post('/getSpProfile', function (req, res, next) {
-    userServiceModel.getUserProfileInformation(req, function (err, result) {
+    usersModel.getUserProfileInformation(req, function (err, result) {
         if (err) {
             res.json(err);
             console.log(err);
