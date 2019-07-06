@@ -802,6 +802,27 @@ var Comman = {
             });
         });
     },
+
+
+
+    updateServiceCompleted(cu_id,sp_id) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var cuProfile = db.db(config.dbName).collection(config.collections.cu_profile);
+            var spProfile = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            var newId = null;
+            var queryCu = {cu_id: cu_id};
+            var querySp = {sp_id: sp_id};
+            var update = {$inc: {service_count: 1}};
+            var options = {upsert: true, 'new': true, setDefaultsOnInsert: true};
+            cuProfile.findOneAndUpdate(queryCu, update, options, function (err, doc) {
+                console.log("444444---------->" +doc.value.service_count);
+            });
+            spProfile.findOneAndUpdate(querySp, update, options, function (err, doc) {
+                console.log("55555---------->" +doc.value.service_count);
+                newId = doc.value.service_count;
+            });
+        });
+    },
 }
 
 module.exports = Comman;

@@ -579,7 +579,7 @@ var UserService = {
 
                         comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");
 
-
+                        comman.updateServiceCompleted(docs[0].cust_id,docs[0].sp_id);
 
 
                         var paymentSettlementBody = {
