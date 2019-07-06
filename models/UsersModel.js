@@ -471,5 +471,22 @@ var Users = {
     //
     // }
 
+    getUserProfileInformation: function (req, callback) {
+        var sp_id = req.body.sp_id;
+
+        comman.getSPProfileData(sp_id, function (result) {
+            var status = {
+                status: 1,
+                message: "Successfully data getting",
+                data: result
+            };
+            console.log(status);
+            
+        });
+
+
+
+    },
+
 }
 module.exports = Users;

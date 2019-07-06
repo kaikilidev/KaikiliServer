@@ -52,9 +52,6 @@ var Comman = {
         return callBack(d);
     },
 
-    // deg2rad(deg) {
-    //     return deg * (Math.PI / 180);
-    // }
 
 
     getSPUserLocation(spid, callBack) {

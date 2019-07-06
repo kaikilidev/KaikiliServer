@@ -536,6 +536,20 @@ router.post('/getSpPreferredProviderInfoCancel', function (req, res, next) {
 });
 
 
+router.post('/getSpProfile', function (req, res, next) {
+    userServiceModel.getUserProfileInformation(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 
 
 //
