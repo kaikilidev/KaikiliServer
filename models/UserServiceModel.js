@@ -375,6 +375,8 @@ var UserService = {
                 body: body
             };
 
+            comman.sendServiceNotification(cu_id, tran_id, body, "Messages", "chat");
+
         }else {
             messagesBody = {
                 author: sp_id,
@@ -386,6 +388,8 @@ var UserService = {
                 created_on: new Date().toISOString(),
                 body: body
             };
+
+            comman.sendCustomerNotification(sp_id, tran_id, body, "Messages", "chat");
         }
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {

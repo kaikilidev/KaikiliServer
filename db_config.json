@@ -30,7 +30,8 @@
     "cp_sp_preferred_provider": "cp_sp_preferred_provider",
     "cu_sp_pps_cancellation": "cu_sp_pps_cancellation",
     "cu_sp_completed_notification": "cu_sp_completed_notification",
-    "sp_cu_response": "sp_cu_response"
+    "sp_cu_response": "sp_cu_response",
+    "sp_marketing_info": "sp_marketing_info"
   }
 
 }
