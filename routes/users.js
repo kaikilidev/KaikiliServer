@@ -550,6 +550,31 @@ router.post('/getSpProfile', function (req, res, next) {
 
 
 
+router.post('/applyToSticker', function (req, res, next) {
+    usersModel.newApplyToSticker(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/checkToSticker', function (req, res, next) {
+    usersModel.checkApplyToSticker(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 
 
 //

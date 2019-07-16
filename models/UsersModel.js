@@ -83,7 +83,7 @@ var Users = {
             sp_id: req.body.sp_id,
             radius: req.body.radius,
             location: {
-                coordinates: [parseFloat(req.body.coordinatePoint.longitude),parseFloat(req.body.coordinatePoint.latitude)],
+                coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
                 type: "Point"
             }
         };
@@ -268,8 +268,8 @@ var Users = {
                 } else {
                     // assert.equal(1, docs.length);
 
-                    collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
-                        (err, records)  {
+                    collectionSP.updateOne({mobile_no: mobile_no}, {$set: {fcm_token: fcm_token}}, function
+                        (err, records) {
                         console.log(records);
                     });
 
@@ -414,11 +414,11 @@ var Users = {
                     console.log(docs);
                     if (docs.length == 1) {
 
-                        bcrypt.compare(password, docs[0].password, function(err, res) {
-                            if(res) {
+                        bcrypt.compare(password, docs[0].password, function (err, res) {
+                            if (res) {
 
-                                collectionSP.updateOne({mobile_no: mobile_no},{ $set: { fcm_token : fcm_token } },function
-                                    (err, records)  {
+                                collectionSP.updateOne({mobile_no: mobile_no}, {$set: {fcm_token: fcm_token}}, function
+                                    (err, records) {
                                     console.log(records);
                                 });
                                 // Passwords match
@@ -473,7 +473,7 @@ var Users = {
 
     getUserProfileInformation: function (req, callback) {
         var sp_id = req.body.sp_id;
-        console.log(sp_id+"-------"+req.body.sp_id);
+        console.log(sp_id + "-------" + req.body.sp_id);
         comman.getSPProfileData(sp_id, function (result) {
             var status = {
                 status: 1,
@@ -483,10 +483,72 @@ var Users = {
             console.log(status);
             callback(status);
         });
-
-
-
     },
+
+
+    newApplyToSticker: function (req, callback) {
+        var newUser = {
+            sp_id: req.body.sp_id,
+            stickerApplyDate: new Date().toISOString(),
+            stickerSendDate: '',
+            barCode: '',
+            scanFirstTime: '',
+            scanEndTime: '',
+            creditAmount: "2000.00",
+            totalday: 0
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+            collectionSP.insert(newUser, function (err, dataSet) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully add data",
+                        data: dataSet
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
+
+    checkApplyToSticker: function (req, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+            collectionSP.find({sp_id : req.body.sp_id}).toArray(function (err, dataSet) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                        var status = {
+                            status: 1,
+                            message: "Check Data",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+
+                }
+            });
+        });
+    },
+
 
 }
 module.exports = Users;
