@@ -363,7 +363,7 @@ var UserService = {
         var body = req.body.message;
 
         var messagesBody;
-        if(sp_id == null){
+        if (sp_id == null) {
             messagesBody = {
                 author: cu_id,
                 author_type: "CU",
@@ -375,9 +375,14 @@ var UserService = {
                 body: body
             };
 
-            comman.sendServiceNotification(cu_id, tran_id, body, "Messages", "chat");
+            try {
+                comman.sendServiceNotification(cu_id, tran_id, body, "Messages", "chat");
+            } catch (error) {
+                console.error(error);
+            }
 
-        }else {
+
+        } else {
             messagesBody = {
                 author: sp_id,
                 author_type: "SP",
@@ -388,8 +393,11 @@ var UserService = {
                 created_on: new Date().toISOString(),
                 body: body
             };
-
-            comman.sendCustomerNotification(sp_id, tran_id, body, "Messages", "chat");
+            try {
+                comman.sendCustomerNotification(sp_id, tran_id, body, "Messages", "chat");
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -418,7 +426,8 @@ var UserService = {
 
         });
 
-    },
+    }
+    ,
 
     userTransitionUpdate: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -471,16 +480,16 @@ var UserService = {
                         }
 
                         var res_time = new Date().toISOString();
-                        var start_date = moment( docs[0].creationDate, 'YYYY-MM-DDTHH:mm:sssZ');
+                        var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:sssZ');
                         var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:sssZ');
                         var duration = moment.duration(end_date.diff(start_date));
-                        var timeMin = duration/60000;
+                        var timeMin = duration / 60000;
                         var response = {
                             sp_id: docs[0].sp_id,
                             tran_id: docs[0].tran_id,
-                            sr_id:  docs[0].sr_id,
-                            sr_book_time:  docs[0].creationDate,
-                            sp_response_time : res_time,
+                            sr_id: docs[0].sr_id,
+                            sr_book_time: docs[0].creationDate,
+                            sp_response_time: res_time,
                             time_diff: timeMin.toFixed(2),
                             created_on: new Date().toISOString()
                         };
@@ -490,7 +499,7 @@ var UserService = {
                             collectionSPresponse.insertOne(response, function (err, spData) {
 
                                 var cursorRating = collectionSPresponse.aggregate([
-                                    {$match: { sp_id: docs[0].sp_id}},
+                                    {$match: {sp_id: docs[0].sp_id}},
                                     {
                                         $group: {
                                             _id: "_id",
@@ -587,8 +596,8 @@ var UserService = {
                 }
             });
         });
-    },
-
+    }
+    ,
 
 
     userTransitionCompleted: function (req, callback) {
@@ -635,7 +644,7 @@ var UserService = {
 
                         comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");
 
-                        comman.updateServiceCompleted(docs[0].cust_id,docs[0].sp_id);
+                        comman.updateServiceCompleted(docs[0].cust_id, docs[0].sp_id);
 
 
                         var paymentSettlementBody = {
@@ -709,7 +718,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     getUserCompletedTransition: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -739,7 +749,8 @@ var UserService = {
             });
 
         });
-    },
+    }
+    ,
 
     userAddToServiceReview: function (req, callback) {
 
@@ -806,7 +817,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     userCompletedService: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -867,7 +879,8 @@ var UserService = {
             });
 
         });
-    },
+    }
+    ,
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -897,7 +910,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     userAddBankInfo: function (req, callback) {
@@ -944,7 +958,8 @@ var UserService = {
                 });
             });
         });
-    },
+    }
+    ,
 
     SPUserBankInfoList: function (req, callback) {
 
@@ -974,7 +989,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     SPUserDeleteBankInfo: function (req, callback) {
 
@@ -1005,7 +1021,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     SPUserSetDefaultBankInfo: function (req, callback) {
 
@@ -1051,7 +1068,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     userTransitionCancellation: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -1230,7 +1248,7 @@ var UserService = {
                                             //         console.log("------std >" + std);
                                             //     }
                                             // } else {
-                                                avg = elementCost.average;
+                                            avg = elementCost.average;
                                             // }
 
                                             var costData = {
@@ -1688,7 +1706,8 @@ var UserService = {
         //         }
         //     });
         // });
-    },
+    }
+    ,
 
     // Api Created 18-6-2019 Cancellation Transition Info
     getSingleCancellationTransitionInfo: function (req, callback) {
@@ -1719,7 +1738,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     // Api Created 22-6-2019 kaikili preferred provider Transition Info
@@ -1825,7 +1845,7 @@ var UserService = {
                                         distance: dist
                                     }
 
-                                    comman.getBookPPService(postJob,function (result) {
+                                    comman.getBookPPService(postJob, function (result) {
                                         callback(result);
                                     });
 
@@ -1837,10 +1857,9 @@ var UserService = {
             );
 
 
-
         });
-    },
-
+    }
+    ,
 
 
     // Api Created 22-6-2019 Preferred Provider Transition Info
@@ -1871,7 +1890,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
     // Api Created 24-6-2019 Preferred Provider Transition Info
     getPreferredProviderInfoCancel: function (req, callback) {
@@ -1901,7 +1921,8 @@ var UserService = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
 }
