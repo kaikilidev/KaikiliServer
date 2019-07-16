@@ -336,49 +336,51 @@ var Comman = {
             var query = {cu_id: cu_id};
             collectionSP.findOne(query, function (err, doc) {
                 console.log("----->" + doc);
-                var token = doc.fcm_token;
-                console.log("----->" + token);
-                var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-                    to: token,
-                    priority: "high",
-                    collapse_key: 'your_collapse_key',
 
-                    notification: {
-                        title: "Kaikili-Customer App",
-                        body: messages
-                    },
+                if(doc != null) {
+                    var token = doc.fcm_token;
+                    console.log("----->" + token);
+                    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                        to: token,
+                        priority: "high",
+                        collapse_key: 'your_collapse_key',
 
-                    data: {  //you can send only notification or only data(or include both)
-                        tran_id: tran_id,
-                        type: type,
-                        messages: messages,
-                        sr_status: sr_status,
-                        my_another_key: 'my another value'
-                    }
-                };
+                        notification: {
+                            title: "Kaikili-Customer App",
+                            body: messages
+                        },
 
-                fcm.send(message, function (err, response) {
-                    if (err) {
-                        console.log(err);
-                        console.log("Something has gone wrong!");
+                        data: {  //you can send only notification or only data(or include both)
+                            tran_id: tran_id,
+                            type: type,
+                            messages: messages,
+                            sr_status: sr_status,
+                            my_another_key: 'my another value'
+                        }
+                    };
 
-                        var status = {
-                            status: 0,
-                            message: "Something has gone wrong!",
-                        };
-                        // return callBack(status);
-                    } else {
-                        // console.log("Successfully sent with response: ", response);
-                        // return callBack(response);
-                        var status = {
-                            status: 1,
-                            message: "Successfully sent with response:!"
-                        };
-                        // console.log(status);
-                        // return callBack(status);
-                    }
-                });
+                    fcm.send(message, function (err, response) {
+                        if (err) {
+                            console.log(err);
+                            console.log("Something has gone wrong!");
 
+                            var status = {
+                                status: 0,
+                                message: "Something has gone wrong!",
+                            };
+                            // return callBack(status);
+                        } else {
+                            // console.log("Successfully sent with response: ", response);
+                            // return callBack(response);
+                            var status = {
+                                status: 1,
+                                message: "Successfully sent with response:!"
+                            };
+                            // console.log(status);
+                            // return callBack(status);
+                        }
+                    });
+                }
             });
         });
 
@@ -392,49 +394,50 @@ var Comman = {
             var query = {sp_id: sp_id};
             collectionSP.findOne(query, function (err, doc) {
                 console.log("----->" + doc);
-                var token = doc.fcm_token;
-                console.log("----->" + token);
-                var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-                    to: token,
-                    priority: "high",
-                    collapse_key: 'your_collapse_key',
+                if(doc != null) {
+                    var token = doc.fcm_token;
+                    console.log("----->" + token);
+                    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                        to: token,
+                        priority: "high",
+                        collapse_key: 'your_collapse_key',
 
-                    notification: {
-                        title: "Kaikili-Service App",
-                        body: messages
-                    },
+                        notification: {
+                            title: "Kaikili-Service App",
+                            body: messages
+                        },
 
-                    data: {  //you can send only notification or only data(or include both)
-                        tran_id: tran_id,
-                        messages: messages,
-                        type: type,
-                        sr_status: sr_status,
-                        my_another_key: 'my another value'
-                    }
-                };
+                        data: {  //you can send only notification or only data(or include both)
+                            tran_id: tran_id,
+                            messages: messages,
+                            type: type,
+                            sr_status: sr_status,
+                            my_another_key: 'my another value'
+                        }
+                    };
 
-                fcmService.send(message, function (err, response) {
-                    if (err) {
-                        console.log(err);
-                        console.log("Something has gone wrong!");
+                    fcmService.send(message, function (err, response) {
+                        if (err) {
+                            console.log(err);
+                            console.log("Something has gone wrong!");
 
-                        var status = {
-                            status: 0,
-                            message: "Something has gone wrong!",
-                        };
-                        // return callBack(status);
-                    } else {
-                        // console.log("Successfully sent with response: ", response);
-                        // return callBack(response);
-                        var status = {
-                            status: 1,
-                            message: "Successfully sent with response:!"
-                        };
-                        // console.log(status);
-                        // return callBack(status);
-                    }
-                });
-
+                            var status = {
+                                status: 0,
+                                message: "Something has gone wrong!",
+                            };
+                            // return callBack(status);
+                        } else {
+                            // console.log("Successfully sent with response: ", response);
+                            // return callBack(response);
+                            var status = {
+                                status: 1,
+                                message: "Successfully sent with response:!"
+                            };
+                            // console.log(status);
+                            // return callBack(status);
+                        }
+                    });
+                }
             });
         });
     },
