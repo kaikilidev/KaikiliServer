@@ -562,14 +562,14 @@ var Users = {
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                collectionSP.updateOne({sp_id: sp_id},{scanFirstTime:  new Date().toISOString()}, function (err, dataSet) {
+                collectionSP.updateOne({sp_id: sp_id},{$set: {scanFirstTime:  new Date().toISOString()}}, function (err, dataSet) {
                     if (err) {
-                        console.log(err);
+                        // console.log(err);
                         var status = {
                             status: 0,
                             message: "Failed"
                         };
-                        console.log(status);
+                        // console.log(status);
                         callback(status);
                     } else {
                         var status = {
@@ -577,22 +577,58 @@ var Users = {
                             message: "Successfully add data",
                             data: dataSet
                         };
-                        console.log(status);
+                        // console.log(status);
                         callback(status);
                     }
                 });
             });
 
         }else {
-            var endDate = new Date().toISOString();
+            var  endDate = new Date().toISOString();
             var offerAmount = req.body.offerAmount;
-            var startDate = req.body.startDate;
+            var  startDate = new Date(req.body.startDate);
+            console.log(new Date(endDate) +"----"+startDate);
+            var diffDays = parseInt((new Date(endDate) - startDate) / (1000 * 60 * 60 * 24));
 
-            var newUser = {
+            var oneDayAmout = parseFloat(offerAmount)/365;
+
+            console.log(oneDayAmout.toFixed(2));
+            console.log(diffDays);
+            var creditAmount;
+            if(diffDays < 366){
+                creditAmount = oneDayAmout.toFixed(2)*diffDays;
+            }else {
+                creditAmount = oneDayAmout.toFixed(2)*365;
+            }
+
+            var updateData = {
                 scanEndTime: endDate,
-                creditAmount: "",
-                totalday: 0
+                creditAmount: creditAmount,
+                totalday: diffDays
             };
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+                collectionSP.updateOne({sp_id: sp_id},{$set: updateData}, function (err, dataSet) {
+                    if (err) {
+                        // console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully server are stop",
+                            data: dataSet
+                        };
+                        // console.log(status);
+                        callback(status);
+                    }
+                });
+            });
 
         }
 
