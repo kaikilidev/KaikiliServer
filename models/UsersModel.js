@@ -526,25 +526,29 @@ var Users = {
     checkApplyToSticker: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-            collectionSP.find({sp_id : req.body.sp_id}).toArray(function (err, dataSet) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
+            var collectionAdmin = db.db(config.dbName).collection(config.collections.admin_setting);
+            collectionAdmin.find({}).toArray(function (err, dataAdmin) {
+                collectionSP.find({sp_id: req.body.sp_id}).toArray(function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
                         var status = {
                             status: 1,
                             message: "Check Data",
-                            data: dataSet
+                            data: dataSet,
+                            admin: dataAdmin
                         };
                         console.log(status);
                         callback(status);
 
-                }
+                    }
+                });
             });
         });
     },
