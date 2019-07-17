@@ -554,5 +554,51 @@ var Users = {
     },
 
 
+    stickerQRScanUpdate: function (req, callback) {
+        var type = req.body.type;
+        var sp_id = req.body.sp_id;
+
+        if(type == "start"){
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+                collectionSP.updateOne({sp_id: sp_id},{scanFirstTime:  new Date().toISOString()}, function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add data",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+
+        }else {
+            var endDate = new Date().toISOString();
+            var offerAmount = req.body.offerAmount;
+            var startDate = req.body.startDate;
+
+            var newUser = {
+                scanEndTime: endDate,
+                creditAmount: "",
+                totalday: 0
+            };
+
+        }
+
+
+
+    },
+
 }
 module.exports = Users;
