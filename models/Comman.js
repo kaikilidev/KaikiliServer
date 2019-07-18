@@ -804,7 +804,6 @@ var Comman = {
     },
 
 
-
     updateServiceCompleted(cu_id,sp_id) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var cuProfile = db.db(config.dbName).collection(config.collections.cu_profile);
@@ -820,6 +819,17 @@ var Comman = {
             spProfile.findOneAndUpdate(querySp, update, options, function (err, doc) {
                 console.log("55555---------->" +doc.value.service_count);
                 newId = doc.value.service_count;
+            });
+        });
+    },
+
+    getTransitionInfo(tran_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var transitionCollection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var query = {tran_id: tran_id};
+            transitionCollection.findOne(query, function (err, doc) {
+                   // console.log(doc);
+                return callBack(doc);
             });
         });
     },

@@ -362,70 +362,72 @@ var UserService = {
         var cu_id = req.body.cu_id;
         var body = req.body.message;
 
-        var messagesBody;
-        if (sp_id == null) {
-            messagesBody = {
-                author: cu_id,
-                author_type: "CU",
-                sp_delet: "0",
-                cu_delte: "0",
-                sp_read: "0",
-                cu_read: "0",
-                created_on: new Date().toISOString(),
-                body: body
-            };
+        comman.getTransitionInfo(tran_id, function (transitionData) {
 
-            try {
-                comman.sendServiceNotification(cu_id, tran_id, body, "Messages", "chat");
-            } catch (error) {
-                console.error(error);
-            }
+            var messagesBody;
+            if (sp_id == null) {
+                messagesBody = {
+                    author: cu_id,
+                    author_type: "CU",
+                    sp_delet: "0",
+                    cu_delte: "0",
+                    sp_read: "0",
+                    cu_read: "0",
+                    created_on: new Date().toISOString(),
+                    body: body
+                };
 
-
-        } else {
-            messagesBody = {
-                author: sp_id,
-                author_type: "SP",
-                sp_delet: "0",
-                cu_delte: "0",
-                sp_read: "0",
-                cu_read: "0",
-                created_on: new Date().toISOString(),
-                body: body
-            };
-            try {
-                comman.sendCustomerNotification(sp_id, tran_id, body, "Messages", "chat");
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-            collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed"
-                    };
-                    // console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Success to load bank info",
-                        data: docs
-                    };
-                    callback(status);
-                    // console.log("Update in Notification");
-                    // console.log(docs);
+                try {
+                    comman.sendServiceNotification(transitionData.sp_id, tran_id, body, "Messages", "chat");
+                } catch (error) {
+                    console.error(error);
                 }
+
+
+            } else {
+                messagesBody = {
+                    author: sp_id,
+                    author_type: "SP",
+                    sp_delet: "0",
+                    cu_delte: "0",
+                    sp_read: "0",
+                    cu_read: "0",
+                    created_on: new Date().toISOString(),
+                    body: body
+                };
+                try {
+                    comman.sendCustomerNotification(transitionData.cust_id, tran_id, body, "Messages", "chat");
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success to load bank info",
+                            data: docs
+                        };
+                        callback(status);
+                        // console.log("Update in Notification");
+                        // console.log(docs);
+                    }
+                });
+
             });
-
         });
-
     }
     ,
 
