@@ -665,8 +665,10 @@ var UserService = {
                             txn_status: docs[0].txn_status,
                             payment_type: "Credit",
                             net_payment: docs[0].sp_net_pay,
-                            kaikili_comm: docs[0].kaikili_commission.kk_rate_per_item,
-                            discount: docs[0].discount.ds_rate_per_item,
+                            kk_sr_commission_rat: docs[0].kaikili_commission.kk_sr_commission_rat,
+                            kk_sr_commission: docs[0].kaikili_commission.kk_sr_commission,
+                            kk_sp_pay: docs[0].kaikili_commission.kk_sp_pay,
+                            discount: docs[0].discount.ds_per,
                             total: docs[0].sr_total,
                             updateDate: new Date().toISOString()
                         }
