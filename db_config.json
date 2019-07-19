@@ -32,7 +32,9 @@
     "cu_sp_completed_notification": "cu_sp_completed_notification",
     "sp_cu_response": "sp_cu_response",
     "sp_marketing_info": "sp_marketing_info",
-    "admin_setting": "admin_setting"
+    "admin_setting": "admin_setting",
+    "sp_earn_wallet": "sp_earn_wallet",
+    "kk_earn_wallet": "kk_earn_wallet"
   }
 
 }

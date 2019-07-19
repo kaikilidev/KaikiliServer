@@ -833,6 +833,143 @@ var Comman = {
             });
         });
     },
+
+
+    spCurrentBalance(sp_id, callBack){
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
+            var query = {sp_id: sp_id};
+            var mysort = {updateDate: -1};
+            spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
+                if(doc.length > 0 ){
+                    return callBack(doc[0].close);
+                }else {
+                    return callBack(0);
+                }
+            });
+        });
+
+    },
+
+
+    spEranInfoUpdate(sp_id, tran_id, comment, credit, debit,type){
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
+            var query = {sp_id: sp_id};
+            var mysort = {updateDate: -1};
+            spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
+
+                if(doc.length > 0 ){
+
+                    var current;
+                    if(credit >0){
+                        current = doc[0].close + credit ;
+                    }else {
+                        current = doc[0].close - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        type:type,
+                        tran_id:tran_id,
+                        comment:comment,
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toISOString()
+                    }
+
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+
+                }else {
+
+                    var current;
+                    if(credit > 0){
+                        current = 0 + credit ;
+                    }else {
+                        current = 0 - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        type:type,
+                        tran_id:tran_id,
+                        comment:comment,
+                        opening: 0,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toISOString()
+                    }
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                }
+
+            });
+        });
+
+    },
+
+
+    kaiKiliEranInfoUpdate(sp_id, tran_id, comment, credit, debit,type){
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.kk_earn_wallet);
+            // var query = {sp_id: sp_id};
+            var mysort = {updateDate: -1};
+            spEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
+
+                if(doc.length > 0 ){
+
+                    var current;
+                    if(credit >0){
+                        current = doc[0].close + credit ;
+                    }else {
+                        current = doc[0].close - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        type:type,
+                        tran_id:tran_id,
+                        comment:comment,
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toISOString()
+                    }
+
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+
+                }else {
+
+                    var current;
+                    if(credit > 0){
+                        current = 0 + credit ;
+                    }else {
+                        current = 0 - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        type:type,
+                        tran_id:tran_id,
+                        comment:comment,
+                        opening: 0,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toISOString()
+                    }
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                }
+
+            });
+        });
+
+    }
 }
 
 module.exports = Comman;

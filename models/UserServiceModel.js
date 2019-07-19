@@ -245,7 +245,7 @@ var UserService = {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-            var mysort = {updateDate: 1};
+            var mysort = {updateDate: -1};
             var collectionPPS = kdb.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             console.log(err);
@@ -701,6 +701,11 @@ var UserService = {
                             }
                         });
 
+                        var comment = docs[0].tran_id +" - "+docs[0].sr_id+" - "+" Completed Service - CU Pay $"+docs[0].sp_net_pay+" - KKC $"+docs[0].kaikili_commission.kk_sr_commission+" = SP Pay $"+docs[0].kaikili_commission.kk_sp_pay;
+
+                        comman.spEranInfoUpdate(docs[0].sr_id,docs[0].tran_id,comment,docs[0].kaikili_commission.kk_sp_pay,0,"Credit")
+                        comman.kaiKiliEranInfoUpdate(docs[0].sr_id,docs[0].tran_id,comment,docs[0].kaikili_commission.kk_sr_commission,0,"Credit")
+
                         // var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
                         // transactionCompleted.insertOne(docs[0], function (err, docs) {
                         //     if (err) {
@@ -732,12 +737,14 @@ var UserService = {
             var mysort = {updateDate: -1};
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
             console.log(err);
+            comman.spCurrentBalance(sp_id, function (currentBalance) {
             collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed",
+                        currentBalance :currentBalance
                     };
                     // console.log(status);
                     callback(status);
@@ -746,10 +753,12 @@ var UserService = {
                     var status = {
                         status: 1,
                         message: "Success Get all Transition service to Mongodb",
-                        data: docs
+                        data: docs,
+                        currentBalance :currentBalance
                     };
                     callback(status);
                 }
+            });
             });
 
         });
