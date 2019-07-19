@@ -841,6 +841,8 @@ var Comman = {
             var query = {sp_id: sp_id};
             var mysort = {updateDate: -1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
+
+                console.log("---->"+doc.length);
                 if(doc.length > 0 ){
                     return callBack(doc[0].close);
                 }else {
@@ -848,7 +850,6 @@ var Comman = {
                 }
             });
         });
-
     },
 
 
