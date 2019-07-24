@@ -1937,6 +1937,43 @@ var UserService = {
     }
     ,
 
+    // new Api Check Otp - 24-7-2019
+    checkServiceOPT: function (req, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var tran_id = req.body.tran_id;
+            var otp = req.body.otp;
+            console.log(otp);
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                collection.findOne({tran_id: tran_id}, function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "OTP Not Valid",
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        console.log(docs.otp);
+                        if(docs.otp == otp ){
+                            var status = {
+                                status: 1,
+                                message: "OTP Valid"
+                            };
+                            console.log(status);
+                            callback(status);
+                        }else {
+                            var status = {
+                                status: 0,
+                                message: "OTP Not Valid"
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    }
+                });
+            });
+    },
 
 }
 module.exports = UserService;

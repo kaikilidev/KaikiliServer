@@ -590,6 +590,19 @@ router.post('/stickerQRScan', function (req, res, next) {
 });
 
 
+router.post('/checkServiceOtp', function (req, res, next) {
+    userServiceModel.checkServiceOPT(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 //
 // router.get('/TestSendNotification', function (req,  next) {
 //     comman.sendServiceNotification("SP019","TR0104","Test data Notification","");

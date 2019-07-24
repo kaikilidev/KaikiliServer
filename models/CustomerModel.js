@@ -1714,8 +1714,36 @@ var Customer = {
                 }
             });
         });
-    }
-    ,
+    },
+
+
+    // new Api Check Otp - 24-7-2019
+    getServiceOPT: function (req, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var tran_id = req.body.tran_id;
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            collection.findOne({tran_id: tran_id}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "No OTP Created, Contact to support team.",
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+
+                        var status = {
+                            status: 0,
+                            message: "Service OTP",
+                            otp:docs.otp
+                        };
+                        console.log(status);
+                        callback(status);
+                }
+            });
+        });
+    },
 
 }
 module.exports = Customer;
