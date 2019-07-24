@@ -1734,7 +1734,7 @@ var Customer = {
                 } else {
 
                         var status = {
-                            status: 0,
+                            status: 1,
                             message: "Service OTP",
                             otp:docs.otp
                         };
