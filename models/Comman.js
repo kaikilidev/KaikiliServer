@@ -342,7 +342,7 @@ var Comman = {
                     console.log("----->" + token);
                     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                         to: token,
-                        priority: "high",
+                        // priority: "high",
                         collapse_key: 'your_collapse_key',
 
                         notification: {
@@ -399,7 +399,7 @@ var Comman = {
                     console.log("----->" + token);
                     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                         to: token,
-                        priority: "high",
+                        // priority: "high",
                         collapse_key: 'your_collapse_key',
 
                         notification: {
