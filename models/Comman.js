@@ -345,10 +345,10 @@ var Comman = {
                         // priority: "high",
                         collapse_key: 'your_collapse_key',
 
-                        notification: {
-                            title: "Kaikili-Customer App",
-                            body: messages
-                        },
+                        // notification: {
+                        //     title: "Kaikili-Customer App",
+                        //     body: messages
+                        // },
 
                         data: {  //you can send only notification or only data(or include both)
                             tran_id: tran_id,
@@ -402,10 +402,10 @@ var Comman = {
                         // priority: "high",
                         collapse_key: 'your_collapse_key',
 
-                        notification: {
-                            title: "Kaikili-Service App",
-                            body: messages
-                        },
+                        // notification: {
+                        //     title: "Kaikili-Service App",
+                        //     body: messages
+                        // },
 
                         data: {  //you can send only notification or only data(or include both)
                             tran_id: tran_id,
