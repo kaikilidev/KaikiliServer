@@ -4,6 +4,7 @@
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431652.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431654.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431657.png" beforeDir="false" />
@@ -68,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/customer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3784">
-              <caret line="172" column="28" selection-start-line="172" selection-start-column="14" selection-end-line="172" selection-end-column="28" />
+            <state relative-caret-position="254">
+              <caret line="174" column="29" selection-start-line="174" selection-start-column="29" selection-end-line="174" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -104,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11682">
-              <caret line="629" column="13" lean-forward="true" selection-start-line="629" selection-start-column="13" selection-end-line="629" selection-end-column="13" />
+            <state relative-caret-position="127">
+              <caret line="631" column="35" selection-start-line="631" selection-start-column="35" selection-end-line="631" selection-end-column="35" />
               <folding>
                 <element signature="e#24251#26612#0" />
                 <element signature="e#26665#28367#0" />
@@ -119,11 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="345" column="22" lean-forward="true" selection-start-line="345" selection-start-column="22" selection-end-line="345" selection-end-column="22" />
+            <state relative-caret-position="355">
+              <caret line="978" column="16" selection-start-line="978" selection-start-column="4" selection-end-line="978" selection-end-column="16" />
               <folding>
                 <element signature="e#1593#2304#0" />
                 <element signature="e#4950#6059#0" />
@@ -140,7 +141,6 @@
                 <element signature="e#35513#35932#0" />
                 <element signature="e#35973#36572#0" />
                 <element signature="e#36641#38587#0" />
-                <element signature="e#38661#40607#0" />
               </folding>
             </state>
           </provider>
@@ -223,10 +223,10 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
-        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
+        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
       </list>
     </option>
   </component>
@@ -251,6 +251,11 @@
             <path>
               <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
               <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -478,21 +483,7 @@
       <workItem from="1563621588581" duration="658000" />
       <workItem from="1563780355935" duration="3710000" />
       <workItem from="1563868215868" duration="4873000" />
-      <workItem from="1563962939152" duration="423000" />
-    </task>
-    <task id="LOCAL-00191" summary="Add New Api">
-      <created>1561129453853</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1561129453853</updated>
-    </task>
-    <task id="LOCAL-00192" summary="Add New Api">
-      <created>1561176077543</created>
-      <option name="number" value="00192" />
-      <option name="presentableId" value="LOCAL-00192" />
-      <option name="project" value="LOCAL" />
-      <updated>1561176077544</updated>
+      <workItem from="1563962939152" duration="3826000" />
     </task>
     <task id="LOCAL-00193" summary="Add New Api">
       <created>1561191901796</created>
@@ -823,11 +814,25 @@
       <option name="project" value="LOCAL" />
       <updated>1563548692292</updated>
     </task>
-    <option name="localTasksCounter" value="240" />
+    <task id="LOCAL-00240" summary="Add New Api">
+      <created>1563963376655</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1563963376655</updated>
+    </task>
+    <task id="LOCAL-00241" summary="Add New Api">
+      <created>1563964644780</created>
+      <option name="number" value="00241" />
+      <option name="presentableId" value="LOCAL-00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1563964644781</updated>
+    </task>
+    <option name="localTasksCounter" value="242" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="948761000" />
+    <option name="totallyTimeSpent" value="952164000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -840,6 +845,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
@@ -973,22 +979,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1529</line>
+          <line>1532</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1530</line>
+          <line>1533</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1531</line>
+          <line>1534</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1056</line>
+          <line>1059</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1211,13 +1217,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3784">
-          <caret line="172" column="28" selection-start-line="172" selection-start-column="14" selection-end-line="172" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13310">
@@ -1242,23 +1241,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11682">
-          <caret line="629" column="13" lean-forward="true" selection-start-line="629" selection-start-column="13" selection-end-line="629" selection-end-column="13" />
-          <folding>
-            <element signature="e#24251#26612#0" />
-            <element signature="e#26665#28367#0" />
-            <element signature="e#33116#34180#0" />
-            <element signature="e#43850#44741#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="345" column="22" lean-forward="true" selection-start-line="345" selection-start-column="22" selection-end-line="345" selection-end-column="22" />
+        <state relative-caret-position="355">
+          <caret line="978" column="16" selection-start-line="978" selection-start-column="4" selection-end-line="978" selection-end-column="16" />
           <folding>
             <element signature="e#1593#2304#0" />
             <element signature="e#4950#6059#0" />
@@ -1275,7 +1261,26 @@
             <element signature="e#35513#35932#0" />
             <element signature="e#35973#36572#0" />
             <element signature="e#36641#38587#0" />
-            <element signature="e#38661#40607#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="174" column="29" selection-start-line="174" selection-start-column="29" selection-end-line="174" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="631" column="35" selection-start-line="631" selection-start-column="35" selection-end-line="631" selection-end-column="35" />
+          <folding>
+            <element signature="e#24251#26612#0" />
+            <element signature="e#26665#28367#0" />
+            <element signature="e#33116#34180#0" />
+            <element signature="e#43850#44741#0" />
           </folding>
         </state>
       </provider>

@@ -53,7 +53,6 @@ var Comman = {
     },
 
 
-
     getSPUserLocation(spid, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_sr_profile);
@@ -337,7 +336,7 @@ var Comman = {
             collectionSP.findOne(query, function (err, doc) {
                 console.log("----->" + doc);
 
-                if(doc != null) {
+                if (doc != null) {
                     var token = doc.fcm_token;
                     console.log("----->" + token);
                     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
@@ -394,7 +393,7 @@ var Comman = {
             var query = {sp_id: sp_id};
             collectionSP.findOne(query, function (err, doc) {
                 console.log("----->" + doc);
-                if(doc != null) {
+                if (doc != null) {
                     var token = doc.fcm_token;
                     console.log("----->" + token);
                     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
@@ -804,7 +803,7 @@ var Comman = {
     },
 
 
-    updateServiceCompleted(cu_id,sp_id) {
+    updateServiceCompleted(cu_id, sp_id) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var cuProfile = db.db(config.dbName).collection(config.collections.cu_profile);
             var spProfile = db.db(config.dbName).collection(config.collections.sp_sr_profile);
@@ -814,10 +813,10 @@ var Comman = {
             var update = {$inc: {service_count: 1}};
             var options = {upsert: true, 'new': true, setDefaultsOnInsert: true};
             cuProfile.findOneAndUpdate(queryCu, update, options, function (err, doc) {
-                console.log("444444---------->" +doc.value.service_count);
+                console.log("444444---------->" + doc.value.service_count);
             });
             spProfile.findOneAndUpdate(querySp, update, options, function (err, doc) {
-                console.log("55555---------->" +doc.value.service_count);
+                console.log("55555---------->" + doc.value.service_count);
                 newId = doc.value.service_count;
             });
         });
@@ -828,24 +827,24 @@ var Comman = {
             var transitionCollection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var query = {tran_id: tran_id};
             transitionCollection.findOne(query, function (err, doc) {
-                   // console.log(doc);
+                // console.log(doc);
                 return callBack(doc);
             });
         });
     },
 
 
-    spCurrentBalance(sp_id, callBack){
+    spCurrentBalance(sp_id, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
             var query = {sp_id: sp_id};
             var mysort = {updateDate: -1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
-                console.log("---->"+doc.length);
-                if(doc.length > 0 ){
+                console.log("---->" + doc.length);
+                if (doc.length > 0) {
                     return callBack(doc[0].close);
-                }else {
+                } else {
                     return callBack(0);
                 }
             });
@@ -853,7 +852,7 @@ var Comman = {
     },
 
 
-    spEranInfoUpdate(sp_id, tran_id, comment, credit, debit,type){
+    spEranInfoUpdate(sp_id, tran_id, comment, credit, debit, type) {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
@@ -861,20 +860,20 @@ var Comman = {
             var mysort = {updateDate: -1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
-                if(doc.length > 0 ){
+                if (doc.length > 0) {
 
                     var current;
-                    if(credit >0){
-                        current = doc[0].close + credit ;
-                    }else {
+                    if (credit > 0) {
+                        current = doc[0].close + credit;
+                    } else {
                         current = doc[0].close - debit
                     }
 
                     var paymentBody = {
                         sp_id: sp_id,
-                        type:type,
-                        tran_id:tran_id,
-                        comment:comment,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
                         opening: doc[0].close,
                         credit: credit,
                         debit: debit,
@@ -882,29 +881,31 @@ var Comman = {
                         updateDate: new Date().toISOString()
                     }
 
-                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
 
-                }else {
+                } else {
 
                     var current;
-                    if(credit > 0){
-                        current = 0 + credit ;
-                    }else {
+                    if (credit > 0) {
+                        current = 0 + credit;
+                    } else {
                         current = 0 - debit
                     }
 
                     var paymentBody = {
                         sp_id: sp_id,
-                        type:type,
-                        tran_id:tran_id,
-                        comment:comment,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
                         opening: 0,
                         credit: credit,
                         debit: debit,
                         close: current,
                         updateDate: new Date().toISOString()
                     }
-                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
                 }
 
             });
@@ -913,7 +914,7 @@ var Comman = {
     },
 
 
-    kaiKiliEranInfoUpdate(sp_id, tran_id, comment, credit, debit,type){
+    kaiKiliEranInfoUpdate(sp_id, tran_id, comment, credit, debit, type) {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.kk_earn_wallet);
@@ -921,20 +922,20 @@ var Comman = {
             var mysort = {updateDate: -1};
             spEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
 
-                if(doc.length > 0 ){
+                if (doc.length > 0) {
 
                     var current;
-                    if(credit >0){
-                        current = doc[0].close + credit ;
-                    }else {
+                    if (credit > 0) {
+                        current = doc[0].close + credit;
+                    } else {
                         current = doc[0].close - debit
                     }
 
                     var paymentBody = {
                         sp_id: sp_id,
-                        type:type,
-                        tran_id:tran_id,
-                        comment:comment,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
                         opening: doc[0].close,
                         credit: credit,
                         debit: debit,
@@ -942,35 +943,44 @@ var Comman = {
                         updateDate: new Date().toISOString()
                     }
 
-                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
 
-                }else {
+                } else {
 
                     var current;
-                    if(credit > 0){
-                        current = 0 + credit ;
-                    }else {
+                    if (credit > 0) {
+                        current = 0 + credit;
+                    } else {
                         current = 0 - debit
                     }
 
                     var paymentBody = {
                         sp_id: sp_id,
-                        type:type,
-                        tran_id:tran_id,
-                        comment:comment,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
                         opening: 0,
                         credit: credit,
                         debit: debit,
                         close: current,
                         updateDate: new Date().toISOString()
                     }
-                    spEarnWallet.insertOne(paymentBody, function (err, doc) {});
+                    spEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
                 }
 
             });
         });
 
+    },
+
+
+    getRandomInt(max) {
+        return math.floor(math.random() * math.floor(max));
     }
+
+
 }
 
 module.exports = Comman;

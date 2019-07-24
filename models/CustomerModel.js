@@ -628,6 +628,9 @@ var Customer = {
     },
 
     serviceBookUser: function (req, callback) {
+        var otp = "";
+
+
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
             var tran_id = "TR0" + result;
@@ -665,7 +668,8 @@ var Customer = {
                 sp_review: req.body.sp_review,
                 distance: req.body.distance,
                 sp_service_area: req.body.sp_service_area,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toISOString(),
+                otp: comman.getRandomInt(999999)
 
             };
 
