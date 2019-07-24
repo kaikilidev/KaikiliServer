@@ -1733,13 +1733,13 @@ var Customer = {
                     callback(status);
                 } else {
 
-                        var status = {
-                            status: 1,
-                            message: "Service OTP",
-                            otp:docs.otp
-                        };
-                        console.log(status);
-                        callback(status);
+                    var status = {
+                        status: 1,
+                        message: "Service OTP",
+                        otp: docs.otp
+                    };
+                    console.log(status);
+                    callback(status);
                 }
             });
         });
