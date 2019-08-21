@@ -914,6 +914,25 @@ var Comman = {
     },
 
 
+    spTripInfoUpdate(sp_id,cu_id,tran_id, comment, amount) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_tip_info);
+            var reviewTipAdd = {
+                cust_id: cu_id,
+                sp_id: sp_id,
+                tran_id: tran_id,
+                comment: comment,
+                amount: amount,
+                creationDate: new Date().toISOString()
+            };
+            spEarnWallet.insertOne(reviewTipAdd, function (err, doc) {
+            });
+
+        });
+
+    },
+
+
     kaiKiliEranInfoUpdate(sp_id, tran_id, comment, credit, debit, type) {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {

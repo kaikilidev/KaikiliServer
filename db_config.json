@@ -34,7 +34,8 @@
     "sp_marketing_info": "sp_marketing_info",
     "admin_setting": "admin_setting",
     "sp_earn_wallet": "sp_earn_wallet",
-    "kk_earn_wallet": "kk_earn_wallet"
+    "kk_earn_wallet": "kk_earn_wallet",
+    "sp_tip_info": "sp_tip_info"
   }
 
 }
