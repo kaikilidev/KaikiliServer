@@ -1058,6 +1058,9 @@ var Customer = {
             cp_review: "true",
         };
 
+        if(req.body.tip_amount > 0) {
+            comman.spEranInfoUpdate(req.body.sp_id, req.body.tran_id, "Customer give tip $" + req.body.tip_amount, req.body.tip_amount, 0, "Credit")
+        }
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
             collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
