@@ -211,14 +211,21 @@ var UserService = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
             console.log(err);
-            collection.find({sp_id: sp_id}, {
-                _id: 1,
-                sp_id: 2,
-                sr_id: 3,
-                sr_title: 4,
-                sp_sr_status: 5
-            }).toArray(function (err, docs) {
-                // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
+
+            var cursorSearch = collection.aggregate([
+                {$match: {sp_id: sp_id}},
+                {
+                    $lookup: {
+                        from: config.collections.add_services,
+                        localField: "sr_id",
+                        foreignField: "sr_id",
+                        as: "serviceInfo"
+                    }
+                }, {
+                    $unwind: "$serviceInfo"
+                }
+            ]);
+            cursorSearch.toArray(function (err, mainDocs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -232,11 +239,38 @@ var UserService = {
                     var status = {
                         status: 1,
                         message: "Success Get all service to Mongodb",
-                        data: docs
+                        data: mainDocs
                     };
                     callback(status);
                 }
             });
+
+            // collection.find({sp_id: sp_id}, {
+            //     _id: 1,
+            //     sp_id: 2,
+            //     sr_id: 3,
+            //     sr_title: 4,
+            //     sp_sr_status: 5
+            // }).toArray(function (err, docs) {
+            //     // db.sp_sr_catalogue.find({sp_id: "SP00001"},{ _id: 1 ,sp_id: 5,sr_id: 2, sr_title:3,sp_sr_status:4}).toArray()
+            //     if (err) {
+            //         console.log(err);
+            //         var status = {
+            //             status: 0,
+            //             message: "Failed"
+            //         };
+            //         // console.log(status);
+            //         callback(status);
+            //
+            //     } else {
+            //         var status = {
+            //             status: 1,
+            //             message: "Success Get all service to Mongodb",
+            //             data: docs
+            //         };
+            //         callback(status);
+            //     }
+            // });
 
         });
     },
