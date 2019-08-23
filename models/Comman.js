@@ -694,6 +694,7 @@ var Comman = {
                 re_book: postData.re_book,
                 minimum_charge: postData.minimum_charge,
                 discount: postData.discount,
+                repeatedDiscountGive: "0",
                 kaikili_commission: postData.kaikili_commission,
                 sr_type: postData.sr_type,
                 sr_total: postData.sr_total,

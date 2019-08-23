@@ -659,6 +659,7 @@ var Customer = {
                 re_book: req.body.re_book,
                 minimum_charge: req.body.minimum_charge,
                 discount: req.body.discount,
+                repeatedDiscountGive: req.body.repeatedDiscountGive,
                 kaikili_commission: req.body.kaikili_commission,
                 sr_type: req.body.sr_type,
                 sr_total: req.body.sr_total,
