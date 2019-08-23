@@ -997,8 +997,173 @@ var Comman = {
 
     getRandomInt(max) {
         return math.floor(math.random() * math.floor(max));
-    }
+    },
 
+    getSPUserRepeatedService(sp_id, cc_ids, sr_id, cost_item, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $match: {
+                        sp_id: sp_id, services: sr_id, cost_comps: {$all: cc_ids}
+                    }
+                }]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log(mainDocs.length + "----------size");
+                if (err) {
+                    console.log(err + "----err");
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+
+                    // var newArrData = new Array();
+                    var ctr = 0;
+                    var newArrServic = new Array();
+
+                    if (mainDocs.length > 0) {
+                        mainDocs.forEach(function (element) {
+
+                           var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                                collection.aggregate([
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                    {
+                                        $lookup: {
+                                            from: config.collections.sp_sr_profile,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "userprofile"
+                                        }
+                                    },
+                                    {
+                                        $unwind: "$userprofile"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.sp_personal_info,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "profile"
+                                        }
+                                    }, {
+                                        $unwind: "$profile"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.add_services,
+                                            localField: "sr_id",
+                                            foreignField: "sr_id",
+                                            as: "services"
+                                        }
+                                    }, {
+                                        $unwind: "$services"
+                                    }
+                                ]).toArray(function (err, docs) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log(docs);
+                                        // var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                        var children = docs[0].cost_components_on;
+                                        var newItemCost = new Array();
+                                        var totalCost = 0;
+                                        cost_item.forEach(function (element) {
+                                            var picked = children.filter(function (value) {
+                                                return value.cc_id == element.cc_id;
+                                            })
+                                            var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                            // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                            totalCost = totalCost + cost;
+                                            var dataCostItem = {
+                                                cc_id: element.cc_id,
+                                                cc_cu_title: element.cc_cu_title,
+                                                show_order: element.show_order,
+                                                cc_sp_title: element.cc_sp_title,
+                                                hcc_id: picked[0].hcc_id,
+                                                hcc_title: picked[0].hcc_title,
+                                                cc_per_item_qut: element.cc_per_item_qut,
+                                                cc_per_item_rate: picked[0].cc_rate_per_item,
+                                                cc_per_item_cost: cost,
+                                            };
+                                            newItemCost.push(dataCostItem);
+                                        });
+                                        // console.log("******");
+                                        var discountGive = 0;
+                                        if (docs[0].discount.ds_check_box == "ON") {
+                                            discountGive = docs[0].discount.ds_rate_per_item;
+                                        }
+                                        var discountRepeatedGive = 0;
+                                        if (docs[0].repeated_service_book_offer == "ON") {
+                                            discountRepeatedGive = docs[0].repeated_service_book_offer_rat;
+                                        }
+
+
+                                        var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                        var discountAfterPrice = totalCost - discountAmount;
+
+                                        if (docs[0].repeated_service_book_offer == "ON") {
+                                            discountRepeatedGive = docs[0].repeated_service_book_offer_rat;
+                                            var discountRepeatedAmount = (discountAfterPrice * parseFloat(discountRepeatedGive)) / 100;
+                                            var discountAfterPrice = discountAfterPrice - discountRepeatedAmount;
+                                        }
+
+                                        var dataShow = {
+                                            sp_id: docs[0].sp_id,
+                                            minimum_charge: docs[0].minimum_charge,
+                                            totalCost: totalCost,
+                                            kaikili_commission: docs[0].services.sr_commission,
+                                            itemCost: newItemCost,
+                                            discountGive: discountGive,
+                                            repeatedDiscountGive: discountRepeatedGive,
+                                            discountAfterPrice: discountAfterPrice,
+
+                                            dist: element.dist,
+                                            sp_about: docs[0].userprofile.about_sp_profile,
+                                            sp_workImage: docs[0].userprofile.workImages,
+                                            avg_response: docs[0].userprofile.avg_response,
+                                            avg_rating: docs[0].userprofile.avg_rating,
+                                            sp_image: docs[0].userprofile.profile_image,
+                                            sp_service_area: docs[0].userprofile.service_area,
+                                            sp_coordinatePoint: docs[0].userprofile.coordinatePoint,
+                                            sp_first_name: docs[0].profile.first_name,
+                                            sp_last_name: docs[0].profile.last_name,
+                                            sp_mobile_no: docs[0].profile.mobile_no,
+                                            preferred_provider: docs[0].preferred_provider
+
+                                        };
+                                        newArrServic.push(dataShow);
+                                        ctr++;
+                                        if (ctr === mainDocs.length) {
+
+                                                // console.log("------length >" + result.length);
+                                                var status = {
+                                                    status: 1,
+                                                    message: "Success Get all Transition service list",
+                                                    data: newArrServic,
+                                                };
+                                            return callBack(status);
+                                        }
+                                    }
+                                });
+
+                        });
+                    } else {
+                            var status = {
+                                status: 1,
+                                message: "Success Get all service list",
+                                data: newArrServic
+                            };
+                        return callBack(status);
+                    }
+                }
+            });
+        });
+    },
 
 }
 

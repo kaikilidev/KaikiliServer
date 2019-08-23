@@ -1749,5 +1749,18 @@ var Customer = {
         });
     },
 
+    searchRepeatedServiceProvider: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        var sp_id = req.body.sp_id;
+        var cc_ids = req.body.cc_ids;
+        var cost_item = req.body.cost_item;
+        console.log(sr_id + " --- " + req.body.cc_ids);
+
+        comman.getSPUserRepeatedService(sp_id, cc_ids, sr_id,  cost_item, function (result) {
+             callback(result);
+        });
+
+    },
+
 }
 module.exports = Customer;
