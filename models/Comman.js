@@ -1105,6 +1105,7 @@ var Comman = {
 
                                         var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
                                         var discountAfterPrice = totalCost - discountAmount;
+                                        var scheduleDiscountAfterPrice = totalCost - discountAmount;
 
                                         if (docs[0].repeated_service_book_offer == "ON") {
                                             discountRepeatedGive = docs[0].repeated_service_book_offer_rat;
@@ -1121,6 +1122,7 @@ var Comman = {
                                             discountGive: discountGive,
                                             repeatedDiscountGive: discountRepeatedGive,
                                             discountAfterPrice: discountAfterPrice,
+                                            scheduleDiscountAfterPrice: scheduleDiscountAfterPrice,
 
                                             dist: element.dist,
                                             sp_about: docs[0].userprofile.about_sp_profile,
