@@ -1144,7 +1144,7 @@ var Comman = {
                                                 var status = {
                                                     status: 1,
                                                     message: "Success Get all Transition service list",
-                                                    data: newArrServic,
+                                                    data: newArrServic[0],
                                                 };
                                             return callBack(status);
                                         }
