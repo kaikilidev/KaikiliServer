@@ -288,6 +288,7 @@ var Customer = {
     },
 
     searchServiceProvider: function (req, callback) {
+        comman.cuInterestedServicesAdd(req.body);
         var sr_id = req.body.sr_id;
         var latitude = req.body.latitude;
         var longitude = req.body.longitude;

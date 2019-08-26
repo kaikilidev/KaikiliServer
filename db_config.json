@@ -35,7 +35,8 @@
     "admin_setting": "admin_setting",
     "sp_earn_wallet": "sp_earn_wallet",
     "kk_earn_wallet": "kk_earn_wallet",
-    "sp_tip_info": "sp_tip_info"
+    "sp_tip_info": "sp_tip_info",
+    "cu_interested_services": "cu_interested_services"
   }
 
 }

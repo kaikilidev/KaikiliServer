@@ -1168,6 +1168,15 @@ var Comman = {
         });
     },
 
+
+    cuInterestedServicesAdd(body) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
+            spEarnWallet.insertOne(body, function (err, doc) {
+            });
+        });
+    },
+
 }
 
 module.exports = Comman;
