@@ -32,9 +32,11 @@ app.use(express.static('app/public'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 const userSPUploadProfile = path.join(__dirname, "..", "public/SPProfile/");
+const userCUUploadProfile = path.join(__dirname, "..", "public/CUProfile/");
 const userSPUploadWork = path.join(__dirname,"..","public/SPWork/");
 
 app.use('/SPProfile', express.static(path.join(userSPUploadProfile, 'SPProfile')));
+app.use('/CUProfile', express.static(path.join(userCUUploadProfile, 'CUProfile')));
 app.use('/SPWork', express.static(path.join(userSPUploadWork, 'SPWork')));
 
 app.use('/', indexRouter);

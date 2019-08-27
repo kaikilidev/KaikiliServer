@@ -1764,5 +1764,64 @@ var Customer = {
 
     },
 
+    updateCUProfileImageUpload: function (id, data, callback) {
+        console.log(" imageAmount " + data);
+        var addWorkInfo = {
+            "cu_image": data[0]
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated images",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
+    updateCUProfileDataUpload:  function (req, callback) {
+        console.log(" imageAmount " + data);
+        var cu_id = req.body.cu_id;
+        var addWorkInfo = {
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "email": req.body.email,
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.update({cu_id: cu_id}, {$set: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 }
 module.exports = Customer;

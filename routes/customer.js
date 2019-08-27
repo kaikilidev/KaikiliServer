@@ -6,7 +6,7 @@ var configDB = require('../db_config.json');
 const multerSettings = require("../models/Multer-settings");
 const Bluebird = require("bluebird");
 let uploadSPWork = multerSettings.uploadSPWork;
-let uploadSPUserProfileIM = multerSettings.uploadSPUserProfileIM;
+let uploadCUUserProfileIM = multerSettings.uploadCUUserProfileIM;
 
 
 // //G E T   M E T H O D S
@@ -423,6 +423,51 @@ router.post('/searchRepeatedService', function (req, res, next) {
         } else {
             console.log(result);
             res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+router.post('/cuProfileUpload', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    customerModel.updateCUProfileDataUpload(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
+    let upload = Bluebird.promisify(uploadCUUserProfileIM);
+    return upload(req, res).then((data) => {
+        if (req.files && req.files.uploads) {
+            // type = req.query.type;
+            let documents = req.files.uploads;
+            let uploads = [];
+            if (documents && (documents.length > 0)) {
+                documents.forEach(function (item, index) {
+                    uploads.push(configDB.imagePath+"CUProfile/"+documents[index].filename);
+                });
+                customerModel.updateCUProfileImageUpload(req.params.cu_id, uploads, function (err, result) {
+                    if (err) {
+                        res.json(err);
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                        res.json(result);
+                    }
+                });
+            }
+        } else {
+            var status = {
+                status: 0,
+                message: "No files uploaded"
+            };
+            res.json(status)
         }
     });
 });

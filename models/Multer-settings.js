@@ -4,6 +4,7 @@ const path = require("path");
 
 /** code to configure user upload profile image starts */
 const userSPUploadProfile = path.join(__dirname, "..", "public/SPProfile/");
+const userCUUploadProfile = path.join(__dirname, "..", "public/CUProfile/");
 const userSPUploadWork = path.join(__dirname,"..","public/SPWork/");
 
 
@@ -22,6 +23,30 @@ let userSPImageStorage = multer.diskStorage({
 
 let uploadSPUserProfileIM = multer({
   storage: userSPImageStorage,
+  fileFilter: function (req, file, cb) {
+    return cb(null, true);
+  }
+}).fields([
+  { name: "uploads", maxCount: 1 }
+]);
+
+
+let userCUImageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, userCUUploadProfile);
+  },
+  filename: function (req, file, cb) {
+    let exploded_name = file.originalname.split(".");
+    let ext = exploded_name[exploded_name.length - 1];
+    console.log(req.params.cu_id+"---------");
+    // cb(null, req.query.id + "@" + Date.now() + "." + ext);
+    cb(null, req.params.cu_id+ "." + ext);
+  }
+});
+
+
+let uploadCUUserProfileIM = multer({
+  storage: userCUImageStorage,
   fileFilter: function (req, file, cb) {
     return cb(null, true);
   }
@@ -54,5 +79,6 @@ let uploadSPWork = multer({
 
 module.exports = {
   uploadSPUserProfileIM: uploadSPUserProfileIM,
+  uploadCUUserProfileIM: uploadCUUserProfileIM,
   uploadSPWork:uploadSPWork
 };
