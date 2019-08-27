@@ -1770,7 +1770,7 @@ var Customer = {
             "cu_image": data[0]
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
             collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
                 if (err) {
                     console.log(err);
@@ -1801,7 +1801,7 @@ var Customer = {
             "email": req.body.email,
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
             collectionSP.update({cu_id: cu_id}, {$set: addWorkInfo}, function (err, records) {
                 if (err) {
                     console.log(err);
