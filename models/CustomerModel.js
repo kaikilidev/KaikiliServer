@@ -1793,7 +1793,6 @@ var Customer = {
     },
 
     updateCUProfileDataUpload:  function (req, callback) {
-        console.log(" imageAmount " + data);
         var cu_id = req.body.cu_id;
         var addWorkInfo = {
             "first_name": req.body.first_name,
