@@ -173,16 +173,6 @@ var Comman = {
                     }
                 }, {
                     $unwind: "$services"
-
-                    // }, {
-                    //     $lookup: {
-                    //         from: config.collections.sp_personal_info,
-                    //         localField: "sp_id",
-                    //         foreignField: "sp_id",
-                    //         as: "profile"
-                    //     }
-                    // }, {
-                    //     $unwind: "$profile"
                 }
             ]);
 
@@ -1170,19 +1160,26 @@ var Comman = {
 
 
     cuInterestedServicesAdd(body) {
-        var post = {"latitude":body.latitude,
-            "longitude":body.longitude,
+        module.exports.getNextSequenceUserID("cu_search_id", function (result) {
+            //  console.log(result);
+            var tran_id = "CU_SEARCH_" + result;
+        var post = {
+            "cu_search_id":tran_id,
+            location: {
+                coordinates: [parseFloat(body.longitude), parseFloat(body.latitude)],
+                type: "Point"
+            },
             "address":body.address,
             "comment":body.comment,
             "sr_id":body.sr_id,
-            "sr_name":body.sr_name,
+            "sr_title":body.sr_name,
             "type_of_service":body.type_of_service,
             "cost_item":body.cost_item,
             "time":body.time,
             "date":body.date,
             "cc_ids":body.cc_ids,
             "cu_id":body.cu_id,
-            updateDate: new Date().toISOString()};
+            "creationDate": new Date().toISOString()};
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);

@@ -735,10 +735,10 @@ var UserService = {
                             }
                         });
 
-                        var comment = docs[0].tran_id +" - "+docs[0].sr_id+" - "+" Completed Service - CU Pay $"+docs[0].sp_net_pay+" - KKC $"+docs[0].kaikili_commission.kk_sr_commission+" = SP Pay $"+docs[0].kaikili_commission.kk_sp_pay;
+                        var comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission + " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay;
 
-                        comman.spEranInfoUpdate(docs[0].sp_id,docs[0].tran_id,comment,docs[0].kaikili_commission.kk_sp_pay,0,"Credit")
-                        comman.kaiKiliEranInfoUpdate(docs[0].sp_id,docs[0].tran_id,comment,docs[0].kaikili_commission.kk_sr_commission,0,"Credit")
+                        comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sp_pay, 0, "Credit")
+                        comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
 
                         // var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
                         // transactionCompleted.insertOne(docs[0], function (err, docs) {
@@ -768,31 +768,31 @@ var UserService = {
         var sp_id = req.body.sp_id;
         console.log(sp_id);
         comman.spCurrentBalance(sp_id, function (currentBalance) {
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var mysort = {updateDate: -1};
-            var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
-            console.log(err);
-            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed",
-                        currentBalance :currentBalance
-                    };
-                    // console.log(status);
-                    callback(status);
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var mysort = {updateDate: -1};
+                var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
+                console.log(err);
+                collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed",
+                            currentBalance: currentBalance
+                        };
+                        // console.log(status);
+                        callback(status);
 
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Success Get all Transition service to Mongodb",
-                        data: docs,
-                        currentBalance :currentBalance
-                    };
-                    callback(status);
-                }
-            });
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all Transition service to Mongodb",
+                            data: docs,
+                            currentBalance: currentBalance
+                        };
+                        callback(status);
+                    }
+                });
             });
 
         });
@@ -1982,36 +1982,270 @@ var UserService = {
             var otp = req.body.otp;
             console.log(otp);
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-                collection.findOne({tran_id: tran_id}, function (err, docs) {
-                    if (err) {
-                        console.log(err);
+            collection.findOne({tran_id: tran_id}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "OTP Not Valid",
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    console.log(docs.otp);
+                    if (docs.otp == otp) {
                         var status = {
-                            status: 0,
-                            message: "OTP Not Valid",
+                            status: 1,
+                            message: "OTP Valid"
                         };
                         console.log(status);
                         callback(status);
                     } else {
-                        console.log(docs.otp);
-                        if(docs.otp == otp ){
-                            var status = {
-                                status: 1,
-                                message: "OTP Valid"
-                            };
-                            console.log(status);
-                            callback(status);
-                        }else {
-                            var status = {
-                                status: 0,
-                                message: "OTP Not Valid"
-                            };
-                            console.log(status);
-                            callback(status);
-                        }
+                        var status = {
+                            status: 0,
+                            message: "OTP Not Valid"
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                }
+            });
+        });
+    },
+
+
+    // Interested To Hire customer find in service provider location and work area 29-8-2019 changed
+    getUserNearestInterestedToHire: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+
+        //   console.log(sp_id + " - " + latitude + " - " + longitude);
+
+        comman.getSPUserServiceData(sp_id, function (result) {
+            // console.log(result.length + "  size------");
+
+            if (result.length > 0) {
+                var newAlert_components = new Array();
+                var ctr = 0;
+                var userSRidList = [];
+                var userLocationLatitude = "";
+                var userLocationLongitude = "";
+                var userSRData = new Array();
+                result.forEach(function (element) {
+                    userSRidList.push(element.sr_id);
+                    var userSRCCList = [];
+                    element.cost_components_on.forEach(function (elementSub) {
+                        userSRCCList.push(elementSub.cc_id);
+                    });
+                    userLocationLatitude = element.userprofile.coordinatePoint.latitude;
+                    userLocationLongitude = element.userprofile.coordinatePoint.longitude;
+
+                    var srData = {
+                        "sr_id": element.sr_id,
+                        "cc_ids": userSRCCList,
+                        "service_area": element.userprofile.service_area,
+                        "cost_components_on": element.cost_components_on,
+                        "neighbourhood_offer": element.neighbourhood_offer,
+                        "neighbourhood_offer_rat": element.neighbourhood_offer_rat,
+                        "minimum_charge": element.minimum_charge,
+                        "discount": element.discount
+                    }
+                    userSRData.push(srData)
+                    console.log(srData + "-------- out");
+
+                    ctr++;
+                    if (ctr === result.length) {
+                        var status = {
+                            status: 1,
+                            message: "Service Data",
+                            data: userSRData
+                        };
+                        callback(status);
                     }
                 });
-            });
-    },
+
+
+                //comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
+                //
+                //     // console.log(resultSendAlert + "-------- out");
+                //
+                //     console.log(userLocationLongitude + " -----userLocationLongitude");
+                //     console.log(userLocationLatitude + " -----userLocationLatitude");
+                //
+                //
+                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                //         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
+                //         var cursorIndex = collection.createIndex({location: "2dsphere"});
+                //
+                //         var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
+                //
+                //
+                //         var cursorSearchMain = new Array();
+                //         var cursorSearchMain2 = new Array();
+                //
+                //         comman.getShoutingDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
+                //             cursorSearchMain = cursorSearchData;
+                //
+                //             comman.getShoutingDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
+                //
+                //                 cursorSearchMain2 = cursorSearch2;
+                //                 var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
+                //                 console.log("----aaa--" + newDataFilter.length);
+                //
+                //                 if (newDataFilter.length > 0) {
+                //
+                //                     newDataFilter.forEach(function (element) {
+                //
+                //                         if (!resultSendAlert.includes(element.cp_alert_id)) {
+                //                             var neighbourhood_offer = "";
+                //                             var neighbourhood_offer_rat = "";
+                //                             var service_area = "";
+                //                             var sr_cost_components = [];
+                //                             var sr_cc_ids = [];
+                //                             userSRData.forEach(function (userElement) {
+                //                                 if (userElement.sr_id == element.sr_id) {
+                //                                     sr_cost_components = userElement.cost_components_on;
+                //                                     sr_cc_ids = userElement.cc_ids;
+                //                                     neighbourhood_offer = userElement.neighbourhood_offer;
+                //                                     neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                //                                     service_area = userElement.service_area;
+                //                                 }
+                //                             });
+                //
+                //                             var allElement = true;
+                //                             console.log("----11" + element.cc_ids);
+                //                             element.cc_ids.forEach(function (ccid) {
+                //                                 if (!sr_cc_ids.includes(ccid)) {
+                //                                     allElement = false
+                //                                 }
+                //                             });
+                //
+                //                             if (allElement) {
+                //                                 var new_cost_item = new Array();
+                //                                 var totalCost = 0;
+                //                                 element.cost_item.forEach(function (ccid_item) {
+                //                                     sr_cost_components.forEach(function (sr_ccid_item) {
+                //                                         if (sr_ccid_item.cc_id == ccid_item.cc_id) {
+                //                                             // console.log("----->"+sr_ccid_item.cc_sp_title);
+                //                                             var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                //                                             totalCost = totalCost + cost;
+                //                                             var cost_item_data = {
+                //                                                 "cc_id": ccid_item.cc_id,
+                //                                                 "cc_cu_title": ccid_item.cc_cu_title,
+                //                                                 "cc_sp_title": ccid_item.cc_sp_title,
+                //                                                 "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                //                                                 "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                //                                                 "cc_per_item_cost": cost,
+                //                                                 "hcc_id": ccid_item.hcc_id,
+                //                                                 "hcc_title": ccid_item.hcc_title,
+                //                                                 "show_order": ccid_item.show_order
+                //                                             }
+                //                                             new_cost_item.push(cost_item_data)
+                //                                         }
+                //                                     });
+                //                                 });
+                //
+                //                                 // console.log(neighbourhood_offer_rat+"------");
+                //                                 // console.log(neighbourhood_offer+"------");
+                //                                 var discountGive = 0;
+                //                                 var discountAmount = 0;
+                //                                 var discountAfterPrice = 0;
+                //                                 if (neighbourhood_offer == "ON") {
+                //                                     discountGive = neighbourhood_offer_rat;
+                //                                     discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                //                                     discountAfterPrice = totalCost - discountAmount;
+                //                                 }
+                //
+                //                                 var costData = {
+                //                                     "cp_alert_id": element.cp_alert_id,
+                //                                     "id": element._id,
+                //                                     "comment": element.comment,
+                //                                     "address": element.address,
+                //                                     "sr_title": element.sr_title,
+                //                                     "sr_id": element.sr_id,
+                //                                     // "cost_item": element.cost_item,
+                //                                     "cost_item": new_cost_item,
+                //                                     "cu_id": element.cu_id,
+                //                                     "alert_active": element.alert_active,
+                //                                     // "cc_ids": element.cc_ids,
+                //                                     // "sr_cc_ids": sr_cc_ids,
+                //                                     "dist": element.dist,
+                //                                     "longitude": element.location.coordinates[0],
+                //                                     "latitude": element.location.coordinates[1],
+                //                                     "creationDate": element.creationDate,
+                //                                     "totalCost": totalCost,
+                //                                     "kaikili_commission": element.services.sr_commission,
+                //                                     "type_of_service": element.services.type_of_service,
+                //                                     "cu_first_name": element.cu_first_name,
+                //                                     "cu_last_name": element.cu_last_name,
+                //                                     "mobile_no": element.mobile_no,
+                //                                     "discountGive": discountGive,
+                //                                     "discountAfterPrice": discountAfterPrice,
+                //                                     "service_area": service_area
+                //
+                //                                 };
+                //                                 newAlert_components.push(costData)
+                //                             }
+                //
+                //                             ctr++;
+                //                             if (ctr === newDataFilter.length) {
+                //                                 var status = {
+                //                                     status: 1,
+                //                                     message: "Service Data",
+                //                                     data: newAlert_components
+                //                                 };
+                //                                 callback(status);
+                //                             }
+                //                         } else {
+                //                             ctr++;
+                //                             if (ctr === newDataFilter.length) {
+                //
+                //                                 if (newAlert_components.length > 0) {
+                //                                     var status = {
+                //                                         status: 1,
+                //                                         message: "Service Data",
+                //                                         data: newAlert_components
+                //                                     };
+                //                                     callback(status);
+                //                                 } else {
+                //                                     var status = {
+                //                                         status: 0,
+                //                                         message: "No Service Data"
+                //                                     };
+                //                                     callback(status);
+                //                                 }
+                //
+                //                             }
+                //                         }
+                //                     });
+                //
+                //
+                //                 } else {
+                //                     var status = {
+                //                         status: 0,
+                //                         message: "No Service Data"
+                //                     };
+                //                     // console.log(status);
+                //                     callback(status);
+                //                 }
+                //             });
+                //         });
+                //     });
+                //
+                // });
+            } else {
+                var status = {
+                    status: 0,
+                    message: "No Service Data"
+                };
+                // console.log(status);
+                callback(status);
+            }
+        });
+    }
+    ,
+
 
 }
 module.exports = UserService;
