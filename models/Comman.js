@@ -1162,7 +1162,7 @@ var Comman = {
     cuInterestedServicesAdd(body) {
         module.exports.getNextSequenceUserID("cu_search_id", function (result) {
             //  console.log(result);
-            var tran_id = "CU_SEARCH_" + result;
+            var tran_id = "cu_search_" + result;
             var post = {
                 "cu_search_id": tran_id,
                 location: {
