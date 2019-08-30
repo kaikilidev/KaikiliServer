@@ -2054,186 +2054,173 @@ var UserService = {
                     userSRData.push(srData)
                     console.log(srData + "-------- out");
 
-                    ctr++;
-                    if (ctr === result.length) {
-                        var status = {
-                            status: 1,
-                            message: "Service Data",
-                            data: userSRData
-                        };
-                        callback(status);
-                    }
                 });
 
 
-                //comman.getAlreadySendShoutingId(sp_id, function (resultSendAlert) {
-                //
-                //     // console.log(resultSendAlert + "-------- out");
-                //
-                //     console.log(userLocationLongitude + " -----userLocationLongitude");
-                //     console.log(userLocationLatitude + " -----userLocationLatitude");
-                //
-                //
-                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-                //         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
-                //         var cursorIndex = collection.createIndex({location: "2dsphere"});
-                //
-                //         var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
-                //
-                //
-                //         var cursorSearchMain = new Array();
-                //         var cursorSearchMain2 = new Array();
-                //
-                //         comman.getShoutingDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
-                //             cursorSearchMain = cursorSearchData;
-                //
-                //             comman.getShoutingDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
-                //
-                //                 cursorSearchMain2 = cursorSearch2;
-                //                 var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
-                //                 console.log("----aaa--" + newDataFilter.length);
-                //
-                //                 if (newDataFilter.length > 0) {
-                //
-                //                     newDataFilter.forEach(function (element) {
-                //
-                //                         if (!resultSendAlert.includes(element.cp_alert_id)) {
-                //                             var neighbourhood_offer = "";
-                //                             var neighbourhood_offer_rat = "";
-                //                             var service_area = "";
-                //                             var sr_cost_components = [];
-                //                             var sr_cc_ids = [];
-                //                             userSRData.forEach(function (userElement) {
-                //                                 if (userElement.sr_id == element.sr_id) {
-                //                                     sr_cost_components = userElement.cost_components_on;
-                //                                     sr_cc_ids = userElement.cc_ids;
-                //                                     neighbourhood_offer = userElement.neighbourhood_offer;
-                //                                     neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
-                //                                     service_area = userElement.service_area;
-                //                                 }
-                //                             });
-                //
-                //                             var allElement = true;
-                //                             console.log("----11" + element.cc_ids);
-                //                             element.cc_ids.forEach(function (ccid) {
-                //                                 if (!sr_cc_ids.includes(ccid)) {
-                //                                     allElement = false
-                //                                 }
-                //                             });
-                //
-                //                             if (allElement) {
-                //                                 var new_cost_item = new Array();
-                //                                 var totalCost = 0;
-                //                                 element.cost_item.forEach(function (ccid_item) {
-                //                                     sr_cost_components.forEach(function (sr_ccid_item) {
-                //                                         if (sr_ccid_item.cc_id == ccid_item.cc_id) {
-                //                                             // console.log("----->"+sr_ccid_item.cc_sp_title);
-                //                                             var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
-                //                                             totalCost = totalCost + cost;
-                //                                             var cost_item_data = {
-                //                                                 "cc_id": ccid_item.cc_id,
-                //                                                 "cc_cu_title": ccid_item.cc_cu_title,
-                //                                                 "cc_sp_title": ccid_item.cc_sp_title,
-                //                                                 "cc_per_item_qut": ccid_item.cc_per_item_qut,
-                //                                                 "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
-                //                                                 "cc_per_item_cost": cost,
-                //                                                 "hcc_id": ccid_item.hcc_id,
-                //                                                 "hcc_title": ccid_item.hcc_title,
-                //                                                 "show_order": ccid_item.show_order
-                //                                             }
-                //                                             new_cost_item.push(cost_item_data)
-                //                                         }
-                //                                     });
-                //                                 });
-                //
-                //                                 // console.log(neighbourhood_offer_rat+"------");
-                //                                 // console.log(neighbourhood_offer+"------");
-                //                                 var discountGive = 0;
-                //                                 var discountAmount = 0;
-                //                                 var discountAfterPrice = 0;
-                //                                 if (neighbourhood_offer == "ON") {
-                //                                     discountGive = neighbourhood_offer_rat;
-                //                                     discountAmount = (totalCost * parseFloat(discountGive)) / 100;
-                //                                     discountAfterPrice = totalCost - discountAmount;
-                //                                 }
-                //
-                //                                 var costData = {
-                //                                     "cp_alert_id": element.cp_alert_id,
-                //                                     "id": element._id,
-                //                                     "comment": element.comment,
-                //                                     "address": element.address,
-                //                                     "sr_title": element.sr_title,
-                //                                     "sr_id": element.sr_id,
-                //                                     // "cost_item": element.cost_item,
-                //                                     "cost_item": new_cost_item,
-                //                                     "cu_id": element.cu_id,
-                //                                     "alert_active": element.alert_active,
-                //                                     // "cc_ids": element.cc_ids,
-                //                                     // "sr_cc_ids": sr_cc_ids,
-                //                                     "dist": element.dist,
-                //                                     "longitude": element.location.coordinates[0],
-                //                                     "latitude": element.location.coordinates[1],
-                //                                     "creationDate": element.creationDate,
-                //                                     "totalCost": totalCost,
-                //                                     "kaikili_commission": element.services.sr_commission,
-                //                                     "type_of_service": element.services.type_of_service,
-                //                                     "cu_first_name": element.cu_first_name,
-                //                                     "cu_last_name": element.cu_last_name,
-                //                                     "mobile_no": element.mobile_no,
-                //                                     "discountGive": discountGive,
-                //                                     "discountAfterPrice": discountAfterPrice,
-                //                                     "service_area": service_area
-                //
-                //                                 };
-                //                                 newAlert_components.push(costData)
-                //                             }
-                //
-                //                             ctr++;
-                //                             if (ctr === newDataFilter.length) {
-                //                                 var status = {
-                //                                     status: 1,
-                //                                     message: "Service Data",
-                //                                     data: newAlert_components
-                //                                 };
-                //                                 callback(status);
-                //                             }
-                //                         } else {
-                //                             ctr++;
-                //                             if (ctr === newDataFilter.length) {
-                //
-                //                                 if (newAlert_components.length > 0) {
-                //                                     var status = {
-                //                                         status: 1,
-                //                                         message: "Service Data",
-                //                                         data: newAlert_components
-                //                                     };
-                //                                     callback(status);
-                //                                 } else {
-                //                                     var status = {
-                //                                         status: 0,
-                //                                         message: "No Service Data"
-                //                                     };
-                //                                     callback(status);
-                //                                 }
-                //
-                //                             }
-                //                         }
-                //                     });
-                //
-                //
-                //                 } else {
-                //                     var status = {
-                //                         status: 0,
-                //                         message: "No Service Data"
-                //                     };
-                //                     // console.log(status);
-                //                     callback(status);
-                //                 }
-                //             });
-                //         });
-                //     });
-                //
-                // });
+                comman.getAlreadySendInterestedRequestId(sp_id, function (resultSendAlert) {
+
+                    // console.log(resultSendAlert + "-------- out");
+
+                    console.log(userLocationLongitude + " -----userLocationLongitude");
+                    console.log(userLocationLatitude + " -----userLocationLatitude");
+
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                        var collection = kdb.db(config.dbName).collection(config.collections.cu_interested_services);
+                        var cursorIndex = collection.createIndex({location: "2dsphere"});
+                        var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
+                        var cursorSearchMain = new Array();
+                        var cursorSearchMain2 = new Array();
+
+                        comman.getInterestedRequestDataFilter1(longitude, latitude, userSRidList, radius, "customer_location", function (cursorSearchData) {
+                            cursorSearchMain = cursorSearchData;
+
+                            comman.getInterestedRequestDataFilter1(userLocationLongitude, userLocationLatitude, userSRidList, radius, "provider_location", function (cursorSearch2) {
+                                cursorSearchMain2 = cursorSearch2;
+
+                                //         var newDataFilter = cursorSearchMain.concat(cursorSearchMain2);
+                        //         console.log("----aaa--" + newDataFilter.length);
+                        //
+                        //         if (newDataFilter.length > 0) {
+                        //
+                        //             newDataFilter.forEach(function (element) {
+                        //
+                        //                 if (!resultSendAlert.includes(element.cp_alert_id)) {
+                        //                     var neighbourhood_offer = "";
+                        //                     var neighbourhood_offer_rat = "";
+                        //                     var service_area = "";
+                        //                     var sr_cost_components = [];
+                        //                     var sr_cc_ids = [];
+                        //                     userSRData.forEach(function (userElement) {
+                        //                         if (userElement.sr_id == element.sr_id) {
+                        //                             sr_cost_components = userElement.cost_components_on;
+                        //                             sr_cc_ids = userElement.cc_ids;
+                        //                             neighbourhood_offer = userElement.neighbourhood_offer;
+                        //                             neighbourhood_offer_rat = userElement.neighbourhood_offer_rat;
+                        //                             service_area = userElement.service_area;
+                        //                         }
+                        //                     });
+                        //
+                        //                     var allElement = true;
+                        //                     console.log("----11" + element.cc_ids);
+                        //                     element.cc_ids.forEach(function (ccid) {
+                        //                         if (!sr_cc_ids.includes(ccid)) {
+                        //                             allElement = false
+                        //                         }
+                        //                     });
+                        //
+                        //                     if (allElement) {
+                        //                         var new_cost_item = new Array();
+                        //                         var totalCost = 0;
+                        //                         element.cost_item.forEach(function (ccid_item) {
+                        //                             sr_cost_components.forEach(function (sr_ccid_item) {
+                        //                                 if (sr_ccid_item.cc_id == ccid_item.cc_id) {
+                        //                                     // console.log("----->"+sr_ccid_item.cc_sp_title);
+                        //                                     var cost = (parseFloat(ccid_item.cc_per_item_qut) * parseFloat(sr_ccid_item.cc_rate_per_item));
+                        //                                     totalCost = totalCost + cost;
+                        //                                     var cost_item_data = {
+                        //                                         "cc_id": ccid_item.cc_id,
+                        //                                         "cc_cu_title": ccid_item.cc_cu_title,
+                        //                                         "cc_sp_title": ccid_item.cc_sp_title,
+                        //                                         "cc_per_item_qut": ccid_item.cc_per_item_qut,
+                        //                                         "cc_per_item_rate": sr_ccid_item.cc_rate_per_item,
+                        //                                         "cc_per_item_cost": cost,
+                        //                                         "hcc_id": ccid_item.hcc_id,
+                        //                                         "hcc_title": ccid_item.hcc_title,
+                        //                                         "show_order": ccid_item.show_order
+                        //                                     }
+                        //                                     new_cost_item.push(cost_item_data)
+                        //                                 }
+                        //                             });
+                        //                         });
+                        //
+                        //                         // console.log(neighbourhood_offer_rat+"------");
+                        //                         // console.log(neighbourhood_offer+"------");
+                        //                         var discountGive = 0;
+                        //                         var discountAmount = 0;
+                        //                         var discountAfterPrice = 0;
+                        //                         if (neighbourhood_offer == "ON") {
+                        //                             discountGive = neighbourhood_offer_rat;
+                        //                             discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                        //                             discountAfterPrice = totalCost - discountAmount;
+                        //                         }
+                        //
+                        //                         var costData = {
+                        //                             "cp_alert_id": element.cp_alert_id,
+                        //                             "id": element._id,
+                        //                             "comment": element.comment,
+                        //                             "address": element.address,
+                        //                             "sr_title": element.sr_title,
+                        //                             "sr_id": element.sr_id,
+                        //                             // "cost_item": element.cost_item,
+                        //                             "cost_item": new_cost_item,
+                        //                             "cu_id": element.cu_id,
+                        //                             "alert_active": element.alert_active,
+                        //                             // "cc_ids": element.cc_ids,
+                        //                             // "sr_cc_ids": sr_cc_ids,
+                        //                             "dist": element.dist,
+                        //                             "longitude": element.location.coordinates[0],
+                        //                             "latitude": element.location.coordinates[1],
+                        //                             "creationDate": element.creationDate,
+                        //                             "totalCost": totalCost,
+                        //                             "kaikili_commission": element.services.sr_commission,
+                        //                             "type_of_service": element.services.type_of_service,
+                        //                             "cu_first_name": element.cu_first_name,
+                        //                             "cu_last_name": element.cu_last_name,
+                        //                             "mobile_no": element.mobile_no,
+                        //                             "discountGive": discountGive,
+                        //                             "discountAfterPrice": discountAfterPrice,
+                        //                             "service_area": service_area
+                        //
+                        //                         };
+                        //                         newAlert_components.push(costData)
+                        //                     }
+                        //
+                        //                     ctr++;
+                        //                     if (ctr === newDataFilter.length) {
+                        //                         var status = {
+                        //                             status: 1,
+                        //                             message: "Service Data",
+                        //                             data: newAlert_components
+                        //                         };
+                        //                         callback(status);
+                        //                     }
+                        //                 } else {
+                        //                     ctr++;
+                        //                     if (ctr === newDataFilter.length) {
+                        //
+                        //                         if (newAlert_components.length > 0) {
+                        //                             var status = {
+                        //                                 status: 1,
+                        //                                 message: "Service Data",
+                        //                                 data: newAlert_components
+                        //                             };
+                        //                             callback(status);
+                        //                         } else {
+                        //                             var status = {
+                        //                                 status: 0,
+                        //                                 message: "No Service Data"
+                        //                             };
+                        //                             callback(status);
+                        //                         }
+                        //
+                        //                     }
+                        //                 }
+                        //             });
+                        //
+                        //
+                        //         } else {
+                        //             var status = {
+                        //                 status: 0,
+                        //                 message: "No Service Data"
+                        //             };
+                        //             // console.log(status);
+                        //             callback(status);
+                        //         }
+                            });
+                        });
+                    });
+
+                });
             } else {
                 var status = {
                     status: 0,

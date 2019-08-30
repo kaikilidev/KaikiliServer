@@ -1179,6 +1179,7 @@ var Comman = {
                 "date": body.date,
                 "cc_ids": body.cc_ids,
                 "cu_id": body.cu_id,
+                "book_service":"false",
                 "creationDate": new Date().toISOString()
             };
 
@@ -1186,6 +1187,87 @@ var Comman = {
                 var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
                 spEarnWallet.insertOne(post, function (err, doc) {
                 });
+            });
+        });
+    },
+
+
+    getAlreadySendInterestedRequestId(sp_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+            var query = {
+                "creationDate":
+                    {
+                        $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                        $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
+                    }, "sp_id": sp_id
+            };
+            autoIdCollection.find(query).toArray(function (err, doc) {
+                var userSRidList = [];
+                console.log(doc.length);
+                if (doc.length > 0) {
+                    var count = 0
+                    doc.forEach(function (element) {
+                        userSRidList.push(element.cu_search_id);
+                        console.log(element.cu_search_id);
+                        // return callBack(doc);
+                        count++
+                        if (doc.length == count) {
+                            console.log(userSRidList);
+                            return callBack(userSRidList);
+                        }
+                    });
+
+                } else {
+                    console.log(userSRidList);
+                    return callBack(userSRidList);
+                }
+            });
+        });
+    },
+
+
+    getInterestedRequestDataFilter1(longitude, latitude, userSRidList, radius, type_of_service, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_interested_services);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {
+                            type: "Point",
+                            coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                        },
+                        key: "location",
+                        maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {
+                            sr_id: {$in: userSRidList},
+                            "creationDate":{
+                                    $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                                    $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
+                                },
+                            book_service:"false",
+                            type_of_service: type_of_service
+                        }//{services: sr_id}// cost_comps: cc_ids
+                        // ,cp_alert_id:{$out:resultSendAlert}
+                    }
+                }, {
+                    $lookup: {
+                        from: config.collections.add_services,
+                        localField: "sr_id",
+                        foreignField: "sr_id",
+                        as: "services"
+                    }
+                }, {
+                    $unwind: "$services"
+                }
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log("----" + mainDocs.length);
+                return callBack(mainDocs);
             });
         });
     },
