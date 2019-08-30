@@ -2168,9 +2168,9 @@ var UserService = {
                                                     // "cu_first_name": element.cu_first_name,
                                                     // "cu_last_name": element.cu_last_name,
                                                     // "mobile_no": element.mobile_no,
-                                                    "discountGive": discountGive,
-                                                    "discount":discount,
-                                                    "minimum_charge":minimum_charge,
+                                                     "discountGive": discountGive,
+                                                     "discount":discount,
+                                                     "minimum_charge":minimum_charge,
                                                      "discountAfterPrice": discountAfterPrice,
                                                     "service_area": service_area
 
@@ -2233,6 +2233,90 @@ var UserService = {
                 callback(status);
             }
         });
+    }
+    ,
+
+    SPUserInterestedSendCustomerInfo: function (req, callback) {
+
+        var userSRSendCUAlertData = req.body.shout_data;
+        var sp_id = req.body.sp_id;
+        var first_name = req.body.first_name;
+        var last_name = req.body.last_name;
+        var sp_mobile_no = req.body.sp_mobile_no;
+        var sp_images = "";
+        var uploadData = true;
+        var count = 0;
+
+
+        userSRSendCUAlertData.forEach(function (data) {
+            comman.getNextSequenceUserID("cu_interested", function (result) {
+                var newAlertRequirement = {
+                    cu_search_id: data.cu_search_id,
+                    cu_interested_rq_id: "cu_interested_rq_" + result,
+                    comment: data.comment,
+                    address: data.address,
+                    sr_title: data.sr_title,
+                    sp_id: sp_id,
+                    sp_first_name: first_name,
+                    sp_last_name: last_name,
+                    sp_mobile_no: sp_mobile_no,
+                    sp_images: sp_images,
+                    // cu_first_name: data.cu_first_name,
+                    // cu_last_name: data.cu_last_name,
+                    // cu_mobile_no: data.mobile_no,
+                    type_of_service: data.type_of_service,
+                    sr_status: "Open",
+                    sr_id: data.sr_id,
+                    cost_item: data.cost_item,
+                    cu_id: data.cu_id,
+                    dist: data.dist,
+                    longitude: data.longitude,
+                    latitude: data.latitude,
+                    totalCost: data.totalCost,
+                    kaikili_commission: data.kaikili_commission,
+                    discountGive: data.discountGive,
+                    service_area: data.service_area,
+                    discountAfterPrice: data.discountAfterPrice,
+                    minimum_charge: data.minimum_charge,
+                    creationDate: new Date().toISOString()
+                };
+
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                    var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+                    collection.insertOne(newAlertRequirement, function (err, records) {
+                        if (err) {
+                            uploadData = false;
+                        } else {
+                            // comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+
+                            count++;
+                            if (count == userSRSendCUAlertData.length) {
+                                if (!uploadData) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed"
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully add user address",
+                                        data: records
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                }
+                            }
+                        }
+                    });
+                });
+
+            });
+
+        });
+
     }
     ,
 
