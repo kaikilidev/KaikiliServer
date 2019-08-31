@@ -1278,23 +1278,29 @@ var Comman = {
 
 
 
-    cuInterestedRemoveBookServicesData(body) {
+    cuInterestedRemoveBookServicesData(sr_id,itemCost,cu_id,latitude,longitude){
+            var cc_ids = new Array();
+            itemCost.forEach(function (ccid_item) {
+                cc_ids.push(ccid_item.cc_id)
+            });
+
             var post = {
                 location: {
-                    coordinates: [parseFloat(body.coordinatePoint.longitude), parseFloat(body.coordinatePoint.latitude)],
+                    coordinates: [parseFloat(longitude), parseFloat(latitude)],
                     type: "Point"
                 },
-                "address": body.address,
-                "sr_id": body.sr_id,
-                "sr_title": body.sr_name,
-                "cost_item": body.itemCost,
-                "cu_id": body.cu_id,
-                "book_service":"false"
+                sr_id: sr_id,
+                cc_ids: cc_ids,
+                cu_id: cu_id,
+                book_service:"false"
             };
 
+            // console.log(JSON.stringify(post, null, 2));
+            // console.log("----111" + post);
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
                 spEarnWallet.update(post,{$set: {book_service: "true"}}, function (err, doc) {
+                    // console.log("----222" + doc);
                 });
             });
 

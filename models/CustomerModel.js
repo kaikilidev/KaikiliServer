@@ -692,7 +692,7 @@ var Customer = {
                 messages: []
             };
 
-            comman.cuInterestedRemoveBookServicesData(newBookServiceUser);
+            comman.cuInterestedRemoveBookServicesData(req.body.sr_id,req.body.itemCost,req.body.cust_id,req.body.coordinatePoint.latitude,req.body.coordinatePoint.longitude);
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
