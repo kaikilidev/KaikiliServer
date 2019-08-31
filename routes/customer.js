@@ -473,6 +473,18 @@ router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
 });
 
 
+router.post('/customerSingleInterestedTransition', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    customerModel.getCustomerSingleInterestedTransition(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
 
 
 module.exports = router;

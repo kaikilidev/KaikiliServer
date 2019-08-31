@@ -1824,5 +1824,36 @@ var Customer = {
         });
     },
 
+    // 31-8-2019 Interested Customer to ger request post user (Customer Interested single data)
+    getCustomerSingleInterestedTransition: function (req, callback) {
+        var cu_interested_rq_id = req.body.cu_interested_rq_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+            collectionSP.findOne({
+                cu_interested_rq_id: cu_interested_rq_id
+            }, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully Update data.",
+                        data: records
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    }
+    ,
+
 }
 module.exports = Customer;

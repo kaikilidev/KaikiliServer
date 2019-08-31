@@ -2289,7 +2289,7 @@ var UserService = {
                         if (err) {
                             uploadData = false;
                         } else {
-                             comman.sendCustomerNotification(data.cu_id, newAlertRequirement.cu_interested_rq_id, "Service Provider Send Interested to service Request", "Interested to Service", "cu_interested");
+                             comman.sendCustomerNotification(data.cu_id, newAlertRequirement.cu_interested_rq_id, "Service Provider Send Interested Service Request", "Interested to Service", "cu_interested");
 
                             count++;
                             if (count == userSRSendCUAlertData.length) {
