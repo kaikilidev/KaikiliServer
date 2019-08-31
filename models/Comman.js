@@ -1272,6 +1272,30 @@ var Comman = {
         });
     },
 
+
+
+    cuInterestedRemoveBookServicesData(body) {
+            var post = {
+                location: {
+                    coordinates: [parseFloat(body.coordinatePoint.longitude), parseFloat(body.coordinatePoint.latitude)],
+                    type: "Point"
+                },
+                "address": body.address,
+                "sr_id": body.sr_id,
+                "sr_title": body.sr_name,
+                "cost_item": body.itemCost,
+                "cu_id": body.cu_id,
+                "book_service":"false"
+            };
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
+                spEarnWallet.update(post,{$set: {book_service: "true"}}, function (err, doc) {
+                });
+            });
+
+    },
+
 }
 
 module.exports = Comman;

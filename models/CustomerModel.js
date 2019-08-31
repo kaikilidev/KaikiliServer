@@ -673,7 +673,6 @@ var Customer = {
                 sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toISOString(),
                 otp: comman.getRandomInt(999999)
-
             };
 
             var notificationData = {
@@ -693,6 +692,7 @@ var Customer = {
                 messages: []
             };
 
+            comman.cuInterestedRemoveBookServicesData(newBookServiceUser);
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
