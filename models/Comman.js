@@ -1180,6 +1180,10 @@ var Comman = {
                 "cc_ids": body.cc_ids,
                 "cu_id": body.cu_id,
                 "book_service":"false",
+                "cu_first_name":body.cu_first_name,
+                "cu_last_name":body.cu_last_name,
+                "mobile_no":body.mobile_no,
+                "cu_images":body.cu_images,
                 "creationDate": new Date().toISOString()
             };
 

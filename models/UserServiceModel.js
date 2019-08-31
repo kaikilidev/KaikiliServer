@@ -2165,9 +2165,10 @@ var UserService = {
                                                     "totalCost": totalCost,
                                                     "kaikili_commission": element.services.sr_commission,
                                                     "type_of_service": element.services.type_of_service,
-                                                    // "cu_first_name": element.cu_first_name,
-                                                    // "cu_last_name": element.cu_last_name,
-                                                    // "mobile_no": element.mobile_no,
+                                                    "cu_first_name":element.cu_first_name,
+                                                    "cu_last_name":element.cu_last_name,
+                                                    "mobile_no":element.mobile_no,
+                                                    "cu_images":element.cu_images,
                                                      "discountGive": discountGive,
                                                      "discount":discount,
                                                      "minimum_charge":minimum_charge,
@@ -2261,9 +2262,10 @@ var UserService = {
                     sp_last_name: last_name,
                     sp_mobile_no: sp_mobile_no,
                     sp_images: sp_images,
-                    // cu_first_name: data.cu_first_name,
-                    // cu_last_name: data.cu_last_name,
-                    // cu_mobile_no: data.mobile_no,
+                    cu_first_name:data.cu_first_name,
+                    cu_last_name:data.cu_last_name,
+                    mobile_no:data.mobile_no,
+                    cu_images:data.cu_images,
                     type_of_service: data.type_of_service,
                     sr_status: "Open",
                     sr_id: data.sr_id,
@@ -2287,7 +2289,7 @@ var UserService = {
                         if (err) {
                             uploadData = false;
                         } else {
-                            // comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                             comman.sendCustomerNotification(data.cu_id, newAlertRequirement.cu_interested_rq_id, "Service Provider Send Interested to service Request", "Interested to Service", "cu_interested");
 
                             count++;
                             if (count == userSRSendCUAlertData.length) {
