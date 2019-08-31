@@ -1868,7 +1868,7 @@ var Customer = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
             collectionSP.updateOne({
-                cp_alert_id: cp_alert_id,
+                cu_interested_rq_id: cu_interested_rq_id,
                 cu_id: cu_id
             }, {$set: updateTran}, function (err, records) {
                 if (err) {
