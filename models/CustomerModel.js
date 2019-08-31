@@ -780,6 +780,7 @@ var Customer = {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionQuote = db.db(config.dbName).collection(config.collections.cu_quote_request);
             var collectionAlert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var collectionInterested = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
             var collectionPPS = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             collection.find({cust_id: cust_id, cp_review: "false"}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
@@ -804,23 +805,27 @@ var Customer = {
                             callback(status);
 
                         } else {
-                            collectionAlert.find({
-                                cu_id: cust_id,
-                                sr_status: "Open"
+                            collectionAlert.find({cu_id: cust_id, sr_status: "Open"
                             }).sort({creationDate: -1}).toArray(function (err, shoutingData) {
 
-                                collectionPPS.find({
-                                    cust_id: cust_id
-                                }).sort(mysort).toArray(function (err, docspps) {
+                                collectionInterested.find({cu_id: cust_id, sr_status: "Open"
+                                }).sort({creationDate: -1}).toArray(function (err, interestedData) {
+
+                                collectionPPS.find({ cust_id: cust_id}).sort(mysort).toArray(function (err, docspps) {
+
+                                    collectionInterested
+
                                     var status = {
                                         status: 1,
                                         message: "Success Get all Transition service to Mongodb",
                                         data: docs,
                                         dataQuote: docsQuote,
                                         shoutingData: shoutingData,
-                                        docspps: docspps
+                                        docspps: docspps,
+                                        interestedData: interestedData,
                                     };
                                     callback(status);
+                                });
                                 });
                             });
                         }
