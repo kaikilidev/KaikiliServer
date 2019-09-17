@@ -502,4 +502,19 @@ router.post('/customerSingleInterestedTransition', function (req, res, next) {
 });
 
 
+
+router.post('/CUAddBankInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.userAddBankInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
 module.exports = router;

@@ -692,7 +692,7 @@ var Customer = {
                 messages: []
             };
 
-            comman.cuInterestedRemoveBookServicesData(req.body.sr_id,req.body.itemCost,req.body.cust_id,req.body.coordinatePoint.latitude,req.body.coordinatePoint.longitude);
+            comman.cuInterestedRemoveBookServicesData(req.body.sr_id, req.body.itemCost, req.body.cust_id, req.body.coordinatePoint.latitude, req.body.coordinatePoint.longitude);
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -805,27 +805,29 @@ var Customer = {
                             callback(status);
 
                         } else {
-                            collectionAlert.find({cu_id: cust_id, sr_status: "Open"
+                            collectionAlert.find({
+                                cu_id: cust_id, sr_status: "Open"
                             }).sort({creationDate: -1}).toArray(function (err, shoutingData) {
 
-                                collectionInterested.find({cu_id: cust_id, sr_status: "Open"
+                                collectionInterested.find({
+                                    cu_id: cust_id, sr_status: "Open"
                                 }).sort({creationDate: -1}).toArray(function (err, interestedData) {
 
-                                collectionPPS.find({ cust_id: cust_id}).sort(mysort).toArray(function (err, docspps) {
+                                    collectionPPS.find({cust_id: cust_id}).sort(mysort).toArray(function (err, docspps) {
 
-                                    collectionInterested
+                                        collectionInterested
 
-                                    var status = {
-                                        status: 1,
-                                        message: "Success Get all Transition service to Mongodb",
-                                        data: docs,
-                                        dataQuote: docsQuote,
-                                        shoutingData: shoutingData,
-                                        docspps: docspps,
-                                        interestedData: interestedData,
-                                    };
-                                    callback(status);
-                                });
+                                        var status = {
+                                            status: 1,
+                                            message: "Success Get all Transition service to Mongodb",
+                                            data: docs,
+                                            dataQuote: docsQuote,
+                                            shoutingData: shoutingData,
+                                            docspps: docspps,
+                                            interestedData: interestedData,
+                                        };
+                                        callback(status);
+                                    });
                                 });
                             });
                         }
@@ -1066,9 +1068,9 @@ var Customer = {
             cp_review: "true",
         };
 
-        if(req.body.tip_amount > 0) {
+        if (req.body.tip_amount > 0) {
             comman.spEranInfoUpdate(req.body.sp_id, req.body.tran_id, "Customer give tip $" + req.body.tip_amount, req.body.tip_amount, 0, "Credit");
-            comman.spTripInfoUpdate(req.body.sp_id,req.body.cust_id, req.body.tran_id, "Customer give tip $" + req.body.tip_amount, req.body.tip_amount);
+            comman.spTripInfoUpdate(req.body.sp_id, req.body.cust_id, req.body.tran_id, "Customer give tip $" + req.body.tip_amount, req.body.tip_amount);
         }
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
@@ -1765,8 +1767,8 @@ var Customer = {
         var cost_item = req.body.cost_item;
         console.log(sr_id + " --- " + req.body.cc_ids);
 
-        comman.getSPUserRepeatedService(sp_id, cc_ids, sr_id,  cost_item, function (result) {
-             callback(result);
+        comman.getSPUserRepeatedService(sp_id, cc_ids, sr_id, cost_item, function (result) {
+            callback(result);
         });
 
     },
@@ -1799,7 +1801,7 @@ var Customer = {
         });
     },
 
-    updateCUProfileDataUpload:  function (req, callback) {
+    updateCUProfileDataUpload: function (req, callback) {
         var cu_id = req.body.cu_id;
         var addWorkInfo = {
             "first_name": req.body.first_name,
@@ -1896,5 +1898,52 @@ var Customer = {
             });
         });
     },
+
+
+// new Api Customer add bank information api
+    userAddBankInfo: function (req, callback) {
+
+        var bankInfoAdd = {
+            cu_id: req.body.cu_id,
+            card_no: req.body.card_no,
+            bank_name: req.body.bank_name,
+            card_holder_name: req.body.card_holder_name,
+            month: req.body.month,
+            year: req.body.year,
+            cvc: req.body.cvc,
+            isUsed: "true",
+            creationDate: new Date().toISOString()
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_bank_info);
+            collection.updateMany({cu_id: req.body.cu_id}, {$set: {isUsed: "false"}}, function (err, docs) {
+
+                console.log(docs);
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.cu_bank_info);
+                    collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Thank you fore add new card."
+                            };
+
+                            console.log();
+                            callback(status);
+                        }
+                    });
+                });
+            });
+        });
+    }
 }
 module.exports = Customer;
