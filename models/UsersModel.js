@@ -80,7 +80,7 @@ var Users = {
         var sp_id = req.body.sp_id;
         var addWorkInfo = req.body;
         var geoUpdate = req.body.geoUpdate;
-        if (geoUpdate) {
+        if (geoUpdate == true) {
             var geoLocationMatch = {
                 sp_id: req.body.sp_id,
                 radius: req.body.radius,
@@ -146,7 +146,7 @@ var Users = {
                                 callback(status);
                             } else {
 
-                                if (geoUpdate) {
+                                if (geoUpdate  == true) {
                                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                         collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
