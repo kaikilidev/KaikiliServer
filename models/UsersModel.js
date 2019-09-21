@@ -79,14 +79,17 @@ var Users = {
     addNewWorkProfile: function (req, callback) {
         var sp_id = req.body.sp_id;
         var addWorkInfo = req.body;
-        var geoLocationMatch = {
-            sp_id: req.body.sp_id,
-            radius: req.body.radius,
-            location: {
-                coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
-                type: "Point"
-            }
-        };
+        var geoUpdate = req.body.geoUpdate;
+        if (geoUpdate) {
+            var geoLocationMatch = {
+                sp_id: req.body.sp_id,
+                radius: req.body.radius,
+                location: {
+                    coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
+                    type: "Point"
+                }
+            };
+        }
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
@@ -143,16 +146,18 @@ var Users = {
                                 callback(status);
                             } else {
 
-                                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                                    var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
-                                    collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
-                                        if (err) {
-                                            console.log(err);
-                                        } else {
-                                            console.log(records);
-                                        }
+                                if (geoUpdate) {
+                                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                                        collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
+                                            if (err) {
+                                                console.log(err);
+                                            } else {
+                                                console.log(records);
+                                            }
+                                        });
                                     });
-                                });
+                                }
                                 var status = {
                                     status: 1,
                                     message: "Successfully updated work profile",
@@ -558,11 +563,11 @@ var Users = {
         var type = req.body.type;
         var sp_id = req.body.sp_id;
 
-        if(type == "start"){
+        if (type == "start") {
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                collectionSP.updateOne({sp_id: sp_id},{$set: {scanFirstTime:  new Date().toISOString()}}, function (err, dataSet) {
+                collectionSP.updateOne({sp_id: sp_id}, {$set: {scanFirstTime: new Date().toISOString()}}, function (err, dataSet) {
                     if (err) {
                         // console.log(err);
                         var status = {
@@ -583,22 +588,22 @@ var Users = {
                 });
             });
 
-        }else {
-            var  endDate = new Date().toISOString();
+        } else {
+            var endDate = new Date().toISOString();
             var offerAmount = req.body.offerAmount;
-            var  startDate = new Date(req.body.startDate);
-            console.log(new Date(endDate) +"----"+startDate);
+            var startDate = new Date(req.body.startDate);
+            console.log(new Date(endDate) + "----" + startDate);
             var diffDays = parseInt((new Date(endDate) - startDate) / (1000 * 60 * 60 * 24));
 
-            var oneDayAmout = parseFloat(offerAmount)/365;
+            var oneDayAmout = parseFloat(offerAmount) / 365;
 
             console.log(oneDayAmout.toFixed(2));
             console.log(diffDays);
             var creditAmount;
-            if(diffDays < 366){
-                creditAmount = oneDayAmout.toFixed(2)*diffDays;
-            }else {
-                creditAmount = oneDayAmout.toFixed(2)*365;
+            if (diffDays < 366) {
+                creditAmount = oneDayAmout.toFixed(2) * diffDays;
+            } else {
+                creditAmount = oneDayAmout.toFixed(2) * 365;
             }
 
             var updateData = {
@@ -609,7 +614,7 @@ var Users = {
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                collectionSP.updateOne({sp_id: sp_id},{$set: updateData}, function (err, dataSet) {
+                collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
                     if (err) {
                         // console.log(err);
                         var status = {
@@ -632,7 +637,6 @@ var Users = {
 
         }
     },
-
 
 
 }
