@@ -517,4 +517,47 @@ router.post('/CUAddBankInfo', function (req, res, next) {
 });
 
 
+
+
+router.post('/CUUserBankInfoList', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.CUUserBankInfoList(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/CUUserDeleteBankInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.CUUserDeleteBankInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+router.post('/CUUserSetDefaultBankInfo', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.CUUserSetDefaultBankInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 module.exports = router;

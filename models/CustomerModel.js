@@ -1944,6 +1944,118 @@ var Customer = {
                 });
             });
         });
+    },
+
+    CUUserBankInfoList: function (req, callback) {
+
+        var cu_id = req.body.cu_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.cu_bank_info);
+            var mysort = {creationDate: -1};
+
+            bankdata.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Thank you.",
+                        data: docs
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
     }
+    ,
+
+    CUUserDeleteBankInfo: function (req, callback) {
+
+        var cu_id = req.body.cu_id;
+        var pid = req.body.id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bankdata = db.db(config.dbName).collection(config.collections.cu_bank_info);
+            var mysort = {creationDate: -1};
+            var myquery = {_id: ObjectID(pid), cu_id: cu_id};
+            bankdata.deleteOne(myquery, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "l  "
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Deleted your bank information",
+                        data: docs
+                    };
+                    console.log();
+                    callback(status);
+                }
+            });
+        });
+    }
+    ,
+
+    CUUserSetDefaultBankInfo: function (req, callback) {
+
+        var cu_id = req.body.cu_id;
+        var pid = req.body.id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_bank_info);
+            // Update service record
+            collection.updateMany({cu_id: cu_id}, {$set: {isUsed: "false"}}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    // console.log(data);
+                    collection.updateOne({
+                        _id: ObjectID(pid),
+                        cu_id: cu_id
+                    }, {$set: {isUsed: "true"}}, function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully set information are default",
+                                data: docs
+                            };
+                            console.log();
+                            callback(status);
+                        }
+                    });
+                }
+            });
+        });
+    }
+    ,
+
+
 }
 module.exports = Customer;
