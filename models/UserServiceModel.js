@@ -931,8 +931,13 @@ var UserService = {
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
+        var sp_view = req.body.sp_view;
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            if(sp_view == true){
+                collection.update({tran_id: tran_id}, {$set: {sp_view: true}});
+            }
 
             // Update service record
             collection.findOne({tran_id: tran_id}, function (err, docs) {
