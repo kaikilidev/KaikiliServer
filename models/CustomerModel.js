@@ -672,6 +672,7 @@ var Customer = {
                 distance: req.body.distance,
                 sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toISOString(),
+                sp_view:false,
                 otp: comman.getRandomInt(999999)
             };
 
