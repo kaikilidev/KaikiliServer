@@ -1647,72 +1647,75 @@ var UserService = {
         var count = 0;
 
 
+
         userSRSendCUAlertData.forEach(function (data) {
-            comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
-                var newAlertRequirement = {
-                    cp_alert_id: data.cp_alert_id,
-                    sp_cp_alert_send_id: "SHOUT0" + result,
-                    comment: data.comment,
-                    address: data.address,
-                    sr_title: data.sr_title,
-                    sp_id: sp_id,
-                    sp_first_name: first_name,
-                    sp_last_name: last_name,
-                    sp_mobile_no: sp_mobile_no,
-                    sp_images: sp_images,
-                    cu_first_name: data.cu_first_name,
-                    cu_last_name: data.cu_last_name,
-                    cu_mobile_no: data.mobile_no,
-                    type_of_service: data.type_of_service,
-                    sr_status: "Open",
-                    sr_id: data.sr_id,
-                    cost_item: data.cost_item,
-                    cu_id: data.cu_id,
-                    dist: data.dist,
-                    longitude: data.longitude,
-                    latitude: data.latitude,
-                    totalCost: data.totalCost,
-                    kaikili_commission: data.kaikili_commission,
-                    discountGive: data.discountGive,
-                    service_area: data.service_area,
-                    discountAfterPrice: data.discountAfterPrice,
-                    creationDate: new Date().toISOString()
-                };
+            comman.getSPUserRadiusLocationToAVGShout(data.sr_id, data.longitude, data.latitude, data.cost_item, function (avgCost) {
+                comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
+                    var newAlertRequirement = {
+                        cp_alert_id: data.cp_alert_id,
+                        sp_cp_alert_send_id: "SHOUT0" + result,
+                        comment: data.comment,
+                        address: data.address,
+                        sr_title: data.sr_title,
+                        sp_id: sp_id,
+                        sp_first_name: first_name,
+                        sp_last_name: last_name,
+                        sp_mobile_no: sp_mobile_no,
+                        sp_images: sp_images,
+                        cu_first_name: data.cu_first_name,
+                        cu_last_name: data.cu_last_name,
+                        cu_mobile_no: data.mobile_no,
+                        type_of_service: data.type_of_service,
+                        sr_status: "Open",
+                        sr_id: data.sr_id,
+                        cost_item: data.cost_item,
+                        cu_id: data.cu_id,
+                        dist: data.dist,
+                        longitude: data.longitude,
+                        latitude: data.latitude,
+                        totalCost: data.totalCost,
+                        kaikili_commission: data.kaikili_commission,
+                        discountGive: data.discountGive,
+                        service_area: data.service_area,
+                        discountAfterPrice: data.discountAfterPrice,
+                        creationDate: new Date().toISOString(),
+                        avg_cost: avgCost.totalCost
+                    };
 
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
-                    var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-                    collection.insertOne(newAlertRequirement, function (err, records) {
-                        if (err) {
-                            uploadData = false;
-                        } else {
-                            comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                        var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+                        collection.insertOne(newAlertRequirement, function (err, records) {
+                            if (err) {
+                                uploadData = false;
+                            } else {
+                                comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
 
-                            count++;
-                            if (count == userSRSendCUAlertData.length) {
-                                if (!uploadData) {
-                                    console.log(err);
-                                    var status = {
-                                        status: 0,
-                                        message: "Failed"
-                                    };
-                                    console.log(status);
-                                    callback(status);
-                                } else {
-                                    var status = {
-                                        status: 1,
-                                        message: "Successfully add user address",
-                                        data: records
-                                    };
-                                    console.log(status);
-                                    callback(status);
+                                count++;
+                                if (count == userSRSendCUAlertData.length) {
+                                    if (!uploadData) {
+                                        console.log(err);
+                                        var status = {
+                                            status: 0,
+                                            message: "Failed"
+                                        };
+                                        console.log(status);
+                                        callback(status);
+                                    } else {
+                                        var status = {
+                                            status: 1,
+                                            message: "Successfully add user address",
+                                            data: records
+                                        };
+                                        console.log(status);
+                                        callback(status);
+                                    }
                                 }
                             }
-                        }
+                        });
                     });
+
                 });
-
             });
-
         });
 
     }

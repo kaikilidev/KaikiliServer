@@ -1309,6 +1309,96 @@ var Comman = {
 
     },
 
+
+
+    getSPUserRadiusLocationToAVGShout( sr_id, longitude, latitude, cost_item, callBack) {
+        var cc_ids = new Array();
+        cost_item.forEach(function (data) {
+            cc_ids.push(data.cc_id);
+        });
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 160934,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                var userSPidList = [];
+                mainDocs.forEach(function (element) {
+                    userSPidList.push(element.sp_id);
+                });
+                var newCost_components = new Array();
+                var ctr = 0;
+                console.log(" --- " + userSPidList);
+                var totalCost = 0;
+                if (userSPidList.length > 0) {
+                    cost_item.forEach(function (elementCost) {
+                        console.log(" --- 333" + elementCost);
+                        module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
+                            var userSPidSetRate = [];
+                            resultCost.forEach(function (element) {
+                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                            });
+
+                            var avg = 0;
+                            module.exports.getSR_AVGData(sr_id, elementCost.cc_id, function (resultCost) {
+
+                                console.log("----77" + resultCost[0].cost_components[0].average);
+                                avg = parseFloat(resultCost[0].cost_components[0].average);
+
+                                console.log("----55" + avg);
+                                var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
+                                totalCost = (totalCost + cost);
+
+                                var dataCostItem = {
+                                    cc_id: elementCost.cc_id,
+                                    cc_cu_title: elementCost.cc_cu_title,
+                                    show_order: elementCost.show_order,
+                                    cc_sp_title: elementCost.cc_sp_title,
+                                    hcc_id: elementCost.hcc_id,
+                                    hcc_title: elementCost.hcc_title,
+                                    cc_per_item_qut: elementCost.cc_per_item_qut,
+                                    cc_per_item_rate: avg.toFixed(2),
+                                    cc_per_item_cost: cost.toFixed(2)
+
+                                };
+
+                                newCost_components.push(dataCostItem);
+
+                                ctr++;
+                                if (ctr === cc_ids.length) {
+                                    var sendData = {
+                                        itemCost: newCost_components,
+                                        totalCost: totalCost.toFixed(2),
+                                        sp_ids: userSPidList
+                                    };
+                                    return callBack(sendData);
+                                }
+                            });
+                        });
+                    });
+                } else {
+                    var sendData = {
+                        itemCost: [],
+                        totalCost: 0,
+                        sp_ids: userSPidList
+                    };
+                    return callBack(sendData);
+                }
+            });
+        });
+    },
 }
 
 module.exports = Comman;
