@@ -673,7 +673,7 @@ var Customer = {
                 distance: req.body.distance,
                 sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toISOString(),
-                sp_view:false,
+                sp_view: false,
                 otp: comman.getRandomInt(999999)
             };
 
@@ -2058,6 +2058,131 @@ var Customer = {
     }
     ,
 
+    bookRepeatedServiceUser: function (req, callback) {
+        var otp = "";
+        var service_book_date = req.body.service_book_date;
+        var user_service = req.body.user_service;
+
+        var ctr = 0;
+        service_book_date.forEach(function (element) {
+            console.log(element.date);
+            console.log(element.time);
+
+            comman.getNextSequenceUserID("tr_service", function (result) {
+                //  console.log(result);
+                var tran_id = "TR0" + result;
+                var newBookServiceUser = {
+                    tran_id: "TR0" + result,
+                    address: user_service.address,
+                    comment: user_service.comment,
+                    sr_id: user_service.sr_id,
+                    type_of_service: user_service.type_of_service,
+                    sr_title: user_service.sr_title,
+                    time: element.time,
+                    date: element.date,
+                    cust_id: user_service.cust_id,
+                    cust_first_name: user_service.cust_first_name,
+                    cust_last_name: user_service.cust_last_name,
+                    sp_first_name: user_service.sp_first_name,
+                    sp_Last_name: user_service.sp_Last_name,
+                    sp_id: user_service.sp_id,
+                    sp_image: user_service.sp_image,
+                    sr_status: user_service.sr_status,
+                    txn_status: user_service.txn_status,
+                    totalCost: user_service.totalCost,
+                    itemCost: user_service.itemCost,
+                    last_cancel_tran_id: user_service.last_cancel_tran_id,
+                    last_cancel_sp_id: user_service.last_cancel_sp_id,
+                    re_book: user_service.re_book,
+                    minimum_charge: user_service.minimum_charge,
+                    discount: user_service.discount,
+                    repeatedDiscountGive: user_service.repeatedDiscountGive,
+                    kaikili_commission: user_service.kaikili_commission,
+                    sr_type: user_service.sr_type,
+                    sr_total: user_service.sr_total,
+                    sp_net_pay: user_service.sp_net_pay,
+                    coordinatePoint: user_service.coordinatePoint,
+                    cp_review: user_service.cp_review,
+                    sp_review: user_service.sp_review,
+                    distance: user_service.distance,
+                    sp_service_area: user_service.sp_service_area,
+                    creationDate: new Date().toISOString(),
+                    sp_view: false,
+                    otp: comman.getRandomInt(999999)
+                };
+
+                var notificationData = {
+                    tran_id: "TR0" + result,
+                    sr_id: user_service.sr_id,
+                    sr_title: user_service.sr_title,
+                    time: user_service.time,
+                    date: user_service.date,
+                    cust_id: user_service.cust_id,
+                    cust_first_name: user_service.cust_first_name,
+                    cust_last_name: user_service.cust_last_name,
+                    sp_first_name: user_service.sp_first_name,
+                    sp_Last_name: user_service.sp_Last_name,
+                    sp_id: user_service.sp_id,
+                    sp_image: user_service.sp_image,
+                    creationDate: new Date().toISOString(),
+                    messages: []
+                };
+
+                //  comman.cuInterestedRemoveBookServicesData(req.body.sr_id, req.body.itemCost, req.body.cust_id, req.body.coordinatePoint.latitude, req.body.coordinatePoint.longitude);
+
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                    collectionCU.insert(newBookServiceUser, function (err, records) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+
+                            var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                            collectionNotification.insert(notificationData, function (err, docs) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Update in Notification");
+                                    // console.log(docs);
+                                }
+                            });
+
+                            // var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                            // req.body.last_cancel_tran_id.forEach(function (element) {
+                            //         collectionSP.update({tran_id: element}, {$set: {re_book: "true"}});
+                            //     }
+                            // );
+
+                            // var message = "Customer Create New Service"
+                            // comman.sendServiceNotification(req.body.sp_id, tran_id, message, req.body.sr_status, "tran");
+
+
+                            ctr++;
+                            if (ctr == service_book_date.length) {
+                                var message = "Customer Create Repeated Service"
+                                 comman.sendServiceNotification(user_service.sp_id, tran_id, message, user_service.sr_status, "tran");
+
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add new service",
+                                    data: ""
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        }
+                    });
+                });
+            });
+
+        });
+    },
 
 }
 module.exports = Customer;

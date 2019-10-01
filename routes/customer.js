@@ -560,4 +560,23 @@ router.post('/CUUserSetDefaultBankInfo', function (req, res, next) {
     });
 });
 
+
+// new Service repeated service booking
+router.post('/bookRepeatedService', function (req, res, next) {
+    console.log("call bookRepeatedService-----1");
+    customerModel.bookRepeatedServiceUser(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
 module.exports = router;
