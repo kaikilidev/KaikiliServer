@@ -1108,7 +1108,7 @@ var Comman = {
                                         sp_id: docs[0].sp_id,
                                         minimum_charge: docs[0].minimum_charge,
                                         totalCost: totalCost,
-                                        kaikili_commission: docs[0].services.sr_commission,
+                                        kaikili_commission: parseFloat(docs[0].services.sr_commission)/4,
                                         itemCost: newItemCost,
                                         discountGive: discountGive,
                                         repeatedDiscountGive: discountRepeatedGive,
