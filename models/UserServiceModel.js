@@ -819,7 +819,7 @@ var UserService = {
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.cu_sp_review);
+            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
             collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
                 if (err) {
                     console.log(err);

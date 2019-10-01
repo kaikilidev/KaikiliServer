@@ -1075,7 +1075,7 @@ var Customer = {
             comman.spTripInfoUpdate(req.body.sp_id, req.body.cust_id, req.body.tran_id, "Customer give tip $" + req.body.tip_amount, req.body.tip_amount);
         }
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
+            var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.cu_sp_review);
             collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
                 if (err) {
                     console.log(err);
