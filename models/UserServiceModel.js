@@ -2426,6 +2426,7 @@ var UserService = {
                                                             "discount": docs1[0].discount,
                                                             "minimum_charge": docs1[0].minimum_charge,
                                                             "type_of_service": docs[0].type_of_service,
+                                                            "sr_commission": docs[0].sr_commission,
                                                             // "cost_components": docs[0].cost_components,
                                                             "cost_components": newCost_components
 
@@ -2447,6 +2448,7 @@ var UserService = {
                                                             "sp_sr_status": "ON",
                                                             "discount": docs[0].discount,
                                                             "type_of_service": docs[0].type_of_service,
+                                                            "sr_commission": docs[0].sr_commission,
                                                             "minimum_charge": "",
                                                             "cost_components": newCost_components,
                                                             // "cost_components": docs[0].cost_components,
