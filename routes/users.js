@@ -630,6 +630,23 @@ router.post('/getUserInterestedSendData', function (req, res, next) {
     });
 });
 
+// Cost Helper Service 4-10-2019
+router.post('/getUserServiceCostHelperData', function (req, res, next) {
+    userServiceModel.getUserServiceCostHelperInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
 
 //
 // router.get('/TestSendNotification', function (req,  next) {
