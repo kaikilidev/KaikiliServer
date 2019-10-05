@@ -534,6 +534,94 @@ var Comman = {
         });
     },
 
+
+
+    getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
+
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+            var cursorIndex = collection.createIndex({location: "2dsphere"});
+            // console.log("----------" + cc_ids);
+            var cursorSearch = collection.aggregate([
+                {
+                    $geoNear: {
+                        near: {type: "Point", coordinates: [parseFloat(longitude), parseFloat(latitude)]},
+                        key: "location",
+                        maxDistance: 160934,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                        distanceField: "dist", //give values in metre
+                        query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                    }
+                }]);
+
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                var userSPidList = [];
+                mainDocs.forEach(function (element) {
+                    userSPidList.push(element.sp_id);
+                });
+                var newCost_components = new Array();
+                var ctr = 0;
+                // console.log(" --- " + userSPidList);
+                var totalCost = 0;
+                if (userSPidList.length > 0) {
+                    cost_item.forEach(function (elementCost) {
+                    //    console.log(" --- 333" + elementCost);
+                        module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
+                            var userSPidSetRate = [];
+                            resultCost.forEach(function (element) {
+                                userSPidSetRate.push(element.cost_components_on[0].cc_rate_per_item)
+                            });
+
+                            var avg = 0;
+                            module.exports.getSR_AVGData(sr_id, elementCost.cc_id, function (resultCost) {
+
+                               // console.log("----77" + resultCost[0].cost_components[0].average);
+                                avg = parseFloat(resultCost[0].cost_components[0].average);
+
+                                // console.log("----55" + avg);
+                                var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
+                                totalCost = (totalCost + cost);
+
+                                // var dataCostItem = {
+                                //     cc_id: elementCost.cc_id,
+                                //     cc_cu_title: elementCost.cc_cu_title,
+                                //     show_order: elementCost.show_order,
+                                //     cc_sp_title: elementCost.cc_sp_title,
+                                //     hcc_id: elementCost.hcc_id,
+                                //     hcc_title: elementCost.hcc_title,
+                                //     cc_per_item_qut: elementCost.cc_per_item_qut,
+                                //     cc_per_item_rate: avg.toFixed(2),
+                                //     cc_per_item_cost: cost.toFixed(2)
+                                //
+                                // };
+                                //
+                                // newCost_components.push(dataCostItem);
+
+                                ctr++;
+                                if (ctr === cc_ids.length) {
+                                    var sendData = {
+                                        // itemCost: newCost_components,
+                                        totalCost: totalCost.toFixed(2),
+                                        sp_ids: userSPidList
+                                    };
+                                    return callBack(sendData);
+                                }
+                            });
+                        });
+                    });
+                } else {
+                    var sendData = {
+                        itemCost: [],
+                        totalCost: 0,
+                        sp_ids: userSPidList
+                    };
+                    return callBack(sendData);
+                }
+            });
+        });
+    },
+
 // old AVG get Cost-item to nearest Service provider
     getSPUserRadiusLocationToAVG_OLD(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
 
@@ -1108,7 +1196,7 @@ var Comman = {
                                         sp_id: docs[0].sp_id,
                                         minimum_charge: docs[0].minimum_charge,
                                         totalCost: totalCost,
-                                        kaikili_commission: parseFloat(docs[0].services.sr_commission)/4,
+                                        kaikili_commission: parseFloat(docs[0].services.sr_commission) / 4,
                                         itemCost: newItemCost,
                                         discountGive: discountGive,
                                         repeatedDiscountGive: discountRepeatedGive,
@@ -1179,15 +1267,15 @@ var Comman = {
                 "date": body.date,
                 "cc_ids": body.cc_ids,
                 "cu_id": body.cu_id,
-                "book_service":"false",
-                "cu_first_name":body.cu_first_name,
-                "cu_last_name":body.cu_last_name,
-                "mobile_no":body.mobile_no,
-                "cu_images":body.cu_images,
+                "book_service": "false",
+                "cu_first_name": body.cu_first_name,
+                "cu_last_name": body.cu_last_name,
+                "mobile_no": body.mobile_no,
+                "cu_images": body.cu_images,
                 "creationDate": new Date().toISOString()
             };
 
-            module.exports.cuInterestedRemoveBookServicesData(body.sr_id,body.cost_item,body.cu_id,body.longitude,body.latitude);
+            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
 
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -1251,11 +1339,11 @@ var Comman = {
                         distanceField: "dist", //give values in metre
                         query: {
                             sr_id: {$in: userSRidList},
-                            "creationDate":{
-                                    $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
-                                    $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
-                                },
-                            book_service:"false",
+                            "creationDate": {
+                                $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                                $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
+                            },
+                            book_service: "false",
                             type_of_service: type_of_service
                         }//{services: sr_id}// cost_comps: cc_ids
                         // ,cp_alert_id:{$out:resultSendAlert}
@@ -1280,38 +1368,36 @@ var Comman = {
     },
 
 
+    cuInterestedRemoveBookServicesData(sr_id, itemCost, cu_id, latitude, longitude) {
+        // var cc_ids = new Array();
+        // itemCost.forEach(function (ccid_item) {
+        //     cc_ids.push(ccid_item.cc_id)
+        // });
 
-    cuInterestedRemoveBookServicesData(sr_id,itemCost,cu_id,latitude,longitude){
-            // var cc_ids = new Array();
-            // itemCost.forEach(function (ccid_item) {
-            //     cc_ids.push(ccid_item.cc_id)
-            // });
+        var post = {
+            // location: {
+            //     coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            //     type: "Point"
+            // },
+            sr_id: sr_id,
+            // cc_ids: cc_ids,
+            cu_id: cu_id,
+            book_service: "false"
+        };
 
-            var post = {
-                // location: {
-                //     coordinates: [parseFloat(longitude), parseFloat(latitude)],
-                //     type: "Point"
-                // },
-                sr_id: sr_id,
-                // cc_ids: cc_ids,
-                cu_id: cu_id,
-                book_service:"false"
-            };
-
-            // console.log(JSON.stringify(post, null, 2));
-            // console.log("----111" + post);
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
-                spEarnWallet.update(post,{$set: {book_service: "true"}}, function (err, doc) {
-                    // console.log("----222" + doc);
-                });
+        // console.log(JSON.stringify(post, null, 2));
+        // console.log("----111" + post);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
+            spEarnWallet.update(post, {$set: {book_service: "true"}}, function (err, doc) {
+                // console.log("----222" + doc);
             });
+        });
 
     },
 
 
-
-    getSPUserRadiusLocationToAVGShout( sr_id, longitude, latitude, cost_item, callBack) {
+    getSPUserRadiusLocationToAVGShout(sr_id, longitude, latitude, cost_item, callBack) {
         var cc_ids = new Array();
         cost_item.forEach(function (data) {
             cc_ids.push(data.cc_id);
@@ -1397,6 +1483,223 @@ var Comman = {
                     return callBack(sendData);
                 }
             });
+        });
+    },
+
+
+    getCostHelperNearestServiceProvider(spid,sr_id, cc_ids, cost_item, callBack) {
+
+        module.exports.getSPUserLocation(spid, function (result) {
+
+            // console.log(longitude + " --- " + req.body.cc_ids);
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
+                var cursorIndex = collection.createIndex({location: "2dsphere"});
+                var radius = (parseFloat(result.radius) * parseFloat("1609.34"));
+      //          console.log("----------" + cc_ids);
+                var cursorSearch = collection.aggregate([
+                    {
+                        $geoNear: {
+                            near: {type: "Point", coordinates: [parseFloat(result.longitude), parseFloat(result.latitude)]},
+                                    // [parseFloat(longitude), parseFloat(latitude)]},
+                            key: "location",
+                            // maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                            maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
+                            distanceField: "dist", //give values in metre
+                            query: {services: sr_id, cost_comps: {$all: cc_ids}}//{services: sr_id}// cost_comps: cc_ids
+                        }
+                    }]);
+
+                cursorSearch.toArray(function (err, mainDocs) {
+                    // console.log(mainDocs.length + "----------size");
+                    if (err) {
+                      //  console.log(err + "----err");
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        // callback(status);
+                        return callBack(status);
+
+                    } else {
+
+                        var newArrData = new Array();
+                        var ctr = 0;
+                        var newArrServic = new Array();
+                        var newPreferredArrServic = new Array();
+                        var newPreferredArrData = new Array();
+
+                        if (mainDocs.length > 0) {
+                            mainDocs.forEach(function (element) {
+                                var newRadius = element.radius * 1609.34;
+                                // var newRadius = 100;
+                             //   console.log(parseFloat(element.dist) + " <= " + parseFloat(newRadius));
+                                if (parseFloat(element.dist) <= parseFloat(newRadius)) {
+
+                                    newArrData.push(element.sp_id);
+                                    var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
+                                    collection.aggregate([
+                                        {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                        {
+                                            $lookup: {
+                                                from: config.collections.sp_sr_profile,
+                                                localField: "sp_id",
+                                                foreignField: "sp_id",
+                                                as: "userprofile"
+                                            }
+                                        },
+                                        {
+                                            $unwind: "$userprofile"
+                                        }, {
+                                            $lookup: {
+                                                from: config.collections.sp_personal_info,
+                                                localField: "sp_id",
+                                                foreignField: "sp_id",
+                                                as: "profile"
+                                            }
+                                        }, {
+                                            $unwind: "$profile"
+                                        }, {
+                                            $lookup: {
+                                                from: config.collections.add_services,
+                                                localField: "sr_id",
+                                                foreignField: "sr_id",
+                                                as: "services"
+                                            }
+                                        }, {
+                                            $unwind: "$services"
+                                        }
+                                    ]).toArray(function (err, docs) {
+                                        if (err) {
+                                            var status = {
+                                                status: 0,
+                                                message: "Failed"
+                                            };
+                                            // console.log(status);
+                                            // callback(status);
+                                            return callBack(status);
+
+                                            // console.log(err);
+                                        } else {
+                                            // console.log(docs);
+                                            // var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
+                                            var children = docs[0].cost_components_on;
+                                            var newItemCost = new Array();
+                                            var totalCost = 0;
+                                            cost_item.forEach(function (element) {
+                                                var picked = children.filter(function (value) {
+                                                    return value.cc_id == element.cc_id;
+                                                })
+                                                var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
+                                                // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
+                                                totalCost = totalCost + cost;
+                                                var dataCostItem = {
+                                                    cc_id: element.cc_id,
+                                                    cc_cu_title: element.cc_cu_title,
+                                                    show_order: element.show_order,
+                                                    cc_sp_title: element.cc_sp_title,
+                                                    hcc_id: picked[0].hcc_id,
+                                                    hcc_title: picked[0].hcc_title,
+                                                    cc_per_item_qut: element.cc_per_item_qut,
+                                                    cc_per_item_rate: picked[0].cc_rate_per_item,
+                                                    cc_per_item_cost: cost,
+                                                };
+                                                newItemCost.push(dataCostItem);
+
+                                            });
+                                            // console.log("******");
+                                            var discountGive = 0;
+                                            if (docs[0].discount.ds_check_box == "ON") {
+                                                discountGive = docs[0].discount.ds_rate_per_item;
+                                            }
+                                            var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
+                                            var discountAfterPrice = totalCost - discountAmount;
+                                            var dataShow = {
+                                                sp_id: docs[0].sp_id,
+                                                minimum_charge: docs[0].minimum_charge,
+                                                totalCost: totalCost,
+                                                kaikili_commission: docs[0].services.sr_commission,
+                                                // itemCost: newItemCost,
+                                                discountGive: discountGive,
+                                                discountAfterPrice: discountAfterPrice,
+                                                dist: element.dist,
+                                                // sp_about: docs[0].userprofile.about_sp_profile,
+                                                // sp_workImage: docs[0].userprofile.workImages,
+                                                // avg_response: docs[0].userprofile.avg_response,
+                                                // service_count: docs[0].userprofile.service_count,
+                                                // avg_rating: docs[0].userprofile.avg_rating,
+                                                // sp_image: docs[0].userprofile.profile_image,
+                                                // sp_service_area: docs[0].userprofile.service_area,
+                                                // sp_coordinatePoint: docs[0].userprofile.coordinatePoint,
+                                                // sp_first_name: docs[0].profile.first_name,
+                                                // sp_last_name: docs[0].profile.last_name,
+                                                // sp_mobile_no: docs[0].profile.mobile_no
+
+                                            };
+                                            newArrServic.push(dataShow);
+                                            ctr++;
+                                            if (ctr === mainDocs.length) {
+                                                module.exports.getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, result.longitude, result.latitude, cost_item, function (result) {
+                                                    // console.log("------length >" + result.length);
+                                                    var status = {
+                                                        status: 1,
+                                                        message: "Success Get all Transition service list",
+                                                        data: newArrServic,
+                                                        preferred_provider: newPreferredArrServic,
+                                                      //  pps_data: newPreferredArrData,
+                                                        preferred_data: result
+                                                    };
+
+                                                    return callBack(status);
+                                                    // callback(status);
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
+
+                                    ctr++;
+                                    if (ctr === mainDocs.length) {
+                                        module.exports.getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, result.longitude, result.latitude, cost_item, function (result) {
+                                           // console.log("------length >" + result.length);
+
+                                            var status = {
+                                                status: 1,
+                                                message: "Success Get all Transition service list",
+                                                data: newArrServic,
+                                                preferred_provider: newPreferredArrServic,
+                                                pps_data: newPreferredArrData,
+                                                preferred_data: result
+                                            };
+                                            return callBack(status);
+                                            // callback(status);
+                                        });
+                                    }
+
+                                }
+                            });
+                        } else {
+                            module.exports.getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, result.longitude, result.latitude, cost_item, function (result) {
+                             //   console.log("------length >" + result.length);
+
+                                var status = {
+                                    status: 1,
+                                    message: "Success Get all service list",
+                                    data: newArrServic,
+                                    preferred_provider: newPreferredArrServic,
+                                    pps_data: newPreferredArrData,
+                                    preferred_data: result
+                                };
+                                // callback(status);
+                                return callBack(status);
+                            });
+                        }
+                    }
+                });
+
+            });
+
         });
     },
 }
