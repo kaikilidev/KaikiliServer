@@ -2346,13 +2346,13 @@ var UserService = {
         console.log(sp_id);
 
         comman.getCostHelperNearestServiceProvider(sp_id,sr_id,cc_ids,cost_item,function (resultNearbuy) {
-
-            var status = {
-                status: 1,
-                nearby: resultNearbuy,
-                message: "Success Get all service to Mongodb",
-            };
-            callback(status);
+            //
+            // var status = {
+            //     status: 1,
+            //     nearby: resultNearbuy,
+            //     message: "Success Get all service to Mongodb",
+            // };
+            callback(resultNearbuy);
 
         // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
         //     var collectionService = db.db(config.dbName).collection(config.collections.add_services);
