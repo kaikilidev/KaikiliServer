@@ -24,6 +24,7 @@ var Customer = {
                 cu_image: req.body.cu_image,
                 avg_rating: req.body.avg_rating,
                 service_count: req.body.service_count,
+                search_show: req.body.search_show,
                 fcm_token: req.body.fcm_token,
                 creationDate: new Date().toISOString()
             };
