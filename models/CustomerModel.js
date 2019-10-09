@@ -1810,6 +1810,7 @@ var Customer = {
             "first_name": req.body.first_name,
             "last_name": req.body.last_name,
             "email": req.body.email,
+            "search_show": req.body.search_show
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
