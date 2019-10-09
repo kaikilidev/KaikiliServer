@@ -2152,8 +2152,7 @@ var UserService = {
                                                 }
 
                                                 comman.getCustomerData(element.cu_id, function (customerData) {
-
-
+                                                    console.log(customerData.search_show + "------xxx");
                                                     if(customerData.search_show == 1){
                                                         var costData = {
                                                             "cu_search_id": element.cu_search_id,
@@ -2190,21 +2189,30 @@ var UserService = {
 
                                                         };
                                                         newAlert_components.push(costData)
+                                                        console.log("add data in list" + "------xxx");
                                                     }
-
+                                                    ctr++;
+                                                    if (ctr === newDataFilter.length) {
+                                                        var status = {
+                                                            status: 1,
+                                                            message: "Service Data",
+                                                            data: newAlert_components
+                                                        };
+                                                        callback(status);
+                                                    }
                                                 });
 
                                             }
 
-                                            ctr++;
-                                            if (ctr === newDataFilter.length) {
-                                                var status = {
-                                                    status: 1,
-                                                    message: "Service Data",
-                                                    data: newAlert_components
-                                                };
-                                                callback(status);
-                                            }
+                                            // ctr++;
+                                            // if (ctr === newDataFilter.length) {
+                                            //     var status = {
+                                            //         status: 1,
+                                            //         message: "Service Data",
+                                            //         data: newAlert_components
+                                            //     };
+                                            //     callback(status);
+                                            // }
                                         } else {
                                             ctr++;
                                             if (ctr === newDataFilter.length) {
