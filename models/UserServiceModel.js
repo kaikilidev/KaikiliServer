@@ -516,16 +516,50 @@ var UserService = {
                         }
                         // "creationDate": "2019-09-28T15:25:28.922Z",
                         // console.log("start_date--------"+docs[0].creationDate);
-                        var res_time = new Date().toISOString();
-                        var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-                        var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-                        var duration = moment.duration(end_date.diff(start_date));
-                        var timeMin = duration / 60000;
 
-                        // console.log("start_date--------"+start_date);
-                        // console.log("end_date--------"+end_date);
-                        // console.log("duration--------"+duration);
-                        // console.log("timeMin--------"+timeMin);
+                        var serviceTo25 = "OFF"
+                        comman.getSPProfileServiceData(docs[0].sp_id,function (resultTime) {
+                            serviceTo25 = resultTime.custom_work_hours;
+                        });
+
+                        console.log("start_date--------"+serviceTo25);
+
+                        var res_time = new Date().toISOString();
+                        var timeMin ;
+
+                        // var res_time = new Date().toISOString();
+                        // var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                        // var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                        // var duration = moment.duration(end_date.diff(start_date));
+                        // var timeMin = duration / 60000;
+
+
+                        if(serviceTo25 == "ON"){
+                            var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+
+                        }else {
+
+                            // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
+                            var startTime = new Date(new Date().setHours(8,0,0)).toISOString();
+                            console.log("-----"+startTime)
+                            var bookTime = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            console.log("-----"+bookTime)
+                            var endTime = new Date(new Date().setHours(17,0,0)).toISOString();
+                            console.log(">>>>>"+endTime)
+
+                            if((startTime < bookTime) && (bookTime < endTime)){
+                                var duration = moment.duration(bookTime.diff(startTime));
+                                timeMin = duration / 60000;
+                            }else{
+                                timeMin = 1.0;
+                            }
+
+
+                        }
+
 
                         var response = {
                             sp_id: docs[0].sp_id,

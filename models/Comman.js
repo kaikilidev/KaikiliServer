@@ -1704,6 +1704,56 @@ var Comman = {
     },
 
 
+    checkServiceProviderAvailability(date,time,dayList,callBack) {
+
+        var weekday = new Array(7);
+        weekday[0] = "sun";
+        weekday[1] = "mon";
+        weekday[2] = "tue";
+        weekday[3] = "wed";
+        weekday[4] = "thu";
+        weekday[5] = "fri";
+        weekday[6] = "sat";
+
+        var bookDate = new Date(date);
+        var day1 = weekday[bookDate.getDay()];
+        var count = 0;
+        var sendData = false;
+        dayList.forEach(function(element) {
+            if(element.dayName == day1){
+                var moment = require('moment');
+                console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
+                var startTime = new Date (date+" "+element.start_time)
+                console.log("-----"+startTime)
+                var bookTime = new Date (date+" "+time)
+                console.log("-----"+bookTime)
+                var endTime = new Date (date+" "+element.end_time)
+                console.log(">>>>>"+endTime)
+
+                console.log("------>>>>>"+ (startTime < bookTime));
+                console.log("------>>>>>"+(bookTime < endTime));
+               if((startTime < bookTime) && (bookTime < endTime)){
+                   sendData = true;
+                   return callBack(sendData);
+               }
+            }
+            count++;
+            if(count == dayList.length){
+                return callBack(sendData);
+            }
+        });
+    },
+
+
+    getSPProfileServiceData(spid, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            spEarnWallet.findOne({sp_id: spid} , function (err, doc) {
+                console.log("------>>>>>"+ doc);
+                return callBack(doc);
+            });
+        });
+    },
 
 }
 
