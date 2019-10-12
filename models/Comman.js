@@ -1755,6 +1755,45 @@ var Comman = {
         });
     },
 
+
+    cuServiceCancellationCharges(docs) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var service_cancellation = db.db(config.dbName).collection(config.collections.cu_service_cancellation_charges);
+
+            var canCharges;
+            if(parseFloat(docs.minimum_charge)>parseFloat(docs.sp_net_pay)){
+                canCharges = (parseFloat(docs.minimum_charge)*5)/100;
+            }else {
+                canCharges = (parseFloat(docs.sp_net_pay)*5)/100;
+            }
+
+            var messagesBody = {
+                tran_id: docs.tran_id,
+                sr_id: docs.sr_id,
+                type_of_service: docs.type_of_service,
+                sr_title: docs.sr_title,
+                time: docs.time,
+                date: docs.date,
+                cust_id: docs.cust_id,
+                cust_first_name: docs.cust_first_name,
+                cust_last_name: docs.cust_last_name,
+                sp_first_name: docs.sp_first_name,
+                sp_Last_name: docs.sp_Last_name,
+                sp_id: docs.sp_id,
+                sr_status: docs.sr_status,
+                txn_status: docs.txn_status,
+                totalCost: docs.totalCost,
+                minimum_charge: docs.minimum_charge,
+                sr_type: docs.sr_type,
+                sr_total: docs.sr_total,
+                sp_net_pay: docs.sp_net_pay,
+                cancellation_charges: canCharges.toFixed(2)
+
+            };
+            service_cancellation.insertOne(messagesBody);
+        });
+    },
+
 }
 
 module.exports = Comman;

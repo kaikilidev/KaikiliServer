@@ -1509,7 +1509,11 @@ var Customer = {
                     };
 
 
-                    collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                    collection.find({tran_id: tran_id}).toArray(function (err, findRecord) {
+
+                        console.log(err +" ------- findRecord");
+                        console.log(findRecord.length +" ------- findRecord");
+
                         var message = ""
                         if (req.body.sr_status == "Progress") {
                             message = "Customer provider on way.";
@@ -1519,31 +1523,32 @@ var Customer = {
                             message = "Customer provider accept your job.";
                         } else if (req.body.sr_status == "Cancel-Scheduled-Cp") {
                             message = "Customer provider Cancelled your job.";
+                            comman.cuServiceCancellationCharges(findRecord[0]);
                         }
 
                         if (req.body.sr_status == "Progress" || req.body.sr_status == "Scheduled") {
-                            comman.sendServiceNotification(docs[0].sp_id, tran_id, message, req.body.sr_status, "tran");
+                            comman.sendServiceNotification(findRecord[0].sp_id, tran_id, message, req.body.sr_status, "tran");
                         }
 
 
                         var messagesBody = {
-                            author: docs[0].sp_id,
+                            author: findRecord[0].sp_id,
                             author_type: "SP",
                             sp_delet: "0",
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
                             created_on: new Date().toISOString(),
-                            body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            body: findRecord[0].sr_status + " - " + findRecord[0].sr_title + " " + findRecord[0].date + " " + findRecord[0].time
                         };
 
                         var rescheduled = {
-                            sp_id: docs[0].sp_id,
-                            sr_id: docs[0].sr_id,
-                            cust_id: docs[0].cust_id,
-                            tran_id: docs[0].tran_id,
-                            date: docs[0].date,
-                            time: docs[0].time,
+                            sp_id: findRecord[0].sp_id,
+                            sr_id: findRecord[0].sr_id,
+                            cust_id: findRecord[0].cust_id,
+                            tran_id: findRecord[0].tran_id,
+                            date: findRecord[0].date,
+                            time: findRecord[0].time,
                             dateNew1: dateNew1,
                             timeNew1: timeNew1,
                             dateNew2: dateNew2,
@@ -1580,7 +1585,7 @@ var Customer = {
                                 function (doc) {
                                     bulkInsert.insertOne(doc);
                                     bulkRemove.removeOne({tran_id: tran_id});
-                                    comman.sendServiceNotification(docs[0].sp_id, tran_id, message, req.body.sr_status, "tran");
+                                    comman.sendServiceNotification(findRecord[0].sp_id, tran_id, message, req.body.sr_status, "tran");
                                 }
                             )
                         }
