@@ -246,8 +246,8 @@ var Comman = {
             var query = {
                 "creationDate":
                     {
-                        $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
-                        $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
+                        $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
+                        $lt: new Date(new Date().setHours(23, 59, 59)).toUTCString()
                     }, "sp_id": sp_id
             };
             autoIdCollection.find(query).toArray(function (err, doc) {
@@ -782,7 +782,7 @@ var Comman = {
                 sp_review: postData.sp_review,
                 distance: postData.distance,
                 sp_service_area: postData.sp_service_area,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toUTCString()
 
             };
 
@@ -799,7 +799,7 @@ var Comman = {
                 sp_Last_name: postData.sp_Last_name,
                 sp_id: postData.sp_id,
                 sp_image: postData.sp_image,
-                creationDate: new Date().toISOString(),
+                creationDate: new Date().toUTCString(),
                 messages: []
             };
 
@@ -957,7 +957,7 @@ var Comman = {
                         credit: credit,
                         debit: debit,
                         close: current,
-                        updateDate: new Date().toISOString()
+                        updateDate: new Date().toUTCString()
                     }
 
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -981,7 +981,7 @@ var Comman = {
                         credit: credit,
                         debit: debit,
                         close: current,
-                        updateDate: new Date().toISOString()
+                        updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
                     });
@@ -1002,7 +1002,7 @@ var Comman = {
                 tran_id: tran_id,
                 comment: comment,
                 amount: amount,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toUTCString()
             };
             spEarnWallet.insertOne(reviewTipAdd, function (err, doc) {
             });
@@ -1038,7 +1038,7 @@ var Comman = {
                         credit: credit,
                         debit: debit,
                         close: current,
-                        updateDate: new Date().toISOString()
+                        updateDate: new Date().toUTCString()
                     }
 
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -1062,7 +1062,7 @@ var Comman = {
                         credit: credit,
                         debit: debit,
                         close: current,
-                        updateDate: new Date().toISOString()
+                        updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
                     });
@@ -1272,7 +1272,7 @@ var Comman = {
                 "cu_last_name": body.cu_last_name,
                 "mobile_no": body.mobile_no,
                 "cu_images": body.cu_images,
-                "creationDate": new Date().toISOString()
+                "creationDate": new Date().toUTCString()
             };
 
             module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
@@ -1293,8 +1293,8 @@ var Comman = {
             var query = {
                 "creationDate":
                     {
-                        $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
-                        $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
+                        $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
+                        $lt: new Date(new Date().setHours(47, 59, 59)).toUTCString()
                     }, "sp_id": sp_id
             };
             autoIdCollection.find(query).toArray(function (err, doc) {
@@ -1340,8 +1340,8 @@ var Comman = {
                         query: {
                             sr_id: {$in: userSRidList},
                             "creationDate": {
-                                $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
-                                $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
+                                $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
+                                $lt: new Date(new Date().setHours(47, 59, 59)).toUTCString()
                             },
                             book_service: "false",
                             type_of_service: type_of_service
@@ -1715,19 +1715,19 @@ var Comman = {
         weekday[5] = "fri";
         weekday[6] = "sat";
 
-        var bookDate = new Date(date);
+        var bookDate = new Date(date).toUTCString();
         var day1 = weekday[bookDate.getDay()];
         var count = 0;
         var sendData = false;
         dayList.forEach(function(element) {
             if(element.dayName == day1){
                 var moment = require('moment');
-                console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
-                var startTime = new Date (date+" "+element.start_time)
+                console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))).toUTCString());
+                var startTime = new Date (date+" "+element.start_time).toUTCString();
                 console.log("-----"+startTime)
-                var bookTime = new Date (date+" "+time)
+                var bookTime = new Date (date+" "+time).toUTCString()
                 console.log("-----"+bookTime)
-                var endTime = new Date (date+" "+element.end_time)
+                var endTime = new Date (date+" "+element.end_time).toUTCString()
                 console.log(">>>>>"+endTime)
 
                 console.log("------>>>>>"+ (startTime < bookTime));

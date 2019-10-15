@@ -26,7 +26,7 @@ var Customer = {
                 service_count: req.body.service_count,
                 search_show: req.body.search_show,
                 fcm_token: req.body.fcm_token,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toUTCString()
             };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -229,7 +229,7 @@ var Customer = {
             address: req.body.address,
             latitude: req.body.latitude,
             longitude: req.body.longitude,
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -788,7 +788,7 @@ var Customer = {
                         type: "Point"
                     },
                     alert_active: req.body.alert_active,
-                    creationDate: new Date().toISOString()
+                    creationDate: new Date().toUTCString()
                 };
 
 
@@ -834,7 +834,7 @@ var Customer = {
                 time: req.body.time,
                 date: req.body.date,
                 type_of_service: req.body.type_of_service,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toUTCString()
             };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -906,7 +906,7 @@ var Customer = {
                 sp_review: req.body.sp_review,
                 distance: req.body.distance,
                 sp_service_area: req.body.sp_service_area,
-                creationDate: new Date().toISOString(),
+                creationDate: new Date().toUTCString(),
                 sp_view: false,
                 otp: comman.getRandomInt(999999)
             };
@@ -924,7 +924,7 @@ var Customer = {
                 sp_Last_name: req.body.sp_Last_name,
                 sp_id: req.body.sp_id,
                 sp_image: req.body.sp_image,
-                creationDate: new Date().toISOString(),
+                creationDate: new Date().toUTCString(),
                 messages: []
             };
 
@@ -1297,7 +1297,7 @@ var Customer = {
             sr_id: req.body.sr_id,
             rating: req.body.rating,
             comment: req.body.comment,
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
 
         var updateTran = {
@@ -1485,7 +1485,7 @@ var Customer = {
 
         var serviceUpdate = {
             sr_status: req.body.sr_status,
-            updateDate: new Date().toISOString()
+            updateDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -1538,7 +1538,7 @@ var Customer = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                             body: findRecord[0].sr_status + " - " + findRecord[0].sr_title + " " + findRecord[0].date + " " + findRecord[0].time
                         };
 
@@ -1553,7 +1553,7 @@ var Customer = {
                             timeNew1: timeNew1,
                             dateNew2: dateNew2,
                             timeNew2: timeNew2,
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                         };
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
@@ -1953,7 +1953,7 @@ var Customer = {
 
             var serviceUpdate = {
                 sr_status: "Cancel-New-Cp",
-                updateDate: new Date().toISOString()
+                updateDate: new Date().toUTCString()
             };
 
             // Update service record
@@ -2168,7 +2168,7 @@ var Customer = {
             year: req.body.year,
             cvc: req.body.cvc,
             isUsed: "true",
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -2360,7 +2360,7 @@ var Customer = {
                     sp_review: user_service.sp_review,
                     distance: user_service.distance,
                     sp_service_area: user_service.sp_service_area,
-                    creationDate: new Date().toISOString(),
+                    creationDate: new Date().toUTCString(),
                     sp_view: false,
                     otp: comman.getRandomInt(999999)
                 };
@@ -2378,7 +2378,7 @@ var Customer = {
                     sp_Last_name: user_service.sp_Last_name,
                     sp_id: user_service.sp_id,
                     sp_image: user_service.sp_image,
-                    creationDate: new Date().toISOString(),
+                    creationDate: new Date().toUTCString(),
                     messages: []
                 };
 

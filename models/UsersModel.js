@@ -20,7 +20,7 @@ var Users = {
                 mobile_no: req.body.mobile_no,
                 password: req.body.password,
                 fcm_token: req.body.fcm_token,
-                creationDate: new Date().toISOString()
+                creationDate: new Date().toUTCString()
             };
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -373,7 +373,7 @@ var Users = {
             st: req.body.st,
             zip: req.body.zip,
             ssn: req.body.ssn,
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_background);
@@ -494,7 +494,7 @@ var Users = {
     newApplyToSticker: function (req, callback) {
         var newUser = {
             sp_id: req.body.sp_id,
-            stickerApplyDate: new Date().toISOString(),
+            stickerApplyDate: new Date().toUTCString(),
             stickerSendDate: '',
             barCode: '',
             scanFirstTime: '',
@@ -567,7 +567,7 @@ var Users = {
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                collectionSP.updateOne({sp_id: sp_id}, {$set: {scanFirstTime: new Date().toISOString()}}, function (err, dataSet) {
+                collectionSP.updateOne({sp_id: sp_id}, {$set: {scanFirstTime: new Date().toUTCString()}}, function (err, dataSet) {
                     if (err) {
                         // console.log(err);
                         var status = {
@@ -589,10 +589,10 @@ var Users = {
             });
 
         } else {
-            var endDate = new Date().toISOString();
+            var endDate = new Date().toUTCString();
             var offerAmount = req.body.offerAmount;
             var startDate = new Date(req.body.startDate);
-            console.log(new Date(endDate) + "----" + startDate);
+            console.log(new Date(endDate).toUTCString() + "----" + startDate);
             var diffDays = parseInt((new Date(endDate) - startDate) / (1000 * 60 * 60 * 24));
 
             var oneDayAmout = parseFloat(offerAmount) / 365;

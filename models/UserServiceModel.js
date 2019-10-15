@@ -407,7 +407,7 @@ var UserService = {
                     cu_delte: "0",
                     sp_read: "0",
                     cu_read: "0",
-                    created_on: new Date().toISOString(),
+                    created_on: new Date().toUTCString(),
                     body: body
                 };
 
@@ -426,7 +426,7 @@ var UserService = {
                     cu_delte: "0",
                     sp_read: "0",
                     cu_read: "0",
-                    created_on: new Date().toISOString(),
+                    created_on: new Date().toUTCString(),
                     body: body
                 };
                 try {
@@ -474,7 +474,7 @@ var UserService = {
 
         var serviceUpdate = {
             sr_status: req.body.sr_status,
-            updateDate: new Date().toISOString()
+            updateDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -568,7 +568,7 @@ var UserService = {
                             sr_book_time: docs[0].creationDate,
                             sp_response_time: res_time,
                             time_diff: parseFloat(timeMin.toFixed(2)),
-                            created_on: new Date().toISOString()
+                            created_on: new Date().toUTCString()
                         };
 
 
@@ -607,7 +607,7 @@ var UserService = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                             body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
@@ -622,7 +622,7 @@ var UserService = {
                             timeNew1: timeNew1,
                             dateNew2: dateNew2,
                             timeNew2: timeNew2,
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                         };
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
@@ -676,7 +676,7 @@ var UserService = {
         var serviceUpdate = {
             sr_status: req.body.sr_status,
             txn_status: req.body.txn_status,
-            updateDate: new Date().toISOString()
+            updateDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -707,7 +707,7 @@ var UserService = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                             body: "Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
 
@@ -737,7 +737,7 @@ var UserService = {
                             kk_sp_pay: docs[0].kaikili_commission.kk_sp_pay,
                             discount: docs[0].discount.ds_per,
                             total: docs[0].sr_total,
-                            updateDate: new Date().toISOString()
+                            updateDate: new Date().toUTCString()
                         }
 
 
@@ -842,7 +842,7 @@ var UserService = {
             sr_id: req.body.sr_id,
             rating: req.body.rating,
             comment: req.body.comment,
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
 
         var updateTran = {
@@ -1010,7 +1010,7 @@ var UserService = {
             year: req.body.year,
             cvc: req.body.cvc,
             isUsed: "true",
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -1162,7 +1162,7 @@ var UserService = {
 
         var serviceUpdate = {
             sr_status: req.body.sr_status,
-            updateDate: new Date().toISOString()
+            updateDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -1188,7 +1188,7 @@ var UserService = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                             body: docs[0].sr_status + " - " + reason + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
                         };
                         console.log(docs);
@@ -1198,7 +1198,7 @@ var UserService = {
                             cust_id: docs[0].cust_id,
                             tran_id: docs[0].tran_id,
                             reason: reason,
-                            created_on: new Date().toISOString(),
+                            created_on: new Date().toUTCString(),
                         };
 
                         if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Cancel-Scheduled-Sp") {
@@ -1710,7 +1710,7 @@ var UserService = {
                         discountGive: data.discountGive,
                         service_area: data.service_area,
                         discountAfterPrice: data.discountAfterPrice,
-                        creationDate: new Date().toISOString(),
+                        creationDate: new Date().toUTCString(),
                         avg_cost: avgCost.totalCost
                     };
 
@@ -2342,7 +2342,7 @@ var UserService = {
                     service_area: data.service_area,
                     discountAfterPrice: data.discountAfterPrice,
                     minimum_charge: data.minimum_charge,
-                    creationDate: new Date().toISOString()
+                    creationDate: new Date().toUTCString()
                 };
 
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {

@@ -14,7 +14,7 @@ var SubService = {
             subServiceType: req.body.subServiceType,
             serviceId: req.body.serviceId,
             isActive: req.body.isActive,
-            creationDate: new Date().toISOString()
+            creationDate: new Date().toUTCString()
 
         };
         console.log(subService);
