@@ -1211,10 +1211,12 @@ var Customer = {
         var tran_id = req.body.tran_id;
         var time = req.body.time;
         var date = req.body.date;
+        var bookingDateTime = req.body.bookingDateTime;
 
         var updateTran = {
             time: time,
             date: date,
+            bookingDateTime: bookingDateTime,
             sr_status: "Scheduled"
         };
 
