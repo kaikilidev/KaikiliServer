@@ -1883,6 +1883,7 @@ var Customer = {
                 sr_title: req.body.sr_title,
                 time: req.body.time,
                 date: req.body.date,
+                bookingDateTime: req.body.bookingDateTime,
                 cust_id: req.body.cust_id,
                 cust_first_name: req.body.cust_first_name,
                 cust_last_name: req.body.cust_last_name,
@@ -1901,6 +1902,7 @@ var Customer = {
                 coordinatePoint: req.body.coordinatePoint,
                 cp_review: req.body.cp_review,
                 sp_review: req.body.sp_review,
+                sp_show: false,
                 preferredProvider: req.body.preferredProvider,
                 pps_data: req.body.pps_data
             };
