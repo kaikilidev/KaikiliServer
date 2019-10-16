@@ -880,6 +880,7 @@ var Customer = {
                 sr_title: req.body.sr_title,
                 time: req.body.time,
                 date: req.body.date,
+                bookingDateTime: req.body.bookingDateTime,
                 cust_id: req.body.cust_id,
                 cust_first_name: req.body.cust_first_name,
                 cust_last_name: req.body.cust_last_name,
