@@ -426,7 +426,7 @@ var UserService = {
                     cu_delte: "0",
                     sp_read: "0",
                     cu_read: "0",
-                    created_on: new Date().toUTCString(),
+                    created_on: new Date().toISOString(),
                     body: body
                 };
                 try {
@@ -607,8 +607,8 @@ var UserService = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toUTCString(),
-                            body: docs[0].sr_status + " - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            created_on: new Date().toISOString(),
+                            body: docs[0].sr_status + " - " + docs[0].sr_title
                         };
 
                         var rescheduled = {
@@ -707,8 +707,8 @@ var UserService = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toUTCString(),
-                            body: "Service completed - " + docs[0].sr_title + " " + docs[0].date + " " + docs[0].time
+                            created_on: new Date().toISOString(),
+                            body: "Service completed - " + docs[0].sr_title + " "
                         };
 
                         comman.sendCustomerNotification(docs[0].cust_id, tran_id, "Service Completed", req.body.sr_status, "tran");

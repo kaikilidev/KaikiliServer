@@ -925,7 +925,7 @@ var Customer = {
                 sp_Last_name: req.body.sp_Last_name,
                 sp_id: req.body.sp_id,
                 sp_image: req.body.sp_image,
-                creationDate: new Date().toUTCString(),
+                creationDate: new Date().toISOString(),
                 messages: []
             };
 
@@ -1541,8 +1541,8 @@ var Customer = {
                             cu_delte: "0",
                             sp_read: "0",
                             cu_read: "0",
-                            created_on: new Date().toUTCString(),
-                            body: findRecord[0].sr_status + " - " + findRecord[0].sr_title + " " + findRecord[0].date + " " + findRecord[0].time
+                            created_on: new Date().toISOString(),
+                            body: findRecord[0].sr_status + " - " + findRecord[0].sr_title + " "
                         };
 
                         var rescheduled = {
@@ -2383,7 +2383,7 @@ var Customer = {
                     sp_Last_name: user_service.sp_Last_name,
                     sp_id: user_service.sp_id,
                     sp_image: user_service.sp_image,
-                    creationDate: new Date().toUTCString(),
+                    creationDate: new Date().toISOString(),
                     messages: []
                 };
 

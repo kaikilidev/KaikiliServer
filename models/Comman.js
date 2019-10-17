@@ -799,7 +799,7 @@ var Comman = {
                 sp_Last_name: postData.sp_Last_name,
                 sp_id: postData.sp_id,
                 sp_image: postData.sp_image,
-                creationDate: new Date().toUTCString(),
+                creationDate: new Date().toISOString(),
                 messages: []
             };
 
