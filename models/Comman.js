@@ -756,6 +756,7 @@ var Comman = {
                 sr_title: postData.sr_title,
                 time: postData.time,
                 date: postData.date,
+                bookingDateTime: postData.bookingDateTime,
                 cust_id: postData.cust_id,
                 cust_first_name: postData.cust_first_name,
                 cust_last_name: postData.cust_last_name,
