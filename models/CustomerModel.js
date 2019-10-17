@@ -2339,6 +2339,7 @@ var Customer = {
                     sr_title: user_service.sr_title,
                     time: element.time,
                     date: element.date,
+                    bookingDateTime: element.bookingDateTime,
                     cust_id: user_service.cust_id,
                     cust_first_name: user_service.cust_first_name,
                     cust_last_name: user_service.cust_last_name,

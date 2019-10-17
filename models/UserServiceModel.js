@@ -2334,6 +2334,8 @@ var UserService = {
                     cu_ids: data.cc_ids,
                     time: data.time,
                     date: data.date,
+                    date: data.date,
+                    cgvxcsdgs
                     dist: data.dist,
                     longitude: data.longitude,
                     latitude: data.latitude,
