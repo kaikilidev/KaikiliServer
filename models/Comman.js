@@ -3,6 +3,10 @@ var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 const math = require('mathjs')
+
+//  "dbUrl": "mongodb://157.230.188.53:27017/",
+
+
 //
 // var fcm = require('fcm-notification');
 // var path = require('../privatekey.json');
