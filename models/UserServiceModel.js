@@ -1908,6 +1908,7 @@ var UserService = {
                                         sr_title: docs[0].sr_title,
                                         time: docs[0].time,
                                         date: docs[0].date,
+                                        bookingDateTime: docs[0].bookingDateTime,
                                         cust_id: docs[0].cust_id,
                                         cust_first_name: docs[0].cust_first_name,
                                         cust_last_name: docs[0].cust_last_name,
