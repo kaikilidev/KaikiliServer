@@ -2204,6 +2204,7 @@ var UserService = {
                                                             "dist": element.dist,
                                                             "date": element.date,
                                                             "time": element.time,
+                                                            "time": element.time,
                                                             "cc_ids": element.cc_ids,
                                                             "longitude": element.location.coordinates[0],
                                                             "latitude": element.location.coordinates[1],

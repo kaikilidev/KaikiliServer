@@ -1298,8 +1298,8 @@ var Comman = {
             var query = {
                 "creationDate":
                     {
-                        $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
-                        $lt: new Date(new Date().setHours(47, 59, 59)).toUTCString()
+                        $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                        $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
                     }, "sp_id": sp_id
             };
             autoIdCollection.find(query).toArray(function (err, doc) {
