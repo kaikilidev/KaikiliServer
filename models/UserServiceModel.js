@@ -524,7 +524,7 @@ var UserService = {
 
                         console.log("start_date--------"+serviceTo25);
 
-                        var res_time = new Date().toISOString();
+                        var res_time = new Date().toUTCString();
                         var timeMin ;
 
                         // var res_time = new Date().toISOString();
@@ -532,22 +532,23 @@ var UserService = {
                         // var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
                         // var duration = moment.duration(end_date.diff(start_date));
                         // var timeMin = duration / 60000;
-
-
+                        // dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+// Saturday, June 9th, 2007, 5:46:21 PM
+                        // Thu, 17 Oct 2019 22:47:54 GMT  ddd, dd MMM yyyy HH:mm:ss Z
                         if(serviceTo25 == "ON"){
-                            var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-                            var end_date = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            var start_date = moment.utc(docs[0].creationDate);
+                            var end_date = moment.utc(res_time);
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
                         }else {
 
                             // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
-                            var startTime = new Date(new Date().setHours(8,0,0)).toISOString();
+                            var startTime = new Date(new Date().setHours(8,0,0)).toUTCString();
                             console.log("-----"+startTime)
-                            var bookTime = moment(res_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            var bookTime = moment.utc(res_time);
                             console.log("-----"+bookTime)
-                            var endTime = new Date(new Date().setHours(17,0,0)).toISOString();
+                            var endTime = new Date(new Date().setHours(17,0,0)).toUTCString();
                             console.log(">>>>>"+endTime)
 
                             if((startTime < bookTime) && (bookTime < endTime)){
@@ -556,8 +557,6 @@ var UserService = {
                             }else{
                                 timeMin = 1.0;
                             }
-
-
                         }
 
 
