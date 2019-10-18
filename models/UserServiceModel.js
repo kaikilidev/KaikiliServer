@@ -1497,7 +1497,6 @@ var UserService = {
                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
                         var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                         var cursorIndex = collection.createIndex({location: "2dsphere"});
-
                         var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
 
 
@@ -1679,6 +1678,7 @@ var UserService = {
         var count = 0;
 
 
+
         userSRSendCUAlertData.forEach(function (data) {
             comman.getSPUserRadiusLocationToAVGShout(data.sr_id, data.longitude, data.latitude, data.cost_item, function (avgCost) {
                 comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
@@ -1694,6 +1694,9 @@ var UserService = {
                         sp_mobile_no: sp_mobile_no,
                         sp_images: sp_images,
                         cu_first_name: data.cu_first_name,
+                        date: data.date,
+                        time: data.time,
+                        bookingDateTime: data.bookingDateTime,
                         cu_last_name: data.cu_last_name,
                         cu_mobile_no: data.mobile_no,
                         type_of_service: data.type_of_service,
@@ -1709,7 +1712,7 @@ var UserService = {
                         discountGive: data.discountGive,
                         service_area: data.service_area,
                         discountAfterPrice: data.discountAfterPrice,
-                        creationDate: new Date().toUTCString(),
+                        creationDate: new Date().toISOString(),
                         avg_cost: avgCost.totalCost
                     };
 
