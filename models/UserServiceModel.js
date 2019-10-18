@@ -1949,11 +1949,8 @@ var UserService = {
                     }
                 }
             );
-
-
         });
-    }
-    ,
+    }    ,
 
 
     // Api Created 22-6-2019 Preferred Provider Transition Info
