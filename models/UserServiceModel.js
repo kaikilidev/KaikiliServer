@@ -2063,7 +2063,7 @@ var UserService = {
         //   console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
-            // console.log(result.length + "  size------");
+             console.log(result.length + "  size------");
 
             if (result.length > 0) {
                 var newAlert_components = new Array();
@@ -2343,7 +2343,7 @@ var UserService = {
                     service_area: data.service_area,
                     discountAfterPrice: data.discountAfterPrice,
                     minimum_charge: data.minimum_charge,
-                    creationDate: new Date().toUTCString()
+                    creationDate: new Date().toISOString()
                 };
 
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {

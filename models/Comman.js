@@ -1277,7 +1277,7 @@ var Comman = {
                 "cu_last_name": body.cu_last_name,
                 "mobile_no": body.mobile_no,
                 "cu_images": body.cu_images,
-                "creationDate": new Date().toUTCString()
+                "creationDate": new Date().toISOString()
             };
 
             module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
@@ -1345,8 +1345,8 @@ var Comman = {
                         query: {
                             sr_id: {$in: userSRidList},
                             "creationDate": {
-                                $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
-                                $lt: new Date(new Date().setHours(47, 59, 59)).toUTCString()
+                                $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                                $lt: new Date(new Date().setHours(47, 59, 59)).toISOString()
                             },
                             book_service: "false",
                             type_of_service: type_of_service
@@ -1366,7 +1366,9 @@ var Comman = {
             ]);
 
             cursorSearch.toArray(function (err, mainDocs) {
-                console.log("----" + mainDocs.length);
+                console.log("----555" + mainDocs.length);
+                console.log("----555" + new Date(new Date().setHours(0, 0, 0)).toUTCString(),);
+                console.log("----555" +  new Date(new Date().setHours(47, 59, 59)).toUTCString());
                 return callBack(mainDocs);
             });
         });
