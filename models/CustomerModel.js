@@ -1381,7 +1381,7 @@ var Customer = {
             console.log(err);
             collection.find({
                 cust_id: cu_id,
-                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -1397,7 +1397,7 @@ var Customer = {
 
                     cancellation.find({
                         cust_id: cu_id,
-                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
+                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
                     }).sort(mysort).toArray(function (err, docs1) {
                         if (err) {
                             if (docs.length > 0) {
