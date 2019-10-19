@@ -1722,21 +1722,27 @@ var Comman = {
         weekday[5] = "fri";
         weekday[6] = "sat";
 
-        var bookDate = new Date(date).toUTCString();
+        var bookDate = new Date(date);
+
+        console.log("====="+bookDate.getDay())
         var day1 = weekday[bookDate.getDay()];
         var count = 0;
         var sendData = false;
         dayList.forEach(function(element) {
             if(element.dayName == day1){
                 var moment = require('moment');
-                console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))).toUTCString());
-                var startTime = new Date (date+" "+element.start_time).toUTCString();
-                console.log("-----"+startTime)
-                var bookTime = new Date (date+" "+time).toUTCString()
-                console.log("-----"+bookTime)
-                var endTime = new Date (date+" "+element.end_time).toUTCString()
-                console.log(">>>>>"+endTime)
-
+               // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
+               //  console.log("-----start time --"+date+" "+element.start_time.substr(0,5)+" UTC");
+               //  console.log("-----start time --"+date+" "+element.end_time.substr(0,5)+" UTC");
+               //  console.log("-----start time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
+                var startTime = new Date (date+" "+element.start_time.substr(0,5)+" UTC");
+                // console.log("-----startTime "+startTime);
+                var bookTime = new Date (date+" "+time.substr(0,5)+" UTC");
+                // console.log("-----bookTime "+bookTime);
+                // console.log("-----end time --"+date +" "+element.end_time.substr(0,5));
+                // console.log("-----end time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
+                var endTime = new Date (date+" "+element.end_time.substr(0,5)+" UTC");
+                console.log("------endTime "+endTime);
                 console.log("------>>>>>"+ (startTime < bookTime));
                 console.log("------>>>>>"+(bookTime < endTime));
                if((startTime < bookTime) && (bookTime < endTime)){
