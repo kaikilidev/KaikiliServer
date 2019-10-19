@@ -1815,7 +1815,7 @@ var Comman = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            collection.find({sr_status: "Open"}).toArray(function (err, mainDocs) {
+            collection.find({sr_status: {$nin: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
                 if (err) {
                 } else {
                     console.log("=====" + mainDocs.length);
@@ -1831,11 +1831,11 @@ var Comman = {
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
-                            if (timeMin > 4 && timeMin < 5) {
+                            if (timeMin >= 4 && timeMin < 5) {
                                 var message = "Customer Create New Service Remainder"
                                 module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
                                 //Send Notification
-                            } else if (timeMin > 5) {
+                            } else if (timeMin >= 5) {
                                 //Auto remove
                                 var serviceUpdate = {
                                     sr_status: "Cancel-New-Auto",
@@ -1855,9 +1855,46 @@ var Comman = {
                                 )
 
                             }
+                        }else if(element.sr_status == "Rescheduled"){
+
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.updateDate);
+
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+
+                            if (timeMin >= 9 && timeMin < 10) {
+                                var message = "Service provider rescheduled your job Remainder"
+                                module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
+                                //Send Notification
+                            } else if (timeMin >= 10) {
+                                //Auto remove
+                                var serviceUpdate = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
+                                collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({tran_id: element.tran_id});
+                                        var message = "Auto Cancel Service Remainder"
+                                        module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
+                                    }
+                                )
+                            }
+
+                        }else if(element.sr_status == "Scheduled"){
+
+
                         }
 
-                        console.log("===== diff time " + timeMin);
+
 
                     });
                 }
