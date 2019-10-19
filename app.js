@@ -11,7 +11,7 @@ var subServiceRouter = require('./routes/subservices');
 var usersRouter = require('./routes/users');
 var customerRouter = require('./routes/customer');
 
-
+var comman = require('./models/Comman');
 
 var app = express();
 
@@ -60,12 +60,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-//
-// var minutes = 1, the_interval = minutes * 60 * 1000;
-// setInterval(function() {
-//   console.log("====="+new Date(new Date()).toUTCString());
-//   console.log("I am doing my 5 minutes check");
-//   // do your stuff here
-// }, the_interval);
-//
+
+var minutes = 1, the_interval = minutes * 60 * 1000;
+setInterval(function() {
+  console.log("====="+new Date(new Date()).toUTCString());
+  console.log("I am doing my 5 minutes check");
+  comman.autoTimerService();
+  // do your stuff here
+}, the_interval);
+
 module.exports = app;

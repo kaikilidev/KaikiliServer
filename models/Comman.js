@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 const math = require('mathjs')
+const moment = require('moment')
 
 //  "dbUrl": "mongodb://157.230.188.53:27017/",
 
@@ -539,7 +540,6 @@ var Comman = {
     },
 
 
-
     getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
 
 
@@ -570,7 +570,7 @@ var Comman = {
                 var totalCost = 0;
                 if (userSPidList.length > 0) {
                     cost_item.forEach(function (elementCost) {
-                    //    console.log(" --- 333" + elementCost);
+                        //    console.log(" --- 333" + elementCost);
                         module.exports.getSPUserCCRatData(userSPidList, sr_id, elementCost.cc_id, function (resultCost) {
                             var userSPidSetRate = [];
                             resultCost.forEach(function (element) {
@@ -580,7 +580,7 @@ var Comman = {
                             var avg = 0;
                             module.exports.getSR_AVGData(sr_id, elementCost.cc_id, function (resultCost) {
 
-                               // console.log("----77" + resultCost[0].cost_components[0].average);
+                                // console.log("----77" + resultCost[0].cost_components[0].average);
                                 avg = parseFloat(resultCost[0].cost_components[0].average);
 
                                 // console.log("----55" + avg);
@@ -1368,7 +1368,7 @@ var Comman = {
             cursorSearch.toArray(function (err, mainDocs) {
                 console.log("----555" + mainDocs.length);
                 console.log("----555" + new Date(new Date().setHours(0, 0, 0)).toUTCString(),);
-                console.log("----555" +  new Date(new Date().setHours(47, 59, 59)).toUTCString());
+                console.log("----555" + new Date(new Date().setHours(47, 59, 59)).toUTCString());
                 return callBack(mainDocs);
             });
         });
@@ -1494,7 +1494,7 @@ var Comman = {
     },
 
 
-    getCostHelperNearestServiceProvider(spid,sr_id, cc_ids, cost_item, callBack) {
+    getCostHelperNearestServiceProvider(spid, sr_id, cc_ids, cost_item, callBack) {
 
         module.exports.getSPUserLocation(spid, function (result) {
 
@@ -1503,12 +1503,15 @@ var Comman = {
                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                 var cursorIndex = collection.createIndex({location: "2dsphere"});
                 var radius = (parseFloat(result.radius) * parseFloat("1609.34"));
-      //          console.log("----------" + cc_ids);
+                //          console.log("----------" + cc_ids);
                 var cursorSearch = collection.aggregate([
                     {
                         $geoNear: {
-                            near: {type: "Point", coordinates: [parseFloat(result.longitude), parseFloat(result.latitude)]},
-                                    // [parseFloat(longitude), parseFloat(latitude)]},
+                            near: {
+                                type: "Point",
+                                coordinates: [parseFloat(result.longitude), parseFloat(result.latitude)]
+                            },
+                            // [parseFloat(longitude), parseFloat(latitude)]},
                             key: "location",
                             // maxDistance: 80467.2,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
                             maxDistance: radius,// 1 mil = 1609.34 metre ****maxDistance set values metre accept
@@ -1520,7 +1523,7 @@ var Comman = {
                 cursorSearch.toArray(function (err, mainDocs) {
                     // console.log(mainDocs.length + "----------size");
                     if (err) {
-                      //  console.log(err + "----err");
+                        //  console.log(err + "----err");
                         var status = {
                             status: 0,
                             message: "Failed"
@@ -1541,7 +1544,7 @@ var Comman = {
                             mainDocs.forEach(function (element) {
                                 var newRadius = element.radius * 1609.34;
                                 // var newRadius = 100;
-                             //   console.log(parseFloat(element.dist) + " <= " + parseFloat(newRadius));
+                                //   console.log(parseFloat(element.dist) + " <= " + parseFloat(newRadius));
                                 if (parseFloat(element.dist) <= parseFloat(newRadius)) {
 
                                     newArrData.push(element.sp_id);
@@ -1654,7 +1657,7 @@ var Comman = {
                                                         message: "Success Get all Transition service list",
                                                         data: newArrServic,
                                                         preferred_provider: newPreferredArrServic,
-                                                      //  pps_data: newPreferredArrData,
+                                                        //  pps_data: newPreferredArrData,
                                                         preferred_data: result
                                                     };
 
@@ -1669,7 +1672,7 @@ var Comman = {
                                     ctr++;
                                     if (ctr === mainDocs.length) {
                                         module.exports.getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, result.longitude, result.latitude, cost_item, function (result) {
-                                           // console.log("------length >" + result.length);
+                                            // console.log("------length >" + result.length);
 
                                             var status = {
                                                 status: 1,
@@ -1688,7 +1691,7 @@ var Comman = {
                             });
                         } else {
                             module.exports.getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, result.longitude, result.latitude, cost_item, function (result) {
-                             //   console.log("------length >" + result.length);
+                                //   console.log("------length >" + result.length);
 
                                 var status = {
                                     status: 1,
@@ -1711,7 +1714,7 @@ var Comman = {
     },
 
 
-    checkServiceProviderAvailability(date,time,dayList,callBack) {
+    checkServiceProviderAvailability(date, time, dayList, callBack) {
 
         var weekday = new Array(7);
         weekday[0] = "sun";
@@ -1724,34 +1727,34 @@ var Comman = {
 
         var bookDate = new Date(date);
 
-        console.log("====="+bookDate.getDay())
+        console.log("=====" + bookDate.getDay())
         var day1 = weekday[bookDate.getDay()];
         var count = 0;
         var sendData = false;
-        dayList.forEach(function(element) {
-            if(element.dayName == day1){
+        dayList.forEach(function (element) {
+            if (element.dayName == day1) {
                 var moment = require('moment');
-               // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
-               //  console.log("-----start time --"+date+" "+element.start_time.substr(0,5)+" UTC");
-               //  console.log("-----start time --"+date+" "+element.end_time.substr(0,5)+" UTC");
-               //  console.log("-----start time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
-                var startTime = new Date (date+" "+element.start_time.substr(0,5)+" UTC");
+                // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
+                //  console.log("-----start time --"+date+" "+element.start_time.substr(0,5)+" UTC");
+                //  console.log("-----start time --"+date+" "+element.end_time.substr(0,5)+" UTC");
+                //  console.log("-----start time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
+                var startTime = new Date(date + " " + element.start_time.substr(0, 5) + " UTC");
                 // console.log("-----startTime "+startTime);
-                var bookTime = new Date (date+" "+time.substr(0,5)+" UTC");
+                var bookTime = new Date(date + " " + time.substr(0, 5) + " UTC");
                 // console.log("-----bookTime "+bookTime);
                 // console.log("-----end time --"+date +" "+element.end_time.substr(0,5));
                 // console.log("-----end time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
-                var endTime = new Date (date+" "+element.end_time.substr(0,5)+" UTC");
-                console.log("------endTime "+endTime);
-                console.log("------>>>>>"+ (startTime < bookTime));
-                console.log("------>>>>>"+(bookTime < endTime));
-               if((startTime < bookTime) && (bookTime < endTime)){
-                   sendData = true;
-                   return callBack(sendData);
-               }
+                var endTime = new Date(date + " " + element.end_time.substr(0, 5) + " UTC");
+                console.log("------endTime " + endTime);
+                console.log("------>>>>>" + (startTime < bookTime));
+                console.log("------>>>>>" + (bookTime < endTime));
+                if ((startTime < bookTime) && (bookTime < endTime)) {
+                    sendData = true;
+                    return callBack(sendData);
+                }
             }
             count++;
-            if(count == dayList.length){
+            if (count == dayList.length) {
                 return callBack(sendData);
             }
         });
@@ -1761,8 +1764,8 @@ var Comman = {
     getSPProfileServiceData(spid, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-            spEarnWallet.findOne({sp_id: spid} , function (err, doc) {
-                console.log("------>>>>>"+ doc);
+            spEarnWallet.findOne({sp_id: spid}, function (err, doc) {
+                console.log("------>>>>>" + doc);
                 return callBack(doc);
             });
         });
@@ -1774,10 +1777,10 @@ var Comman = {
             var service_cancellation = db.db(config.dbName).collection(config.collections.cu_service_cancellation_charges);
 
             var canCharges;
-            if(parseFloat(docs.minimum_charge)>parseFloat(docs.sp_net_pay)){
-                canCharges = (parseFloat(docs.minimum_charge)*5)/100;
-            }else {
-                canCharges = (parseFloat(docs.sp_net_pay)*5)/100;
+            if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
+                canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+            } else {
+                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
             }
 
             var messagesBody = {
@@ -1805,6 +1808,63 @@ var Comman = {
             };
             service_cancellation.insertOne(messagesBody);
         });
+    },
+
+    autoTimerService() {
+        console.log("=====" + " auto timer calll");
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            collection.find({sr_status: "Open"}).toArray(function (err, mainDocs) {
+                if (err) {
+                } else {
+                    console.log("=====" + mainDocs.length);
+
+                    mainDocs.forEach(function (element) {
+
+                        if (element.sr_status == "Open") {
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.creationDate);
+
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+
+                            if (timeMin > 4 && timeMin < 5) {
+                                var message = "Customer Create New Service Remainder"
+                                module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
+                                //Send Notification
+                            } else if (timeMin > 5) {
+                                //Auto remove
+                                var serviceUpdate = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
+                                collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({tran_id: element.tran_id});
+                                        var message = "Auto Cancel Service Remainder"
+                                        module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
+                                    }
+                                )
+
+                            }
+                        }
+
+                        console.log("===== diff time " + timeMin);
+
+                    });
+                }
+            });
+        });
+
+
     },
 
 }

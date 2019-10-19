@@ -646,8 +646,6 @@ router.post('/getUserServiceCostHelperData', function (req, res, next) {
 
 
 
-
-
 //
 // router.get('/TestSendNotification', function (req,  next) {
 //     comman.sendServiceNotification("SP019","TR0104","Test data Notification","");
