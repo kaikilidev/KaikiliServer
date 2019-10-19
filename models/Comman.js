@@ -1810,17 +1810,67 @@ var Comman = {
         });
     },
 
+
+    cuServiceCancellationChargesSP(docs) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var service_cancellation = db.db(config.dbName).collection(config.collections.sp_service_cancellation_charges);
+
+            var canCharges;
+            if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
+                canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+            } else {
+                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+            }
+
+            var messagesBody = {
+                tran_id: docs.tran_id,
+                sr_id: docs.sr_id,
+                type_of_service: docs.type_of_service,
+                sr_title: docs.sr_title,
+                time: docs.time,
+                date: docs.date,
+                cust_id: docs.cust_id,
+                cust_first_name: docs.cust_first_name,
+                cust_last_name: docs.cust_last_name,
+                sp_first_name: docs.sp_first_name,
+                sp_Last_name: docs.sp_Last_name,
+                sp_id: docs.sp_id,
+                sr_status: docs.sr_status,
+                txn_status: docs.txn_status,
+                totalCost: docs.totalCost,
+                minimum_charge: docs.minimum_charge,
+                sr_type: docs.sr_type,
+                sr_total: docs.sr_total,
+                sp_net_pay: docs.sp_net_pay,
+                cancellation_charges: canCharges.toFixed(2)
+
+            };
+            service_cancellation.insertOne(messagesBody);
+        });
+    },
+
     autoTimerService() {
         console.log("=====" + " auto timer calll");
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            collection.find({sr_status: {$nin: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
+            // var query = {
+            //     "creationDate":
+            //         {
+            //             $gte: new Date(new Date().setHours(0, 0, 0)).toUTCString(),
+            //             $lt: new Date(new Date().setHours(23, 59, 59)).toUTCString()
+            //         }, "sp_id": sp_id
+            // };
+            //
+
+            collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
                 if (err) {
                 } else {
                     console.log("=====" + mainDocs.length);
 
                     mainDocs.forEach(function (element) {
+
+                        console.log("=====" + element.tran_id);
 
                         if (element.sr_status == "Open") {
                             var timeMin;
@@ -1854,6 +1904,8 @@ var Comman = {
                                     }
                                 )
 
+                            }else {
+                                console.log("=====" + element.tran_id+"  open");
                             }
                         }else if(element.sr_status == "Rescheduled"){
 
@@ -1887,21 +1939,88 @@ var Comman = {
                                         module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
                                     }
                                 )
+                            }else {
+                                console.log("=====" + element.tran_id+"  Rescheduled");
                             }
 
                         }else if(element.sr_status == "Scheduled"){
 
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.bookingDateTime);
 
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(start_date.diff(end_date));
+
+                            timeMin = duration / 60000;
+
+                            if (timeMin >= -29 && timeMin < -30) {
+                                if(element.type_of_service == "customer_location"){
+                                    var message = "Scheduled are next 30 min after start";
+                                    module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
+                                }else {
+                                    var message = "Scheduled are next 30 min after start"
+                                    module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
+                                }
+
+                            }else if(timeMin >= 30){
+                                if(element.type_of_service == "customer_location"){
+                                    module.exports.cuServiceCancellationChargesSP(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                            var message = "Auto Cancel Service Remainder"
+                                            module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+                                        }
+                                    )
+
+                                }else {
+                                    module.exports.cuServiceCancellationCharges(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                            var message = "Auto Cancel Service Remainder"
+                                            module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+                                        }
+                                    )
+                                }
+                            }
+
+                            console.log("===== id" + element.tran_id);
+                            console.log("===== time" + timeMin);
+
+
+                            // "type_of_service": "customer_location",
+                            // "type_of_service": "provider_location",
+
+                        }else {
+                            console.log("===== id" + element.sr_status);
                         }
-
-
 
                     });
                 }
             });
         });
-
-
     },
 
 }
