@@ -1980,7 +1980,13 @@ var Customer = {
                 updateDate: new Date().toUTCString()
             };
 
+
             var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                req.body.preferredProvider.forEach(function (element) {
+
+                });
+
+
             cu_sp_pps_send.update({pps_id: req.body.pps_id}, {$set: serviceUpdate});
 
 
