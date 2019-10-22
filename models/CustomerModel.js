@@ -1419,7 +1419,9 @@ var Customer = {
 
                         } else {
                             var listData = docs.concat(docs1);
-                            collectionPPS.find({cust_id: cu_id}).toArray(function (err, docspps) {
+                            collectionPPS.find({cust_id: cu_id,
+                                sr_status: {$in: ["Cancel-New-Cp","Cancel-New-Auto"]}
+                            }).toArray(function (err, docspps) {
 
                                 if (err) {
                                     var status = {
