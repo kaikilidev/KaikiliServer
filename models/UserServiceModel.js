@@ -1910,9 +1910,17 @@ var UserService = {
 
                                 var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
                                 cu_sp_pps_send.update({pps_id: pps_id,sp_id: sp_id}, {$set: serviceUpdate});
+                                collection.update({pps_id: pps_id}, {$set: serviceUpdate});
 
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                                bulkRemove.find({pps_id: req.body.pps_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({pps_id: pps_id});
+                                    }
+                                );
 
-                                collection.removeOne({pps_id: pps_id});
                                 comman.getSPProfileData(sp_id, function (result) {
 
                                     var discount = {
