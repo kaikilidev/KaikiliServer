@@ -1956,7 +1956,8 @@ var Comman = {
 
                             timeMin = duration / 60000;
 
-                            if (timeMin >= -29 && timeMin < -30) {
+                            if (timeMin >= -4 && timeMin < -5) {
+                            // if (timeMin >= -29 && timeMin < -30) {
                                 if(element.type_of_service == "customer_location"){
                                     var message = "Scheduled are next 30 min after start";
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
@@ -1965,7 +1966,8 @@ var Comman = {
                                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
                                 }
 
-                            }else if(timeMin >= 30){
+                            }else if(timeMin >= 5){
+                            // }else if(timeMin >= 30){
                                 if(element.type_of_service == "customer_location"){
                                     module.exports.cuServiceCancellationChargesSP(element);
 
