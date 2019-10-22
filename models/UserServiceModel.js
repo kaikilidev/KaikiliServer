@@ -907,7 +907,7 @@ var UserService = {
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             collection.find({
                 sp_id: sp_id,
-                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
