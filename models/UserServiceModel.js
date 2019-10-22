@@ -901,7 +901,7 @@ var UserService = {
 
     userCompletedService: function (req, callback) {
         var sp_id = req.body.sp_id;
-        console.log(sp_id);
+        console.log(sp_id+"=====  call completed ");
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -923,7 +923,7 @@ var UserService = {
                     var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                     cancellation.find({
                         sp_id: sp_id,
-                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed"]}
+                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
                     }).sort(mysort).toArray(function (err, docs1) {
                         if (err) {
 
