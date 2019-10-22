@@ -1879,6 +1879,14 @@ var UserService = {
 
                             if (statusData == "Cancel") {
 
+                                var serviceUpdate = {
+                                    sr_status: "Cancel-New-Sp",
+                                    updateDate: new Date().toUTCString()
+                                };
+
+                                var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                                cu_sp_pps_send.update({pps_id: pps_id,sp_id: sp_id}, {$set: serviceUpdate});
+
                                 collection.updateOne({pps_id: pps_id}, {$pull: {preferredProvider: sp_id}}, function (err, docs) {
                                     console.log(docs + "----------1");
                                 });
@@ -1894,6 +1902,16 @@ var UserService = {
                                 callback(status);
 
                             } else {
+
+                                var serviceUpdate = {
+                                    sr_status: "Scheduled",
+                                    updateDate: new Date().toUTCString()
+                                };
+
+                                var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                                cu_sp_pps_send.update({pps_id: pps_id,sp_id: sp_id}, {$set: serviceUpdate});
+
+
                                 collection.removeOne({pps_id: pps_id});
                                 comman.getSPProfileData(sp_id, function (result) {
 
