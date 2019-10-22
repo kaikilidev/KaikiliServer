@@ -1856,172 +1856,172 @@ var Comman = {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionPP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
 
-            // collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
-            //     if (err) {
-            //     } else {
-            //         console.log("=====" + mainDocs.length);
-            //
-            //         mainDocs.forEach(function (element) {
-            //
-            //             console.log("=====" + element.tran_id);
-            //
-            //             if (element.sr_status == "Open") {
-            //                 var timeMin;
-            //                 var res_time = new Date().toUTCString();
-            //                 var start_date = moment.utc(element.creationDate);
-            //
-            //                 var end_date = moment.utc(res_time);
-            //                 var duration = moment.duration(end_date.diff(start_date));
-            //                 timeMin = duration / 60000;
-            //
-            //                 if (timeMin >= 4 && timeMin < 5) {
-            //                     var message = "Customer Create New Service Remainder"
-            //                     console.log("------->>> " + "Send Notification ......");
-            //                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
-            //                     //Send Notification
-            //                 } else if (timeMin >= 5) {
-            //                     //Auto remove
-            //                     var serviceUpdate = {
-            //                         sr_status: "Cancel-New-Auto",
-            //                         updateDate: new Date().toUTCString()
-            //                     };
-            //
-            //                     console.log("------->>> " + "Send Notification ......");
-            //                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
-            //                     var message = "Auto Cancel Service Remainder"
-            //                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
-            //
-            //                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-            //                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            //                     bulkRemove.find({tran_id: element.tran_id}).forEach(
-            //                         function (doc) {
-            //                             bulkInsert.insertOne(doc);
-            //                             bulkRemove.removeOne({tran_id: element.tran_id});
-            //                         }
-            //                     )
-            //
-            //                 } else {
-            //                     console.log("=====" + element.tran_id + "  open");
-            //                 }
-            //             } else if (element.sr_status == "Rescheduled") {
-            //
-            //                 var timeMin;
-            //                 var res_time = new Date().toUTCString();
-            //                 var start_date = moment.utc(element.updateDate);
-            //
-            //                 var end_date = moment.utc(res_time);
-            //                 var duration = moment.duration(end_date.diff(start_date));
-            //                 timeMin = duration / 60000;
-            //
-            //                 if (timeMin >= 9 && timeMin < 10) {
-            //                     var message = "Service provider rescheduled your job Remainder"
-            //                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
-            //                     //Send Notification
-            //                 } else if (timeMin >= 10) {
-            //                     //Auto remove
-            //                     var serviceUpdate = {
-            //                         sr_status: "Cancel-New-Auto",
-            //                         updateDate: new Date().toUTCString()
-            //                     };
-            //                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
-            //                     var message = "Auto Cancel Service Remainder"
-            //                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
-            //
-            //
-            //                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-            //                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            //                     bulkRemove.find({tran_id: element.tran_id}).forEach(
-            //                         function (doc) {
-            //                             bulkInsert.insertOne(doc);
-            //                             bulkRemove.removeOne({tran_id: element.tran_id});
-            //                         }
-            //                     )
-            //                 } else {
-            //                     console.log("=====" + element.tran_id + "  Rescheduled");
-            //                 }
-            //
-            //             } else if (element.sr_status == "Scheduled") {
-            //
-            //                 var timeMin;
-            //                 var res_time = new Date().toUTCString();
-            //                 var start_date = moment.utc(element.bookingDateTime);
-            //                 var end_date = moment.utc(res_time);
-            //                 // var duration1 = moment.duration(start_date.diff(end_date));
-            //                 var duration = moment.duration(end_date.diff(start_date));
-            //
-            //                 timeMin = duration / 60000;
-            //                 console.log("=====" + timeMin);
-            //
-            //                 // if (timeMin >= -5 && timeMin < -4) {
-            //                 if (timeMin >= -29 && timeMin < -30) {
-            //                     if (element.type_of_service == "customer_location") {
-            //                         var message = "Scheduled are next 30 min after start";
-            //                         module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
-            //                     } else {
-            //                         var message = "Scheduled are next 30 min after start"
-            //                         module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
-            //                     }
-            //
-            //                     // }else if(timeMin >= 5){
-            //                 } else if (timeMin >= 30) {
-            //                     if (element.type_of_service == "customer_location") {
-            //                         module.exports.cuServiceCancellationChargesSP(element);
-            //
-            //                         var serviceUpdate = {
-            //                             sr_status: "Cancel-Scheduled-Auto",
-            //                             updateDate: new Date().toUTCString()
-            //                         };
-            //                         collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
-            //                         var message = "Auto Cancel Service Remainder"
-            //                         module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-            //
-            //
-            //                         var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-            //                         var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            //                         bulkRemove.find({tran_id: element.tran_id}).forEach(
-            //                             function (doc) {
-            //                                 bulkInsert.insertOne(doc);
-            //                                 bulkRemove.removeOne({tran_id: element.tran_id});
-            //                             }
-            //                         )
-            //
-            //                     } else {
-            //                         module.exports.cuServiceCancellationCharges(element);
-            //
-            //                         var serviceUpdate = {
-            //                             sr_status: "Cancel-Scheduled-Auto",
-            //                             updateDate: new Date().toUTCString()
-            //                         };
-            //                         collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
-            //                         var message = "Auto Cancel Service Remainder"
-            //                         module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-            //
-            //
-            //                         var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-            //                         var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            //                         bulkRemove.find({tran_id: element.tran_id}).forEach(
-            //                             function (doc) {
-            //                                 bulkInsert.insertOne(doc);
-            //                                 bulkRemove.removeOne({tran_id: element.tran_id});
-            //                             }
-            //                         )
-            //                     }
-            //                 }
-            //
-            //                 console.log("===== id" + element.tran_id);
-            //                 console.log("===== time" + timeMin);
-            //
-            //
-            //                 // "type_of_service": "customer_location",
-            //                 // "type_of_service": "provider_location",
-            //
-            //             } else {
-            //                 console.log("===== id" + element.sr_status);
-            //             }
-            //
-            //         });
-            //     }
-            // });
+            collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
+                if (err) {
+                } else {
+                    console.log("=====" + mainDocs.length);
+
+                    mainDocs.forEach(function (element) {
+
+                        console.log("=====" + element.tran_id);
+
+                        if (element.sr_status == "Open") {
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.creationDate);
+
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+
+                            if (timeMin >= 4 && timeMin < 5) {
+                                var message = "Customer Create New Service Remainder"
+                                console.log("------->>> " + "Send Notification ......");
+                                module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
+                                //Send Notification
+                            } else if (timeMin >= 5) {
+                                //Auto remove
+                                var serviceUpdate = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
+
+                                console.log("------->>> " + "Send Notification ......");
+                                collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                var message = "Auto Cancel Service Remainder"
+                                module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
+
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({tran_id: element.tran_id});
+                                    }
+                                )
+
+                            } else {
+                                console.log("=====" + element.tran_id + "  open");
+                            }
+                        } else if (element.sr_status == "Rescheduled") {
+
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.updateDate);
+
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+
+                            if (timeMin >= 9 && timeMin < 10) {
+                                var message = "Service provider rescheduled your job Remainder"
+                                module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
+                                //Send Notification
+                            } else if (timeMin >= 10) {
+                                //Auto remove
+                                var serviceUpdate = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
+                                collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                var message = "Auto Cancel Service Remainder"
+                                module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
+
+
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({tran_id: element.tran_id});
+                                    }
+                                )
+                            } else {
+                                console.log("=====" + element.tran_id + "  Rescheduled");
+                            }
+
+                        } else if (element.sr_status == "Scheduled") {
+
+                            var timeMin;
+                            var res_time = new Date().toUTCString();
+                            var start_date = moment.utc(element.bookingDateTime);
+                            var end_date = moment.utc(res_time);
+                            // var duration1 = moment.duration(start_date.diff(end_date));
+                            var duration = moment.duration(end_date.diff(start_date));
+
+                            timeMin = duration / 60000;
+                            console.log("=====" + timeMin);
+
+                            // if (timeMin >= -5 && timeMin < -4) {
+                            if (timeMin >= -29 && timeMin < -30) {
+                                if (element.type_of_service == "customer_location") {
+                                    var message = "Scheduled are next 30 min after start";
+                                    module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
+                                } else {
+                                    var message = "Scheduled are next 30 min after start"
+                                    module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, element.sr_status, "tran");
+                                }
+
+                                // }else if(timeMin >= 5){
+                            } else if (timeMin >= 30) {
+                                if (element.type_of_service == "customer_location") {
+                                    module.exports.cuServiceCancellationChargesSP(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+
+                                } else {
+                                    module.exports.cuServiceCancellationCharges(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+                                }
+                            }
+
+                            console.log("===== id" + element.tran_id);
+                            console.log("===== time" + timeMin);
+
+
+                            // "type_of_service": "customer_location",
+                            // "type_of_service": "provider_location",
+
+                        } else {
+                            console.log("===== id" + element.sr_status);
+                        }
+
+                    });
+                }
+            });
 
             collectionPP.find({sr_status: {$in: ["Open"]}}).toArray(function (err, mainDocs) {
                 if (err) {
@@ -2037,9 +2037,15 @@ var Comman = {
                         var duration = moment.duration(end_date.diff(start_date));
                         timeMin = duration / 60000;
 
+                        if (timeMin >= 4 && timeMin < 5) {
 
-                        if (timeMin >= 5) {
-                            // //Auto remove
+                            var message = "New kaikili preferred provider Job."
+                            element.preferredProvider.forEach(function (element11) {
+                                comman.sendServiceNotification(element11, element.pps_id, message, "New", "pps");
+                            });
+
+                        }else if (timeMin >= 5) {
+                            //Auto remove
                             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
                             var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                             var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
@@ -2051,10 +2057,12 @@ var Comman = {
 
                             bulkRemove.update({pps_id: element.pps_id}, {$set: serviceUpdate});
 
-                            mainDocs.preferredProvider.forEach(function (element11) {
+                            element.preferredProvider.forEach(function (element11) {
+                                console.log("1=====" + element.pps_id);
+                                console.log("2=====" + element11);
                                 cu_sp_pps_send.update({
                                     pps_id: element.pps_id,
-                                    sp_id: element11.sp_id
+                                    sp_id: element11
                                 }, {$set: serviceUpdate});
                             });
 
@@ -2062,10 +2070,12 @@ var Comman = {
                             module.exports.sendCustomerNotification(element.cust_id, element.pps_id, message, "Cancel-New-Auto", "pps");
 
 
-                            bulkRemove.findOne({pps_id: element.pps_id}, function (doc) {
-                                bulkInsert.insertOne(doc);
-                                bulkRemove.removeOne({pps_id: element.pps_id});
-                            });
+                            bulkRemove.find({pps_id: element.pps_id}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    bulkRemove.removeOne({pps_id: element.pps_id});
+                                }
+                            )
                         }
                     });
                 }
