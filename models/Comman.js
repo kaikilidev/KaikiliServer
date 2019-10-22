@@ -1986,7 +1986,7 @@ var Comman = {
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
                                             bulkRemove.removeOne({tran_id: element.tran_id});
-                                                         }
+                                        }
                                     )
 
                                 }else {
@@ -1997,6 +1997,9 @@ var Comman = {
                                         updateDate: new Date().toUTCString()
                                     };
                                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+
 
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -2004,9 +2007,7 @@ var Comman = {
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
                                             bulkRemove.removeOne({tran_id: element.tran_id});
-                                            var message = "Auto Cancel Service Remainder"
-                                            module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-                                        }
+                                                     }
                                     )
                                 }
                             }
