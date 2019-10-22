@@ -1906,8 +1906,12 @@ var Customer = {
                 sp_review: req.body.sp_review,
                 sp_show: false,
                 preferredProvider: req.body.preferredProvider,
-                pps_data: req.body.pps_data
+                pps_data: req.body.pps_data,
+                creationDate: new Date().toUTCString()
             };
+
+            console.log(req.body.preferredProvider);
+
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                 collectionSP.insertOne(ppServiceData, function (err, records) {
@@ -1921,24 +1925,39 @@ var Customer = {
                         callback(status);
                     } else {
 
-                        var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                        req.body.last_cancel_tran_id.forEach(function (element) {
-                                collectionSP.update({tran_id: element}, {$set: {re_book: "true"}});
-                            }
-                        );
-
+                        var count = 0;
                         req.body.preferredProvider.forEach(function (element) {
+                            var ppr_send_sp = {
+                                pps_id: "PPS0" + result,
+                                sr_id: req.body.sr_id,
+                                sp_id: element,
+                                type_of_service: req.body.type_of_service,
+                                sr_title: req.body.sr_title,
+                                time: req.body.time,
+                                date: req.body.date,
+                                bookingDateTime: req.body.bookingDateTime,
+                                cust_id: req.body.cust_id,
+                                sr_status: req.body.sr_status,
+                                sr_type: req.body.sr_type,
+                                creationDate: new Date().toUTCString()
+                            };
+                            var collectionSPR = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                            collectionSPR.insertOne(ppr_send_sp);
+
                             var message = "New kaikili preferred provider Job."
                             comman.sendServiceNotification(element, "PPS0" + result, message, "New", "pps");
-                        });
+                            count++;
 
-                        var status = {
-                            status: 1,
-                            message: "Successfully Update data.",
-                            data: records
-                        };
-                        console.log(status);
-                        callback(status);
+                            if(count == req.body.preferredProvider.length){
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully Update data.",
+                                    data: records
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
                     }
                 });
             });
@@ -1948,7 +1967,7 @@ var Customer = {
     }
     ,
 
-// 22-6-2019 created Api (Customer Book Preferred Provider Service Cancel)
+// 22-6-2019 created Api (Customer Book Preferred Provider Service - Customer Cancel)
     postBookPPStoCancel: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             console.log(req.body.pps_id);
@@ -1961,9 +1980,12 @@ var Customer = {
                 updateDate: new Date().toUTCString()
             };
 
+            var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+            cu_sp_pps_send.update({pps_id: req.body.pps_id}, {$set: serviceUpdate});
+
+
             // Update service record
             bulkRemove.update({pps_id: req.body.pps_id}, {$set: serviceUpdate}, function (err, docs) {
-
                 if (err) {
                     console.log(err);
                     var status = {
