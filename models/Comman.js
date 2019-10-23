@@ -2087,32 +2087,43 @@ var Comman = {
                 }
             });
 
-            collectionShout.find({sr_status: {$in: ["Open"]}}).toArray(function (err, mainDocs) {
+            collectionShout.find({}).toArray(function (err, mainDocs) {
                 if (err) {
+
                 } else {
                     console.log("=====" + mainDocs.length);
                     mainDocs.forEach(function (element) {
+                        if (element.sr_status == "Open") {
+                            var timeMin;
+                            var res_time = new Date().toISOString();
+                            var start_date = moment.utc(element.creationDate);
 
-                        var timeMin;
-                        var res_time = new Date().toISOString();
-                        var start_date = moment.utc(element.creationDate);
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
 
-                        var end_date = moment.utc(res_time);
-                        var duration = moment.duration(end_date.diff(start_date));
-                        timeMin = duration / 60000;
-                        if (timeMin >= 4 && timeMin < 5) {
-                            module.exports.sendCustomerNotification(element.cu_id, element.sp_cp_alert_send_id, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
-                        } else if (timeMin >= 5) {
+                            if (timeMin >= 4 && timeMin < 5) {
+                                module.exports.sendCustomerNotification(element.cu_id, element.sp_cp_alert_send_id, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
 
-                            var updateTran = {
-                                sr_status: "Cancel-New-Auto",
-                                updateDate: new Date().toUTCString()
-                            };
+                            } else if (timeMin >= 5) {
 
-                            collectionShout.updateOne({
-                                 sp_cp_alert_send_id: element.sp_cp_alert_send_id
-                            }, {$set: updateTran});
+                                var updateTran = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
 
+                                collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
+                                var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+                                collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        collectionShout.removeOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id});
+                                    }
+                                );
+
+                            }
+                        } else {
+                            collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
                             var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
                             collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
                                 function (doc) {
@@ -2120,9 +2131,7 @@ var Comman = {
                                     collectionShout.removeOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id});
                                 }
                             );
-
                         }
-
                     });
                 }
             });
