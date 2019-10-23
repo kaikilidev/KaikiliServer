@@ -248,6 +248,7 @@ var Comman = {
     getAlreadySendShoutingId(sp_id, callBack) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var autoIdCollection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var autoIdCancelList = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
             var query = {
                 "creationDate":
                     {
@@ -255,28 +256,32 @@ var Comman = {
                         $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
                     }, "sp_id": sp_id
             };
-            autoIdCollection.find(query).toArray(function (err, doc) {
-                var userSRidList = [];
-                console.log(doc.length);
-                if (doc.length > 0) {
-                    var count = 0
-                    doc.forEach(function (element) {
-                        userSRidList.push(element.cp_alert_id);
-                        console.log(element.cp_alert_id);
-                        // return callBack(doc);
-                        count++
-                        if (doc.length == count) {
-                            console.log(userSRidList);
-                            return callBack(userSRidList);
-                        }
-                    });
+            autoIdCancelList.find(query).toArray(function (err, doc1) {
+                autoIdCollection.find(query).toArray(function (err, doc2) {
+                    var doc = doc2.concat(doc1);
 
-                } else {
-                    console.log(userSRidList);
-                    return callBack(userSRidList);
-                }
+                    var userSRidList = [];
+                    console.log(doc.length);
+                    if (doc.length > 0) {
+                        var count = 0
+                        doc.forEach(function (element) {
+                            userSRidList.push(element.cp_alert_id);
+                            console.log(element.cp_alert_id);
+                            // return callBack(doc);
+                            count++
+                            if (doc.length == count) {
+                                console.log(userSRidList);
+                                return callBack(userSRidList);
+                            }
+                        });
+
+                    } else {
+                        console.log(userSRidList);
+                        return callBack(userSRidList);
+                    }
 
 
+                });
             });
         });
     },
@@ -2105,10 +2110,11 @@ var Comman = {
                             };
 
                             collectionShout.updateOne({
-                                    cp_alert_id: element.cp_alert_id, sp_cp_alert_send_id: element.sp_cp_alert_send_id }, {$set: updateTran});
+                                cp_alert_id: element.cp_alert_id, sp_cp_alert_send_id: element.sp_cp_alert_send_id
+                            }, {$set: updateTran});
 
                             var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
-                            collectionShout.find({sr_status: {$nin: ["Open"]}}).forEach(
+                            collectionShout.find({sp_cp_alert_send_id: doc.sp_cp_alert_send_id}).forEach(
                                 function (doc) {
                                     bulkInsert.insertOne(doc);
                                     collectionShout.removeOne({sp_cp_alert_send_id: doc.sp_cp_alert_send_id});
