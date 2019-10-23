@@ -1970,10 +1970,52 @@ var Comman = {
                                 }
 
                                 // }else if(timeMin >= 5){
-                            } else if (timeMin >= 30 ) {
+                            } else if (timeMin >= 30 && (element.service_book_type ==  "preferred_provider" || element.service_book_type == "customer_book")) {
                                 if (element.type_of_service == "customer_location") {
                                     module.exports.cuServiceCancellationChargesSP(element);
 
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+
+                                } else {
+                                    module.exports.cuServiceCancellationCharges(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
+
+
+                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+                                }
+                            } else if (timeMin >= 360 && (element.service_book_type ==  "shouting" || element.service_book_type == "interested")) {
+                                if (element.type_of_service == "customer_location") {
+                                    module.exports.cuServiceCancellationChargesSP(element);
                                     var serviceUpdate = {
                                         sr_status: "Cancel-Scheduled-Auto",
                                         updateDate: new Date().toUTCString()
