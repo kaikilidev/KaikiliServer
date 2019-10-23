@@ -795,7 +795,7 @@ var Comman = {
                 creationDate: new Date().toUTCString(),
                 service_book_type: "preferred_provider",
                 sp_view: false,
-                otp: comman.getRandomInt(999999)
+                otp: module.exports.getRandomInt(999999)
             };
 
             var notificationData = {
@@ -853,8 +853,6 @@ var Comman = {
                             status: 1,
                             message: "Successfully add new service",
                             data: records
-
-
                         };
                         console.log(status);
                         return callBack(status);
@@ -1972,7 +1970,7 @@ var Comman = {
                                 }
 
                                 // }else if(timeMin >= 5){
-                            } else if (timeMin >= 30) {
+                            } else if (timeMin >= 30 ) {
                                 if (element.type_of_service == "customer_location") {
                                     module.exports.cuServiceCancellationChargesSP(element);
 
