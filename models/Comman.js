@@ -2161,7 +2161,7 @@ var Comman = {
                                     sr_status: "Cancel-New-Auto",
                                     updateDate: new Date().toUTCString()
                                 };
-                                collectionShout.updateOne({cu_interested_rq_id: element.cu_interested_rq_id}, {$set: updateTran});
+                                collectionInterested.updateOne({cu_interested_rq_id: element.cu_interested_rq_id}, {$set: updateTran});
                             }
                         } else {
                             // collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
