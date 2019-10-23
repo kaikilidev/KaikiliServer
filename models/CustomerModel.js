@@ -867,7 +867,6 @@ var Customer = {
     serviceBookUser: function (req, callback) {
         var otp = "";
 
-
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
             var tran_id = "TR0" + result;
@@ -909,7 +908,8 @@ var Customer = {
                 sp_service_area: req.body.sp_service_area,
                 creationDate: new Date().toUTCString(),
                 sp_view: false,
-                otp: comman.getRandomInt(999999)
+                otp: comman.getRandomInt(999999),
+                service_book_type:req.service_book_type
             };
 
             var notificationData = {
@@ -2413,7 +2413,8 @@ var Customer = {
                     sp_service_area: user_service.sp_service_area,
                     creationDate: new Date().toUTCString(),
                     sp_view: false,
-                    otp: comman.getRandomInt(999999)
+                    otp: comman.getRandomInt(999999),
+                    service_book_type:user_service.service_book_type,
                 };
 
                 var notificationData = {

@@ -792,8 +792,10 @@ var Comman = {
                 sp_review: postData.sp_review,
                 distance: postData.distance,
                 sp_service_area: postData.sp_service_area,
-                creationDate: new Date().toUTCString()
-
+                creationDate: new Date().toUTCString(),
+                service_book_type: "preferred_provider",
+                sp_view: false,
+                otp: comman.getRandomInt(999999)
             };
 
             var notificationData = {
