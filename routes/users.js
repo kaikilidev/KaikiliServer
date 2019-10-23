@@ -643,6 +643,18 @@ router.post('/getUserServiceCostHelperData', function (req, res, next) {
     });
 });
 
+router.post('/userSendShoutInterestedList', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    userServiceModel.userSendShoutInterestedPostList(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
 
 
 

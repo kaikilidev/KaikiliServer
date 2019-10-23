@@ -518,14 +518,14 @@ var UserService = {
                         // console.log("start_date--------"+docs[0].creationDate);
 
                         var serviceTo25 = "OFF"
-                        comman.getSPProfileServiceData(docs[0].sp_id,function (resultTime) {
+                        comman.getSPProfileServiceData(docs[0].sp_id, function (resultTime) {
                             serviceTo25 = resultTime.custom_work_hours;
                         });
 
-                        console.log("start_date--------"+serviceTo25);
+                        console.log("start_date--------" + serviceTo25);
 
                         var res_time = new Date().toUTCString();
-                        var timeMin ;
+                        var timeMin;
 
                         // var res_time = new Date().toISOString();
                         // var start_date = moment(docs[0].creationDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
@@ -535,26 +535,26 @@ var UserService = {
                         // dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 // Saturday, June 9th, 2007, 5:46:21 PM
                         // Thu, 17 Oct 2019 22:47:54 GMT  ddd, dd MMM yyyy HH:mm:ss Z
-                        if(serviceTo25 == "ON"){
+                        if (serviceTo25 == "ON") {
                             var start_date = moment.utc(docs[0].creationDate);
                             var end_date = moment.utc(res_time);
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
-                        }else {
+                        } else {
 
                             // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
-                            var startTime = new Date(new Date().setHours(8,0,0)).toUTCString();
-                            console.log("-----"+startTime)
+                            var startTime = new Date(new Date().setHours(8, 0, 0)).toUTCString();
+                            console.log("-----" + startTime)
                             var bookTime = moment.utc(res_time);
-                            console.log("-----"+bookTime)
-                            var endTime = new Date(new Date().setHours(17,0,0)).toUTCString();
-                            console.log(">>>>>"+endTime)
+                            console.log("-----" + bookTime)
+                            var endTime = new Date(new Date().setHours(17, 0, 0)).toUTCString();
+                            console.log(">>>>>" + endTime)
 
-                            if((startTime < bookTime) && (bookTime < endTime)){
+                            if ((startTime < bookTime) && (bookTime < endTime)) {
                                 var duration = moment.duration(bookTime.diff(startTime));
                                 timeMin = duration / 60000;
-                            }else{
+                            } else {
                                 timeMin = 1.0;
                             }
                         }
@@ -901,13 +901,13 @@ var UserService = {
 
     userCompletedService: function (req, callback) {
         var sp_id = req.body.sp_id;
-        console.log(sp_id+"=====  call completed ");
+        console.log(sp_id + "=====  call completed ");
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var mysort = {updateDate: 1};
             var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
             collection.find({
                 sp_id: sp_id,
-                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed", "Cancel-New-Auto", "Cancel-Scheduled-Auto"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -923,7 +923,7 @@ var UserService = {
                     var cancellation = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                     cancellation.find({
                         sp_id: sp_id,
-                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
+                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed", "Cancel-New-Auto", "Cancel-Scheduled-Auto"]}
                     }).sort(mysort).toArray(function (err, docs1) {
                         if (err) {
 
@@ -1678,7 +1678,6 @@ var UserService = {
         var count = 0;
 
 
-
         userSRSendCUAlertData.forEach(function (data) {
             comman.getSPUserRadiusLocationToAVGShout(data.sr_id, data.longitude, data.latitude, data.cost_item, function (avgCost) {
                 comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
@@ -1885,7 +1884,7 @@ var UserService = {
                                 };
 
                                 var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                                cu_sp_pps_send.update({pps_id: pps_id,sp_id: sp_id}, {$set: serviceUpdate});
+                                cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
 
                                 collection.updateOne({pps_id: pps_id}, {$pull: {preferredProvider: sp_id}}, function (err, docs) {
                                     console.log(docs + "----------1");
@@ -1909,7 +1908,7 @@ var UserService = {
                                 };
 
                                 var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                                cu_sp_pps_send.update({pps_id: pps_id,sp_id: sp_id}, {$set: serviceUpdate});
+                                cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
                                 collection.update({pps_id: pps_id}, {$set: serviceUpdate});
 
                                 var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
@@ -1976,7 +1975,7 @@ var UserService = {
                 }
             );
         });
-    }    ,
+    },
 
 
     // Api Created 22-6-2019 Preferred Provider Transition Info
@@ -2091,7 +2090,7 @@ var UserService = {
         //   console.log(sp_id + " - " + latitude + " - " + longitude);
 
         comman.getSPUserServiceData(sp_id, function (result) {
-             console.log(result.length + "  size------");
+            console.log(result.length + "  size------");
 
             if (result.length > 0) {
                 var newAlert_components = new Array();
@@ -2215,7 +2214,7 @@ var UserService = {
 
                                                 comman.getCustomerData(element.cu_id, function (customerData) {
                                                     console.log(customerData.search_show + "------xxx");
-                                                    if(customerData.search_show == 1){
+                                                    if (customerData.search_show == 1) {
                                                         var costData = {
                                                             "cu_search_id": element.cu_search_id,
                                                             "id": element._id,
@@ -2424,6 +2423,75 @@ var UserService = {
 
         comman.getCostHelperNearestServiceProvider(sp_id, sr_id, cc_ids, cost_item, function (resultNearbuy) {
             callback(resultNearbuy);
+        });
+    },
+
+
+    userSendShoutInterestedPostList: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        console.log(sp_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var mysort = {creationDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+            var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var collectionCanShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+            console.log(err);
+            collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+
+                    } else {
+                        collectionShout.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs1) {
+                                if (err) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed"
+                                    };
+                                    // console.log(status);
+                                    callback(status);
+
+                                } else {
+                                    if (docs1 == null) {
+                                        docs1 = [];
+                                    }
+                                    collectionCanShout.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs2) {
+                                        if (err) {
+                                            console.log(err);
+                                            var status = {
+                                                status: 0,
+                                                message: "Failed"
+                                            };
+                                            // console.log(status);
+                                            callback(status);
+
+                                        } else {
+                                            if (docs2 == null) {
+                                                docs2 = [];
+                                            }
+                                            var doc = docs1.concat(docs2);
+                                            var status = {
+                                                status: 1,
+                                                message: "Success Get all Transition service to Mongodb",
+                                                dataInterested: docs,
+                                                dataShout: doc,
+                                            };
+                                            callback(status);
+                                        }
+                                    });
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+
         });
     },
 
