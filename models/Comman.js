@@ -2110,7 +2110,7 @@ var Comman = {
                             };
 
                             collectionShout.updateOne({
-                                cp_alert_id: element.cp_alert_id, sp_cp_alert_send_id: element.sp_cp_alert_send_id
+                                 sp_cp_alert_send_id: element.sp_cp_alert_send_id
                             }, {$set: updateTran});
 
                             var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);

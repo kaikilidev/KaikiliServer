@@ -1627,13 +1627,25 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Successfully Update data.",
-                        data: records
-                    };
-                    console.log(status);
-                    callback(status);
+                    if(records.length > 0){
+                        var status = {
+                            status: 1,
+                            message: "Successfully Update data.",
+                            data: records
+                        };
+                        console.log(status);
+                        callback(status);
+                    }else {
+                        var status = {
+                            status: 1,
+                            message: "This Service are auto time out. and closed.",
+                            data: []
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+
+
                 }
             });
         });
