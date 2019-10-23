@@ -2114,10 +2114,10 @@ var Comman = {
                             }, {$set: updateTran});
 
                             var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
-                            collectionShout.find({sp_cp_alert_send_id: doc.sp_cp_alert_send_id}).forEach(
+                            collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
                                 function (doc) {
                                     bulkInsert.insertOne(doc);
-                                    collectionShout.removeOne({sp_cp_alert_send_id: doc.sp_cp_alert_send_id});
+                                    collectionShout.removeOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id});
                                 }
                             );
 
