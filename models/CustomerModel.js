@@ -866,6 +866,7 @@ var Customer = {
 
     serviceBookUser: function (req, callback) {
         var otp = "";
+        console.log(req.body.service_book_type +"----");
 
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
@@ -909,7 +910,7 @@ var Customer = {
                 creationDate: new Date().toUTCString(),
                 sp_view: false,
                 otp: comman.getRandomInt(999999),
-                service_book_type:req.service_book_type
+                service_book_type: req.body.service_book_type
             };
 
             var notificationData = {
