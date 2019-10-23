@@ -1627,7 +1627,7 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    if(records.length > 0){
+                    if(records != null){
                         var status = {
                             status: 1,
                             message: "Successfully Update data.",

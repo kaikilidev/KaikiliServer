@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431652.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431654.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431657.png" beforeDir="false" />
@@ -42,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/routes/customer.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="254">
-              <caret line="284" column="31" lean-forward="true" selection-start-line="284" selection-start-column="31" selection-end-line="284" selection-end-column="31" />
+              <caret line="372" column="37" selection-start-line="372" selection-start-column="37" selection-end-line="372" selection-end-column="37" />
               <folding>
                 <element signature="e#3101#3431#0" />
               </folding>
@@ -50,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="1386" column="31" selection-start-line="1386" selection-start-column="28" selection-end-line="1386" selection-end-column="31" />
+            <state relative-caret-position="82">
+              <caret line="1629" column="38" selection-start-line="1629" selection-start-column="38" selection-end-line="1629" selection-end-column="38" />
               <folding>
                 <element signature="e#50256#52531#0" />
               </folding>
@@ -62,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="2112" column="19" selection-start-line="2112" selection-start-column="19" selection-end-line="2112" selection-end-column="19" />
+            <state relative-caret-position="185">
+              <caret line="2111" column="43" selection-start-line="2111" selection-start-column="28" selection-end-line="2111" selection-end-column="43" />
               <folding>
                 <element signature="e#85794#95539#0" />
               </folding>
@@ -154,7 +154,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bookNewService</find>
       <find>searchSProvider</find>
       <find>addNewWorkProfile</find>
       <find>sun</find>
@@ -179,11 +178,12 @@
       <find>insertOne</find>
       <find>getSpPreferredProviderInfo</find>
       <find>customerUpdateShoutingData</find>
-      <find>$in</find>
       <find>in</find>
       <find>getUserShoutingSendData</find>
       <find>getUserShoutingData</find>
       <find>$nin</find>
+      <find>customerSingleAlertTransition</find>
+      <find>$in</find>
     </findStrings>
     <replaceStrings>
       <replace>postData</replace>
@@ -222,8 +222,8 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
-        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
+        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
       </list>
     </option>
   </component>
@@ -529,21 +529,7 @@
       <workItem from="1571378584564" duration="15274000" />
       <workItem from="1571469191670" duration="22359000" />
       <workItem from="1571716874788" duration="28850000" />
-      <workItem from="1571811163421" duration="8893000" />
-    </task>
-    <task id="LOCAL-00292" summary="Add New Api">
-      <created>1569944855682</created>
-      <option name="number" value="00292" />
-      <option name="presentableId" value="LOCAL-00292" />
-      <option name="project" value="LOCAL" />
-      <updated>1569944855682</updated>
-    </task>
-    <task id="LOCAL-00293" summary="Add New Api">
-      <created>1570196490577</created>
-      <option name="number" value="00293" />
-      <option name="presentableId" value="LOCAL-00293" />
-      <option name="project" value="LOCAL" />
-      <updated>1570196490578</updated>
+      <workItem from="1571811163421" duration="10510000" />
     </task>
     <task id="LOCAL-00294" summary="Add New Api">
       <created>1570198541879</created>
@@ -874,11 +860,25 @@
       <option name="project" value="LOCAL" />
       <updated>1571828706273</updated>
     </task>
-    <option name="localTasksCounter" value="341" />
+    <task id="LOCAL-00341" summary="Add New Api">
+      <created>1571829305008</created>
+      <option name="number" value="00341" />
+      <option name="presentableId" value="LOCAL-00341" />
+      <option name="project" value="LOCAL" />
+      <updated>1571829305008</updated>
+    </task>
+    <task id="LOCAL-00342" summary="Add New Api">
+      <created>1571830291503</created>
+      <option name="number" value="00342" />
+      <option name="presentableId" value="LOCAL-00342" />
+      <option name="project" value="LOCAL" />
+      <updated>1571830291503</updated>
+    </task>
+    <option name="localTasksCounter" value="343" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1355602000" />
+    <option name="totallyTimeSpent" value="1357219000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -898,7 +898,7 @@
       <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.17449665" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.3569405" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49597314" visible="true" weight="0.5439094" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39884394" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1014,12 +1014,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1811</line>
+          <line>1823</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1813</line>
+          <line>1825</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1038,7 +1038,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1809</line>
+          <line>1821</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1083,42 +1083,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1732</line>
+          <line>1744</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1733</line>
+          <line>1745</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1734</line>
+          <line>1746</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1735</line>
+          <line>1747</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1736</line>
+          <line>1748</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1737</line>
+          <line>1749</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1738</line>
+          <line>1750</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1739</line>
+          <line>1751</line>
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1355,26 +1355,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="284" column="31" lean-forward="true" selection-start-line="284" selection-start-column="31" selection-end-line="284" selection-end-column="31" />
-          <folding>
-            <element signature="e#3101#3431#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="1386" column="31" selection-start-line="1386" selection-start-column="28" selection-end-line="1386" selection-end-column="31" />
-          <folding>
-            <element signature="e#50256#52531#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/mongodb/lib/mongo_client.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1401,12 +1381,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="372" column="37" selection-start-line="372" selection-start-column="37" selection-end-line="372" selection-end-column="37" />
+          <folding>
+            <element signature="e#3101#3431#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="2112" column="19" selection-start-line="2112" selection-start-column="19" selection-end-line="2112" selection-end-column="19" />
+        <state relative-caret-position="185">
+          <caret line="2111" column="43" selection-start-line="2111" selection-start-column="28" selection-end-line="2111" selection-end-column="43" />
           <folding>
             <element signature="e#85794#95539#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="82">
+          <caret line="1629" column="38" selection-start-line="1629" selection-start-column="38" selection-end-line="1629" selection-end-column="38" />
+          <folding>
+            <element signature="e#50256#52531#0" />
           </folding>
         </state>
       </provider>
