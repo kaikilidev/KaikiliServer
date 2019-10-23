@@ -1861,6 +1861,7 @@ var Comman = {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionPP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
             var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var collectionInterested = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
 
             collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
                 if (err) {
@@ -2131,6 +2132,46 @@ var Comman = {
                                     collectionShout.removeOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id});
                                 }
                             );
+                        }
+                    });
+                }
+            });
+
+            collectionInterested.find({}).toArray(function (err, mainDocs) {
+                if (err) {
+
+                } else {
+                    console.log("=====" + mainDocs.length);
+                    mainDocs.forEach(function (element) {
+                        if (element.sr_status == "Open") {
+                            var timeMin;
+                            var res_time = new Date().toISOString();
+                            var start_date = moment.utc(element.creationDate);
+
+                            var end_date = moment.utc(res_time);
+                            var duration = moment.duration(end_date.diff(start_date));
+                            timeMin = duration / 60000;
+                            // "cu_interested_rq_id": "cu_interested_rq_4",
+                            if (timeMin >= 4 && timeMin < 5) {
+                                module.exports.sendCustomerNotification(element.cu_id, element.cu_interested_rq_id, "Service Provider Send Interested Service Request", "Interested to Service", "cu_interested");
+
+                            } else if (timeMin >= 5) {
+
+                                var updateTran = {
+                                    sr_status: "Cancel-New-Auto",
+                                    updateDate: new Date().toUTCString()
+                                };
+                                collectionShout.updateOne({cu_interested_rq_id: element.cu_interested_rq_id}, {$set: updateTran});
+                            }
+                        } else {
+                            // collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
+                            // var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+                            // collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
+                            //     function (doc) {
+                            //         bulkInsert.insertOne(doc);
+                            //         collectionShout.removeOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id});
+                            //     }
+                            // );
                         }
                     });
                 }
