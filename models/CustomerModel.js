@@ -1257,16 +1257,19 @@ var Customer = {
         var cp_alert_id = req.body.cp_alert_id;
         var sr_status = req.body.sr_status;
         var cu_id = req.body.cu_id;
+        var sp_cp_alert_send_id = req.body.sp_cp_alert_send_id;
 
         var updateTran = {
             sr_status: sr_status,
+            updateDate: new Date().toUTCString()
         };
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
             collectionSP.updateOne({
                 cp_alert_id: cp_alert_id,
-                cu_id: cu_id
+                cu_id: cu_id,
+                sp_cp_alert_send_id: sp_cp_alert_send_id
             }, {$set: updateTran}, function (err, records) {
                 if (err) {
                     console.log(err);

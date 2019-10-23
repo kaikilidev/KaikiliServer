@@ -1855,6 +1855,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
             var collectionPP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
 
             collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled"]}}).toArray(function (err, mainDocs) {
                 if (err) {
@@ -2044,7 +2045,7 @@ var Comman = {
                                 comman.sendServiceNotification(element11, element.pps_id, message, "New", "pps");
                             });
 
-                        }else if (timeMin >= 5) {
+                        } else if (timeMin >= 5) {
                             //Auto remove
                             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
                             var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
@@ -2080,8 +2081,47 @@ var Comman = {
                     });
                 }
             });
-        });
 
+            collectionShout.find({sr_status: {$in: ["Open"]}}).toArray(function (err, mainDocs) {
+                if (err) {
+                } else {
+                    console.log("=====" + mainDocs.length);
+                    mainDocs.forEach(function (element) {
+
+                        var timeMin;
+                        var res_time = new Date().toISOString();
+                        var start_date = moment.utc(element.creationDate);
+
+                        var end_date = moment.utc(res_time);
+                        var duration = moment.duration(end_date.diff(start_date));
+                        timeMin = duration / 60000;
+                        if (timeMin >= 4 && timeMin < 5) {
+                            module.exports.sendCustomerNotification(element.cu_id, element.sp_cp_alert_send_id, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                        } else if (timeMin >= 5) {
+
+                            var updateTran = {
+                                sr_status: "Cancel-New-Auto",
+                                updateDate: new Date().toUTCString()
+                            };
+
+                            collectionShout.updateOne({
+                                    cp_alert_id: element.cp_alert_id, sp_cp_alert_send_id: element.sp_cp_alert_send_id }, {$set: updateTran});
+
+                            var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+                            collectionShout.find({sr_status: {$nin: ["Open"]}}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    collectionShout.removeOne({sp_cp_alert_send_id: doc.sp_cp_alert_send_id});
+                                }
+                            );
+
+                        }
+
+                    });
+                }
+            });
+
+        });
     },
 
 

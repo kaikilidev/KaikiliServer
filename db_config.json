@@ -41,7 +41,8 @@
     "cu_bank_info": "cu_bank_info",
     "cu_service_cancellation_charges": "cu_service_cancellation_charges",
     "sp_service_cancellation_charges": "sp_service_cancellation_charges",
-    "cu_sp_pps_send": "cu_sp_pps_send"
+    "cu_sp_pps_send": "cu_sp_pps_send",
+    "sp_cu_send_shout_cancellation": "sp_cu_send_shout_cancellation"
 
   }
 
