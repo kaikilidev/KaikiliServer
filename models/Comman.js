@@ -1951,6 +1951,7 @@ var Comman = {
 
                             var timeMin;
                             var res_time = new Date().toUTCString();
+                            console.log("=====" + res_time);
                             var start_date = moment.utc(element.bookingDateTime);
                             var end_date = moment.utc(res_time);
                             // var duration1 = moment.duration(start_date.diff(end_date));
@@ -1958,9 +1959,12 @@ var Comman = {
 
                             timeMin = duration / 60000;
                             console.log("=====" + timeMin);
-
+                            // console.log("1=====" + timeMin >= -24);
+                            // console.log("2=====" + timeMin < -25 );
                             // if (timeMin >= -5 && timeMin < -4) {
-                            if (timeMin >= -29 && timeMin < -30) {
+
+                            if (timeMin <= -29 && timeMin > -30) {
+                                console.log("2=====" + "Send Notification" );
                                 if (element.type_of_service == "customer_location") {
                                     var message = "Scheduled are next 30 min after start";
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
