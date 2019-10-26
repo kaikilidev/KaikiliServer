@@ -1984,7 +1984,8 @@ var UserService = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
 
-            collection.update({pps_id: pps_id}, {$set: {sp_show: true}});
+            if (req.body.read == true)
+                collection.update({pps_id: pps_id}, {$set: {sp_show: true}});
 
             // Update service record
             collection.find({pps_id: pps_id}).toArray(function (err, docs) {
