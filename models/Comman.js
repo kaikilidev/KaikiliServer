@@ -1964,7 +1964,7 @@ var Comman = {
                             // if (timeMin >= -5 && timeMin < -4) {
 
                             if (timeMin <= -29 && timeMin > -30) {
-                                console.log("2=====" + "Send Notification" );
+                                console.log("2=====" + "Send Notification");
                                 if (element.type_of_service == "customer_location") {
                                     var message = "Scheduled are next 30 min after start";
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, element.sr_status, "tran");
@@ -1974,7 +1974,7 @@ var Comman = {
                                 }
 
                                 // }else if(timeMin >= 5){
-                            } else if (timeMin >= 30 && (element.service_book_type ==  "preferred_provider" || element.service_book_type == "customer_book")) {
+                            } else if (timeMin >= 30 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
                                 if (element.type_of_service == "customer_location") {
                                     module.exports.cuServiceCancellationChargesSP(element);
 
@@ -2017,7 +2017,7 @@ var Comman = {
                                         }
                                     )
                                 }
-                            } else if (timeMin >= 360 && (element.service_book_type ==  "shouting" || element.service_book_type == "interested")) {
+                            } else if (timeMin >= 360 && (element.service_book_type == "shouting" || element.service_book_type == "interested")) {
                                 if (element.type_of_service == "customer_location") {
                                     module.exports.cuServiceCancellationChargesSP(element);
                                     var serviceUpdate = {
@@ -2089,12 +2089,12 @@ var Comman = {
                         var end_date = moment.utc(res_time);
                         var duration = moment.duration(end_date.diff(start_date));
                         timeMin = duration / 60000;
-
+                        console.log("pps id ---->>>" + element.pps_id);
                         if (timeMin >= 4 && timeMin < 5) {
 
                             var message = "New kaikili preferred provider Job."
                             element.preferredProvider.forEach(function (element11) {
-                                comman.sendServiceNotification(element11, element.pps_id, message, "New", "pps");
+                                module.exports.sendServiceNotification(element11, element.pps_id, message, "New", "pps");
                             });
 
                         } else if (timeMin >= 5) {
