@@ -1816,7 +1816,10 @@ var Customer = {
                                             sp_coordinatePoint: docs[0].userprofile.coordinatePoint,
                                             sp_first_name: docs[0].profile.first_name,
                                             sp_last_name: docs[0].profile.last_name,
-                                            sp_mobile_no: docs[0].profile.mobile_no
+                                            sp_mobile_no: docs[0].profile.mobile_no,
+                                            professional_license: docs[0].userprofile.professional_license,
+                                            professional_insurance: docs[0].userprofile.professional_insurance,
+                                            preferred_provider: docs[0].preferred_provider
 
                                         };
 
