@@ -403,6 +403,7 @@ var Users = {
         var email = req.body.email;
         var password = req.body.password;
         var fcm_token = req.body.fcm_token;
+        console.log(email +"  ----1111");
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -416,13 +417,12 @@ var Users = {
                     console.log(status);
                     callback(status);
                 } else {
-                    console.log(docs);
+                    console.log(docs.length +"  ----222");
                     if (docs.length == 1) {
 
                         bcrypt.compare(password, docs[0].password, function (err, res) {
                             if (res) {
-
-                                collectionSP.updateOne({mobile_no: mobile_no}, {$set: {fcm_token: fcm_token}}, function
+                                collectionSP.updateOne({mobile_no: docs[0].mobile_no}, {$set: {fcm_token: fcm_token}}, function
                                     (err, records) {
                                     console.log(records);
                                 });
