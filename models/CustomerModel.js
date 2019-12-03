@@ -1562,7 +1562,7 @@ var Customer = {
                             timeNew1: timeNew1,
                             dateNew2: dateNew2,
                             timeNew2: timeNew2,
-                            created_on: new Date().toUTCString(),
+                            created_on: new Date().toISOString(),
                         };
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
