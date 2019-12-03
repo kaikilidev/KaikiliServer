@@ -407,7 +407,7 @@ var UserService = {
                     cu_delte: "0",
                     sp_read: "0",
                     cu_read: "0",
-                    created_on: new Date().toUTCString(),
+                    created_on:new Date().toISOString(),
                     body: body
                 };
 
