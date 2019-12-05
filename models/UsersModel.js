@@ -146,7 +146,7 @@ var Users = {
                                 callback(status);
                             } else {
 
-                                if (geoUpdate  == true) {
+                                if (geoUpdate == true) {
                                     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                         collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
@@ -403,7 +403,7 @@ var Users = {
         var email = req.body.email;
         var password = req.body.password;
         var fcm_token = req.body.fcm_token;
-        console.log(email +"  ----1111");
+        console.log(email + "  ----1111");
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -417,7 +417,7 @@ var Users = {
                     console.log(status);
                     callback(status);
                 } else {
-                    console.log(docs.length +"  ----222");
+                    console.log(docs.length + "  ----222");
                     if (docs.length == 1) {
 
                         bcrypt.compare(password, docs[0].password, function (err, res) {
@@ -636,6 +636,84 @@ var Users = {
             });
 
         }
+    },
+    updateSPProfileDataUpload: function (req, callback) {
+        var sp_id = req.body.cu_id;
+        var email = req.body.email;
+        console.log(email + "  ----1111");
+
+        var addWorkInfo = {
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "email": req.body.email,
+        };
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collectionSP.find({email: email}).toArray(function (err, docs) {
+                if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed"
+                            };
+                            console.log(status);
+                            callback(status);
+                } else {
+                    console.log(docs.length + "  ----222");
+                    if (docs.length == 0) {
+                        collectionSP.update({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully updated",
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
+                    } else if (docs.length == 1) {
+                            if (docs[0].sp_id == sp_id) {
+                                collectionSP.update({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
+                                    if (err) {
+                                        console.log(err);
+                                        var status = {
+                                            status: 0,
+                                            message: "Failed"
+                                        };
+                                        console.log(status);
+                                        callback(status);
+                                    } else {
+                                        var status = {
+                                            status: 1,
+                                            message: "Successfully updated",
+                                        };
+                                        console.log(status);
+                                        callback(status);
+                                    }
+                                });
+
+                            } else {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Already this email id register."
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        }
+                }
+            });
+        });
     },
 
 

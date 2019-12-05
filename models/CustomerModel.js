@@ -866,7 +866,7 @@ var Customer = {
 
     serviceBookUser: function (req, callback) {
         var otp = "";
-        console.log(req.body.service_book_type +"----");
+        console.log(req.body.service_book_type + "----");
 
         comman.getNextSequenceUserID("tr_service", function (result) {
             //  console.log(result);
@@ -1385,7 +1385,7 @@ var Customer = {
             console.log(err);
             collection.find({
                 cust_id: cu_id,
-                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
+                sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed", "Cancel-New-Auto", "Cancel-Scheduled-Auto"]}
             }).sort(mysort).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
@@ -1401,7 +1401,7 @@ var Customer = {
 
                     cancellation.find({
                         cust_id: cu_id,
-                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed","Cancel-New-Auto","Cancel-Scheduled-Auto"]}
+                        sr_status: {$in: ["Cancel-New-Sp", "Cancel-New-Cp", "Cancel-Scheduled-Sp", "Cancel-Scheduled-Cp", "Completed", "Cancel-New-Auto", "Cancel-Scheduled-Auto"]}
                     }).sort(mysort).toArray(function (err, docs1) {
                         if (err) {
                             if (docs.length > 0) {
@@ -1423,8 +1423,9 @@ var Customer = {
 
                         } else {
                             var listData = docs.concat(docs1);
-                            collectionPPS.find({cust_id: cu_id,
-                                sr_status: {$in: ["Cancel-New-Cp","Cancel-New-Auto"]}
+                            collectionPPS.find({
+                                cust_id: cu_id,
+                                sr_status: {$in: ["Cancel-New-Cp", "Cancel-New-Auto"]}
                             }).toArray(function (err, docspps) {
 
                                 if (err) {
@@ -1520,8 +1521,8 @@ var Customer = {
 
                     collection.find({tran_id: tran_id}).toArray(function (err, findRecord) {
 
-                        console.log(err +" ------- findRecord");
-                        console.log(findRecord.length +" ------- findRecord");
+                        console.log(err + " ------- findRecord");
+                        console.log(findRecord.length + " ------- findRecord");
 
                         var message = ""
                         if (req.body.sr_status == "Progress") {
@@ -1628,7 +1629,7 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    if(records != null){
+                    if (records != null) {
                         var status = {
                             status: 1,
                             message: "Successfully Update data.",
@@ -1636,7 +1637,7 @@ var Customer = {
                         };
                         console.log(status);
                         callback(status);
-                    }else {
+                    } else {
                         var status = {
                             status: 1,
                             message: "This Service are auto time out. and closed.",
@@ -1969,7 +1970,7 @@ var Customer = {
                             comman.sendServiceNotification(element, "PPS0" + result, message, "New", "pps");
                             count++;
 
-                            if(count == req.body.preferredProvider.length){
+                            if (count == req.body.preferredProvider.length) {
                                 var status = {
                                     status: 1,
                                     message: "Successfully Update data.",
@@ -2003,9 +2004,9 @@ var Customer = {
 
 
             var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                req.body.preferredProvider.forEach(function (element) {
+            req.body.preferredProvider.forEach(function (element) {
 
-                });
+            });
 
 
             cu_sp_pps_send.update({pps_id: req.body.pps_id}, {$set: serviceUpdate});
@@ -2118,9 +2119,10 @@ var Customer = {
             "email": req.body.email,
             "search_show": req.body.search_show
         };
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-            collectionSP.update({cu_id: cu_id}, {$set: addWorkInfo}, function (err, records) {
+            collectionSP.find({email: email}).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -2130,16 +2132,64 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Successfully updated",
-                    };
-                    console.log(status);
-                    callback(status);
+                    console.log(docs.length + "  ----222");
+                    if (docs.length == 0) {
+
+                        collectionSP.update({cu_id: cu_id}, {$set: addWorkInfo}, function (err, records) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed"
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully updated",
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
+
+                    } else if (docs.length == 1) {
+                        if (docs[0].cu_id == cu_id) {
+                            collectionSP.update({cu_id: cu_id}, {$set: addWorkInfo}, function (err, records) {
+                                if (err) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed"
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully updated",
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                }
+                            });
+
+                        } else {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Already this email id register."
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    }
                 }
             });
         });
-    },
+    }
+    ,
 
     // 31-8-2019 Interested Customer to ger request post user (Customer Interested single data)
     getCustomerSingleInterestedTransition: function (req, callback) {
@@ -2169,7 +2219,9 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+
+    ,
 
 
     // 31-8-2019 create new Api (Customer Interested SR status update)
@@ -2207,7 +2259,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
 // new Api Customer add bank information api
@@ -2254,7 +2307,8 @@ var Customer = {
                 });
             });
         });
-    },
+    }
+    ,
 
     CUUserBankInfoList: function (req, callback) {
 
@@ -2418,7 +2472,7 @@ var Customer = {
                     creationDate: new Date().toUTCString(),
                     sp_view: false,
                     otp: comman.getRandomInt(999999),
-                    service_book_type:user_service.service_book_type,
+                    service_book_type: user_service.service_book_type,
                 };
 
                 var notificationData = {
@@ -2492,7 +2546,8 @@ var Customer = {
             });
 
         });
-    },
+    }
+    ,
 
 }
 module.exports = Customer;

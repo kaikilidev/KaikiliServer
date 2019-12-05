@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/UsersModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UsersModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431652.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431654.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278431657.png" beforeDir="false" />
@@ -14,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278775892.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278805787.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278805788.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,8 +44,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="418" column="25" selection-start-line="418" selection-start-column="14" selection-end-line="418" selection-end-column="25" />
+            <state relative-caret-position="176">
+              <caret line="659" column="29" selection-start-line="659" selection-start-column="14" selection-end-line="659" selection-end-column="29" />
               <folding>
                 <element signature="e#6737#7055#0" />
                 <element signature="e#7123#7443#0" />
@@ -54,10 +58,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9328">
-              <caret line="424" column="75" selection-start-line="424" selection-start-column="75" selection-end-line="424" selection-end-column="75" />
+            <state relative-caret-position="452">
+              <caret line="652" column="31" lean-forward="true" selection-start-line="652" selection-start-column="31" selection-end-line="652" selection-end-column="31" />
               <folding>
-                <marker date="1574767445650" expanded="true" signature="19951:20215" ph="..." />
+                <marker date="1575548692553" expanded="true" signature="19952:20216" ph="..." />
               </folding>
             </state>
           </provider>
@@ -66,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/customer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1386">
-              <caret line="63" column="26" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="29" />
+            <state relative-caret-position="9570">
+              <caret line="446" column="35" selection-start-line="446" selection-start-column="35" selection-end-line="446" selection-end-column="35" />
               <folding>
                 <element signature="e#3101#3431#0" />
               </folding>
@@ -78,8 +82,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="2456" column="74" selection-start-line="2456" selection-start-column="58" selection-end-line="2456" selection-end-column="74" />
+            <state relative-caret-position="-181">
+              <caret line="2113" column="57" selection-start-line="2113" selection-start-column="57" selection-end-line="2113" selection-end-column="57" />
+              <folding>
+                <element signature="e#100463#101514#0" />
+                <element signature="e#101849#102903#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,8 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/db_config.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+            <state relative-caret-position="176">
+              <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -96,8 +104,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9680">
-              <caret line="440" column="97" selection-start-line="440" selection-start-column="85" selection-end-line="440" selection-end-column="97" />
+            <state relative-caret-position="388">
+              <caret line="2451" column="26" selection-start-line="2451" selection-start-column="26" selection-end-line="2451" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -123,11 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>creationDate</find>
-      <find>qu</find>
-      <find>customerCompletedAllService</find>
-      <find>insertOne</find>
-      <find>in</find>
       <find>getUserShoutingSendData</find>
       <find>getUserShoutingData</find>
       <find>customerSingleAlertTransition</find>
@@ -153,6 +156,11 @@
       <find>SPUserLogin</find>
       <find>notificationData</find>
       <find>cu_sp_notifications</find>
+      <find>userPostMessages</find>
+      <find>cuProfileUpload</find>
+      <find>updateSPProfileDataUpload</find>
+      <find>spProfileUpload</find>
+      <find>sp_personal_info</find>
     </findStrings>
     <replaceStrings>
       <replace>postData</replace>
@@ -188,10 +196,10 @@
         <option value="$PROJECT_DIR$/models/SubServiceModel.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
-        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/autoupdategroups.php" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/sitAppApi.php" />
+        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
@@ -213,6 +221,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -234,7 +243,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -528,14 +536,9 @@
       <workItem from="1574762115113" duration="4663000" />
       <workItem from="1575358101867" duration="1177000" />
       <workItem from="1575404043838" duration="1441000" />
-      <workItem from="1575407068968" duration="230000" />
-    </task>
-    <task id="LOCAL-00310" summary="Add New Api">
-      <created>1571318513959</created>
-      <option name="number" value="00310" />
-      <option name="presentableId" value="LOCAL-00310" />
-      <option name="project" value="LOCAL" />
-      <updated>1571318513959</updated>
+      <workItem from="1575407068968" duration="386000" />
+      <workItem from="1575547179046" duration="1675000" />
+      <workItem from="1575549042543" duration="849000" />
     </task>
     <task id="LOCAL-00311" summary="Add New Api">
       <created>1571320232024</created>
@@ -873,11 +876,18 @@
       <option name="project" value="LOCAL" />
       <updated>1575404645883</updated>
     </task>
-    <option name="localTasksCounter" value="359" />
+    <task id="LOCAL-00359" summary="Add New Api">
+      <created>1575407352803</created>
+      <option name="number" value="00359" />
+      <option name="presentableId" value="LOCAL-00359" />
+      <option name="project" value="LOCAL" />
+      <updated>1575407352803</updated>
+    </task>
+    <option name="localTasksCounter" value="360" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1445574000" />
+    <option name="totallyTimeSpent" value="1448254000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -890,12 +900,37 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" weight="0.2147651" />
+      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.21744967" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.24362606" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39884394" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4979592" weight="0.32719547" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5026846" side_tool="true" weight="0.6827195" />
+      <window_info anchor="bottom" id="TypeScript" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.62181306" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49731544" visible="true" weight="0.60339946" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Mongo Explorer" order="3" weight="0.32959184" />
+      <window_info anchor="right" id="Database" order="4" weight="0.3295302" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.21744967" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.24362606" />
@@ -911,32 +946,6 @@
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.62181306" />
       <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49731544" weight="0.60339946" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Mongo Explorer" order="3" weight="0.32959184" />
-      <window_info anchor="right" id="Database" order="4" weight="0.3295302" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
-      <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.17449665" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.3569405" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39884394" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4979592" weight="0.32719547" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989796" weight="0.7549575" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5026846" side_tool="true" weight="0.6827195" />
-      <window_info anchor="bottom" id="TypeScript" order="11" />
-      <window_info anchor="bottom" id="Messages" order="12" />
-      <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.62283236" />
-      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49731544" weight="0.5155807" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1014,12 +1023,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1827</line>
+          <line>1828</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1829</line>
+          <line>1830</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1038,7 +1047,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1825</line>
+          <line>1826</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1083,42 +1092,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1745</line>
+          <line>1746</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1746</line>
+          <line>1747</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1747</line>
+          <line>1748</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1748</line>
+          <line>1749</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1749</line>
+          <line>1750</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1750</line>
+          <line>1751</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1751</line>
+          <line>1752</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1752</line>
+          <line>1753</line>
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1329,20 +1338,10 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/autoupdategroups.php" />
     <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/sitAppApi.php" />
-    <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9328">
-          <caret line="424" column="75" selection-start-line="424" selection-start-column="75" selection-end-line="424" selection-end-column="75" />
-          <folding>
-            <marker date="1574767445650" expanded="true" signature="19951:20215" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/customer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1386">
-          <caret line="63" column="26" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="29" />
+        <state relative-caret-position="9570">
+          <caret line="446" column="35" selection-start-line="446" selection-start-column="35" selection-end-line="446" selection-end-column="35" />
           <folding>
             <element signature="e#3101#3431#0" />
           </folding>
@@ -1351,8 +1350,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db_config.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        <state relative-caret-position="176">
+          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -1363,29 +1362,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="132" column="32" selection-start-line="132" selection-start-column="32" selection-end-line="132" selection-end-column="32" />
-          <folding>
-            <element signature="e#6737#7055#0" />
-            <element signature="e#7123#7443#0" />
-            <element signature="e#7515#7839#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="2436" column="59" lean-forward="true" selection-start-line="2436" selection-start-column="34" selection-end-line="2436" selection-end-column="59" />
+        <state relative-caret-position="-181">
+          <caret line="2113" column="57" selection-start-line="2113" selection-start-column="57" selection-end-line="2113" selection-end-column="57" />
+          <folding>
+            <element signature="e#100463#101514#0" />
+            <element signature="e#101849#102903#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="548">
-          <caret line="453" column="65" lean-forward="true" selection-start-line="453" selection-start-column="65" selection-end-line="453" selection-end-column="65" />
+        <state relative-caret-position="388">
+          <caret line="2451" column="26" selection-start-line="2451" selection-start-column="26" selection-end-line="2451" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="652" column="31" lean-forward="true" selection-start-line="652" selection-start-column="31" selection-end-line="652" selection-end-column="31" />
+          <folding>
+            <marker date="1575548692553" expanded="true" signature="19952:20216" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="659" column="29" selection-start-line="659" selection-start-column="14" selection-end-line="659" selection-end-column="29" />
+          <folding>
+            <element signature="e#6737#7055#0" />
+            <element signature="e#7123#7443#0" />
+            <element signature="e#7515#7839#0" />
+          </folding>
         </state>
       </provider>
     </entry>
