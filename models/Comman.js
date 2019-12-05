@@ -2227,5 +2227,46 @@ var Comman = {
     },
 
 
+    getSPtoCustomerRating(sp_id, callBack) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+            var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_review);
+            var cursorSearch = collection.aggregate([
+                {
+                    $match: {
+                        sp_id: sp_id
+                    }
+                }, {
+                    $lookup: {
+                        from: config.collections.cu_profile,
+                        localField: "cust_id",
+                        foreignField: "cu_id",
+                        as: "services"
+                    }
+                }, {
+                    $unwind: "$services"
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        cust_id: 1,
+                        sp_id: 1,
+                        tran_id: 1,
+                        sr_id: 1,
+                        rating: 1,
+                        comment: 1,
+                        creationDate: 1,
+                        first_name: "$services.first_name",
+                        last_name: "$services.last_name",
+                        cu_image: "$services.cu_image"
+                    }
+                }
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                return callBack(mainDocs);
+            });
+        });
+    },
+
 }
 module.exports = Comman;

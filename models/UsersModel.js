@@ -716,6 +716,24 @@ var Users = {
         });
     },
 
+//5-12-2019 rating List
 
+    getUserRatingDataCU: function (req, callback) {
+        var sp_id = req.body.sp_id;
+
+        comman.getSPtoCustomerRating(sp_id, function (result) {
+
+                var status = {
+                    status: 1,
+                    message: "Successfully data getting",
+                    data: result
+                };
+                console.log(status);
+                callback(status);
+
+        });
+
+
+    },
 }
 module.exports = Users;

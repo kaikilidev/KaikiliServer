@@ -313,6 +313,24 @@ router.post('/getUserWorkProfile', function (req, res, next) {
 });
 
 
+
+router.post('/getUserRatingData', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    usersModel.getUserRatingDataCU(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+
+
 router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
     let upload = Bluebird.promisify(uploadSPWork);
     return upload(req, res).then((data) => {
