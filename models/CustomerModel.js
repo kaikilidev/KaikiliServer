@@ -2122,7 +2122,7 @@ var Customer = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-            collectionSP.find({email: email}).toArray(function (err, docs) {
+            collectionSP.find({email: req.body.email}).toArray(function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
