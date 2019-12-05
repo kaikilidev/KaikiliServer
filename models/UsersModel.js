@@ -638,7 +638,7 @@ var Users = {
         }
     },
     updateSPProfileDataUpload: function (req, callback) {
-        var sp_id = req.body.cu_id;
+        var sp_id = req.body.sp_id;
         var email = req.body.email;
         console.log(email + "  ----1111");
 
