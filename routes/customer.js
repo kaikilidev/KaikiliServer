@@ -7,6 +7,7 @@ const multerSettings = require("../models/Multer-settings");
 const Bluebird = require("bluebird");
 let uploadSPWork = multerSettings.uploadSPWork;
 let uploadCUUserProfileIM = multerSettings.uploadCUUserProfileIM;
+let uploadCUReview = multerSettings.uploadCUReview;
 
 
 // //G E T   M E T H O D S
@@ -26,8 +27,6 @@ router.post('/AddNewUser', function (req, res, next) {
         }
     });
 });
-
-
 
 
 router.post('/checkCUUserCreated', function (req, res, next) {
@@ -55,8 +54,6 @@ router.post('/CPUserRegistrationCheck', function (req, res, next) {
         }
     });
 });
-
-
 
 
 router.post('/CUUserLogin', function (req, res, next) {
@@ -126,7 +123,6 @@ router.post('/searchSProviderTest', function (req, res, next) {
 });
 
 
-
 router.post('/reSearchSProvider', function (req, res, next) {
     console.log("call searchServiceProvider-----1");
     customerModel.reSearchServiceProvider(req, function (err, result) {
@@ -139,7 +135,6 @@ router.post('/reSearchSProvider', function (req, res, next) {
         }
     });
 });
-
 
 
 router.post('/searchQuoteProvider', function (req, res, next) {
@@ -307,9 +302,6 @@ router.post('/customerUpdateInterestedData', function (req, res, next) {
 });
 
 
-
-
-
 router.post('/customerToServiceReview', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerAddToServiceReview(req, function (err, result) {
@@ -324,7 +316,6 @@ router.post('/customerToServiceReview', function (req, res, next) {
 });
 
 
-
 router.post('/customerCompletedAllService', function (req, res, next) {
     console.log("call customerCompletedService-----1");
     customerModel.customerCompletedService(req, function (err, result) {
@@ -337,7 +328,6 @@ router.post('/customerCompletedAllService', function (req, res, next) {
         }
     });
 });
-
 
 
 router.post('/getCustomerDataInfo', function (req, res, next) {
@@ -382,8 +372,6 @@ router.post('/customerSingleAlertTransition', function (req, res, next) {
 });
 
 
-
-
 router.post('/customerBookPreferredProviderService', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.postCustomerBookPreferredProviderService(req, function (err, result) {
@@ -398,8 +386,6 @@ router.post('/customerBookPreferredProviderService', function (req, res, next) {
 });
 
 
-
-
 router.post('/BookPPStoCancel', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.postBookPPStoCancel(req, function (err, result) {
@@ -412,7 +398,6 @@ router.post('/BookPPStoCancel', function (req, res, next) {
         }
     });
 });
-
 
 
 router.post('/GetServiceOTP', function (req, res, next) {
@@ -465,7 +450,7 @@ router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath+"CUProfile/"+documents[index].filename);
+                    uploads.push(configDB.imagePath + "CUProfile/" + documents[index].filename);
                 });
                 customerModel.updateCUProfileImageUpload(req.params.cu_id, uploads, function (err, result) {
                     if (err) {
@@ -502,7 +487,6 @@ router.post('/customerSingleInterestedTransition', function (req, res, next) {
 });
 
 
-
 router.post('/CUAddBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     customerModel.userAddBankInfo(req, function (err, result) {
@@ -515,8 +499,6 @@ router.post('/CUAddBankInfo', function (req, res, next) {
         }
     });
 });
-
-
 
 
 router.post('/CUUserBankInfoList', function (req, res, next) {
@@ -576,7 +558,6 @@ router.post('/bookRepeatedService', function (req, res, next) {
 });
 
 
-
 // 6-12-2019 Otp Check Api
 router.post('/cuCheckOtp', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
@@ -605,14 +586,14 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
                     uploads.push(configDB.imagePath+"CUReview/"+documents[index].filename);
                 });
                 customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
-                    if (err) {
-                        res.json(err);
-                        console.log(err);
-                    } else {
-                        console.log(result);
-                        res.json(result);
-                    }
-                });
+                                if (err) {
+                                    res.json(err);
+                                    console.log(err);
+                                } else {
+                                    console.log(result);
+                                    res.json(result);
+                                }
+               });
             }
         } else {
             var status = {
@@ -622,9 +603,41 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
             res.json(status)
         }
     });
+
+    // return upload(req, res).then((data) => {
+    //     console.log("2----"+req.files.uploas);
+    //     console.log("3----"+req.query.type);
+        // if(req.files && req.files.uploas){
+        // console.log("2----"+req.files.uploas);
+        // console.log("3----"+req.query.type);
+        // // if (req.files && req.files.uploas) {
+        //     // typed = req.query.type;
+        //     let documents = req.files.uploads;
+        //     let uploads = [];
+        //     if (documents && (documents.length > 0)) {
+        //         documents.forEach(function (item, index) {
+        //             console.log(configDB.imagePath + "CUReview/" + documents[index].filename);
+        //             uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
+        //         });
+        //         customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
+        //             if (err) {
+        //                 res.json(err);
+        //                 console.log(err);
+        //             } else {
+        //                 console.log(result);
+        //                 res.json(result);
+        //             }
+        //         });
+        //     }
+        // } else {
+        //     var status = {
+        //         status: 0,
+        //         message: "No files uploaded"
+        //     };
+        //     res.json(status)
+        // }
+    // });
 });
-
-
 
 
 module.exports = router;

@@ -88,6 +88,7 @@ let uploadCUReviewImageStorage = multer.diskStorage({
     let exploded_name = file.originalname.split(".");
     let ext = exploded_name[exploded_name.length - 1];
     console.log(req.params.tran_id+"---------");
+    // console.log(Date.now()+"---------"+ext);
     cb(null, Date.now() + "." + ext);
   }
 });
