@@ -2595,5 +2595,34 @@ var Customer = {
             });
         });
     },
+
+
+    updateCUReviewImageUpload: function (id, data, callback) {
+        console.log(" imageAmount " + data);
+        var addWorkInfo = {
+            "review_image": data
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_review);
+            collectionSP.update({tran_id: id}, {$set: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated images",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
 }
 module.exports = Customer;

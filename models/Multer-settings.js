@@ -6,6 +6,7 @@ const path = require("path");
 const userSPUploadProfile = path.join(__dirname, "..", "public/SPProfile/");
 const userCUUploadProfile = path.join(__dirname, "..", "public/CUProfile/");
 const userSPUploadWork = path.join(__dirname,"..","public/SPWork/");
+const userCUReviewImage = path.join(__dirname,"..","public/CUReview/");
 
 
 let userSPImageStorage = multer.diskStorage({
@@ -77,8 +78,33 @@ let uploadSPWork = multer({
   { name: "uploads", maxCount: 6 }
 ]);
 
+
+
+let uploadCUReviewImageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, userCUReviewImage);
+  },
+  filename: function (req, file, cb) {
+    let exploded_name = file.originalname.split(".");
+    let ext = exploded_name[exploded_name.length - 1];
+    console.log(req.params.tran_id+"---------");
+    cb(null, Date.now() + "." + ext);
+  }
+});
+
+
+let uploadCUReview = multer({
+  storage: uploadCUReviewImageStorage,
+  fileFilter: function (req, file, cb) {
+    return cb(null, true);
+  }
+}).fields([
+  { name: "uploads", maxCount: 2 }
+]);
+
 module.exports = {
   uploadSPUserProfileIM: uploadSPUserProfileIM,
   uploadCUUserProfileIM: uploadCUUserProfileIM,
-  uploadSPWork:uploadSPWork
+  uploadSPWork:uploadSPWork,
+  uploadCUReview:uploadCUReview
 };
