@@ -2557,12 +2557,12 @@ var Customer = {
         console.log(otp);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_otp);
-            collectionSP.findOne({mobile_no:mobile_no} , function (err, docs) {
+            collectionSP.findOne({mobile_no :mobile_no} , function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "1Failed"
                     };
                     // console.log(status);
                     callback(status);
@@ -2570,7 +2570,7 @@ var Customer = {
                     if(docs == null){
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "2Failed"
                         };
                         // console.log(status);
                         callback(status);
@@ -2586,7 +2586,7 @@ var Customer = {
                     }else {
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "3Failed"
                         };
                         // console.log(status);
                         callback(status);

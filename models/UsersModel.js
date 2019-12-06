@@ -749,7 +749,7 @@ var Users = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "1Failed"
                     };
                     // console.log(status);
                     callback(status);
@@ -757,7 +757,7 @@ var Users = {
                     if(docs == null){
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "2Failed"
                         };
                         // console.log(status);
                         callback(status);
@@ -773,7 +773,7 @@ var Users = {
                     }else {
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "3Failed"
                         };
                         // console.log(status);
                         callback(status);
