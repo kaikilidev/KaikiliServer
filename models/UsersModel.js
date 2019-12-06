@@ -754,6 +754,14 @@ var Users = {
                     // console.log(status);
                     callback(status);
                 } else {
+                    if(docs == null){
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+                    }else {
                     // console.log(docs);
                     if(docs.otp == otp){
                         var status = {
@@ -769,7 +777,7 @@ var Users = {
                         };
                         // console.log(status);
                         callback(status);
-                    }
+                    }}
                 }
             });
         });
