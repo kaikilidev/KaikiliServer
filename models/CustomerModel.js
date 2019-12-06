@@ -2549,5 +2549,43 @@ var Customer = {
     }
     ,
 
+// 6-12-2019 Otp Check Api
+    OtpCheckProfile: function (req, callback) {
+        var mobile_no = req.body.mobile_no;
+        var otp = req.body.otp;
+        console.log(mobile_no);
+        console.log(otp);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_otp);
+            collectionSP.findOne({mobile_no:mobile_no} , function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed"
+                    };
+                    // console.log(status);
+                    callback(status);
+                } else {
+                    // console.log(docs);
+                    if(docs.otp == otp){
+                        var status = {
+                            status: 1,
+                            message: "Successfully data getting",
+                        };
+                        // console.log(status);
+                        callback(status);
+                    }else {
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+                    }
+                }
+            });
+        });
+    },
 }
 module.exports = Customer;
