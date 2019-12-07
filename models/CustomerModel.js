@@ -36,7 +36,7 @@ var Customer = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         callback(status);
@@ -58,7 +58,7 @@ var Customer = {
                                         console.log(err);
                                         var status = {
                                             status: 0,
-                                            message: "Failed"
+                                            message: "Failed !. Server Error....."
                                         };
                                         console.log(status);
                                         callback(status);
@@ -93,7 +93,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -149,7 +149,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -239,7 +239,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -271,7 +271,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -536,7 +536,7 @@ var Customer = {
                     console.log(err + "----err");
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -799,7 +799,7 @@ var Customer = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -844,7 +844,7 @@ var Customer = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         callback(status);
@@ -939,7 +939,7 @@ var Customer = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         callback(status);
@@ -993,7 +993,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1025,7 +1025,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1037,7 +1037,7 @@ var Customer = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             // console.log(status);
                             callback(status);
@@ -1086,7 +1086,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1124,7 +1124,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1157,7 +1157,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1189,14 +1189,14 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully getting data.",
+                        message: "Successfully getting information.",
                         data: records
                     };
                     console.log(status);
@@ -1231,7 +1231,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1243,7 +1243,7 @@ var Customer = {
                     });
                     var status = {
                         status: 1,
-                        message: "Successfully getting data.",
+                        message: "Successfully getting information.",
                         data: records
                     };
                     console.log(status);
@@ -1276,14 +1276,14 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully Update data.",
+                        message: "Successfully update information.",
                         data: records
                     };
                     console.log(status);
@@ -1322,7 +1322,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1356,7 +1356,7 @@ var Customer = {
                                 spProfileUpdate.updateOne({cu_id: req.body.sp_id}, {$set: updateRating}, function (err, docs) {
                                     var status = {
                                         status: 1,
-                                        message: "Thank you fore review."
+                                        message: "Thank you for review."
                                     };
 
                                     console.log();
@@ -1391,7 +1391,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1415,7 +1415,7 @@ var Customer = {
                                 console.log(err);
                                 var status = {
                                     status: 0,
-                                    message: "Failed"
+                                    message: "Failed !. Server Error....."
                                 };
                                 callback(status);
                                 // console.log(status);
@@ -1467,14 +1467,14 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully Update data.",
+                        message: "Successfully update information.",
                         data: records
                     };
                     console.log(status);
@@ -1507,7 +1507,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1624,7 +1624,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1632,7 +1632,7 @@ var Customer = {
                     if (records != null) {
                         var status = {
                             status: 1,
-                            message: "Successfully Update data.",
+                            message: "Successfully update information.",
                             data: records
                         };
                         console.log(status);
@@ -1685,7 +1685,7 @@ var Customer = {
                     console.log(err + "----err");
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1941,7 +1941,7 @@ var Customer = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         callback(status);
@@ -1973,7 +1973,7 @@ var Customer = {
                             if (count == req.body.preferredProvider.length) {
                                 var status = {
                                     status: 1,
-                                    message: "Successfully Update data.",
+                                    message: "Successfully update information.",
                                     data: records
                                 };
                                 console.log(status);
@@ -2018,7 +2018,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2032,7 +2032,7 @@ var Customer = {
 
                     var status = {
                         status: 1,
-                        message: "Successfully Update data."
+                        message: "Successfully update information."
                     };
                     console.log(status);
                     callback(status);
@@ -2095,7 +2095,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2127,7 +2127,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2140,7 +2140,7 @@ var Customer = {
                                 console.log(err);
                                 var status = {
                                     status: 0,
-                                    message: "Failed"
+                                    message: "Failed !. Server Error....."
                                 };
                                 console.log(status);
                                 callback(status);
@@ -2161,7 +2161,7 @@ var Customer = {
                                     console.log(err);
                                     var status = {
                                         status: 0,
-                                        message: "Failed"
+                                        message: "Failed !. Server Error....."
                                     };
                                     console.log(status);
                                     callback(status);
@@ -2204,14 +2204,14 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully Update data.",
+                        message: "Successfully update information.",
                         data: records
                     };
                     console.log(status);
@@ -2244,14 +2244,14 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
                 } else {
                     var status = {
                         status: 1,
-                        message: "Successfully Update data.",
+                        message: "Successfully update information.",
                         data: records
                     };
                     console.log(status);
@@ -2290,14 +2290,14 @@ var Customer = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
                         } else {
                             var status = {
                                 status: 1,
-                                message: "Thank you fore add new card."
+                                message: "Thank you for add new card."
                             };
 
                             console.log();
@@ -2323,7 +2323,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "l  "
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2355,7 +2355,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "l  "
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2386,7 +2386,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2400,7 +2400,7 @@ var Customer = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -2501,7 +2501,7 @@ var Customer = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -2562,7 +2562,7 @@ var Customer = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "1Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -2570,7 +2570,7 @@ var Customer = {
                     if(docs == null){
                         var status = {
                             status: 0,
-                            message: "2Failed"
+                            message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         callback(status);
@@ -2586,7 +2586,7 @@ var Customer = {
                     }else {
                         var status = {
                             status: 0,
-                            message: "3Failed"
+                            message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         callback(status);

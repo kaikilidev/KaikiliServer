@@ -25,7 +25,7 @@ var SubService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -53,7 +53,7 @@ var SubService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                      console.log(status);
                     callback(status);
@@ -61,7 +61,7 @@ var SubService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all service to Mongodb",
+                        message: "Success get all service information",
                         data: docs
                     };
                      console.log(status);
@@ -85,7 +85,7 @@ var SubService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -93,7 +93,7 @@ var SubService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all service to Mongodb",
+                        message: "Success get all service information",
                         data: docs
                     };
                     // console.log(status);

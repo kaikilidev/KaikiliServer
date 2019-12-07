@@ -823,7 +823,7 @@ var Comman = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         // callback(status);
@@ -1106,7 +1106,7 @@ var Comman = {
                     console.log(err + "----err");
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1531,7 +1531,7 @@ var Comman = {
                         //  console.log(err + "----err");
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         // callback(status);

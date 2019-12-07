@@ -57,7 +57,7 @@ var UserService = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -117,7 +117,7 @@ var UserService = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -185,7 +185,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -193,7 +193,7 @@ var UserService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all service to Mongodb",
+                        message: "Success get all service information",
                         data: docs
                     };
                     // console.log(status);
@@ -230,7 +230,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -238,7 +238,7 @@ var UserService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all service to Mongodb",
+                        message: "Success get all service information",
                         data: mainDocs
                     };
                     callback(status);
@@ -292,7 +292,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -306,7 +306,7 @@ var UserService = {
 
                         var status = {
                             status: 1,
-                            message: "Success Get all Transition service to Mongodb",
+                            message: "Success get all transition service information",
                             data: docs,
                             docspps: docspps
                         };
@@ -341,7 +341,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -349,7 +349,7 @@ var UserService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all Transition service to Mongodb",
+                        message: "Success get all transition service information",
                         data: docs
                     };
                     callback(status);
@@ -371,7 +371,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -379,7 +379,7 @@ var UserService = {
                 } else {
                     var status = {
                         status: 1,
-                        message: "Success Get all Transition service to Mongodb",
+                        message: "Success get all transition service information",
                         data: docs
                     };
                     callback(status);
@@ -486,7 +486,7 @@ var UserService = {
                     // console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -687,7 +687,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -809,7 +809,7 @@ var UserService = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed",
+                            message: "Failed !. Server Error.....",
                             currentBalance: currentBalance
                         };
                         // console.log(status);
@@ -818,7 +818,7 @@ var UserService = {
                     } else {
                         var status = {
                             status: 1,
-                            message: "Success Get all Transition service to Mongodb",
+                            message: "Success get all transition service information",
                             data: docs,
                             currentBalance: currentBalance
                         };
@@ -857,7 +857,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -913,7 +913,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -930,7 +930,7 @@ var UserService = {
                             if (docs.length > 0) {
                                 var status = {
                                     status: 1,
-                                    message: "Success Get all Transition service list",
+                                    message: "Success get all transition service list",
                                     data: docs
                                 };
                                 callback(status);
@@ -938,7 +938,7 @@ var UserService = {
                                 console.log(err);
                                 var status = {
                                     status: 0,
-                                    message: "Failed"
+                                    message: "Failed !. Server Error....."
                                 };
                                 callback(status);
                                 // console.log(status);
@@ -947,7 +947,7 @@ var UserService = {
                         } else {
                             var status = {
                                 status: 1,
-                                message: "Success Get all Transition service list",
+                                message: "Success get all transition service list",
                                 data: docs.concat(docs1)
 
                             };
@@ -977,7 +977,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1025,7 +1025,7 @@ var UserService = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -1090,7 +1090,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "l  "
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1121,7 +1121,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1135,7 +1135,7 @@ var UserService = {
                             console.log(err);
                             var status = {
                                 status: 0,
-                                message: "Failed"
+                                message: "Failed !. Server Error....."
                             };
                             console.log(status);
                             callback(status);
@@ -1173,7 +1173,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1220,7 +1220,7 @@ var UserService = {
                                 console.log(err);
                                 var status = {
                                     status: 0,
-                                    message: "Failed"
+                                    message: "Failed !. Server Error....."
                                 };
                                 console.log();
                                 callback(status);
@@ -1232,7 +1232,7 @@ var UserService = {
                                         console.log(err);
                                         var status = {
                                             status: 0,
-                                            message: "Failed"
+                                            message: "Failed !. Server Error....."
                                         };
                                         console.log();
                                         callback(status);
@@ -1275,7 +1275,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     // console.log(status);
                     callback(status);
@@ -1287,7 +1287,7 @@ var UserService = {
                                 console.log(err);
                                 var status = {
                                     status: 0,
-                                    message: "Failed"
+                                    message: "Failed !. Server Error....."
                                 };
                                 // console.log(status);
                                 callback(status);
@@ -1729,7 +1729,7 @@ var UserService = {
                                         console.log(err);
                                         var status = {
                                             status: 0,
-                                            message: "Failed"
+                                            message: "Failed !. Server Error....."
                                         };
                                         console.log(status);
                                         callback(status);
@@ -1813,7 +1813,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -1853,7 +1853,7 @@ var UserService = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         console.log(status);
                         callback(status);
@@ -1993,7 +1993,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2024,7 +2024,7 @@ var UserService = {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed"
+                        message: "Failed !. Server Error....."
                     };
                     console.log(status);
                     callback(status);
@@ -2389,7 +2389,7 @@ var UserService = {
                                     console.log(err);
                                     var status = {
                                         status: 0,
-                                        message: "Failed"
+                                        message: "Failed !. Server Error....."
                                     };
                                     console.log(status);
                                     callback(status);
@@ -2442,7 +2442,7 @@ var UserService = {
                         console.log(err);
                         var status = {
                             status: 0,
-                            message: "Failed"
+                            message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         callback(status);
@@ -2453,7 +2453,7 @@ var UserService = {
                                     console.log(err);
                                     var status = {
                                         status: 0,
-                                        message: "Failed"
+                                        message: "Failed !. Server Error....."
                                     };
                                     // console.log(status);
                                     callback(status);
@@ -2467,7 +2467,7 @@ var UserService = {
                                             console.log(err);
                                             var status = {
                                                 status: 0,
-                                                message: "Failed"
+                                                message: "Failed !. Server Error....."
                                             };
                                             // console.log(status);
                                             callback(status);
@@ -2479,7 +2479,7 @@ var UserService = {
                                             var doc = docs1.concat(docs2);
                                             var status = {
                                                 status: 1,
-                                                message: "Success Get all Transition service to Mongodb",
+                                                message: "Success get all transition service information",
                                                 dataInterested: docs,
                                                 dataShout: doc,
                                             };
