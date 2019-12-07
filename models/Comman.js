@@ -2257,7 +2257,8 @@ var Comman = {
                         creationDate: 1,
                         first_name: "$services.first_name",
                         last_name: "$services.last_name",
-                        cu_image: "$services.cu_image"
+                        cu_image: "$services.cu_image",
+                        review_image: "$services.review_image"
                     }
                 }
             ]);

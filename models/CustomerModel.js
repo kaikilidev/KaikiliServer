@@ -1304,6 +1304,7 @@ var Customer = {
             sr_id: req.body.sr_id,
             rating: req.body.rating,
             comment: req.body.comment,
+            review_image: [],
             creationDate: new Date().toUTCString()
         };
 
