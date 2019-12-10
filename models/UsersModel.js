@@ -652,13 +652,13 @@ var Users = {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.find({email: email}).toArray(function (err, docs) {
                 if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
                 } else {
                     console.log(docs.length + "  ----222");
                     if (docs.length == 0) {
@@ -681,36 +681,36 @@ var Users = {
                             }
                         });
                     } else if (docs.length == 1) {
-                            if (docs[0].sp_id == sp_id) {
-                                collectionSP.update({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
-                                    if (err) {
-                                        console.log(err);
-                                        var status = {
-                                            status: 0,
-                                            message: "Failed !. Server Error....."
-                                        };
-                                        console.log(status);
-                                        callback(status);
-                                    } else {
-                                        var status = {
-                                            status: 1,
-                                            message: "Successfully updated",
-                                        };
-                                        console.log(status);
-                                        callback(status);
-                                    }
-                                });
+                        if (docs[0].sp_id == sp_id) {
+                            collectionSP.update({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
+                                if (err) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed !. Server Error....."
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully updated",
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                }
+                            });
 
-                            } else {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Already this email id register."
-                                };
-                                console.log(status);
-                                callback(status);
-                            }
+                        } else {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Already this email id register."
+                            };
+                            console.log(status);
+                            callback(status);
                         }
+                    }
                 }
             });
         });
@@ -721,13 +721,13 @@ var Users = {
     getUserRatingDataCU: function (req, callback) {
         var sp_id = req.body.sp_id;
         comman.getSPtoCustomerRating(sp_id, function (result) {
-                var status = {
-                    status: 1,
-                    message: "Successfully data getting",
-                    data: result
-                };
-                console.log(status);
-                callback(status);
+            var status = {
+                status: 1,
+                message: "Successfully data getting",
+                data: result
+            };
+            console.log(status);
+            callback(status);
 
         });
 
@@ -744,7 +744,7 @@ var Users = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_otp);
-            collectionSP.findOne({mobile_no:mobile_no} , function (err, docs) {
+            collectionSP.findOne({mobile_no: mobile_no}, function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -754,34 +754,75 @@ var Users = {
                     // console.log(status);
                     callback(status);
                 } else {
-                    if(docs == null){
+                    if (docs == null) {
                         var status = {
                             status: 0,
                             message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         callback(status);
-                    }else {
-                    // console.log(docs);
-                    if(docs.otp == otp){
-                        var status = {
-                            status: 1,
-                            message: "Successfully information getting",
-                        };
-                        // console.log(status);
-                        callback(status);
-                    }else {
-                        var status = {
-                            status: 0,
-                            message: "Failed !. Server Error....."
-                        };
-                        // console.log(status);
-                        callback(status);
-                    }}
+                    } else {
+                        // console.log(docs);
+                        if (docs.otp == otp) {
+                            var status = {
+                                status: 1,
+                                message: "Successfully information getting",
+                            };
+                            // console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            // console.log(status);
+                            callback(status);
+                        }
+                    }
                 }
             });
         });
     },
 
+
+// 10-12-2019 Otp Check Api
+    contactUsInsert: function (req, callback) {
+        comman.getNextSequenceUserID("contact_req", function (result) {
+            //  console.log(result);
+            var newPost = {
+                con_id: "CONTACT0" + result,
+                post_user_id: req.body.post_user_id,
+                comment: req.body.comment,
+                topic: req.body.topic,
+                admin_view: 0,
+                admin_replay: 0,
+                admin_favourite: 0,
+                is_deleted: 0,
+                creationDate: new Date().toUTCString()
+            };
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
+                collectionSP.insert(newPost, function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed !. Server Error....."
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+        });
+    },
 }
 module.exports = Users;
