@@ -785,7 +785,7 @@ var Users = {
     },
 
 
-// 10-12-2019 Otp Check Api
+// 10-12-2019 Add Contact US
     contactUsInsert: function (req, callback) {
         comman.getNextSequenceUserID("contact_req", function (result) {
             //  console.log(result);
@@ -802,6 +802,48 @@ var Users = {
             };
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
+                collectionSP.insert(newPost, function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed !. Server Error....."
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+        });
+    },
+
+
+
+    // add sp Du
+    SPdisputeInsert: function (req, callback) {
+        comman.getNextSequenceUserID("dispute_id", function (result) {
+            //  console.log(result);
+            var newPost = {
+                dispute_id: "DIS0" + result,
+                sp_id: req.body.sp_id,
+                comment: req.body.comment,
+                tr_id: req.body.tran_id,
+                admin_view: 0,
+                admin_replay: 0,
+                admin_favourite: 0,
+                is_deleted: 0,
+                creationDate: new Date().toUTCString()
+            };
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.sp_dispute);
                 collectionSP.insert(newPost, function (err, dataSet) {
                     if (err) {
                         console.log(err);

@@ -45,7 +45,8 @@
     "sp_cu_send_shout_cancellation": "sp_cu_send_shout_cancellation",
     "sp_otp": "sp_otp",
     "cu_otp": "cu_otp",
-    "contact_req": "contact_req"
+    "contact_req": "contact_req",
+    "sp_dispute": "sp_dispute"
 
   }
 
