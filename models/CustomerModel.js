@@ -2658,7 +2658,7 @@ var Customer = {
                         var status = {
                             status: 1,
                             message: "Successfully add information",
-                            data: dataSet
+                           // data: dataSet
                         };
                         console.log(status);
                         callback(status);

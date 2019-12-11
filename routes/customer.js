@@ -583,17 +583,17 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath+"CUReview/"+documents[index].filename);
+                    uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
                 });
                 customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
-                                if (err) {
-                                    res.json(err);
-                                    console.log(err);
-                                } else {
-                                    console.log(result);
-                                    res.json(result);
-                                }
-               });
+                    if (err) {
+                        res.json(err);
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                        res.json(result);
+                    }
+                });
             }
         } else {
             var status = {
@@ -603,56 +603,53 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
             res.json(status)
         }
     });
-
-
-
-    router.post('/CUdisputeAdd', function (req, res, next) {
-        console.log("call searchRepeatedServiceProvider-----1");
-        customerModel.CUdisputeInsert(req, function (err, result) {
-            if (err) {
-                res.json(err);
-                console.log(err);
-            } else {
-                console.log(result);
-                res.json(result);//or return count for 1 & 0
-            }
-        });
-    });
-
-    // return upload(req, res).then((data) => {
-    //     console.log("2----"+req.files.uploas);
-    //     console.log("3----"+req.query.type);
-        // if(req.files && req.files.uploas){
-        // console.log("2----"+req.files.uploas);
-        // console.log("3----"+req.query.type);
-        // // if (req.files && req.files.uploas) {
-        //     // typed = req.query.type;
-        //     let documents = req.files.uploads;
-        //     let uploads = [];
-        //     if (documents && (documents.length > 0)) {
-        //         documents.forEach(function (item, index) {
-        //             console.log(configDB.imagePath + "CUReview/" + documents[index].filename);
-        //             uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
-        //         });
-        //         customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
-        //             if (err) {
-        //                 res.json(err);
-        //                 console.log(err);
-        //             } else {
-        //                 console.log(result);
-        //                 res.json(result);
-        //             }
-        //         });
-        //     }
-        // } else {
-        //     var status = {
-        //         status: 0,
-        //         message: "No files uploaded"
-        //     };
-        //     res.json(status)
-        // }
-    // });
 });
+router.post('/CUdisputeAdd', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    customerModel.CUdisputeInsert(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+// return upload(req, res).then((data) => {
+//     console.log("2----"+req.files.uploas);
+//     console.log("3----"+req.query.type);
+// if(req.files && req.files.uploas){
+// console.log("2----"+req.files.uploas);
+// console.log("3----"+req.query.type);
+// // if (req.files && req.files.uploas) {
+//     // typed = req.query.type;
+//     let documents = req.files.uploads;
+//     let uploads = [];
+//     if (documents && (documents.length > 0)) {
+//         documents.forEach(function (item, index) {
+//             console.log(configDB.imagePath + "CUReview/" + documents[index].filename);
+//             uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
+//         });
+//         customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
+//             if (err) {
+//                 res.json(err);
+//                 console.log(err);
+//             } else {
+//                 console.log(result);
+//                 res.json(result);
+//             }
+//         });
+//     }
+// } else {
+//     var status = {
+//         status: 0,
+//         message: "No files uploaded"
+//     };
+//     res.json(status)
+// }
+// });
 
 
 module.exports = router;
