@@ -1,12 +1,97 @@
 // var MongoClient = require('mongodb').MongoClient;
 var mongo = require('mongodb').MongoClient;
-var url = "mongodb://root@198.211.109.120:27017/";
-var config = require('../db_config.json');
+var dbUrl = "mongodb://64.225.42.173:27017/";
+
+var product = "product_info"
+var product_id = "product_id"
+var dbName = "mmc"
+
+var express = require('express');
+var router = express.Router();
+
+
+
+
+router.post('/addData', function (req, res, next) {
+
+    var newDataList =  req.body.data;
+
+    mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
+        console.log(err);
+        console.log(db);
+        var collectionSP = db.db(dbName).collection(product_id);
+
+    // console.log("=====" + newDataList.length);
+    var count = 0;
+    newDataList.forEach(function (element) {
+
+        var newPost = {
+            pro_id: element.id,
+            page: [element.page],
+            stetus: false,
+            creationDate: new Date().toUTCString()
+        };
+           console.log("element.id ---->"+element.id);
+            collectionSP.find({"pro_id":element.id}).toArray(function (err, tesData) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."+element.id
+                    };
+                    console.log(status);
+                    // callback(status);
+                    res.json(status);
+                } else {
+                    console.log(tesData.length+"----->>> product");
+                    console.log(tesData);
+                    if (tesData.length>0){
+                        collectionSP.updateOne({pro_id:element.id}, {$push: {page: element.page }});
+                    } else {
+                        collectionSP.insert(newPost);
+                    }
+                    count++
+                    if (count === newDataList.length) {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add information",
+                            //data: dataSet
+                        };
+                        console.log(status);
+                        // callback(status);
+                        res.json(status);
+                    }
+                }
+            });
+        });
+
+
+    });
+
+
+
+
+});
+
+
+    //
+    // userServiceModel.addUserService(req, function (err, result) {
+    //     if (err) {
+    //         res.json(err);
+    //         console.log(err);
+    //     } else {
+    //         console.log(result);
+    //         res.json(result);//or return count for 1 & 0
+    //
+    //     }
+    // });
+// });
+
 //
-// MongoClient.connect(url, function(err, db) {
+// mongo.connect(dbUrl, {useNewUrlParser: true}, function(err, db) {
 //     if (err) throw err;
-//     var dbo = db.db("KaikiliService");
-//     dbo.createCollection("SubService", function(err, res) {
+//     var dbo = db.db(dbName);
+//     dbo.createCollection(product, function(err, res) {
 //         if (err) throw err;
 //         console.log("Collection created!");
 //         db.close();
@@ -75,5 +160,6 @@ var config = require('../db_config.json');
 //     });
 // }
 
+module.exports = router;
 
 // I want the employees variable to be an array of employees

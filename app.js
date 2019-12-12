@@ -10,6 +10,7 @@ var servicesRouter = require('./routes/services');
 var subServiceRouter = require('./routes/subservices');
 var usersRouter = require('./routes/users');
 var customerRouter = require('./routes/customer');
+var testNew = require('./routes/testNew');
 
 var comman = require('./models/Comman');
 
@@ -46,6 +47,7 @@ app.use('/users', usersRouter);
 app.use('/customer', customerRouter);
 app.use('/services', servicesRouter);
 app.use('/subservices', subServiceRouter);
+app.use('/testNew', testNew);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
