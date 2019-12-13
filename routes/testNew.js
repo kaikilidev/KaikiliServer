@@ -10,45 +10,43 @@ var express = require('express');
 var router = express.Router();
 
 
-
-
 router.post('/addData', function (req, res, next) {
 
-    var newDataList =  req.body.data;
+    var newDataList = req.body.data;
 
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         console.log(err);
         console.log(db);
         var collectionSP = db.db(dbName).collection(product_id);
 
-    // console.log("=====" + newDataList.length);
-    var count = 0;
-    newDataList.forEach(function (element) {
+        // console.log("=====" + newDataList.length);
+        var count = 0;
+        newDataList.forEach(function (element) {
 
-        var newPost = {
-            pro_id: element.id,
-            page: [element.page],
-            stetus: false,
-            creationDate: new Date().toUTCString()
-        };
-           console.log("element.id ---->"+element.id);
-            collectionSP.find({"pro_id":element.id}).toArray(function (err, tesData) {
+            var newPost = {
+                pro_id: element.id,
+                page: [element.page],
+                stetus: false,
+                creationDate: new Date().toUTCString()
+            };
+            console.log("element.id ---->" + element.id);
+            collectionSP.find({"pro_id": element.id}).toArray(function (err, tesData) {
                 if (err) {
                     console.log(err);
                     var status = {
                         status: 0,
-                        message: "Failed !. Server Error....."+element.id
+                        message: "Failed !. Server Error....." + element.id
                     };
                     console.log(status);
                     // callback(status);
                     res.json(status);
                 } else {
-                    console.log(tesData.length+"----->>> product");
-                    console.log(tesData);
-                    if (tesData.length>0){
-                        collectionSP.updateOne({pro_id:element.id}, {$push: {page: element.page }});
+                    console.log(tesData.length + "----->>> product  "+element.page+ "  "+count);
+                    // console.log(tesData);
+                    if (tesData.length > 0) {
+                        collectionSP.updateOne({pro_id: element.id}, {$push: {page: element.page}});
                     } else {
-                        collectionSP.insert(newPost);
+                        collectionSP.insertOne(newPost);
                     }
                     count++
                     if (count === newDataList.length) {
@@ -57,7 +55,7 @@ router.post('/addData', function (req, res, next) {
                             message: "Successfully add information",
                             //data: dataSet
                         };
-                        console.log(status);
+                        // console.log(status);
                         // callback(status);
                         res.json(status);
                     }
@@ -69,22 +67,51 @@ router.post('/addData', function (req, res, next) {
     });
 
 
+});
+
+
+router.get('/getPro', function (req, res, next) {
+    mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
+        var collectionSP = db.db(dbName).collection(product_id);
+        collectionSP.findOne({stetus: false}, function (err, tesData) {
+            if (err) {
+                console.log(err);
+                var status = {
+                    pro_id:""
+                    // status: 0,
+                    // message: "Failed !. Server Error....." + element.id
+                };
+                console.log(status);
+                res.json("");
+            } else {
+                var status = {
+                    // status: 1,
+                    // message: "Successfully add information",
+                    pro_id: tesData.pro_id
+                };
+                console.log(tesData.pro_id);
+                res.json(tesData.pro_id);
+            }
+        });
+
+
+    });
 
 
 });
 
 
-    //
-    // userServiceModel.addUserService(req, function (err, result) {
-    //     if (err) {
-    //         res.json(err);
-    //         console.log(err);
-    //     } else {
-    //         console.log(result);
-    //         res.json(result);//or return count for 1 & 0
-    //
-    //     }
-    // });
+//
+// userServiceModel.addUserService(req, function (err, result) {
+//     if (err) {
+//         res.json(err);
+//         console.log(err);
+//     } else {
+//         console.log(result);
+//         res.json(result);//or return count for 1 & 0
+//
+//     }
+// });
 // });
 
 //
