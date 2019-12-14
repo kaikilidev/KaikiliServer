@@ -106,16 +106,18 @@ router.post('/addProTest', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         var collectionSP = db.db(dbName).collection(product_id);
         var collectionPro = db.db(dbName).collection(product_info);
-            collectionSP.updateOne({pro_id: req.body.pro_id}, {$set: {stetus: true}});
-            collectionPro.insertOne(newDataPost);
-            var status = {
-                status: 1,
-                message: "Successfully add information",
-                //data: dataSet
-            };
+            collectionSP.updateOne({pro_id: req.body.pro_id}, {$set: {stetus: true}},function (err, data) {
+                collectionPro.insertOne(newDataPost);
+                var status = {
+                    status: 1,
+                    message: "Successfully add information",
+                    //data: dataSet
+                };
+                res.json(status);
+            });
             // console.log(status);
             // callback(status);
-            res.json(status);
+
         });
 
 });
