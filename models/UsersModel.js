@@ -798,7 +798,9 @@ var Users = {
                 admin_replay: 0,
                 admin_favourite: 0,
                 is_deleted: 0,
-                creationDate: new Date().toUTCString()
+                creationDate: new Date().toUTCString(),
+                admin_replay_date: "",
+                admin_replay_ms: ""
             };
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);

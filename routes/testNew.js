@@ -4,6 +4,7 @@ var dbUrl = "mongodb://64.225.42.173:27017/";
 
 var product = "product_info"
 var product_id = "product_id"
+var product_info = "product_info"
 var dbName = "mmc"
 
 var express = require('express');
@@ -96,10 +97,28 @@ router.get('/getPro', function (req, res, next) {
 
 
     });
-
-
 });
 
+
+router.post('/addProTest', function (req, res, next) {
+    var newDataPost = req.body;
+
+    mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
+        var collectionSP = db.db(dbName).collection(product_id);
+        var collectionPro = db.db(dbName).collection(product_info);
+            collectionSP.updateOne({pro_id: req.body.pro_id}, {$set: {stetus: true}});
+            collectionPro.insertOne(newDataPost);
+            var status = {
+                status: 1,
+                message: "Successfully add information",
+                //data: dataSet
+            };
+            // console.log(status);
+            // callback(status);
+            res.json(status);
+        });
+
+});
 
 //
 // userServiceModel.addUserService(req, function (err, result) {
