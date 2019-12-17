@@ -42,7 +42,7 @@ router.post('/addData', function (req, res, next) {
                     // callback(status);
                     res.json(status);
                 } else {
-                    console.log(tesData.length + "----->>> product  "+element.page+ "  "+count);
+                    console.log(tesData.length + "----->>> product  " + element.page + "  " + count);
                     // console.log(tesData);
                     if (tesData.length > 0) {
                         collectionSP.updateOne({pro_id: element.id}, {$push: {page: element.page}});
@@ -74,24 +74,39 @@ router.post('/addData', function (req, res, next) {
 router.get('/getPro', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         var collectionSP = db.db(dbName).collection(product_id);
+
         collectionSP.findOne({stetus: false}, function (err, tesData) {
             if (err) {
                 console.log(err);
                 var status = {
-                    pro_id:""
+                    pro_id: ""
                     // status: 0,
                     // message: "Failed !. Server Error....." + element.id
                 };
                 console.log(status);
                 res.json("");
             } else {
-                var status = {
-                    // status: 1,
-                    // message: "Successfully add information",
-                    pro_id: tesData.pro_id
-                };
-                console.log(tesData.pro_id);
-                res.json(tesData.pro_id);
+                  console.log(tesData.pro_id);
+                  res.json(tesData.pro_id);
+
+                // console.log(tesData.pro_id);
+                // collectionSP.updateMany({pro_id: tesData.pro_id}, {$set: {stetus: true}}, (err, collection) => {
+                //     if (err) throw err;
+                //     console.log(collection.result.nModified + " Record(s) updated successfully");	//It will console the number of rows updated
+                //     console.log(collection);
+                //         var status = {
+                //             status: 1,
+                //             message: "Successfully server are stop",
+                //             data: collection,
+                //             proid : tesData.pro_id
+                //         };
+                //     res.json(status);
+                // });
+
+
+  
+                //         // console.log(tesData.pro_id);
+                //         // res.json(tesData.pro_id);
             }
         });
 
@@ -106,19 +121,37 @@ router.post('/addProTest', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         var collectionSP = db.db(dbName).collection(product_id);
         var collectionPro = db.db(dbName).collection(product_info);
-            collectionSP.updateOne({pro_id: req.body.pro_id}, {$set: {stetus: true}},function (err, data) {
-                collectionPro.insertOne(newDataPost);
-                var status = {
-                    status: 1,
-                    message: "Successfully add information",
-                    //data: dataSet
-                };
-                res.json(status);
-            });
-            // console.log(status);
-            // callback(status);
 
+
+        collectionSP.updateMany({pro_id: req.body.pro_id}, {$set: {stetus: true}}, (err, collection) => {
+            if (err) throw err;
+            collectionPro.insertOne(newDataPost);
+            console.log(collection.result.nModified + " Record(s) updated successfully");	//It will console the number of rows updated
+            console.log(collection);
+            var status = {
+                status: 1,
+                message: "Successfully server are stop",
+                data: collection,
+                proid : tesData.pro_id
+            };
+            res.json(status);
         });
+
+
+
+        // collectionSP.updateOne({pro_id: req.body.pro_id}, {$set: {stetus: true}}, function (err, data) {
+        //     collectionPro.insertOne(newDataPost);
+        //     var status = {
+        //         status: 1,
+        //         message: "Successfully add information",
+        //         //data: dataSet
+        //     };
+        //     res.json(status);
+        // });
+        // console.log(status);
+        // callback(status);
+
+    });
 
 });
 
