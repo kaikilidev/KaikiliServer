@@ -868,5 +868,34 @@ var Users = {
             });
         });
     },
+
+
+
+    // Get Data Dispute 18 -12-2019
+    SPdisputeRead: function (req, callback) {
+        console.log(req.body.tran_id);
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.sp_dispute);
+                collectionSP.findOne({tr_id: req.body.tran_id,sp_id: req.body.sp_id}, function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed !. Server Error....."
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully get information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+    },
 }
 module.exports = Users;

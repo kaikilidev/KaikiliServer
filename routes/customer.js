@@ -604,9 +604,26 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
         }
     });
 });
+
+// Add Dispute Data in customer 15-12-2019
 router.post('/CUdisputeAdd', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
     customerModel.CUdisputeInsert(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+// Read Dispute Data in customer 18-12-2019
+router.post('/CUdisputeRead', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    customerModel.CUdisputeRead(req, function (err, result) {
         if (err) {
             res.json(err);
             console.log(err);

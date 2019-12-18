@@ -720,7 +720,7 @@ router.post('/contactUs', function (req, res, next) {
 
 
 
-
+// 15-12-2019 add Dispute to SP
 router.post('/SPdisputeAdd', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
     usersModel.SPdisputeInsert(req, function (err, result) {
@@ -733,6 +733,24 @@ router.post('/SPdisputeAdd', function (req, res, next) {
         }
     });
 });
+
+
+// 18-12-2019 Get Data Dispute to SP
+router.post('/SPdisputeGet', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    usersModel.SPdisputeRead(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
 
 
 //

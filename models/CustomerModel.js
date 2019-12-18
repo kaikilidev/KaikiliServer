@@ -2631,7 +2631,7 @@ var Customer = {
 
 
 
-    // add sp Du
+    // add sp Dispute Data 15-12-2019
     CUdisputeInsert: function (req, callback) {
         comman.getNextSequenceUserID("dispute_id", function (result) {
             //  console.log(result);
@@ -2667,6 +2667,33 @@ var Customer = {
                         callback(status);
                     }
                 });
+            });
+        });
+    },
+
+    // Get Data Dispute 18 -12-2019
+    CUdisputeRead: function (req, callback) {
+        console.log(req.body.tran_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_dispute);
+            collectionSP.findOne({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}, function (err, dataSet) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully get information",
+                        data: dataSet
+                    };
+                    console.log(status);
+                    callback(status);
+                }
             });
         });
     },
