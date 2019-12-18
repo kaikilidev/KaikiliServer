@@ -2678,7 +2678,7 @@ var Customer = {
         console.log(req.body.tran_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_dispute);
-            collectionSP.findOne({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}, function (err, dataSet) {
+            collectionSP.findOne({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}).toArray(function(err, dataSet) {
                 if (err) {
                     console.log(err);
                     var status = {

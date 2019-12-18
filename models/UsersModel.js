@@ -878,7 +878,7 @@ var Users = {
         console.log(req.body.tran_id);
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_dispute);
-                collectionSP.findOne({tr_id: req.body.tran_id,sp_id: req.body.sp_id}, function (err, dataSet) {
+                collectionSP.find({tr_id: req.body.tran_id,sp_id: req.body.sp_id}) .toArray(function (err, dataSet) {
                     if (err) {
                         console.log(err);
                         var status = {
