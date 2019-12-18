@@ -2644,6 +2644,8 @@ var Customer = {
                 admin_replay: 0,
                 admin_favourite: 0,
                 is_deleted: 0,
+                admin_replay_date:"",
+                admin_replay_comment: "",
                 creationDate: new Date().toUTCString()
             };
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
