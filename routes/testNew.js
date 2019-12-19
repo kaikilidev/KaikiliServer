@@ -5,6 +5,7 @@ var dbUrl = "mongodb://64.225.42.173:27017/";
 var product = "product_info"
 var product_id = "product_id"
 var product_info = "product_info"
+var cetagary_info = "cetagary_info"
 var dbName = "mmc"
 
 var express = require('express');
@@ -112,6 +113,26 @@ router.get('/getPro', function (req, res, next) {
 
 
     });
+});
+
+
+router.post('/addCatPro', function (req, res, next) {
+    mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
+        var collectionPro = db.db(dbName).collection(cetagary_info);
+        collectionPro.updateOne({pageNo: req.body.pageNo}, {$set: {product: req.body.product}}, (err, collection) => {
+            if (err) throw err;
+            console.log(collection.result.nModified + " Record(s) updated successfully");	//It will console the number of rows updated
+            console.log(collection);
+            var status = {
+                status: 1,
+                message: "Successfully server are stop",
+                data: collection,
+                cat_no : req.body.pageNo
+            };
+            res.json(status);
+        });
+    });
+
 });
 
 
