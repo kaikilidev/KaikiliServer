@@ -76,7 +76,7 @@ router.get('/getPro', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         var collectionSP = db.db(dbName).collection(product_id);
 
-        collectionSP.findOne({stetus: false}, function (err, tesData) {
+        collectionSP.findOne({stetus: false},{sort:{_id:-1}}, function (err, tesData) {
             if (err) {
                 console.log(err);
                 var status = {
