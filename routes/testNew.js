@@ -64,12 +64,30 @@ router.post('/addData', function (req, res, next) {
                 }
             });
         });
-
-
     });
-
-
 });
+
+
+router.get('/getCat', function (req, res, next) {
+    mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
+        var collectionSP = db.db(dbName).collection(cetagary_info);
+
+        collectionSP.findOne({isData: false},{sort:{_id:-1}}, function (err, tesData) {
+            if (err) {
+                console.log(err);
+                var status = {
+                    pageNo: ""
+                };
+                console.log(status);
+                res.json("");
+            } else {
+                console.log(tesData.pageNo);
+                res.json(tesData.pageNo);
+            }
+        });
+    });
+});
+
 
 
 router.get('/getPro', function (req, res, next) {
@@ -87,8 +105,8 @@ router.get('/getPro', function (req, res, next) {
                 console.log(status);
                 res.json("");
             } else {
-                  console.log(tesData.pro_id);
-                  res.json(tesData.pro_id);
+                console.log(tesData.pro_id);
+                res.json(tesData.pro_id);
 
                 // console.log(tesData.pro_id);
                 // collectionSP.updateMany({pro_id: tesData.pro_id}, {$set: {stetus: true}}, (err, collection) => {
@@ -105,7 +123,7 @@ router.get('/getPro', function (req, res, next) {
                 // });
 
 
-  
+
                 //         // console.log(tesData.pro_id);
                 //         // res.json(tesData.pro_id);
             }
@@ -119,7 +137,7 @@ router.get('/getPro', function (req, res, next) {
 router.post('/addCatPro', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
         var collectionPro = db.db(dbName).collection(cetagary_info);
-        collectionPro.updateOne({pageNo: req.body.pageNo}, {$set: {product: req.body.product}}, (err, collection) => {
+        collectionPro.updateOne({pageNo: req.body.pageNo}, {$set: {product: req.body.product, isData: true}}, (err, collection) => {
             if (err) throw err;
             console.log(collection.result.nModified + " Record(s) updated successfully");	//It will console the number of rows updated
             console.log(collection);
