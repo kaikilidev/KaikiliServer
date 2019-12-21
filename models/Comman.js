@@ -2269,5 +2269,32 @@ var Comman = {
         });
     },
 
+
+    // Get Data Dispute 18 -12-2019
+    FAQDataRead: function (req, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.faqs);
+            collection.find({status: "1"}) .toArray(function (err, dataSet) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully get information",
+                        data: dataSet
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
+    },
+
 }
 module.exports = Comman;

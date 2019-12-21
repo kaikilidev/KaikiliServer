@@ -752,6 +752,19 @@ router.post('/SPdisputeGet', function (req, res, next) {
 
 
 
+// 21-12-2019 Get Data Dispute to SP
+router.get('/GetFAQ', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    comman.FAQDataRead(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
 
 //
 // router.get('/TestSendNotification', function (req,  next) {

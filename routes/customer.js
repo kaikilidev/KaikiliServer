@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var customerModel = require('../models/CustomerModel.js');
 var configDB = require('../db_config.json');
+var comman = require('../models/Comman');
 
 const multerSettings = require("../models/Multer-settings");
 const Bluebird = require("bluebird");
@@ -633,6 +634,23 @@ router.post('/CUdisputeRead', function (req, res, next) {
         }
     });
 });
+
+
+
+// 21-12-2019 Get Data Dispute to SP
+router.get('/GetFAQ', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    comman.FAQDataRead(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 
 // return upload(req, res).then((data) => {
 //     console.log("2----"+req.files.uploas);
