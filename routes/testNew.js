@@ -1,6 +1,8 @@
 // var MongoClient = require('mongodb').MongoClient;
 var mongo = require('mongodb').MongoClient;
-var dbUrl = "mongodb://64.225.42.173:27017/";
+// var dbUrl = "mongodb://64.225.42.173:27017/";
+var dbUrl = "mongodb://kaikiliMobile:MobileKaikili#987654321@157.230.188.53:27013/";
+// mongodb://admin:password@localhost:27017/db
 
 var product = "product_info"
 var product_id = "product_id"
@@ -13,23 +15,29 @@ var express = require('express');
 var router = express.Router();
 
 
+
 router.get('/getPro', function (req, res, next) {
     mongo.connect(dbUrl, {useNewUrlParser: true}, function (err, db) {
-        var collectionSP = db.db(dbName).collection(product_id);
 
-        collectionSP.findOne({stetus: false}, {sort: {_id: -1}}, function (err, tesData) {
+        // var db = mongoclient.db("exampledatabase");
+        //
+        // // Then you can authorize your self
+        // db.authenticate('username', 'password', function(err, result) {
+        var collectionSP = db.db("kaikili_test").collection("test");
+
+        collectionSP.findOne({}, function (err, tesData) {
             if (err) {
                 console.log(err);
                 var status = {
-                    pro_id: ""
+                    mobile_no: ""
                     // status: 0,
                     // message: "Failed !. Server Error....." + element.id
                 };
                 console.log(status);
                 res.json("");
             } else {
-                console.log(tesData.pro_id);
-                res.json(tesData.pro_id);
+                console.log(tesData.mobile_no);
+                res.json(tesData.mobile_no);
             }
         });
     });
