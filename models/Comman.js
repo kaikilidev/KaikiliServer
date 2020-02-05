@@ -1903,14 +1903,14 @@ var Comman = {
             var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
             var collectionInterested = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
 
-            collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled","Progress"]}}).toArray(function (err, mainDocs) {
+            collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled", "Progress"]}}).toArray(function (err, mainDocs) {
                 if (err) {
                 } else {
                     console.log("=====" + mainDocs.length);
 
                     mainDocs.forEach(function (element) {
 
-                        console.log("=====" + element.tran_id +" --- "+element.sr_status);
+                        console.log("=====" + element.tran_id + " --- " + element.sr_status);
 
                         if (element.sr_status == "Open") {
                             var timeMin;
@@ -2104,7 +2104,7 @@ var Comman = {
                             console.log("===== id" + element.tran_id);
                             console.log("===== time" + timeMin);
 
-                           // "type_of_service": "customer_location",
+                            // "type_of_service": "customer_location",
                             // "type_of_service": "provider_location",
                         } else if (element.sr_status == "Progress") {
                             var timeMin;
@@ -2117,7 +2117,7 @@ var Comman = {
                             var duration = moment.duration(end_date.diff(start_date));
 
                             timeMin = duration / 60000;
-                            console.log("=====" + timeMin+ " ----14");
+                            console.log("=====" + timeMin + " ----14");
 
                             // wait for 24 hour
                             if (timeMin >= 14 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
@@ -2371,7 +2371,7 @@ var Comman = {
     FAQDataRead: function (req, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.faqs);
-            collection.find({status: "1"}) .toArray(function (err, dataSet) {
+            collection.find({status: "1"}).toArray(function (err, dataSet) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -2393,5 +2393,36 @@ var Comman = {
         });
     },
 
+
+    //Delete Alert data 5-2-2020
+    DeletedAlertService(cp_alert_id, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_deleted_alert_data);
+            var bulkRemove = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            bulkRemove.findOne({cp_alert_id: cp_alert_id}, function (err, doc) {
+
+                    if (err) {
+
+                        var status = {
+                            status: 0,
+                            message: "Failed !. Server Error....."
+                        };
+                        return callBack(status);
+                    } else {
+
+                          bulkInsert.insertOne(doc);
+                          bulkRemove.removeOne({cp_alert_id: cp_alert_id});
+
+                        var status = {
+                            status: 1,
+                            message: "Successfully remove shouting data."
+                        };
+                        return callback(status);
+                    }
+                }
+            )
+        });
+
+    }
 }
 module.exports = Comman;

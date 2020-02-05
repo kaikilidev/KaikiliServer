@@ -48,7 +48,8 @@
     "contact_req": "contact_req",
     "sp_dispute": "sp_dispute",
     "cu_dispute": "cu_dispute",
-    "faqs": "faqs"
+    "faqs": "faqs",
+    "cu_deleted_alert_data": "cu_deleted_alert_data"
 
   }
 

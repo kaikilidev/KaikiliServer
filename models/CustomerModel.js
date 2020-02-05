@@ -762,8 +762,58 @@ var Customer = {
     },
 
 
+    CheckServiceAlertData: function (req, callback) {
+        var sr_id = req.body.sr_id;
+        var cu_id = req.body.cu_id;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+            var query = {sr_id: sr_id, cu_id: cu_id};
+            collectionSP.find(query).toArray(function (err, doc) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error.....",
+                        data: 0
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    console.log("---->" + doc.length);
+                    if (doc.length > 0) {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all service list",
+                            data: doc.length,
+                            cp_alert_id: doc[0].cp_alert_id
+                        };
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success Get all service list",
+                            data: 0,
+                            cp_alert_id:""
+                        };
+                        callback(status);
+                    }
+                }
+            });
+        });
+
+
+    },
+
+
     addServiceAlertData: function (req, callback) {
-        comman.getNextSequenceUserID("cu_alert_id", function (result) {
+
+        if(req.body.cp_alert_id != ""){
+            comman.DeletedAlertService(req.body.cp_alert_id);
+        }
+
+
+            comman.getNextSequenceUserID("cu_alert_id", function (result) {
             //  console.log(result);
 
             comman.getCustomerData(req.body.cu_id, function (CU_data) {
@@ -790,8 +840,6 @@ var Customer = {
                     alert_active: req.body.alert_active,
                     creationDate: new Date().toUTCString()
                 };
-
-
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
                     collectionSP.insert(newServiceAlert, function (err, records) {
@@ -1145,33 +1193,40 @@ var Customer = {
     customerAlertInfoDelete: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
         var cu_id = req.body.cu_id;
-        var alert_active = req.body.alert_active;
+        // var alert_active = req.body.alert_active;
 
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
-            collectionSP.deleteOne({
-                cp_alert_id: cp_alert_id,
-                cu_id: cu_id
-            }, function (err, records) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "Failed !. Server Error....."
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Successfully remove shouting data.",
-                        data: records
-                    };
-                    console.log(status);
-                    callback(status);
-                }
-            });
+        comman.DeletedAlertService(cp_alert_id, function (resultTime) {
+            console.log(resultTime);
+            callback(resultTime);
         });
+
+        // // DeletedAlertService
+        //
+        // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        //     var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+        //     collectionSP.deleteOne({
+        //         cp_alert_id: cp_alert_id,
+        //         cu_id: cu_id
+        //     }, function (err, records) {
+        //         if (err) {
+        //             console.log(err);
+        //             var status = {
+        //                 status: 0,
+        //                 message: "Failed !. Server Error....."
+        //             };
+        //             console.log(status);
+        //             callback(status);
+        //         } else {
+        //             var status = {
+        //                 status: 1,
+        //                 message: "Successfully remove shouting data.",
+        //                 data: records
+        //             };
+        //             console.log(status);
+        //             callback(status);
+        //         }
+        //     });
+        // });
     },
 
     // 27-5-2019 created Api (Customer Rescheduled job data getting api)
@@ -1351,8 +1406,8 @@ var Customer = {
                             cursorRating.toArray(function (err, docs) {
                                 console.log(docs[0]);
 
-                                console.log("avg  ---"+docs[0].rating);
-                                console.log("avg  ---"+docs[0].rating);
+                                console.log("avg  ---" + docs[0].rating);
+                                console.log("avg  ---" + docs[0].rating);
                                 var updateRating = {
                                     avg_rating: docs[0].rating,
                                 };
@@ -2561,7 +2616,7 @@ var Customer = {
         console.log(otp);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_otp);
-            collectionSP.findOne({mobile_no :mobile_no} , function (err, docs) {
+            collectionSP.findOne({mobile_no: mobile_no}, function (err, docs) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -2571,30 +2626,31 @@ var Customer = {
                     // console.log(status);
                     callback(status);
                 } else {
-                    if(docs == null){
+                    if (docs == null) {
                         var status = {
                             status: 0,
                             message: "Failed !. Server Error....."
                         };
                         // console.log(status);
                         callback(status);
-                    }else {
-                    // console.log(docs);
-                    if(docs.otp == otp){
-                        var status = {
-                            status: 1,
-                            message: "Successfully data getting",
-                        };
-                        // console.log(status);
-                        callback(status);
-                    }else {
-                        var status = {
-                            status: 0,
-                            message: "Failed !. Server Error....."
-                        };
-                        // console.log(status);
-                        callback(status);
-                    }}
+                    } else {
+                        // console.log(docs);
+                        if (docs.otp == otp) {
+                            var status = {
+                                status: 1,
+                                message: "Successfully data getting",
+                            };
+                            // console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            // console.log(status);
+                            callback(status);
+                        }
+                    }
                 }
             });
         });
@@ -2630,7 +2686,6 @@ var Customer = {
     },
 
 
-
     // add sp Dispute Data 15-12-2019
     CUdisputeInsert: function (req, callback) {
         comman.getNextSequenceUserID("dispute_id", function (result) {
@@ -2644,7 +2699,7 @@ var Customer = {
                 admin_replay: 0,
                 admin_favourite: 0,
                 is_deleted: 0,
-                admin_replay_date:"",
+                admin_replay_date: "",
                 admin_replay_comment: "",
                 creationDate: new Date().toUTCString()
             };
@@ -2663,7 +2718,7 @@ var Customer = {
                         var status = {
                             status: 1,
                             message: "Successfully add information",
-                           // data: dataSet
+                            // data: dataSet
                         };
                         console.log(status);
                         callback(status);
@@ -2678,7 +2733,7 @@ var Customer = {
         console.log(req.body.tran_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_dispute);
-            collectionSP.find({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}).toArray(function(err, dataSet) {
+            collectionSP.find({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}).toArray(function (err, dataSet) {
                 if (err) {
                     console.log(err);
                     var status = {
