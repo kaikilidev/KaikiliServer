@@ -794,7 +794,7 @@ var Customer = {
                             status: 1,
                             message: "Success Get all service list",
                             data: 0,
-                            cp_alert_id:""
+                            cp_alert_id: ""
                         };
                         callback(status);
                     }
@@ -808,12 +808,13 @@ var Customer = {
 
     addServiceAlertData: function (req, callback) {
         var cp_alert_id = req.body.cp_alert_id;
-        if( cp_alert_id != null){
-            comman.DeletedAlertService(req.body.cp_alert_id,function (resultTime) {});
+        if (cp_alert_id != null) {
+            comman.DeletedAlertService(req.body.cp_alert_id, function (result) {
+            });
         }
 
 
-            comman.getNextSequenceUserID("cu_alert_id", function (result) {
+        comman.getNextSequenceUserID("cu_alert_id", function (result) {
             //  console.log(result);
 
             comman.getCustomerData(req.body.cu_id, function (CU_data) {

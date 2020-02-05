@@ -2409,10 +2409,10 @@ var Comman = {
                         };
                         return callBack(status);
                     } else {
-
-                          bulkInsert.insertOne(doc);
-                          bulkRemove.removeOne({cp_alert_id: cp_alert_id});
-
+                        if (doc != null) {
+                            bulkInsert.insertOne(doc);
+                            bulkRemove.removeOne({cp_alert_id: cp_alert_id});
+                        }
                         var status = {
                             status: 1,
                             message: "Successfully remove shouting data."
