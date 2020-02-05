@@ -807,9 +807,9 @@ var Customer = {
 
 
     addServiceAlertData: function (req, callback) {
-
-        if(req.body.cp_alert_id != ""){
-            comman.DeletedAlertService(req.body.cp_alert_id);
+        var cp_alert_id = req.body.cp_alert_id;
+        if( cp_alert_id != null){
+            comman.DeletedAlertService(req.body.cp_alert_id,function (resultTime) {});
         }
 
 
