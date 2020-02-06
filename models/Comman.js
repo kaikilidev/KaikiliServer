@@ -2395,7 +2395,7 @@ var Comman = {
 
 
     //Delete Alert data 5-2-2020
-    DeletedAlertService(cp_alert_id, callback) {
+    deletedAlertService(cp_alert_id, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_deleted_alert_data);
             var bulkRemove = db.db(config.dbName).collection(config.collections.cu_service_alert);
@@ -2423,7 +2423,6 @@ var Comman = {
                 }
             )
         });
-
-    }
+    },
 }
 module.exports = Comman;

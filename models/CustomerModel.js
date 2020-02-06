@@ -856,7 +856,7 @@ var Customer = {
                         } else {
 
                             if (cp_alert_id != null) {
-                                comman.DeletedAlertService(req.body.cp_alert_id, function (resultDelete) {
+                                comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
                                     console.log(resultDelete);
 
                                     var status = {
@@ -1212,7 +1212,7 @@ var Customer = {
         var cu_id = req.body.cu_id;
         // var alert_active = req.body.alert_active;
 
-        comman.DeletedAlertService(cp_alert_id, function (resultTime) {
+        comman.deletedAlertService(cp_alert_id, function (resultTime) {
             console.log(resultTime);
             callback(resultTime);
         });
