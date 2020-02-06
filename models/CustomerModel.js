@@ -838,6 +838,10 @@ var Customer = {
 
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+
+                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_deleted_alert_data);
+                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_service_alert);
+
                     collectionSP.insert(newServiceAlert, function (err, records) {
                         if (err) {
                             console.log(err);
@@ -850,16 +854,21 @@ var Customer = {
                         } else {
 
                             if (req.body.cu_alert_id != null) {
-                                comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
-                                    console.log(resultDelete);
-                                    var status = {
-                                        status: 1,
-                                        message: "Successfully add your Service alert override information are store.",
-                                        // data: records
-                                    };
-                                    console.log(status);
-                                    callback(resultDelete);
-                                });
+
+                                bulkRemove.find({cp_alert_id: req.body.cu_alert_id}).forEach(
+                                    function (doc) {
+                                        bulkInsert.insertOne(doc);
+                                        bulkRemove.removeOne({cp_alert_id: req.body.cu_alert_id});
+                                    }
+                                )
+
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add your Service alert override information are store.",
+                                    // data: records
+                                };
+                                callback(status);
+
                             } else {
                                 var status = {
                                     status: 1,
