@@ -808,25 +808,73 @@ var Customer = {
     addServiceAlertData: function (req, callback) {
         var cp_alert_id_old = req.body.cu_alert_id;
         console.log(req.body.cu_alert_id);
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            if (req.body.cu_alert_id != null) {
-                comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
-                    console.log(resultDelete);
-                    callback(resultDelete);
-                });
-            }else {
-                var status = {
-                    status: 1,
-                    message: "Successfully 555555555555555555.---"+req.body.cu_alert_id,
-                    // data: records
-                };
-                console.log(status);
-                callback(status);
-            }
 
+        comman.getNextSequenceUserID("cu_alert_id", function (result) {
+            //  console.log(result);
+
+            comman.getCustomerData(req.body.cu_id, function (CU_data) {
+                var newServiceAlert = {
+                    cp_alert_id: "CP-ALERT0" + result,
+                    comment: req.body.comment,
+                    address: req.body.address,
+                    sr_id: req.body.sr_id,
+                    sr_title: req.body.sr_title,
+                    cost_item: req.body.cost_item,
+                    cu_id: req.body.cu_id,
+                    cu_first_name: CU_data.first_name,
+                    cu_last_name: CU_data.last_name,
+                    mobile_no: CU_data.mobile_no,
+                    cc_ids: req.body.cc_ids,
+                    sr_type: req.body.sr_type,
+                    type_of_service: req.body.type_of_service,
+
+                    location: {
+                        coordinates: [parseFloat(req.body.coordinatePoint.longitude), parseFloat(req.body.coordinatePoint.latitude)],
+                        type: "Point"
+                    },
+                    alert_active: req.body.alert_active,
+                    creationDate: new Date().toUTCString()
+                };
+
+                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
+                    collectionSP.insert(newServiceAlert, function (err, records) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+
+                            if (req.body.cu_alert_id != null) {
+                                comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
+                                    console.log(resultDelete);
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully add your Service alert override information are store.",
+                                        // data: records
+                                    };
+                                    console.log(status);
+                                    callback(resultDelete);
+                                });
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add your Service alert information are store.",
+                                    // data: records
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        }
+                    });
+                });
+            });
         });
     },
-
 
 
     // addServiceAlertData: function (req, callback) {
@@ -1076,7 +1124,10 @@ var Customer = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_address);
-            collectionSP.deleteOne({"cu_id": cu_id, "_id": mongoose.Types.ObjectId(id)}, function (err, records) {
+            collectionSP.deleteOne({
+                "cu_id": cu_id,
+                "_id": mongoose.Types.ObjectId(id)
+            }, function (err, records) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -1470,7 +1521,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 // 28-5-2019 created Api (Customer transaction history )
     customerCompletedService: function (req, callback) {
@@ -2138,7 +2190,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     // new Api Check Otp - 24-7-2019
@@ -2167,7 +2220,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
     searchRepeatedServiceProvider: function (req, callback) {
         var sr_id = req.body.sr_id;
@@ -2180,7 +2234,8 @@ var Customer = {
             callback(result);
         });
 
-    },
+    }
+    ,
 
     updateCUProfileImageUpload: function (id, data, callback) {
         console.log(" imageAmount " + data);
@@ -2208,7 +2263,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
     updateCUProfileDataUpload: function (req, callback) {
         var cu_id = req.body.cu_id;
@@ -2694,7 +2750,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     updateCUReviewImageUpload: function (id, data, callback) {
@@ -2723,7 +2780,8 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 
 
     // add sp Dispute Data 15-12-2019
@@ -2766,7 +2824,8 @@ var Customer = {
                 });
             });
         });
-    },
+    }
+    ,
 
     // Get Data Dispute 18 -12-2019
     CUdisputeRead: function (req, callback) {
@@ -2793,6 +2852,7 @@ var Customer = {
                 }
             });
         });
-    },
+    }
+    ,
 }
 module.exports = Customer;
