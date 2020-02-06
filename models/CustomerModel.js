@@ -2841,7 +2841,7 @@ var Customer = {
         console.log(req.body.tran_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_dispute);
-            collectionSP.find({tr_id: req.body.tr_id, cu_id: req.body.cu_id,}).toArray(function (err, dataSet) {
+            collectionSP.find({tr_id: req.body.tr_id, cu_id: req.body.cu_id}).toArray(function (err, dataSet) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -2858,6 +2858,52 @@ var Customer = {
                     };
                     console.log(status);
                     callback(status);
+                }
+            });
+        });
+    },
+
+
+
+
+    // Coupon Code valid check 6-2-2020
+    CUCouponCode: function (req, callback) {
+
+        // req.body.cu_id
+        // req.body.code
+        // req.body.amount
+
+        console.log(req.body.tran_id);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.coupon_code);
+            collectionSP.find({coupon_code: req.body.code}).toArray(function (err, dataSet) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    if(dataSet != null){
+                        var status = {
+                            status: 1,
+                            message: "Successfully get information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }else {
+                        var status = {
+                            status: 0,
+                            message: "Successfully get information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+
                 }
             });
         });

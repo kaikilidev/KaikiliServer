@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278805792.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/customer.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/customer.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,35 +39,39 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/customer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="253" column="31" selection-start-line="253" selection-start-column="31" selection-end-line="253" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="14">
-              <caret line="811" column="34" selection-start-line="811" selection-start-column="34" selection-end-line="811" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="523" lean-forward="true" selection-start-line="523" selection-end-line="523" />
+            <state relative-caret-position="34">
+              <caret line="671" column="24" selection-start-line="671" selection-start-column="14" selection-end-line="671" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="474">
+              <caret line="2898" column="37" selection-start-line="2898" selection-start-column="37" selection-end-line="2898" selection-end-column="37" />
+              <folding>
+                <element signature="e#39170#40727#0" />
+                <element signature="e#41115#42206#0" />
+                <element signature="e#43809#44067#0" />
+                <element signature="e#43406#45129#0" />
+                <element signature="e#45178#50380#0" />
+                <element signature="e#50431#51516#0" />
+                <element signature="e#51571#54748#0" />
+                <element signature="e#54808#55785#0" />
+                <element signature="e#55920#57192#0" />
+                <element signature="e#60062#61782#0" />
+                <element signature="e#61908#63290#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="2414" column="51" selection-start-line="2414" selection-start-column="51" selection-end-line="2414" selection-end-column="51" />
+            <state relative-caret-position="374">
+              <caret line="257" column="14" lean-forward="true" selection-start-line="251" selection-start-column="10" selection-end-line="257" selection-end-column="14" />
               <folding>
                 <element signature="e#18235#23346#0" />
                 <element signature="e#23455#27688#0" />
@@ -92,29 +99,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9724">
-              <caret line="732" selection-start-line="722" selection-start-column="7" selection-end-line="732" />
-              <folding>
-                <element signature="e#3454#8236#0" />
-                <element signature="e#10396#11403#0" />
-                <element signature="e#13056#16021#0" />
-                <element signature="e#16072#17354#0" />
-                <element signature="e#20437#20823#0" />
-                <element signature="e#20875#22085#0" />
-                <element signature="e#22139#23360#0" />
-                <marker date="1576694034548" expanded="true" signature="20099:20363" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/db_config.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="51" column="26" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="26" />
+            <state relative-caret-position="413">
+              <caret line="52" column="31" selection-start-line="52" selection-start-column="31" selection-end-line="52" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -167,8 +155,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>return upload</find>
-      <find>userCUReviewImage</find>
       <find>repeatedDiscountGive</find>
       <find>getUserRatingData</find>
       <find>insertOne</find>
@@ -193,10 +179,12 @@
       <find>cu_sp_transaction_completed</find>
       <find>find</find>
       <find>localhost</find>
-      <find>addNewServiceAlert</find>
       <find>bulkInsert</find>
       <find>callBack</find>
+      <find>resultDelete</find>
+      <find>addNewServiceAlert</find>
       <find>bulkRemove</find>
+      <find>searchSProvider</find>
     </findStrings>
     <replaceStrings>
       <replace>postData</replace>
@@ -236,10 +224,10 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$APPLICATION_CONFIG_DIR$/phpstorm64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/routes/testNew.js" />
+        <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/routes/customer.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
-        <option value="$PROJECT_DIR$/models/Comman.js" />
       </list>
     </option>
   </component>
@@ -669,77 +657,7 @@
       <workItem from="1580740251353" duration="733000" />
       <workItem from="1580809208957" duration="15389000" />
       <workItem from="1580893466128" duration="10263000" />
-      <workItem from="1580977990931" duration="1024000" />
-    </task>
-    <task id="LOCAL-00349" summary="Add New Api">
-      <created>1571844364280</created>
-      <option name="number" value="00349" />
-      <option name="presentableId" value="LOCAL-00349" />
-      <option name="project" value="LOCAL" />
-      <updated>1571844364280</updated>
-    </task>
-    <task id="LOCAL-00350" summary="Add New Api">
-      <created>1571846095802</created>
-      <option name="number" value="00350" />
-      <option name="presentableId" value="LOCAL-00350" />
-      <option name="project" value="LOCAL" />
-      <updated>1571846095802</updated>
-    </task>
-    <task id="LOCAL-00351" summary="Add New Api">
-      <created>1571846871698</created>
-      <option name="number" value="00351" />
-      <option name="presentableId" value="LOCAL-00351" />
-      <option name="project" value="LOCAL" />
-      <updated>1571846871699</updated>
-    </task>
-    <task id="LOCAL-00352" summary="Add New Api">
-      <created>1571847872274</created>
-      <option name="number" value="00352" />
-      <option name="presentableId" value="LOCAL-00352" />
-      <option name="project" value="LOCAL" />
-      <updated>1571847872274</updated>
-    </task>
-    <task id="LOCAL-00353" summary="Add New Api">
-      <created>1571919756321</created>
-      <option name="number" value="00353" />
-      <option name="presentableId" value="LOCAL-00353" />
-      <option name="project" value="LOCAL" />
-      <updated>1571919756321</updated>
-    </task>
-    <task id="LOCAL-00354" summary="Add New Api">
-      <created>1572079653991</created>
-      <option name="number" value="00354" />
-      <option name="presentableId" value="LOCAL-00354" />
-      <option name="project" value="LOCAL" />
-      <updated>1572079653992</updated>
-    </task>
-    <task id="LOCAL-00355" summary="Add New Api">
-      <created>1572081528278</created>
-      <option name="number" value="00355" />
-      <option name="presentableId" value="LOCAL-00355" />
-      <option name="project" value="LOCAL" />
-      <updated>1572081528278</updated>
-    </task>
-    <task id="LOCAL-00356" summary="Add New Api">
-      <created>1572091374486</created>
-      <option name="number" value="00356" />
-      <option name="presentableId" value="LOCAL-00356" />
-      <option name="project" value="LOCAL" />
-      <updated>1572091374486</updated>
-    </task>
-    <task id="LOCAL-00357" summary="Add New Api">
-      <created>1574767503613</created>
-      <option name="number" value="00357" />
-      <option name="presentableId" value="LOCAL-00357" />
-      <option name="project" value="LOCAL" />
-      <updated>1574767503614</updated>
-    </task>
-    <task id="LOCAL-00358" summary="Add New Api">
-      <created>1575404645882</created>
-      <option name="number" value="00358" />
-      <option name="presentableId" value="LOCAL-00358" />
-      <option name="project" value="LOCAL" />
-      <updated>1575404645883</updated>
+      <workItem from="1580977990931" duration="12464000" />
     </task>
     <task id="LOCAL-00359" summary="Add New Api">
       <created>1575407352803</created>
@@ -1014,11 +932,81 @@
       <option name="project" value="LOCAL" />
       <updated>1580979681632</updated>
     </task>
-    <option name="localTasksCounter" value="398" />
+    <task id="LOCAL-00398" summary="Add New Api">
+      <created>1580980022253</created>
+      <option name="number" value="00398" />
+      <option name="presentableId" value="LOCAL-00398" />
+      <option name="project" value="LOCAL" />
+      <updated>1580980022253</updated>
+    </task>
+    <task id="LOCAL-00399" summary="Add New Api">
+      <created>1580980250928</created>
+      <option name="number" value="00399" />
+      <option name="presentableId" value="LOCAL-00399" />
+      <option name="project" value="LOCAL" />
+      <updated>1580980250928</updated>
+    </task>
+    <task id="LOCAL-00400" summary="Add New Api">
+      <created>1580980298080</created>
+      <option name="number" value="00400" />
+      <option name="presentableId" value="LOCAL-00400" />
+      <option name="project" value="LOCAL" />
+      <updated>1580980298080</updated>
+    </task>
+    <task id="LOCAL-00401" summary="Add New Api">
+      <created>1580980611985</created>
+      <option name="number" value="00401" />
+      <option name="presentableId" value="LOCAL-00401" />
+      <option name="project" value="LOCAL" />
+      <updated>1580980611985</updated>
+    </task>
+    <task id="LOCAL-00402" summary="Add New Api">
+      <created>1580981072242</created>
+      <option name="number" value="00402" />
+      <option name="presentableId" value="LOCAL-00402" />
+      <option name="project" value="LOCAL" />
+      <updated>1580981072243</updated>
+    </task>
+    <task id="LOCAL-00403" summary="Add New Api">
+      <created>1580983851244</created>
+      <option name="number" value="00403" />
+      <option name="presentableId" value="LOCAL-00403" />
+      <option name="project" value="LOCAL" />
+      <updated>1580983851244</updated>
+    </task>
+    <task id="LOCAL-00404" summary="Add New Api">
+      <created>1580984295203</created>
+      <option name="number" value="00404" />
+      <option name="presentableId" value="LOCAL-00404" />
+      <option name="project" value="LOCAL" />
+      <updated>1580984295204</updated>
+    </task>
+    <task id="LOCAL-00405" summary="Add New Api">
+      <created>1580984574461</created>
+      <option name="number" value="00405" />
+      <option name="presentableId" value="LOCAL-00405" />
+      <option name="project" value="LOCAL" />
+      <updated>1580984574461</updated>
+    </task>
+    <task id="LOCAL-00406" summary="Add New Api">
+      <created>1580984981321</created>
+      <option name="number" value="00406" />
+      <option name="presentableId" value="LOCAL-00406" />
+      <option name="project" value="LOCAL" />
+      <updated>1580984981322</updated>
+    </task>
+    <task id="LOCAL-00407" summary="Add New Api">
+      <created>1580986078812</created>
+      <option name="number" value="00407" />
+      <option name="presentableId" value="LOCAL-00407" />
+      <option name="project" value="LOCAL" />
+      <updated>1580986078812</updated>
+    </task>
+    <option name="localTasksCounter" value="408" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1585570000" />
+    <option name="totallyTimeSpent" value="1597010000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1035,10 +1023,10 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.18255034" />
+      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.15100671" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.8427762" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.7422096" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398017" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1050,7 +1038,7 @@
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.62181306" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49731544" visible="true" weight="0.52549577" />
+      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49731544" weight="0.52549577" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1128,17 +1116,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1889</line>
+          <line>1988</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1891</line>
+          <line>1990</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1375</line>
+          <line>1473</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1152,7 +1140,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1887</line>
+          <line>1986</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1197,42 +1185,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1807</line>
+          <line>1906</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1808</line>
+          <line>1907</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1809</line>
+          <line>1908</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1810</line>
+          <line>1909</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1811</line>
+          <line>1910</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1812</line>
+          <line>1911</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1813</line>
+          <line>1912</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/CustomerModel.js</url>
-          <line>1814</line>
+          <line>1913</line>
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1457,13 +1445,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="51" column="26" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/subservices.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
@@ -1492,13 +1473,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="253" column="31" selection-start-line="253" selection-start-column="31" selection-end-line="253" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
@@ -1506,17 +1480,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+    <entry file="file://$PROJECT_DIR$/db_config.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14">
-          <caret line="811" column="34" selection-start-line="811" selection-start-column="34" selection-end-line="811" selection-end-column="34" />
+        <state relative-caret-position="413">
+          <caret line="52" column="31" selection-start-line="52" selection-start-column="31" selection-end-line="52" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="2414" column="51" selection-start-line="2414" selection-start-column="51" selection-end-line="2414" selection-end-column="51" />
+        <state relative-caret-position="374">
+          <caret line="257" column="14" lean-forward="true" selection-start-line="251" selection-start-column="10" selection-end-line="257" selection-end-column="14" />
           <folding>
             <element signature="e#18235#23346#0" />
             <element signature="e#23455#27688#0" />
@@ -1538,6 +1512,33 @@
             <element signature="e#82783#84292#0" />
             <element signature="e#84337#85846#0" />
             <element signature="e#85899#87410#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="671" column="24" selection-start-line="671" selection-start-column="14" selection-end-line="671" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="2898" column="37" selection-start-line="2898" selection-start-column="37" selection-end-line="2898" selection-end-column="37" />
+          <folding>
+            <element signature="e#39170#40727#0" />
+            <element signature="e#41115#42206#0" />
+            <element signature="e#43809#44067#0" />
+            <element signature="e#43406#45129#0" />
+            <element signature="e#45178#50380#0" />
+            <element signature="e#50431#51516#0" />
+            <element signature="e#51571#54748#0" />
+            <element signature="e#54808#55785#0" />
+            <element signature="e#55920#57192#0" />
+            <element signature="e#60062#61782#0" />
+            <element signature="e#61908#63290#0" />
           </folding>
         </state>
       </provider>
