@@ -844,16 +844,16 @@ var Customer = {
                 };
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
-                    collectionSP.insert(newServiceAlert, function (err, records) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
+                    // collectionSP.insert(newServiceAlert, function (err, records) {
+                    //     if (err) {
+                    //         console.log(err);
+                    //         var status = {
+                    //             status: 0,
+                    //             message: "Failed !. Server Error....."
+                    //         };
+                    //         console.log(status);
+                    //         callback(status);
+                    //     } else {
 
                             if (cp_alert_id != null) {
                                 comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
@@ -862,7 +862,7 @@ var Customer = {
                                     var status = {
                                         status: 1,
                                         message: "Successfully add your Service alert information are store.",
-                                        data: records
+                                        // data: records
                                     };
                                     console.log(status);
                                     callback(status);
@@ -871,13 +871,13 @@ var Customer = {
                                 var status = {
                                     status: 1,
                                     message: "Successfully add your Service alert information are store.",
-                                    data: records
+                                    // data: records
                                 };
                                 console.log(status);
                                 callback(status);
                             }
-                        }
-                    });
+                //         }
+                //     });
                 });
 
             });
