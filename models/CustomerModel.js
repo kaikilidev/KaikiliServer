@@ -843,25 +843,6 @@ var Customer = {
                     creationDate: new Date().toUTCString()
                 };
                 mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-
-                    if (cp_alert_id != null) {
-                        var bulkInsert = db.db(config.dbName).collection(config.collections.cu_deleted_alert_data);
-                        var bulkRemove = db.db(config.dbName).collection(config.collections.cu_service_alert);
-                        bulkRemove.findOne({cp_alert_id: cp_alert_id}, function (err, doc) {
-                                if (err) {
-                                    console.log("---- Deleted errer");
-                                } else {
-                                    if (doc != null) {
-                                        bulkInsert.insertOne(doc);
-                                        bulkRemove.removeOne({cp_alert_id: cp_alert_id});
-                                        console.log("---- Deleted data");
-                                    }
-                                }
-                            }
-                        );
-                    }
-
-
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_service_alert);
                     collectionSP.insert(newServiceAlert, function (err, records) {
                         if (err) {
@@ -873,13 +854,28 @@ var Customer = {
                             console.log(status);
                             callback(status);
                         } else {
-                            var status = {
-                                status: 1,
-                                message: "Successfully add your Service alert information are store.",
-                                data: records
-                            };
-                            console.log(status);
-                            callback(status);
+
+                            if (cp_alert_id != null) {
+                                comman.DeletedAlertService(req.body.cp_alert_id, function (resultDelete) {
+                                    console.log(result);
+
+                                    var status = {
+                                        status: 1,
+                                        message: "Successfully add your Service alert information are store.",
+                                        data: records
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                });
+                            }else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add your Service alert information are store.",
+                                    data: records
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
                         }
                     });
                 });
