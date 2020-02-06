@@ -806,9 +806,10 @@ var Customer = {
     },
 
     addServiceAlertData: function (req, callback) {
-        var cp_alert_id_old = req.body.cp_alert_id;
+        var cp_alert_id_old = req.body.cu_alert_id;
+        console.log(req.body.cu_alert_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            if (cp_alert_id_old != null) {
+            if (req.body.cu_alert_id != null) {
                 comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
                     console.log(resultDelete);
                     callback(resultDelete);
@@ -816,7 +817,7 @@ var Customer = {
             }else {
                 var status = {
                     status: 1,
-                    message: "Successfully 555555555555555555.",
+                    message: "Successfully 555555555555555555.---"+req.body.cu_alert_id,
                     // data: records
                 };
                 console.log(status);
