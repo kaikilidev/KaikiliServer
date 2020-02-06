@@ -859,13 +859,13 @@ var Customer = {
                                 comman.deletedAlertService(req.body.cp_alert_id, function (resultDelete) {
                                     console.log(resultDelete);
 
-                                    var status = {
-                                        status: 1,
-                                        message: "Successfully add your Service alert information are store.",
-                                        // data: records
-                                    };
-                                    console.log(status);
-                                    callback(status);
+                                    // var status = {
+                                    //     status: 1,
+                                    //     message: "Successfully add your Service alert information are store.",
+                                    //     // data: records
+                                    // };
+                                    // console.log(status);
+                                    callback(resultDelete);
                                 });
                             }else {
                                 var status = {
