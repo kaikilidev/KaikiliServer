@@ -2886,7 +2886,7 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    if(dataSet != null){
+                    if(dataSet != null && dataSet.length >0){
                         var status = {
                             status: 1,
                             message: "Successfully get information",
