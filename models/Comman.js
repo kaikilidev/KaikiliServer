@@ -2412,6 +2412,7 @@ var Comman = {
                         if (doc != null) {
                             bulkInsert.insertOne(doc);
                             bulkRemove.removeOne({cp_alert_id: cp_alert_id});
+                            console.log("---- Deleted data");
                         }
                         var status = {
                             status: 1,

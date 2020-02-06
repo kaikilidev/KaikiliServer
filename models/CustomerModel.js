@@ -810,6 +810,7 @@ var Customer = {
         var cp_alert_id = req.body.cp_alert_id;
         if (cp_alert_id != null) {
             comman.DeletedAlertService(req.body.cp_alert_id, function (result) {
+                console.log(result);
             });
         }
 
