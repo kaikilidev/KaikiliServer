@@ -857,7 +857,7 @@ var Customer = {
 
                             if (cp_alert_id != null) {
                                 comman.DeletedAlertService(req.body.cp_alert_id, function (resultDelete) {
-                                    console.log(result);
+                                    console.log(resultDelete);
 
                                     var status = {
                                         status: 1,
