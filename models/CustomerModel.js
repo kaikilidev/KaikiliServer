@@ -1080,7 +1080,7 @@ var Customer = {
 
             var coupon_used = {
                 tran_id: "TR0" + result,
-                pps_id:"",
+                pps_id: "",
                 cu_id: req.body.cust_id,
                 cu_pay: req.body.sp_net_pay,
                 coupon_code: req.body.coupon_code,
@@ -1103,7 +1103,11 @@ var Customer = {
                         callback(status);
                     } else {
 
-                        cu_used_coupon_code.insertOne(coupon_used);
+                        if (req.body.coupon_apply) {
+                            cu_used_coupon_code.insertOne(coupon_used);
+                        }
+
+
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                         collectionNotification.insert(notificationData, function (err, docs) {
                             if (err) {
@@ -2153,7 +2157,9 @@ var Customer = {
                             };
                             var collectionSPR = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
                             collectionSPR.insertOne(ppr_send_sp);
-                            cu_used_coupon_code.insertOne(coupon_used);
+                            if (req.body.coupon_apply) {
+                                cu_used_coupon_code.insertOne(coupon_used);
+                            }
 
                             var message = "New kaikili preferred provider Job."
                             comman.sendServiceNotification(element, "PPS0" + result, message, "New", "pps");
@@ -2893,8 +2899,6 @@ var Customer = {
     },
 
 
-
-
     // Coupon Code valid check 6-2-2020
     CUCouponCode: function (req, callback) {
 
@@ -2907,10 +2911,10 @@ var Customer = {
             var collectionSP = db.db(config.dbName).collection(config.collections.coupon_code);
             var cuUsedCode = db.db(config.dbName).collection(config.collections.cu_used_coupon_code);
             var query = {
-                 // "coupon_start_date": {$gte: new Date(new Date().toISOString().replace(/T/, ' '). replace(/\..+/, '')) },
+                // "coupon_start_date": {$gte: new Date(new Date().toISOString().replace(/T/, ' '). replace(/\..+/, '')) },
                 // "coupon_end_date": {$lt: new Date().toISOString().replace(/T/, ' '). replace(/\..+/, '')},
                 coupon_code: req.body.code
-           };
+            };
 
             console.log(query);
             collectionSP.find(query).toArray(function (err, dataSet) {
@@ -2923,21 +2927,21 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    console.log("Server ------>"+dataSet.length );
-                    if(dataSet != null && dataSet.length > 0){
+                    console.log("Server ------>" + dataSet.length);
+                    if (dataSet != null && dataSet.length > 0) {
 
                         var momentA = new Date(dataSet[0].coupon_start_date);
                         var momentB = new Date(dataSet[0].coupon_end_date);
                         var carrunt = new Date(new Date)
 
-                        console.log("------ Date "+momentA);
-                        console.log("------ Date "+carrunt);
-                        console.log("------ Date "+momentB);
+                        console.log("------ Date " + momentA);
+                        console.log("------ Date " + carrunt);
+                        console.log("------ Date " + momentB);
                         var min = parseFloat(dataSet[0].coupon_min_amount);
                         var serAmount = parseFloat(req.body.amount);
 
 
-                        if(momentA <= carrunt && carrunt <= momentB && min <= serAmount ) {
+                        if (momentA <= carrunt && carrunt <= momentB && min <= serAmount) {
                             cuUsedCode.find({
                                 cu_id: req.body.cu_id,
                                 code: req.body.code
@@ -2973,7 +2977,7 @@ var Customer = {
                                     }
                                 }
                             });
-                        }else {
+                        } else {
                             var status = {
                                 status: 0,
                                 message: "Coupon code are not valid.",
@@ -2981,7 +2985,7 @@ var Customer = {
                             console.log(status);
                             callback(status);
                         }
-                    }else {
+                    } else {
                         var status = {
                             status: 0,
                             message: "Coupon code are not valid.",
