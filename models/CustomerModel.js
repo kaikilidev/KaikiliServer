@@ -1057,7 +1057,7 @@ var Customer = {
                 coupon_code: req.body.coupon_code,
                 coupon_apply: req.body.coupon_apply,
                 coupon_code_discount_amount: req.body.coupon_code_discount_amount,
-                otp: comman.getRandomInt(999999),
+                otp: comman.getRandomInt(9999),
                 service_book_type: req.body.service_book_type
             };
 
