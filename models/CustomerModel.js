@@ -2904,8 +2904,11 @@ var Customer = {
                         console.log("------ Date "+momentA);
                         console.log("------ Date "+carrunt);
                         console.log("------ Date "+momentB);
+                        var min = parseFloat(dataSet[0].coupon_min_amount);
+                        var serAmount = parseFloat(req.body.amount);
 
-                        if(momentA <= carrunt && carrunt <= momentB) {
+
+                        if(momentA <= carrunt && carrunt <= momentB && min <= serAmount ) {
                             cuUsedCode.find({
                                 cu_id: req.body.cu_id,
                                 code: req.body.code
