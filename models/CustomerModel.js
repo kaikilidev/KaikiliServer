@@ -2089,7 +2089,11 @@ var Customer = {
                 sp_show: false,
                 preferredProvider: req.body.preferredProvider,
                 pps_data: req.body.pps_data,
-                creationDate: new Date().toUTCString()
+                coupon_code: req.body.coupon_code,
+                coupon_apply: req.body.coupon_apply,
+                coupon_code_discount_amount: req.body.coupon_code_discount_amount,
+                creationDate: new Date().toUTCString(),
+
             };
 
             console.log(req.body.preferredProvider);

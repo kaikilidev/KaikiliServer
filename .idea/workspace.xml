@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278805792.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" />
     </list>
@@ -47,11 +45,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="856">
-              <caret line="2949" column="45" selection-start-line="2949" selection-start-column="45" selection-end-line="2949" selection-end-column="45" />
+            <state relative-caret-position="352">
+              <caret line="2910" column="87" selection-start-line="2910" selection-start-column="87" selection-end-line="2910" selection-end-column="87" />
               <folding>
                 <element signature="e#39170#40727#0" />
-                <element signature="e#132827#134390#0" />
               </folding>
             </state>
           </provider>
@@ -656,21 +653,7 @@
       <workItem from="1580809208957" duration="15389000" />
       <workItem from="1580893466128" duration="10263000" />
       <workItem from="1580977990931" duration="13393000" />
-      <workItem from="1581065284740" duration="9609000" />
-    </task>
-    <task id="LOCAL-00361" summary="Add New Api">
-      <created>1575551924435</created>
-      <option name="number" value="00361" />
-      <option name="presentableId" value="LOCAL-00361" />
-      <option name="project" value="LOCAL" />
-      <updated>1575551924435</updated>
-    </task>
-    <task id="LOCAL-00362" summary="Add New Api">
-      <created>1575552086010</created>
-      <option name="number" value="00362" />
-      <option name="presentableId" value="LOCAL-00362" />
-      <option name="project" value="LOCAL" />
-      <updated>1575552086010</updated>
+      <workItem from="1581065284740" duration="11823000" />
     </task>
     <task id="LOCAL-00363" summary="Add New Api">
       <created>1575560783315</created>
@@ -1001,11 +984,25 @@
       <option name="project" value="LOCAL" />
       <updated>1581002641075</updated>
     </task>
-    <option name="localTasksCounter" value="410" />
+    <task id="LOCAL-00410" summary="Add New Api">
+      <created>1581079641200</created>
+      <option name="number" value="00410" />
+      <option name="presentableId" value="LOCAL-00410" />
+      <option name="project" value="LOCAL" />
+      <updated>1581079641201</updated>
+    </task>
+    <task id="LOCAL-00411" summary="Add New Api">
+      <created>1581080692870</created>
+      <option name="number" value="00411" />
+      <option name="presentableId" value="LOCAL-00411" />
+      <option name="project" value="LOCAL" />
+      <updated>1581080692870</updated>
+    </task>
+    <option name="localTasksCounter" value="412" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1607548000" />
+    <option name="totallyTimeSpent" value="1609762000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1018,11 +1015,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.16510066" />
+      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" weight="0.16510066" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.4716714" />
@@ -1523,11 +1521,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="856">
-          <caret line="2949" column="45" selection-start-line="2949" selection-start-column="45" selection-end-line="2949" selection-end-column="45" />
+        <state relative-caret-position="352">
+          <caret line="2910" column="87" selection-start-line="2910" selection-start-column="87" selection-end-line="2910" selection-end-column="87" />
           <folding>
             <element signature="e#39170#40727#0" />
-            <element signature="e#132827#134390#0" />
           </folding>
         </state>
       </provider>
