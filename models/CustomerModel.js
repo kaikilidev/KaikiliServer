@@ -2670,7 +2670,7 @@ var Customer = {
                     sp_service_area: user_service.sp_service_area,
                     creationDate: new Date().toUTCString(),
                     sp_view: false,
-                    otp: comman.getRandomInt(999999),
+                    otp: comman.getRandomInt(9999),
                     service_book_type: user_service.service_book_type,
                 };
 

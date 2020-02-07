@@ -795,7 +795,7 @@ var Comman = {
                 creationDate: new Date().toUTCString(),
                 service_book_type: "preferred_provider",
                 sp_view: false,
-                otp: module.exports.getRandomInt(999999)
+                otp: module.exports.getRandomInt(9999)
             };
 
             var notificationData = {

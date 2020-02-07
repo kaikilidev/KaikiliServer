@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/SPWork/1551278805792.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" />
     </list>
@@ -45,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="1059" column="35" selection-start-line="1059" selection-start-column="35" selection-end-line="1059" selection-end-column="35" />
+            <state relative-caret-position="209">
+              <caret line="2672" column="36" lean-forward="true" selection-start-line="2672" selection-start-column="36" selection-end-line="2672" selection-end-column="36" />
               <folding>
                 <element signature="e#39170#40727#0" />
               </folding>
@@ -57,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="1087" column="56" selection-start-line="1087" selection-start-column="53" selection-end-line="1087" selection-end-column="56" />
+            <state relative-caret-position="209">
+              <caret line="1086" column="10" selection-start-line="1086" selection-start-column="10" selection-end-line="1086" selection-end-column="10" />
               <folding>
                 <element signature="e#11494#13178#0" />
                 <element signature="e#13253#15651#0" />
@@ -68,7 +70,6 @@
                 <element signature="e#27838#32150#0" />
                 <element signature="e#27923#32142#0" />
                 <element signature="e#32190#33049#0" />
-                <element signature="e#33093#38098#0" />
                 <element signature="e#38143#39194#0" />
                 <element signature="e#39239#40182#0" />
                 <element signature="e#40226#40642#0" />
@@ -224,9 +225,9 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$APPLICATION_CONFIG_DIR$/phpstorm64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/routes/testNew.js" />
-        <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/routes/customer.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
+        <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
       </list>
     </option>
@@ -658,14 +659,7 @@
       <workItem from="1580809208957" duration="15389000" />
       <workItem from="1580893466128" duration="10263000" />
       <workItem from="1580977990931" duration="13393000" />
-      <workItem from="1581065284740" duration="16463000" />
-    </task>
-    <task id="LOCAL-00367" summary="Add New Api">
-      <created>1575639248937</created>
-      <option name="number" value="00367" />
-      <option name="presentableId" value="LOCAL-00367" />
-      <option name="project" value="LOCAL" />
-      <updated>1575639248938</updated>
+      <workItem from="1581065284740" duration="16774000" />
     </task>
     <task id="LOCAL-00368" summary="Add New Api">
       <created>1575639290584</created>
@@ -1003,11 +997,18 @@
       <option name="project" value="LOCAL" />
       <updated>1581085977713</updated>
     </task>
-    <option name="localTasksCounter" value="416" />
+    <task id="LOCAL-00416" summary="Add New Api">
+      <created>1581093118894</created>
+      <option name="number" value="00416" />
+      <option name="presentableId" value="LOCAL-00416" />
+      <option name="project" value="LOCAL" />
+      <updated>1581093118895</updated>
+    </task>
+    <option name="localTasksCounter" value="417" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1614402000" />
+    <option name="totallyTimeSpent" value="1614713000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1020,12 +1021,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.16442953" />
+      <window_info active="true" content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.16442953" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.4716714" />
@@ -1498,8 +1498,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="1059" column="35" selection-start-line="1059" selection-start-column="35" selection-end-line="1059" selection-end-column="35" />
+        <state relative-caret-position="209">
+          <caret line="2672" column="36" lean-forward="true" selection-start-line="2672" selection-start-column="36" selection-end-line="2672" selection-end-column="36" />
           <folding>
             <element signature="e#39170#40727#0" />
           </folding>
@@ -1508,8 +1508,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="1087" column="56" selection-start-line="1087" selection-start-column="53" selection-end-line="1087" selection-end-column="56" />
+        <state relative-caret-position="209">
+          <caret line="1086" column="10" selection-start-line="1086" selection-start-column="10" selection-end-line="1086" selection-end-column="10" />
           <folding>
             <element signature="e#11494#13178#0" />
             <element signature="e#13253#15651#0" />
@@ -1519,7 +1519,6 @@
             <element signature="e#27838#32150#0" />
             <element signature="e#27923#32142#0" />
             <element signature="e#32190#33049#0" />
-            <element signature="e#33093#38098#0" />
             <element signature="e#38143#39194#0" />
             <element signature="e#39239#40182#0" />
             <element signature="e#40226#40642#0" />
