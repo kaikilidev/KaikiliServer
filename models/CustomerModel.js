@@ -1078,9 +1078,19 @@ var Customer = {
                 messages: []
             };
 
+            var coupon_used = {
+                tran_id: "TR0" + result,
+                pps_id:"",
+                cu_id: req.body.cust_id,
+                cu_pay: req.body.sp_net_pay,
+                coupon_code: req.body.coupon_code,
+                coupon_code_discount_amount: req.body.coupon_code_discount_amount,
+            };
+
             comman.cuInterestedRemoveBookServicesData(req.body.sr_id, req.body.itemCost, req.body.cust_id, req.body.coordinatePoint.latitude, req.body.coordinatePoint.longitude);
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var cu_used_coupon_code = db.db(config.dbName).collection(config.collections.cu_used_coupon_code);
                 var collectionCU = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                 collectionCU.insert(newBookServiceUser, function (err, records) {
                     if (err) {
@@ -1093,6 +1103,7 @@ var Customer = {
                         callback(status);
                     } else {
 
+                        cu_used_coupon_code.insertOne(coupon_used);
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                         collectionNotification.insert(notificationData, function (err, docs) {
                             if (err) {
@@ -2099,9 +2110,19 @@ var Customer = {
 
             };
 
+            var coupon_used = {
+                tran_id: "",
+                pps_id: "PPS0" + result,
+                cu_id: req.body.cust_id,
+                cu_pay: req.body.sp_net_pay,
+                coupon_code: req.body.coupon_code,
+                coupon_code_discount_amount: req.body.coupon_code_discount_amount,
+            };
+
             console.log(req.body.preferredProvider);
 
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var cu_used_coupon_code = db.db(config.dbName).collection(config.collections.cu_used_coupon_code);
                 var collectionSP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                 collectionSP.insertOne(ppServiceData, function (err, records) {
                     if (err) {
@@ -2132,6 +2153,7 @@ var Customer = {
                             };
                             var collectionSPR = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
                             collectionSPR.insertOne(ppr_send_sp);
+                            cu_used_coupon_code.insertOne(coupon_used);
 
                             var message = "New kaikili preferred provider Job."
                             comman.sendServiceNotification(element, "PPS0" + result, message, "New", "pps");
