@@ -50,7 +50,8 @@
     "cu_dispute": "cu_dispute",
     "faqs": "faqs",
     "cu_deleted_alert_data": "cu_deleted_alert_data",
-    "coupon_code": "coupon_code"
+    "coupon_code": "coupon_code",
+    "cu_used_coupon_code": "cu_used_coupon_code"
 
   }
 

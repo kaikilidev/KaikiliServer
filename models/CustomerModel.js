@@ -2873,10 +2873,18 @@ var Customer = {
         // req.body.code
         // req.body.amount
 
-        console.log(req.body.tran_id);
+        console.log(req.body.cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.coupon_code);
-            collectionSP.find({coupon_code: req.body.code}).toArray(function (err, dataSet) {
+            var cuUsedCode = db.db(config.dbName).collection(config.collections.cu_used_coupon_code);
+            var query = {
+                 // "coupon_start_date": {$gte: new Date(new Date().toISOString().replace(/T/, ' '). replace(/\..+/, '')) },
+                // "coupon_end_date": {$lt: new Date().toISOString().replace(/T/, ' '). replace(/\..+/, '')},
+                coupon_code: req.body.code
+           };
+
+            console.log(query);
+            collectionSP.find(query).toArray(function (err, dataSet) {
                 if (err) {
                     console.log(err);
                     var status = {
@@ -2886,19 +2894,65 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    if(dataSet != null && dataSet.length >0){
-                        var status = {
-                            status: 1,
-                            message: "Successfully get information",
-                            data: dataSet
-                        };
-                        console.log(status);
-                        callback(status);
+                    console.log("Server ------>"+dataSet.length );
+                    if(dataSet != null && dataSet.length > 0){
+
+                        var momentA = new Date(dataSet[0].coupon_start_date);
+                        var momentB = new Date(dataSet[0].coupon_end_date);
+                        var carrunt = new Date(new Date)
+
+                        console.log("------ Date "+momentA);
+                        console.log("------ Date "+carrunt);
+                        console.log("------ Date "+momentB);
+
+                        if(momentA <= carrunt && carrunt <= momentB) {
+                            cuUsedCode.find({
+                                cu_id: req.body.cu_id,
+                                code: req.body.code
+                            }).toArray(function (err, userData) {
+                                if (err) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Coupon code are not valid."
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    console.log(userData.length);
+                                    if (Number(dataSet[0].coupon_used_count) > userData.length) {
+                                        var status = {
+                                            status: 1,
+                                            message: "Successfully apply code",
+                                            coupon_max_descount: dataSet[0].coupon_max_descount,
+                                            coupon_percentage: dataSet[0].coupon_percentage,
+                                            coupon_min_amount: dataSet[0].coupon_min_amount
+                                        };
+                                        console.log(status);
+                                        callback(status);
+
+                                    } else {
+                                        var status = {
+                                            status: 0,
+                                            message: "Max limit is reached ...."
+                                        };
+                                        console.log(status);
+                                        callback(status);
+                                    }
+                                }
+                            });
+                        }else {
+                            var status = {
+                                status: 0,
+                                message: "Coupon code are not valid.",
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
                     }else {
                         var status = {
                             status: 0,
-                            message: "Successfully get information",
-                            data: dataSet
+                            message: "Coupon code are not valid.",
                         };
                         console.log(status);
                         callback(status);
@@ -2907,7 +2961,6 @@ var Customer = {
                 }
             });
         });
-    }
-    ,
+    },
 }
 module.exports = Customer;
