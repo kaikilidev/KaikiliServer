@@ -589,6 +589,15 @@ var Customer = {
                                         }
                                     }, {
                                         $unwind: "$services"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.cu_sp_review,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "reviewCount"
+                                        }
+                                    // }, {
+                                    //    $unwind: "$reviewCount"
                                     }
                                 ]).toArray(function (err, docs) {
                                     if (err) {
@@ -672,7 +681,8 @@ var Customer = {
                                             sp_mobile_no: docs[0].profile.mobile_no,
                                             professional_license: docs[0].userprofile.professional_license,
                                             professional_insurance: docs[0].userprofile.professional_insurance,
-                                            preferred_provider: docs[0].preferred_provider
+                                            preferred_provider: docs[0].preferred_provider,
+                                             reviewCount: docs[0].reviewCount.length
 
                                         };
 
@@ -1915,7 +1925,15 @@ var Customer = {
                                         }
                                     }, {
                                         $unwind: "$services"
+                                    }, {
+                                        $lookup: {
+                                            from: config.collections.cu_sp_review,
+                                            localField: "sp_id",
+                                            foreignField: "sp_id",
+                                            as: "reviewCount"
+                                        }
                                     }
+
                                 ]).toArray(function (err, docs) {
                                     if (err) {
                                         console.log(err);
@@ -1998,7 +2016,8 @@ var Customer = {
                                             sp_mobile_no: docs[0].profile.mobile_no,
                                             professional_license: docs[0].userprofile.professional_license,
                                             professional_insurance: docs[0].userprofile.professional_insurance,
-                                            preferred_provider: docs[0].preferred_provider
+                                            preferred_provider: docs[0].preferred_provider,
+                                            reviewCount: docs[0].reviewCount.length
 
                                         };
 
