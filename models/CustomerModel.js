@@ -596,8 +596,8 @@ var Customer = {
                                             foreignField: "sp_id",
                                             as: "reviewCount"
                                         }
-                                    // }, {
-                                    //    $unwind: "$reviewCount"
+                                        // }, {
+                                        //    $unwind: "$reviewCount"
                                     }
                                 ]).toArray(function (err, docs) {
                                     if (err) {
@@ -682,7 +682,7 @@ var Customer = {
                                             professional_license: docs[0].userprofile.professional_license,
                                             professional_insurance: docs[0].userprofile.professional_insurance,
                                             preferred_provider: docs[0].preferred_provider,
-                                             reviewCount: docs[0].reviewCount.length
+                                            reviewCount: docs[0].reviewCount.length
 
                                         };
 
@@ -1422,6 +1422,17 @@ var Customer = {
                     collectionSP.find({tran_id: tran_id}).toArray(function (err, docs) {
                         console.log(docs);
                         var message = "Customer accept rescheduled date."
+
+
+                        var getAmount
+                        if (docs[0].coupon_apply == true) {
+                            getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                        } else {
+                            getAmount = parseFloat(docs[0].sp_net_pay);
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                        }
+
                         comman.sendServiceNotification(docs[0].sp_id, tran_id, message, "Scheduled", "tran");
                     });
                     var status = {
@@ -1775,6 +1786,45 @@ var Customer = {
                                 }
                             });
                         }
+
+
+                        //Credit amount in Kaikili Wallet
+                        if (req.body.sr_status == "Scheduled") {
+                            var getAmount
+                            if (docs[0].coupon_apply == true) {
+                                getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            } else {
+                                getAmount = parseFloat(docs[0].sp_net_pay);
+                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            }
+                        }
+
+
+                        //Credit amount in Kaikili Wallet
+                        if (req.body.sr_status == "Cancel-Scheduled-Cp") {
+                            comman.cuServiceCancellationCharges(docs[0]);
+
+
+                            var getAmount
+                            var canCharges;
+                            if (docs[0].coupon_apply == true) {
+
+
+                                // if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
+                                //     canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+                                // } else {
+                                    canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+                                    getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                // }
+                            } else {
+                                getAmount = parseFloat(docs[0].sp_net_pay);
+                                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount-canCharges, 0, "Debit")
+                            }
+                        }
+
 
                         if (req.body.sr_status == "Cancel-New-Cp" || req.body.sr_status == "Cancel-Scheduled-Cp") {
                             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -2689,6 +2739,9 @@ var Customer = {
                     sp_service_area: user_service.sp_service_area,
                     creationDate: new Date().toUTCString(),
                     sp_view: false,
+                    coupon_code: "",
+                    coupon_apply: false,
+                    coupon_code_discount_amount: "",
                     otp: comman.getRandomInt(9999),
                     service_book_type: user_service.service_book_type,
                 };

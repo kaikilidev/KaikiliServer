@@ -462,8 +462,8 @@ var UserService = {
 
             });
         });
-    }
-    ,
+    },
+
 
     userTransitionUpdate: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -634,6 +634,31 @@ var UserService = {
                             }
                         });
 
+                        //Credit amount in Kaikili Wallet
+                        if (req.body.sr_status == "Scheduled"){
+                            var getAmount
+                            if(docs[0].coupon_apply == true){
+                                getAmount =  parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            }else {
+                                getAmount =  parseFloat(docs[0].sp_net_pay);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            }
+                        }
+
+                        //Credit amount in Kaikili Wallet
+                        if (req.body.sr_status == "Cancel-Scheduled-Sp"){
+                            var getAmount
+                            if(docs[0].coupon_apply == true){
+                                getAmount =  parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount, 0, "Debit")
+                            }else {
+                                getAmount =  parseFloat(docs[0].sp_net_pay);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Debit")
+                            }
+                        }
+
+
                         if (req.body.sr_status == "Rescheduled") {
                             var collectionRescheduled = db.db(config.dbName).collection(config.collections.cu_sp_reschedule);
                             collectionRescheduled.insert(rescheduled, function (err, docs) {
@@ -664,8 +689,7 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
 
     userTransitionCompleted: function (req, callback) {
@@ -793,8 +817,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     getUserCompletedTransition: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -828,8 +852,7 @@ var UserService = {
             });
 
         });
-    }
-    ,
+    },
 
     userAddToServiceReview: function (req, callback) {
 
@@ -896,8 +919,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     userCompletedService: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -958,8 +981,7 @@ var UserService = {
             });
 
         });
-    }
-    ,
+    },
 
     getSingleTransitionInfo: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -994,8 +1016,7 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
 
     userAddBankInfo: function (req, callback) {
@@ -1042,8 +1063,8 @@ var UserService = {
                 });
             });
         });
-    }
-    ,
+    },
+
 
     SPUserBankInfoList: function (req, callback) {
 
@@ -1073,8 +1094,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    } ,
+
 
     SPUserDeleteBankInfo: function (req, callback) {
 
@@ -1105,8 +1126,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     SPUserSetDefaultBankInfo: function (req, callback) {
 
@@ -1152,8 +1173,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     userTransitionCancellation: function (req, callback) {
         var tran_id = req.body.tran_id;
@@ -1199,6 +1220,19 @@ var UserService = {
                             reason: reason,
                             created_on: new Date().toUTCString(),
                         };
+
+
+                        //Credit amount in Kaikili Wallet
+                        if (req.body.sr_status == "Cancel-Scheduled-Sp"){
+                            var getAmount
+                            if(docs[0].coupon_apply == true){
+                                getAmount =  parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount, 0, "Debit")
+                            }else {
+                                getAmount =  parseFloat(docs[0].sp_net_pay);
+                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Debit")
+                            }
+                        }
 
                         if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Cancel-Scheduled-Sp") {
                             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -1254,8 +1288,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     getUserServiceCatalogueData: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -1444,8 +1478,7 @@ var UserService = {
         });
 
 
-    }
-    ,
+    },
 
 
 // Nearest customer find in service provider location and work area 1-6-2019 changed
@@ -1662,8 +1695,7 @@ var UserService = {
                 callback(status);
             }
         });
-    }
-    ,
+    },
 
 
     SPUserShoutingSendCustomerInfo: function (req, callback) {
@@ -1751,8 +1783,7 @@ var UserService = {
             });
         });
 
-    }
-    ,
+    },
 
 
     SPUsergetTowDayData: function (req, callback) {
@@ -1798,8 +1829,7 @@ var UserService = {
         //         }
         //     });
         // });
-    }
-    ,
+    },
 
     // Api Created 18-6-2019 Cancellation Transition Info
     getSingleCancellationTransitionInfo: function (req, callback) {
@@ -1830,13 +1860,11 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
 
 
     // Api Created 22-6-2019 kaikili preferred provider Transition Info
-    postSPupaterPPSInfo: function (req, callback) {
-        var pps_id = req.body.pps_id;
+    postSPupaterPPSInfo: function (req, callback) {     var pps_id = req.body.pps_id;
         var sp_id = req.body.sp_id;
         var statusData = req.body.status;
         console.log(pps_id);
@@ -2009,8 +2037,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     // Api Created 24-6-2019 Preferred Provider Transition Info
     getPreferredProviderInfoCancel: function (req, callback) {
@@ -2040,8 +2068,8 @@ var UserService = {
                 }
             });
         });
-    }
-    ,
+    },
+
 
     // new Api Check Otp - 24-7-2019
     checkServiceOPT: function (req, callback) {
@@ -2322,8 +2350,8 @@ var UserService = {
                 callback(status);
             }
         });
-    }
-    ,
+    },
+
 
     SPUserInterestedSendCustomerInfo: function (req, callback) {
 

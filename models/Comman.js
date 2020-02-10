@@ -1083,6 +1083,70 @@ var Comman = {
 
     },
 
+    // comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
+
+    kaiKiliWalletUpdate(sp_id, cu_id, tran_id, comment, credit, debit, type) {
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
+            // var query = {sp_id: sp_id};
+            var mysort = {updateDate: -1};
+            kkEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
+
+                if (doc.length > 0) {
+
+                    var current;
+                    if (credit > 0) {
+                        current = doc[0].close + credit;
+                    } else {
+                        current = doc[0].close - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        cu_id: cu_id,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+
+                    kkEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
+
+                } else {
+
+                    var current;
+                    if (credit > 0) {
+                        current = 0 + credit;
+                    } else {
+                        current = 0 - debit
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        cu_id: cu_id,
+                        type: type,
+                        tran_id: tran_id,
+                        comment: comment,
+                        opening: 0,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+                    kkEarnWallet.insertOne(paymentBody, function (err, doc) {
+                    });
+                }
+
+            });
+        });
+
+    },
 
     getRandomInt(max) {
         return math.floor(math.random() * math.floor(max));
