@@ -1812,21 +1812,21 @@ var Customer = {
                                 canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
                                 if (docs[0].coupon_apply == true) {
                                     getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
                                     getAmount = parseFloat(docs[0].minimum_charge);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                 }
                             } else {
                                 canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
                                 if (docs[0].coupon_apply == true) {
                                     getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
                                     getAmount = parseFloat(docs[0].sp_net_pay);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                 }
                             }
 
