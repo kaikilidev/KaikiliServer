@@ -636,25 +636,31 @@ var UserService = {
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Scheduled"){
-                            var getAmount
-                            if(docs[0].coupon_apply == true){
-                                getAmount =  parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
-                            }else {
-                                getAmount =  parseFloat(docs[0].sp_net_pay);
-                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
-                            }
+                                comman.kaikiliWalletCreditCustomerAmount(docs[0].tran_id);
                         }
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Sp"){
+                             comman.cuServiceCancellationChargesSP(docs[0]);
+
                             var getAmount
-                            if(docs[0].coupon_apply == true){
-                                getAmount =  parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount, 0, "Debit")
-                            }else {
-                                getAmount =  parseFloat(docs[0].sp_net_pay);
-                                comman.kaiKiliWalletUpdate("",docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Debit")
+                            if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
+                                 if (docs[0].coupon_apply == true) {
+                                    getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount , 0, "Debit")
+                                    // }
+                                } else {
+                                    getAmount = parseFloat(docs[0].minimum_charge);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount , 0, "Debit")
+                                }
+                            } else {
+                                if (docs[0].coupon_apply == true) {
+                                    getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount , 0, "Debit")
+                                } else {
+                                    getAmount = parseFloat(docs[0].sp_net_pay);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount , 0, "Debit")
+                                }
                             }
                         }
 
@@ -1989,7 +1995,10 @@ var UserService = {
                                         sp_id: sp_id,
                                         sp_image: result[0].userprofile.profile_image,
                                         sp_service_area: result[0].userprofile.service_area,
-                                        distance: dist
+                                        distance: dist,
+                                        coupon_code: result[0].coupon_code,
+                                        coupon_apply: result[0].coupon_apply,
+                                        coupon_code_discount_amount: result[0].coupon_code_discount_amount,
                                     }
 
                                     comman.getBookPPService(postJob, function (result) {

@@ -1117,6 +1117,10 @@ var Customer = {
                             cu_used_coupon_code.insertOne(coupon_used);
                         }
 
+                        if (req.body.sr_status == "Scheduled") {
+                            comman.kaikiliWalletCreditCustomerAmount("TR0" + result);
+                        }
+
 
                         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                         collectionNotification.insert(notificationData, function (err, docs) {
@@ -1790,39 +1794,42 @@ var Customer = {
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Scheduled") {
-                            var getAmount
-                            if (docs[0].coupon_apply == true) {
-                                getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
-                            } else {
-                                getAmount = parseFloat(docs[0].sp_net_pay);
-                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
-                            }
+                            comman.kaikiliWalletCreditCustomerAmount(docs[0].tran_id);
                         }
+
+
+
+
 
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Cp") {
                             comman.cuServiceCancellationCharges(docs[0]);
 
-
-                            var getAmount
                             var canCharges;
-                            if (docs[0].coupon_apply == true) {
-
-
-                                // if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
-                                //     canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
-                                // } else {
-                                    canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+                            var getAmount
+                            if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
+                                canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
+                                if (docs[0].coupon_apply == true) {
+                                    getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                    // }
+                                } else {
+                                    getAmount = parseFloat(docs[0].minimum_charge);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                }
+                            } else {
+                                canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
+                                if (docs[0].coupon_apply == true) {
                                     getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
                                     comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
-                                // }
-                            } else {
-                                getAmount = parseFloat(docs[0].sp_net_pay);
-                                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
-                                comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount-canCharges, 0, "Debit")
+                                    // }
+                                } else {
+                                    getAmount = parseFloat(docs[0].sp_net_pay);
+                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", getAmount - canCharges, 0, "Debit")
+                                }
                             }
+
                         }
 
 
