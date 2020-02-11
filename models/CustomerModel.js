@@ -1794,39 +1794,35 @@ var Customer = {
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Scheduled") {
-                            comman.kaikiliWalletCreditCustomerAmount(docs[0].tran_id);
+                            comman.kaikiliWalletCreditCustomerAmount(findRecord[0].tran_id);
                         }
-
-
-
-
 
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Cp") {
-                            comman.cuServiceCancellationCharges(docs[0]);
+                            comman.cuServiceCancellationCharges(findRecord[0]);
 
                             var canCharges;
                             var getAmount
-                            if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
-                                canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
-                                if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                            if (parseFloat(findRecord[0].minimum_charge) > parseFloat(findRecord[0].sp_net_pay)) {
+                                canCharges = (parseFloat(findRecord[0].minimum_charge) * 5) / 100;
+                                if (findRecord[0].coupon_apply == true) {
+                                    getAmount = parseFloat(findRecord[0].minimum_charge) - parseFloat(findRecord[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
-                                    getAmount = parseFloat(docs[0].minimum_charge);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].minimum_charge);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                 }
                             } else {
-                                canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
-                                if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                canCharges = (parseFloat(findRecord[0].sp_net_pay) * 5) / 100;
+                                if (findRecord[0].coupon_apply == true) {
+                                    getAmount = parseFloat(findRecord[0].sp_net_pay) - parseFloat(findRecord[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
-                                    getAmount = parseFloat(docs[0].sp_net_pay);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].sp_net_pay);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
                                 }
                             }
 
