@@ -1431,10 +1431,10 @@ var Customer = {
                         var getAmount
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "New book service user credit amount.", getAmount, 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service user credit amount.", getAmount, 0, "Credit")
                         }
 
                         comman.sendServiceNotification(docs[0].sp_id, tran_id, message, "Scheduled", "tran");
@@ -1808,21 +1808,21 @@ var Customer = {
                                 canCharges = (parseFloat(findRecord[0].minimum_charge) * 5) / 100;
                                 if (findRecord[0].coupon_apply == true) {
                                     getAmount = parseFloat(findRecord[0].minimum_charge) - parseFloat(findRecord[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
                                     getAmount = parseFloat(findRecord[0].minimum_charge);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                 }
                             } else {
                                 canCharges = (parseFloat(findRecord[0].sp_net_pay) * 5) / 100;
                                 if (findRecord[0].coupon_apply == true) {
                                     getAmount = parseFloat(findRecord[0].sp_net_pay) - parseFloat(findRecord[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                     // }
                                 } else {
                                     getAmount = parseFloat(findRecord[0].sp_net_pay);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id,findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                 }
                             }
 
@@ -2587,7 +2587,9 @@ var Customer = {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var bankdata = db.db(config.dbName).collection(config.collections.cu_bank_info);
+            var kaikiliWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
             var mysort = {creationDate: -1};
+                var mysort1 = {updateDate: -1};
 
             bankdata.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
@@ -2599,13 +2601,31 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
-                    var status = {
-                        status: 1,
-                        message: "Thank you.",
-                        data: docs
-                    };
-                    console.log();
-                    callback(status);
+
+                    kaikiliWallet.find({cu_id: cu_id}).sort(mysort1).toArray(function (err, payment) {
+                        if (err) {
+                            var status = {
+                                status: 1,
+                                message: "Thank you.",
+                                data: docs,
+                                payment: []
+
+                            };
+                            console.log();
+                            callback(status);
+
+                        }else {
+                            var status = {
+                                status: 1,
+                                message: "Thank you.",
+                                data: docs,
+                                payment: payment
+
+                            };
+                            console.log();
+                            callback(status);
+                        }
+                    });
                 }
             });
         });

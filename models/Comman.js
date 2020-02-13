@@ -1093,7 +1093,7 @@ var Comman = {
 
     // comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
 
-    kaiKiliWalletUpdate(sp_id, cu_id, tran_id, comment, credit, debit, type) {
+    kaiKiliWalletUpdate(sp_id, cu_id, tran_id,sr_title, comment, credit, debit, type) {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
@@ -1115,6 +1115,7 @@ var Comman = {
                         cu_id: cu_id,
                         type: type,
                         tran_id: tran_id,
+                        sr_title: sr_title,
                         comment: comment,
                         opening: doc[0].close,
                         credit: credit,
@@ -1140,6 +1141,7 @@ var Comman = {
                         cu_id: cu_id,
                         type: type,
                         tran_id: tran_id,
+                        sr_title:sr_title,
                         comment: comment,
                         opening: 0,
                         credit: credit,
@@ -2102,19 +2104,19 @@ var Comman = {
                                     if (parseFloat(element.minimum_charge) > parseFloat(element.sp_net_pay)) {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.",0, getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.",0, getAmount,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.", 0,getAmount,  "Debit")
                                         }
                                     } else {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.", 0,getAmount,  "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.",0,  getAmount, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.",0,  getAmount, "Debit")
                                         }
                                     }
 
@@ -2144,20 +2146,20 @@ var Comman = {
                                         canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount - canCharges, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0, getAmount - canCharges, "Debit")
                                         }
                                     } else {
                                         canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount - canCharges, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0, getAmount - canCharges, "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                         }
                                     }
 
@@ -2186,19 +2188,19 @@ var Comman = {
                                     if (parseFloat(element.minimum_charge) > parseFloat(element.sp_net_pay)) {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.",0, getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.",0, getAmount,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.", 0,getAmount,  "Debit")
                                         }
                                     } else {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.",0, getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.",0, getAmount,  "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.", 0, getAmount, "Debit")
                                         }
                                     }
 
@@ -2228,20 +2230,20 @@ var Comman = {
                                         canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount - canCharges, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Customer no replay. Auto cancel service give back amount to customer account.", 0, getAmount - canCharges, "Debit")
                                         }
                                     } else {
                                         canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                         }
                                     }
 
@@ -2291,19 +2293,19 @@ var Comman = {
                                     if (parseFloat(element.minimum_charge) > parseFloat(element.sp_net_pay)) {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.", 0,getAmount,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Service provider no replay. Auto cancel service give back amount to customer account.", 0, getAmount,  "Debit")
                                         }
                                     } else {
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0, getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.", 0, getAmount,  "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.",0,getAmount,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title, "Service provider no replay. Auto cancel service give back amount to customer account.",0,getAmount,  "Debit")
                                         }
                                     }
 
@@ -2334,20 +2336,20 @@ var Comman = {
                                         canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.minimum_charge) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                             // }
                                         } else {
                                             getAmount = parseFloat(element.minimum_charge);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges, "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id,element.sr_title ,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges, "Debit")
                                         }
                                     } else {
                                         canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
                                         if (element.coupon_apply == true) {
                                             getAmount = parseFloat(element.sp_net_pay) - parseFloat(element.coupon_code_discount_amount);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                         } else {
                                             getAmount = parseFloat(element.sp_net_pay);
-                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, "Service provider cancel service give back amount to customer.", 0,getAmount - canCharges,  "Debit")
+                                            module.exports.kaiKiliWalletUpdate("", element.cust_id, element.tran_id, element.sr_title,"Customer no replay. Auto cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
                                         }
                                     }
 
@@ -2637,19 +2639,19 @@ var Comman = {
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount, 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "New book service, Customer credit amount.", getAmount, 0, "Credit")
                         }
 
                     }else{
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount, 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, "New book service user credit amount.", getAmount, 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount, 0, "Credit")
                         }
                     }
 
