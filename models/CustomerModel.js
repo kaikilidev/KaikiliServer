@@ -665,8 +665,8 @@ var Customer = {
                                             totalCost: totalCost,
                                             kaikili_commission: docs[0].services.sr_commission,
                                             itemCost: newItemCost,
-                                            discountGive: discountGive,
-                                            discountAfterPrice: discountAfterPrice,
+                                            discountGive: discountGive.toFixed(2),
+                                            discountAfterPrice: discountAfterPrice.toFixed(2),
                                             dist: element.dist,
                                             sp_about: docs[0].userprofile.about_sp_profile,
                                             sp_workImage: docs[0].userprofile.workImages,
@@ -1430,11 +1430,11 @@ var Customer = {
 
                         var getAmount
                         if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "New book service user credit amount.", getAmount, 0, "Credit")
+                            getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "New book service user credit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
-                            getAmount = parseFloat(docs[0].sp_net_pay);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service user credit amount.", getAmount, 0, "Credit")
+                            getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2);
+                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service user credit amount.", getAmount.toFixed(2), 0, "Credit")
                         }
 
                         comman.sendServiceNotification(docs[0].sp_id, tran_id, message, "Scheduled", "tran");
@@ -1804,25 +1804,25 @@ var Customer = {
 
                             var canCharges;
                             var getAmount
-                            if (parseFloat(findRecord[0].minimum_charge) > parseFloat(findRecord[0].sp_net_pay)) {
+                            if (parseFloat(findRecord[0].minimum_charge).toFixed(2) > parseFloat(findRecord[0].sp_net_pay).toFixed(2)) {
                                 canCharges = (parseFloat(findRecord[0].minimum_charge) * 5) / 100;
                                 if (findRecord[0].coupon_apply == true) {
-                                    getAmount = parseFloat(findRecord[0].minimum_charge) - parseFloat(findRecord[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].minimum_charge).toFixed(2) - parseFloat(findRecord[0].coupon_code_discount_amount).toFixed(2);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                                     // }
                                 } else {
-                                    getAmount = parseFloat(findRecord[0].minimum_charge);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].minimum_charge).toFixed(2);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                                 }
                             } else {
                                 canCharges = (parseFloat(findRecord[0].sp_net_pay) * 5) / 100;
                                 if (findRecord[0].coupon_apply == true) {
-                                    getAmount = parseFloat(findRecord[0].sp_net_pay) - parseFloat(findRecord[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].sp_net_pay).toFixed(2) - parseFloat(findRecord[0].coupon_code_discount_amount);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                                     // }
                                 } else {
-                                    getAmount = parseFloat(findRecord[0].sp_net_pay);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id,findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,getAmount - canCharges,  "Debit")
+                                    getAmount = parseFloat(findRecord[0].sp_net_pay).toFixed(2);
+                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id,findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                                 }
                             }
 
