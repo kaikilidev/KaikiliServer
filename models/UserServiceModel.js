@@ -815,7 +815,7 @@ var UserService = {
         comman.spCurrentBalance(sp_id, function (currentBalance) {
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var mysort = {updateDate: -1};
-                var collection = db.db(config.dbName).collection(config.collections.cu_sp_payment_settlement);
+                var collection = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
                 console.log(err);
                 collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
                     if (err) {
