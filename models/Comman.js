@@ -961,9 +961,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = doc[0].close + credit;
+                        current = parseFloat(doc[0].close) + parseFloat(credit);
                     } else {
-                        current = doc[0].close - debit
+                        current = parseFloat(doc[0].close) - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -971,10 +971,10 @@ var Comman = {
                         type: type,
                         tran_id: tran_id,
                         comment: comment,
-                        opening: doc[0].close,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        opening: doc[0].close.toFixed(2),
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
 
@@ -985,9 +985,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = 0 + credit;
+                        current = 0 + parseFloat(credit);
                     } else {
-                        current = 0 - debit
+                        current = 0 - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -996,9 +996,9 @@ var Comman = {
                         tran_id: tran_id,
                         comment: comment,
                         opening: 0,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -1042,9 +1042,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = doc[0].close + credit;
+                        current = parseFloat(doc[0].close) + parseFloat(credit);
                     } else {
-                        current = doc[0].close - debit
+                        current = parseFloat(doc[0].close) - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -1052,10 +1052,10 @@ var Comman = {
                         type: type,
                         tran_id: tran_id,
                         comment: comment,
-                        opening: doc[0].close,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        opening: doc[0].close.toFixed(2),
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
 
@@ -1066,9 +1066,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = 0 + credit;
+                        current = 0 + parseFloat(credit);
                     } else {
-                        current = 0 - debit
+                        current = 0 - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -1077,9 +1077,9 @@ var Comman = {
                         tran_id: tran_id,
                         comment: comment,
                         opening: 0,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -2540,9 +2540,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = doc[0].close + credit;
+                        current = parseFloat(doc[0].close) + parseFloat(credit);
                     } else {
-                        current = doc[0].close - debit
+                        current = parseFloat(doc[0].close) - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -2552,10 +2552,10 @@ var Comman = {
                         tran_id: tran_id,
                         sr_title: sr_title,
                         comment: comment,
-                        opening: doc[0].close,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        opening: doc[0].close.toFixed(2),
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
 
@@ -2566,9 +2566,9 @@ var Comman = {
 
                     var current;
                     if (credit > 0) {
-                        current = 0 + credit;
+                        current = 0 + parseFloat(credit);
                     } else {
-                        current = 0 - debit
+                        current = 0 - parseFloat(debit);
                     }
 
                     var paymentBody = {
@@ -2579,9 +2579,9 @@ var Comman = {
                         sr_title:sr_title,
                         comment: comment,
                         opening: 0,
-                        credit: credit,
-                        debit: debit,
-                        close: current,
+                        credit: credit.toFixed(2),
+                        debit: debit.toFixed(2),
+                        close: current.toFixed(2),
                         updateDate: new Date().toUTCString()
                     }
                     kkEarnWallet.insertOne(paymentBody, function (err, doc) {
