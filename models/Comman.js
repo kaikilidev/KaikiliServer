@@ -2502,7 +2502,7 @@ var Comman = {
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id,docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
 
                         } else {
-                            getAmount = parseFloat(findRecord[0].minimum_charge);
+                            getAmount = parseFloat(docs[0].minimum_charge);
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                         }
                     } else {
@@ -2517,7 +2517,7 @@ var Comman = {
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                             // }
                         } else {
-                            getAmount = parseFloat(findRecord[0].sp_net_pay);
+                            getAmount = parseFloat(docs[0].sp_net_pay);
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
                         }
                     }

@@ -1213,7 +1213,12 @@ var UserService = {
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Sp"){
-                            if(reason == "Other"){
+                            if(reason != "Family Emergency"
+                                && reason != "Schedule Conflict"
+                                && reason != "Hospitalized"
+                                && reason != "Due to weather conditions"
+                                && reason != "Vehicle Repair"
+                            ){
                                comman.cuServiceCancellationChargesSP(docs[0]);
                             }
                             comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id,false);
