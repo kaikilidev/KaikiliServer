@@ -1860,6 +1860,7 @@ var Comman = {
 
             };
             service_cancellation.insertOne(messagesBody);
+            module.exports.spEranInfoUpdate(docs.sp_id,docs.tran_id, "Service provider cancel service.", 0, canCharges, "Debit")
         });
     },
 
@@ -1899,6 +1900,8 @@ var Comman = {
 
             };
             service_cancellation.insertOne(messagesBody);
+            module.exports.spEranInfoUpdate(docs.sp_id,docs.tran_id, "Service provider cancel service : Cancel-Progress-Auto", 0, canCharges, "Debit")
+
         });
     },
 
@@ -2489,21 +2492,34 @@ var Comman = {
                 } else {
 
                     var canCharges;
-                    var getAmount
+                    var getAmount;
+                    var comment;
                     if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
                         if (cancelCR == true) {
                             canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
+                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                                comment = "Customer Auto cancel service give back amount to customer account.";
+                            }else {
+                                comment = "Customer cancel service give back amount to customer account.";
+                            }
+
                         }else {
                             canCharges = 0;
+                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                                comment = "Service provider Auto cancel service give back amount to customer account.";
+                            }else {
+                                comment = "Service provider cancel service give back amount to customer account.";
+                            }
+
                         }
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id,docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id,docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
 
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
                         }
                     } else {
                         if (cancelCR == true) {
@@ -2514,11 +2530,11 @@ var Comman = {
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
                             // }
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
                         }
                     }
 
