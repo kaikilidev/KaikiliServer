@@ -637,13 +637,14 @@ var UserService = {
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Scheduled"){
-                                comman.kaikiliWalletCreditCustomerAmount(docs[0].tran_id);
+                            console.log("add kaikili wallet balenc");
+                                comman.kaikiliWalletCreditCustomerAmount(tran_id);
                         }
 
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Sp"){
                              comman.cuServiceCancellationChargesSP(docs[0]);
-                             comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id,false);
+                             comman.kaikiliWalletDebitCustomerAmount(tran_id,false);
                         }
 
 

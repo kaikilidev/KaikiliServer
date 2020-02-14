@@ -971,10 +971,10 @@ var Comman = {
                         type: type,
                         tran_id: tran_id,
                         comment: comment,
-                        opening: doc[0].close.toFixed(2),
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
 
@@ -996,9 +996,9 @@ var Comman = {
                         tran_id: tran_id,
                         comment: comment,
                         opening: 0,
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -1052,10 +1052,10 @@ var Comman = {
                         type: type,
                         tran_id: tran_id,
                         comment: comment,
-                        opening: doc[0].close.toFixed(2),
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
 
@@ -1077,9 +1077,9 @@ var Comman = {
                         tran_id: tran_id,
                         comment: comment,
                         opening: 0,
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
                     spEarnWallet.insertOne(paymentBody, function (err, doc) {
@@ -2447,8 +2447,11 @@ var Comman = {
 
             collection.find({tran_id: tran_id}).toArray(function (err, docs) {
                 if (err) {
+                    console.log(err);
                 } else {
                     var getAmount
+                    console.log("add kaikili wallet balenc");
+
                     if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
 
                         if (docs[0].coupon_apply == true) {
@@ -2552,10 +2555,10 @@ var Comman = {
                         tran_id: tran_id,
                         sr_title: sr_title,
                         comment: comment,
-                        opening: doc[0].close.toFixed(2),
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
 
@@ -2579,9 +2582,9 @@ var Comman = {
                         sr_title:sr_title,
                         comment: comment,
                         opening: 0,
-                        credit: credit.toFixed(2),
-                        debit: debit.toFixed(2),
-                        close: current.toFixed(2),
+                        credit: credit,
+                        debit: debit,
+                        close: current,
                         updateDate: new Date().toUTCString()
                     }
                     kkEarnWallet.insertOne(paymentBody, function (err, doc) {
