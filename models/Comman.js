@@ -2570,10 +2570,10 @@ var Comman = {
                 if (err) {
                 } else {
                     var getAmount
-                    if (parseFloat(docs[0].minimum_charge).toFixed(2) > parseFloat(docs[0].sp_net_pay).toFixed(2)) {
+                    if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
 
                         if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].minimum_charge).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
+                            getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
@@ -2582,7 +2582,7 @@ var Comman = {
 
                     }else{
                         if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
+                            getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
                             module.exports.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);

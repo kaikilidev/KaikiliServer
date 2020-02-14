@@ -477,6 +477,7 @@ var UserService = {
             updateDate: new Date().toUTCString()
         };
 
+
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
