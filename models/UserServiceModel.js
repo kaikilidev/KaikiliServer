@@ -643,26 +643,7 @@ var UserService = {
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Sp"){
                              comman.cuServiceCancellationChargesSP(docs[0]);
-
-                            var getAmount
-                            if (parseFloat(docs[0].minimum_charge).toFixed(2) > parseFloat(docs[0].sp_net_pay).toFixed(2)) {
-                                 if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].minimum_charge).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "Service provider cancel service give back amount to customer.", getAmount.toFixed(2) , 0, "Debit")
-                                    // }
-                                } else {
-                                    getAmount = parseFloat(docs[0].minimum_charge).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"Service provider cancel service give back amount to customer.", getAmount.toFixed(2) , 0, "Debit")
-                                }
-                            } else {
-                                if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"Service provider cancel service give back amount to customer.", getAmount.toFixed(2) , 0, "Debit")
-                                } else {
-                                    getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"Service provider cancel service give back amount to customer.", getAmount.toFixed(2) , 0, "Debit")
-                                }
-                            }
+                             comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id,false);
                         }
 
 
@@ -1234,27 +1215,9 @@ var UserService = {
                             if(reason == "Other"){
                                comman.cuServiceCancellationChargesSP(docs[0]);
                             }
-
-                            var getAmount
-                            if (parseFloat(docs[0].minimum_charge).toFixed(2) > parseFloat(docs[0].sp_net_pay).toFixed(2)) {
-                                if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].minimum_charge).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,  docs[0].sr_title,"Service provider cancel service give back amount to customer.", 0, getAmount.toFixed(2), "Debit")
-                                    // }
-                                } else {
-                                    getAmount = parseFloat(element.minimum_charge).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,  docs[0].sr_title,"Service provider cancel service give back amount to customer.", 0, getAmount.toFixed(2), "Debit")
-                                }
-                            } else {
-                                if (docs[0].coupon_apply == true) {
-                                    getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,  docs[0].sr_title,"Service provider cancel service give back amount to customer.", 0, getAmount.toFixed(2), "Debit")
-                                } else {
-                                    getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,  docs[0].sr_title,"Service provider cancel service give back amount to customer.", 0, getAmount.toFixed(2), "Debit")
-                                }
-                            }
+                            comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id,false);
                         }
+
 
                         if (req.body.sr_status == "Cancel-New-Sp" || req.body.sr_status == "Cancel-Scheduled-Sp") {
                             var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);

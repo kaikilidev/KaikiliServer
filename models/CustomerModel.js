@@ -1426,17 +1426,7 @@ var Customer = {
                     collectionSP.find({tran_id: tran_id}).toArray(function (err, docs) {
                         console.log(docs);
                         var message = "Customer accept rescheduled date."
-
-
-                        var getAmount
-                        if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2) - parseFloat(docs[0].coupon_code_discount_amount).toFixed(2);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id,docs[0].sr_title, "New book service user credit amount.", getAmount.toFixed(2), 0, "Credit")
-                        } else {
-                            getAmount = parseFloat(docs[0].sp_net_pay).toFixed(2);
-                            comman.kaiKiliWalletUpdate("", docs[0].cust_id, docs[0].tran_id, docs[0].sr_title,"New book service user credit amount.", getAmount.toFixed(2), 0, "Credit")
-                        }
-
+                        comman.kaikiliWalletCreditCustomerAmount(docs[0].tran_id);
                         comman.sendServiceNotification(docs[0].sp_id, tran_id, message, "Scheduled", "tran");
                     });
                     var status = {
@@ -1802,31 +1792,7 @@ var Customer = {
                         //Credit amount in Kaikili Wallet
                         if (req.body.sr_status == "Cancel-Scheduled-Cp") {
                             comman.cuServiceCancellationCharges(findRecord[0]);
-
-                            var canCharges;
-                            var getAmount
-                            if (parseFloat(findRecord[0].minimum_charge).toFixed(2) > parseFloat(findRecord[0].sp_net_pay).toFixed(2)) {
-                                canCharges = (parseFloat(findRecord[0].minimum_charge) * 5) / 100;
-                                if (findRecord[0].coupon_apply == true) {
-                                    getAmount = parseFloat(findRecord[0].minimum_charge).toFixed(2) - parseFloat(findRecord[0].coupon_code_discount_amount).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id,findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
-                                    // }
-                                } else {
-                                    getAmount = parseFloat(findRecord[0].minimum_charge).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
-                                }
-                            } else {
-                                canCharges = (parseFloat(findRecord[0].sp_net_pay) * 5) / 100;
-                                if (findRecord[0].coupon_apply == true) {
-                                    getAmount = parseFloat(findRecord[0].sp_net_pay).toFixed(2) - parseFloat(findRecord[0].coupon_code_discount_amount);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id, findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
-                                    // }
-                                } else {
-                                    getAmount = parseFloat(findRecord[0].sp_net_pay).toFixed(2);
-                                    comman.kaiKiliWalletUpdate("", findRecord[0].cust_id, findRecord[0].tran_id,findRecord[0].sr_title, "Customer cancel service give back amount to customer account.", 0,(getAmount - canCharges).toFixed(2),  "Debit")
-                                }
-                            }
-
+                            comman.kaikiliWalletDebitCustomerAmount(findRecord[0].tran_id,true)
                         }
 
 
