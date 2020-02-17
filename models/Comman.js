@@ -935,7 +935,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
             var query = {sp_id: sp_id};
-            var mysort = {updateDate: -1};
+            var mysort = {_id :-1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
                 console.log("---->" + doc.length);

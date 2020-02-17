@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UserServiceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UserServiceModel.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="247" column="33" lean-forward="true" selection-start-line="247" selection-start-column="33" selection-end-line="247" selection-end-column="33" />
+            <state relative-caret-position="253">
+              <caret line="160" column="34" lean-forward="true" selection-start-line="160" selection-start-column="34" selection-end-line="160" selection-end-column="34" />
               <folding>
                 <element signature="e#7123#7443#0" />
                 <element signature="e#7515#7839#0" />
@@ -77,11 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="1084" column="61" lean-forward="true" selection-start-line="1083" selection-start-column="32" selection-end-line="1084" selection-end-column="61" />
+            <state relative-caret-position="143">
+              <caret line="814" column="27" lean-forward="true" selection-start-line="814" selection-start-column="27" selection-end-line="814" selection-end-column="27" />
               <folding>
                 <element signature="e#432#8404#0" />
                 <element signature="e#8452#9580#0" />
@@ -93,16 +93,17 @@
                 <element signature="e#44427#46228#0" />
                 <element signature="e#47284#48343#0" />
                 <element signature="e#48402#50182#0" />
+                <element signature="e#119523#122879#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="933" column="16" selection-start-line="933" selection-start-column="16" selection-end-line="933" selection-end-column="16" />
+            <state relative-caret-position="73">
+              <caret line="937" column="26" selection-start-line="937" selection-start-column="26" selection-end-line="937" selection-end-column="26" />
               <folding>
                 <element signature="e#11494#13178#0" />
                 <element signature="e#13253#15651#0" />
@@ -110,6 +111,25 @@
                 <element signature="e#23455#27688#0" />
                 <element signature="e#27838#32150#0" />
                 <element signature="e#27923#32142#0" />
+                <element signature="e#41731#43806#0" />
+                <element signature="e#43871#44422#0" />
+                <element signature="e#44498#46573#0" />
+                <element signature="e#46742#56193#0" />
+                <element signature="e#56231#57807#0" />
+                <element signature="e#57866#59233#0" />
+                <element signature="e#59343#61493#0" />
+                <element signature="e#62590#66846#0" />
+                <element signature="e#66932#80802#0" />
+                <element signature="e#80874#82962#0" />
+                <element signature="e#83010#83383#0" />
+                <element signature="e#83426#84957#0" />
+                <element signature="e#85002#86662#0" />
+                <element signature="e#86715#88400#0" />
+                <element signature="e#88427#114851#0" />
+                <element signature="e#114898#116330#0" />
+                <element signature="e#116412#117311#0" />
+                <element signature="e#117395#118609#0" />
+                <element signature="e#118731#120806#0" />
               </folding>
             </state>
           </provider>
@@ -170,7 +190,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>service_book_type</find>
       <find>kaikiliWalletCreditCustomerAmount</find>
       <find>canCharges</find>
       <find>CUUserBankInfoList</find>
@@ -182,7 +201,6 @@
       <find>$unwind</find>
       <find>searchSProvider</find>
       <find>reviewCount</find>
-      <find>spEranInfoUpdate</find>
       <find>Cancel-Scheduled-Cp</find>
       <find>customerToServiceReview</find>
       <find>userTransitionUpdate</find>
@@ -197,8 +215,10 @@
       <find>userTransitionCompleted</find>
       <find>kaiKiliWalletUpdate</find>
       <find>Auto</find>
-      <find>getUserCompletedTransition</find>
       <find>SPUserBankInfoList</find>
+      <find>SPUserCashOutBank</find>
+      <find>spEranInfoUpdate</find>
+      <find>getUserCompletedTransition</find>
       <find>spCurrentBalance</find>
     </findStrings>
     <replaceStrings>
@@ -236,7 +256,6 @@
         <option value="$PROJECT_DIR$/models/Multer-settings.js" />
         <option value="$PROJECT_DIR$/models/SubServiceModel.js" />
         <option value="$PROJECT_DIR$/models/UsersModel.js" />
-        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$APPLICATION_CONFIG_DIR$/phpstorm64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/routes/testNew.js" />
@@ -244,9 +263,10 @@
         <option value="$PROJECT_DIR$/db_config.json" />
         <option value="$PROJECT_DIR$/Note" />
         <option value="$PROJECT_DIR$/models/CustomerModel.js" />
-        <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
+        <option value="$PROJECT_DIR$/models/Comman.js" />
       </list>
     </option>
   </component>
@@ -674,21 +694,7 @@
       <workItem from="1581506583832" duration="1663000" />
       <workItem from="1581530417657" duration="578000" />
       <workItem from="1581581015234" duration="32253000" />
-      <workItem from="1581922836068" duration="6261000" />
-    </task>
-    <task id="LOCAL-00388" summary="Add New Api">
-      <created>1576912761708</created>
-      <option name="number" value="00388" />
-      <option name="presentableId" value="LOCAL-00388" />
-      <option name="project" value="LOCAL" />
-      <updated>1576912761709</updated>
-    </task>
-    <task id="LOCAL-00389" summary="Add New Api">
-      <created>1576920426112</created>
-      <option name="number" value="00389" />
-      <option name="presentableId" value="LOCAL-00389" />
-      <option name="project" value="LOCAL" />
-      <updated>1576920426113</updated>
+      <workItem from="1581922836068" duration="9740000" />
     </task>
     <task id="LOCAL-00390" summary="Add New Api">
       <created>1577194593999</created>
@@ -1019,11 +1025,25 @@
       <option name="project" value="LOCAL" />
       <updated>1581690919672</updated>
     </task>
-    <option name="localTasksCounter" value="437" />
+    <task id="LOCAL-00437" summary="Add New Api">
+      <created>1581941698096</created>
+      <option name="number" value="00437" />
+      <option name="presentableId" value="LOCAL-00437" />
+      <option name="project" value="LOCAL" />
+      <updated>1581941698097</updated>
+    </task>
+    <task id="LOCAL-00438" summary="Add New Api">
+      <created>1581943999906</created>
+      <option name="number" value="00438" />
+      <option name="presentableId" value="LOCAL-00438" />
+      <option name="project" value="LOCAL" />
+      <updated>1581943999906</updated>
+    </task>
+    <option name="localTasksCounter" value="439" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1687743000" />
+    <option name="totallyTimeSpent" value="1691222000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1036,14 +1056,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="npm" order="1" sideWeight="0.50141644" side_tool="true" weight="0.20201342" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="3" sideWeight="0.49858356" visible="true" weight="0.24228188" />
+      <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49858356" weight="0.24228188" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49597314" weight="0.5779037" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49597314" visible="true" weight="0.5779037" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398017" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1526,8 +1547,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="247" column="33" lean-forward="true" selection-start-line="247" selection-start-column="33" selection-end-line="247" selection-end-column="33" />
+        <state relative-caret-position="253">
+          <caret line="160" column="34" lean-forward="true" selection-start-line="160" selection-start-column="34" selection-end-line="160" selection-end-column="34" />
           <folding>
             <element signature="e#7123#7443#0" />
             <element signature="e#7515#7839#0" />
@@ -1535,25 +1556,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/Comman.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="933" column="16" selection-start-line="933" selection-start-column="16" selection-end-line="933" selection-end-column="16" />
-          <folding>
-            <element signature="e#11494#13178#0" />
-            <element signature="e#13253#15651#0" />
-            <element signature="e#15725#18142#0" />
-            <element signature="e#23455#27688#0" />
-            <element signature="e#27838#32150#0" />
-            <element signature="e#27923#32142#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/UserServiceModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="1084" column="61" lean-forward="true" selection-start-line="1083" selection-start-column="32" selection-end-line="1084" selection-end-column="61" />
+        <state relative-caret-position="143">
+          <caret line="814" column="27" lean-forward="true" selection-start-line="814" selection-start-column="27" selection-end-line="814" selection-end-column="27" />
           <folding>
             <element signature="e#432#8404#0" />
             <element signature="e#8452#9580#0" />
@@ -1565,6 +1571,41 @@
             <element signature="e#44427#46228#0" />
             <element signature="e#47284#48343#0" />
             <element signature="e#48402#50182#0" />
+            <element signature="e#119523#122879#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Comman.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="937" column="26" selection-start-line="937" selection-start-column="26" selection-end-line="937" selection-end-column="26" />
+          <folding>
+            <element signature="e#11494#13178#0" />
+            <element signature="e#13253#15651#0" />
+            <element signature="e#15725#18142#0" />
+            <element signature="e#23455#27688#0" />
+            <element signature="e#27838#32150#0" />
+            <element signature="e#27923#32142#0" />
+            <element signature="e#41731#43806#0" />
+            <element signature="e#43871#44422#0" />
+            <element signature="e#44498#46573#0" />
+            <element signature="e#46742#56193#0" />
+            <element signature="e#56231#57807#0" />
+            <element signature="e#57866#59233#0" />
+            <element signature="e#59343#61493#0" />
+            <element signature="e#62590#66846#0" />
+            <element signature="e#66932#80802#0" />
+            <element signature="e#80874#82962#0" />
+            <element signature="e#83010#83383#0" />
+            <element signature="e#83426#84957#0" />
+            <element signature="e#85002#86662#0" />
+            <element signature="e#86715#88400#0" />
+            <element signature="e#88427#114851#0" />
+            <element signature="e#114898#116330#0" />
+            <element signature="e#116412#117311#0" />
+            <element signature="e#117395#118609#0" />
+            <element signature="e#118731#120806#0" />
           </folding>
         </state>
       </provider>

@@ -814,7 +814,7 @@ var UserService = {
         console.log(sp_id);
         comman.spCurrentBalance(sp_id, function (currentBalance) {
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                var mysort = {updateDate: -1};
+                var mysort = {_id: -1};
                 var collection = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
                 console.log(err);
                 collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
@@ -2532,8 +2532,8 @@ var UserService = {
         var sp_id = req.body.sp_id;
         var cash_out = req.body.cash_out;
 
-        comman.spEranInfoUpdate(sp_id, "", "Cash Out to user", 0, cash_out, "Debit");
-        comman.kaiKiliWalletUpdate(sp_id,"","", "Cash Out", "Cash Out to service provider", 0,cash_out,  "Debit")
+        comman.spEranInfoUpdate(sp_id, "", "Cash out to user", 0, cash_out, "Debit");
+        comman.kaiKiliWalletUpdate(sp_id,"","", "Cash Out", "Cash out to service provider", 0,cash_out,  "Debit")
 
         var status = {
             status: 1,
