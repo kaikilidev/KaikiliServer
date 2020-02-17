@@ -2528,6 +2528,21 @@ var UserService = {
         });
     },
 
+    SPcashOutToBanck: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var cash_out = req.body.cash_out;
 
+        comman.spEranInfoUpdate(sp_id, "", "Cash Out to user", 0, cash_out, "Debit");
+        comman.kaiKiliWalletUpdate(sp_id,"","", "Cash Out", "Cash Out to service provider", 0,cash_out,  "Debit")
+
+        var status = {
+            status: 1,
+            message: "Successfully update information ",
+
+        };
+        console.log(status);
+        callback(status);
+
+    },
 }
 module.exports = UserService;
