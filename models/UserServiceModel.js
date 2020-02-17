@@ -407,7 +407,7 @@ var UserService = {
                     cu_delte: "0",
                     sp_read: "0",
                     cu_read: "0",
-                    created_on:new Date().toISOString(),
+                    created_on: new Date().toISOString(),
                     body: body
                 };
 
@@ -636,15 +636,15 @@ var UserService = {
                         });
 
                         //Credit amount in Kaikili Wallet
-                        if (req.body.sr_status == "Scheduled"){
+                        if (req.body.sr_status == "Scheduled") {
                             console.log("add kaikili wallet balenc");
-                                comman.kaikiliWalletCreditCustomerAmount(tran_id);
+                            comman.kaikiliWalletCreditCustomerAmount(tran_id);
                         }
 
                         //Credit amount in Kaikili Wallet
-                        if (req.body.sr_status == "Cancel-Scheduled-Sp"){
-                             comman.cuServiceCancellationChargesSP(docs[0]);
-                             comman.kaikiliWalletDebitCustomerAmount(tran_id,false);
+                        if (req.body.sr_status == "Cancel-Scheduled-Sp") {
+                            comman.cuServiceCancellationChargesSP(docs[0]);
+                            comman.kaikiliWalletDebitCustomerAmount(tran_id, false);
                         }
 
 
@@ -1059,31 +1059,40 @@ var UserService = {
 
         var sp_id = req.body.sp_id;
 
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
-            var mysort = {creationDate: -1};
+        comman.spCurrentBalance(sp_id, function (currentBalance) {
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
+                var spProfileData = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+                var mysort = {creationDate: -1};
+                spProfileData.findOne({sp_id: sp_id}, function (err, docsSP) {
+                    bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "No Bank information.",
+                                service_count: docsSP.service_count,
+                                currentBalance:currentBalance
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Thank you.",
+                                data: docs,
+                                service_count: docsSP.service_count,
+                                currentBalance:currentBalance
 
-            bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
-                if (err) {
-                    console.log(err);
-                    var status = {
-                        status: 0,
-                        message: "l  "
-                    };
-                    console.log(status);
-                    callback(status);
-                } else {
-                    var status = {
-                        status: 1,
-                        message: "Thank you.",
-                        data: docs
-                    };
-                    console.log();
-                    callback(status);
-                }
+                            };
+                            console.log();
+                            callback(status);
+                        }
+                    });
+                });
             });
         });
-    } ,
+    },
 
 
     SPUserDeleteBankInfo: function (req, callback) {
@@ -1212,16 +1221,16 @@ var UserService = {
 
 
                         //Credit amount in Kaikili Wallet
-                        if (req.body.sr_status == "Cancel-Scheduled-Sp"){
-                            if(reason != "Family Emergency"
+                        if (req.body.sr_status == "Cancel-Scheduled-Sp") {
+                            if (reason != "Family Emergency"
                                 && reason != "Schedule Conflict"
                                 && reason != "Hospitalized"
                                 && reason != "Due to weather conditions"
                                 && reason != "Vehicle Repair"
-                            ){
-                               comman.cuServiceCancellationChargesSP(docs[0]);
+                            ) {
+                                comman.cuServiceCancellationChargesSP(docs[0]);
                             }
-                            comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id,false);
+                            comman.kaikiliWalletDebitCustomerAmount(docs[0].tran_id, false);
                         }
 
 
@@ -1855,7 +1864,8 @@ var UserService = {
 
 
     // Api Created 22-6-2019 kaikili preferred provider Transition Info
-    postSPupaterPPSInfo: function (req, callback) {     var pps_id = req.body.pps_id;
+    postSPupaterPPSInfo: function (req, callback) {
+        var pps_id = req.body.pps_id;
         var sp_id = req.body.sp_id;
         var statusData = req.body.status;
         console.log(pps_id);
@@ -2517,7 +2527,6 @@ var UserService = {
 
         });
     },
-
 
 
 }
