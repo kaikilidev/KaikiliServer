@@ -1214,6 +1214,7 @@ var UserService = {
                         var cancellation = {
                             sp_id: docs[0].sp_id,
                             sr_id: docs[0].sr_id,
+                            sr_title: docs[0].sr_title,
                             cust_id: docs[0].cust_id,
                             tran_id: docs[0].tran_id,
                             reason: reason,
