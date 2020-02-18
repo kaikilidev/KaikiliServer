@@ -1063,7 +1063,8 @@ var UserService = {
             mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
                 var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
                 var spProfileData = db.db(config.dbName).collection(config.collections.sp_sr_profile);
-                var mysort = {creationDate: -1};
+                // var mysort = {creationDate: -1};
+                var mysort = {_id:-1};
                 spProfileData.findOne({sp_id: sp_id}, function (err, docsSP) {
                     bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
                         if (err) {

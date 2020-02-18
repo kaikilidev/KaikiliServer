@@ -954,7 +954,8 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
             var query = {sp_id: sp_id};
-            var mysort = {updateDate: -1};
+            // var mysort = {updateDate: -1};
+            var mysort = {_id:-1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
@@ -1035,7 +1036,8 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.kk_earn_wallet);
             // var query = {sp_id: sp_id};
-            var mysort = {updateDate: -1};
+            // var mysort = {updateDate: -1};
+            var mysort = {_id:-1};
             spEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
@@ -2555,7 +2557,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
             // var query = {sp_id: sp_id};
-            var mysort = {updateDate: -1};
+            var mysort = {_id:-1};
             kkEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
