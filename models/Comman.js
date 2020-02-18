@@ -2467,19 +2467,19 @@ var Comman = {
                         if (docs[0].coupon_apply == true) {
 
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, "New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         }
 
                     }else{
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer credit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         }
                     }
 
@@ -2532,8 +2532,19 @@ var Comman = {
                     } else {
                         if (cancelCR == true) {
                             canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
+                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                                comment = "Customer Auto cancel service give back amount to customer account.";
+                            }else {
+                                comment = "Customer cancel service give back amount to customer account.";
+                            }
+
                         }else {
                             canCharges = 0;
+                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                                comment = "Service provider Auto cancel service give back amount to customer account.";
+                            }else {
+                                comment = "Service provider cancel service give back amount to customer account.";
+                            }
                         }
 
                         if (docs[0].coupon_apply == true) {
