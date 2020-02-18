@@ -2585,6 +2585,8 @@ var Comman = {
 
                     var paymentBody = {
                         sp_id: sp_id,
+                        sp_name: sp_name,
+                        cu_name: cu_name,
                         cu_id: cu_id,
                         type: type,
                         tran_id: tran_id,
@@ -2612,6 +2614,8 @@ var Comman = {
                     var paymentBody = {
                         sp_id: sp_id,
                         cu_id: cu_id,
+                        sp_name: sp_name,
+                        cu_name: cu_name,
                         type: type,
                         tran_id: tran_id,
                         sr_title:sr_title,
