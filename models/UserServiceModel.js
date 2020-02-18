@@ -2531,10 +2531,11 @@ var UserService = {
 
     SPcashOutToBanck: function (req, callback) {
         var sp_id = req.body.sp_id;
+        var sp_name = req.body.sp_name;
         var cash_out = req.body.cash_out;
 
-        comman.spEranInfoUpdate(sp_id, "", "Cash out to user", 0, cash_out, "Debit");
-        comman.kaiKiliWalletUpdate(sp_id,"","", "Cash Out", "Cash out to service provider", 0,cash_out,  "Debit")
+        comman.spEranInfoUpdate(sp_id, "CASH-OUT", "Cash out to user", 0, cash_out, "Debit");
+        comman.kaiKiliWalletUpdate(sp_id,sp_name,"","","CASH-OUT", "Cash Out", "Cash out to service provider", 0,cash_out,  "Debit")
 
         var status = {
             status: 1,
