@@ -2555,7 +2555,7 @@ var Customer = {
             var bankdata = db.db(config.dbName).collection(config.collections.cu_bank_info);
             var kaikiliWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
             var mysort = {creationDate: -1};
-                var mysort1 = {updateDate: -1};
+                var mysort1 = {_id: -1};
 
             bankdata.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
                 if (err) {
@@ -2567,8 +2567,42 @@ var Customer = {
                     console.log(status);
                     callback(status);
                 } else {
+                    var cursorSearch = kaikiliWallet.aggregate([
+                        {
+                            $match: {
+                                cu_id: cu_id
+                            }
+                        }, {
+                            $lookup: {
+                                from: config.collections.cu_sp_transaction_cancellation,
+                                localField: "tran_id",
+                                foreignField: "tran_id",
+                                as: "tran11"
+                            }
+                        },
 
-                    kaikiliWallet.find({cu_id: cu_id}).sort(mysort1).toArray(function (err, payment) {
+                        {
+                            $lookup: {
+                                from: config.collections.cu_sp_transaction_completed,
+                                localField: "tran_id",
+                                foreignField: "tran_id",
+                                as: "tran22"
+                            }
+                        },
+
+                        {
+                            $lookup: {
+                                from: config.collections.cu_sp_transaction,
+                                localField: "tran_id",
+                                foreignField: "tran_id",
+                                as: "tran33"
+                            }
+                        }
+
+                    ]).sort(mysort1);
+
+                    cursorSearch.toArray(function (err, payment) {
+                    // kaikiliWallet.find({cu_id: cu_id}).sort(mysort1).toArray(function (err, payment) {
                         if (err) {
                             var status = {
                                 status: 1,
