@@ -817,7 +817,41 @@ var UserService = {
                 var mysort = {_id: -1};
                 var collection = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
                 console.log(err);
-                collection.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                var cursorSearch = collection.aggregate([
+                    {
+                        $match: {
+                            sp_id: sp_id
+                        }
+                    }, {
+                        $lookup: {
+                            from: config.collections.cu_sp_transaction_cancellation,
+                            localField: "tran_id",
+                            foreignField: "tran_id",
+                            as: "tran11"
+                        }
+                    },
+
+                    {
+                        $lookup: {
+                            from: config.collections.cu_sp_transaction_completed,
+                            localField: "tran_id",
+                            foreignField: "tran_id",
+                            as: "tran22"
+                        }
+                    },
+
+                    {
+                        $lookup: {
+                            from: config.collections.cu_sp_transaction,
+                            localField: "tran_id",
+                            foreignField: "tran_id",
+                            as: "tran33"
+                        }
+                    }
+
+                ]).sort(mysort);
+
+                cursorSearch.toArray(function (err, docs) {
                     if (err) {
                         console.log(err);
                         var status = {
@@ -838,6 +872,8 @@ var UserService = {
                         callback(status);
                     }
                 });
+
+
             });
 
         });
@@ -1064,7 +1100,7 @@ var UserService = {
                 var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
                 var spProfileData = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                 // var mysort = {creationDate: -1};
-                var mysort = {_id:-1};
+                var mysort = {_id: -1};
                 spProfileData.findOne({sp_id: sp_id}, function (err, docsSP) {
                     bankdata.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
                         if (err) {
@@ -1073,7 +1109,7 @@ var UserService = {
                                 status: 0,
                                 message: "No Bank information.",
                                 service_count: docsSP.service_count,
-                                currentBalance:currentBalance
+                                currentBalance: currentBalance
                             };
                             console.log(status);
                             callback(status);
@@ -1083,7 +1119,7 @@ var UserService = {
                                 message: "Thank you.",
                                 data: docs,
                                 service_count: docsSP.service_count,
-                                currentBalance:currentBalance
+                                currentBalance: currentBalance
 
                             };
                             console.log();
@@ -2536,7 +2572,7 @@ var UserService = {
         var cash_out = req.body.cash_out;
 
         comman.spEranInfoUpdate(sp_id, "CASH-OUT", "Cash out to user", 0, cash_out, "Debit");
-        comman.kaiKiliWalletUpdate(sp_id,sp_name,"","","CASH-OUT", "Cash Out", "Cash out to service provider", 0,cash_out,  "Debit")
+        comman.kaiKiliWalletUpdate(sp_id, sp_name, "", "", "CASH-OUT", "Cash Out", "Cash out to service provider", 0, cash_out, "Debit")
 
         var status = {
             status: 1,
