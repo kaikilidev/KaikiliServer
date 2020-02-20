@@ -328,7 +328,7 @@ var Comman = {
     },
 
     sendCustomerNotification(cu_id, tran_id, messages, sr_status, type) {
-        console.log(cu_id);
+        console.log("Send notification -------------->>"+cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
 
@@ -1470,7 +1470,7 @@ var Comman = {
 
                                 console.log("----55" + avg);
                                 var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
-                                totalCost = (totalCost.toFixed(2) + cost.toFixed(2));
+                                totalCost = (totalCost+ cost);
 
                                 var dataCostItem = {
                                     cc_id: elementCost.cc_id,
@@ -1621,7 +1621,7 @@ var Comman = {
                                                 })
                                                 var cost = (parseFloat(picked[0].cc_rate_per_item) * parseFloat(element.cc_per_item_qut));
                                                 // console.log(cost +"--------"+ picked[0].cc_rate_per_item+" ---  "+ element.cc_per_item_qut);
-                                                totalCost = totalCost.toFixed(2) + cost.toFixed(2);
+                                                totalCost = totalCost + cost;
                                                 var dataCostItem = {
                                                     cc_id: element.cc_id,
                                                     cc_cu_title: element.cc_cu_title,
@@ -1642,7 +1642,7 @@ var Comman = {
                                                 discountGive = docs[0].discount.ds_rate_per_item;
                                             }
                                             var discountAmount = (totalCost.toFixed(2) * parseFloat(discountGive)) / 100;
-                                            var discountAfterPrice = totalCost.toFixed(2) - discountAmount.toFixed(2);
+                                            var discountAfterPrice = totalCost - discountAmount;
                                             var dataShow = {
                                                 sp_id: docs[0].sp_id,
                                                 minimum_charge: docs[0].minimum_charge,
@@ -1795,7 +1795,7 @@ var Comman = {
             var service_cancellation = db.db(config.dbName).collection(config.collections.cu_service_cancellation_charges);
 
             var canCharges;
-            if (parseFloat(docs.minimum_charge).toFixed(2) > parseFloat(docs.sp_net_pay).toFixed(2)) {
+            if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
                 canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
             } else {
                 canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
@@ -1834,7 +1834,7 @@ var Comman = {
             var service_cancellation = db.db(config.dbName).collection(config.collections.sp_service_cancellation_charges);
 
             var canCharges;
-            if (parseFloat(docs.minimum_charge).toFixed(2) > parseFloat(docs.sp_net_pay).toFixed(2)) {
+            if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
                 canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
             } else {
                 canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
@@ -1874,7 +1874,7 @@ var Comman = {
             var service_cancellation = db.db(config.dbName).collection(config.collections.sp_service_cancellation_charges);
 
             var canCharges;
-            if (parseFloat(docs.minimum_charge).toFixed(2) > parseFloat(docs.sp_net_pay).toFixed(2)) {
+            if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
                 canCharges = (parseFloat(docs.minimum_charge) * 10) / 100;
             } else {
                 canCharges = (parseFloat(docs.sp_net_pay) * 10) / 100;
@@ -2523,11 +2523,11 @@ var Comman = {
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name,docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name,docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
 
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
                         }
                     } else {
                         if (cancelCR == true) {
@@ -2549,11 +2549,11 @@ var Comman = {
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
                             // }
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, comment, 0,(getAmount - canCharges).toFixed(2),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
                         }
                     }
 
