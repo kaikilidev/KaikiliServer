@@ -1641,7 +1641,7 @@ var Comman = {
                                             if (docs[0].discount.ds_check_box == "ON") {
                                                 discountGive = docs[0].discount.ds_rate_per_item;
                                             }
-                                            var discountAmount = (totalCost.toFixed(2) * parseFloat(discountGive)) / 100;
+                                            var discountAmount = (totalCost * parseFloat(discountGive)) / 100;
                                             var discountAfterPrice = totalCost - discountAmount;
                                             var dataShow = {
                                                 sp_id: docs[0].sp_id,
