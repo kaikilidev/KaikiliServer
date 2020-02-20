@@ -2583,5 +2583,62 @@ var UserService = {
         callback(status);
 
     },
+
+
+    getTransitionInfoFull: function (req, callback) {
+        var tran_id = req.body.tran_id;
+        var sp_view = req.body.sp_view;
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection_transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collection_transaction_completed = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+            var collection_transaction_cancellation = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+            if (sp_view == true) {
+                collection_transaction.update({tran_id: tran_id}, {$set: {sp_view: true}});
+            }
+
+            collection_transaction.find({tran_id: tran_id}).toArray(function (err1, docsOnTr) {
+                collection_transaction_completed.find({tran_id: tran_id}).toArray(function (err2, docsOnTrCom) {
+                    collection_transaction_cancellation.find({tran_id: tran_id}).toArray(function (err3, docsOnTrCan) {
+
+                        if (err1 || err2 || err3) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+
+                            var doc = docsOnTr.concat(docsOnTrCom);
+                            var doc = doc.concat(docsOnTrCan);
+
+                            if (doc.length > 0) {
+                                var status = {
+                                    status: 1,
+                                    message: "Success upload to service to server",
+                                    data: doc[0]
+                                };
+                                console.log();
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 0,
+                                    message: "No Transaction found.",
+                                };
+                                console.log();
+                                callback(status);
+                            }
+                        }
+
+                    });
+                });
+            });
+
+        });
+    },
+
+
 }
 module.exports = UserService;

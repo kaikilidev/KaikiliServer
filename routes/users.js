@@ -778,6 +778,21 @@ router.get('/GetFAQ', function (req, res, next) {
     });
 });
 
+
+// 20-2-2020 Get Data Single Transition Any type
+router.post('/getTransitionID', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    userServiceModel.getTransitionInfoFull(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 //
 // router.get('/TestSendNotification', function (req,  next) {
 //     comman.sendServiceNotification("SP019","TR0104","Test data Notification","");
