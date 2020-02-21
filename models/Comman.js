@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 const math = require('mathjs')
 const moment = require('moment')
+const crypto = require('crypto');
 
 //  "dbUrl": "mongodb://157.230.188.53:27017/",
 
@@ -2449,7 +2450,6 @@ var Comman = {
         });
     },
 
-
     //customer service book conform to credit amount in kaikili wallet
     kaikiliWalletCreditCustomerAmount(tran_id) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -2487,8 +2487,6 @@ var Comman = {
             });
         });
     },
-
-
 
     //customer service book conform to credit amount in kaikili wallet
     kaikiliWalletDebitCustomerAmount(tran_id,cancelCR) {
@@ -2562,12 +2560,8 @@ var Comman = {
         });
     },
 
-
-
     // comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
-
     kaiKiliWalletUpdate(sp_id,sp_name, cu_id,cu_name, tran_id,sr_title, comment, credit, debit, type) {
-
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
             // var query = {sp_id: sp_id};
@@ -2632,7 +2626,6 @@ var Comman = {
 
             });
         });
-
     },
 
 
@@ -2660,6 +2653,34 @@ var Comman = {
             });
         });
     },
+
+    // Creating Login key 21-2-2020
+    checkSPValidLogin(sp_id,key,callBack) {
+        console.log("------------>>"+sp_id);
+        console.log("------------>>"+key);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collection.findOne({sp_id:sp_id,login_key:key},function (err, dataSet) {
+                if (err) {
+                    console.log("------------>>"+err);
+                    return callBack(false);
+                } else {
+                    // return dataSet.length;
+                    console.log("data------------>>"+dataSet);
+                    if(dataSet != null){
+                        return callBack(true);
+                    }else {
+                        return callBack(false);
+                    }
+                }
+            });
+        });
+    },
+
+
+
+
+
 
 }
 module.exports = Comman;

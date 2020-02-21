@@ -1650,7 +1650,6 @@ var Customer = {
 
 // 1-6-2019 created Api (Customer Shouting SR status update)
     getCustomerData: function (req, callback) {
-
         console.log(req.body.cu_id);
         var cu_id = req.body.cu_id;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
