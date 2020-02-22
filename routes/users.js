@@ -820,6 +820,31 @@ router.post('/getCustomerDataInfo', function (req, res, next) {
     });
 });
 
+
+//API - 54
+router.get('/checkUserValid/:sp_id/:key', function (req, res, next) {
+    console.log("call getCustomerData-----1");
+    var sp_id = req.params.sp_id;
+    var key = req.params.key;
+    console.log("call getCustomerData-----1" + sp_id + "---" + key);
+    comman.checkSPValidLogin(sp_id, key, function (validUser) {
+        if (validUser) {
+            var status = {
+                status: 1,
+                message: "Successfully update information.",
+            };
+            res.json(status);
+
+        } else {
+            var status = {
+                status: -1,
+                message: "Login in other mobile",
+            };
+            res.json(status);
+        }
+    });
+});
+
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {
 //     try {
