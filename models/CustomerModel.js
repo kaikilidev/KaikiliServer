@@ -560,7 +560,7 @@ var Customer = {
                                 newArrData.push(element.sp_id);
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                                 collection.aggregate([
-                                    {$match: {sp_id: element.sp_id, sr_id: sr_id,fcm_token:{$ne :""} ,login_key :{$ne :""}  }},//age : {$ne :19}}
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id }},//,fcm_token:{$ne :""} ,login_key :{$ne :""}
                                     {
                                         $lookup: {
                                             from: config.collections.sp_sr_profile,
@@ -614,7 +614,6 @@ var Customer = {
                                             });
                                         }
 
-
                                         // var children = docs[0].cost_comps_per_item_on.concat(docs[0].cost_comps_pro_rate_on);
                                         var children = docs[0].cost_components_on;
                                         var newItemCost = new Array();
@@ -646,7 +645,7 @@ var Customer = {
                                             discountGive = docs[0].discount.ds_rate_per_item;
                                         }
 
-                                        if (docs[0].preferred_provider == "1") {
+                                        if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "") {
                                             if (isProviderAvailabel) {
                                                 newPreferredArrServic.push(docs[0].sp_id);
                                                 var ppsData = {
@@ -686,7 +685,7 @@ var Customer = {
 
                                         };
 
-                                        if (isProviderAvailabel) {
+                                        if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "") {
                                             newArrServic.push(dataShow);
                                         }
                                         ctr++;
@@ -1914,7 +1913,7 @@ var Customer = {
                                 newArrData.push(element.sp_id);
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                                 collection.aggregate([
-                                    {$match: {sp_id: element.sp_id, sr_id: sr_id,fcm_token:{$ne :""} ,login_key :{$ne :""}}},
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},//,fcm_token:{$ne :""} ,login_key :{$ne :""}
                                     {
                                         $lookup: {
                                             from: config.collections.sp_sr_profile,

@@ -444,7 +444,6 @@ var Comman = {
 
     getSPUserRadiusLocationToAVG(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
 
-
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
             var cursorIndex = collection.createIndex({location: "2dsphere"});
