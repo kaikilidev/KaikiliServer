@@ -6,6 +6,12 @@ const math = require('mathjs')
 const moment = require('moment')
 const crypto = require('crypto');
 
+
+// Import Admin SDK
+var admin = require("firebase-admin");
+var serviceAccount = require("../serviceAccountKey.json");
+
+
 //  "dbUrl": "mongodb://157.230.188.53:27017/",
 
 
@@ -329,7 +335,7 @@ var Comman = {
     },
 
     sendCustomerNotification(cu_id, tran_id, messages, sr_status, type) {
-        console.log("Send notification -------------->>"+cu_id);
+        console.log("Send notification -------------->>" + cu_id);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
 
@@ -935,7 +941,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
             var query = {sp_id: sp_id};
-            var mysort = {_id :-1};
+            var mysort = {_id: -1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
                 console.log("---->" + doc.length);
@@ -955,7 +961,7 @@ var Comman = {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
             var query = {sp_id: sp_id};
             // var mysort = {updateDate: -1};
-            var mysort = {_id:-1};
+            var mysort = {_id: -1};
             spEarnWallet.find(query).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
@@ -1012,7 +1018,7 @@ var Comman = {
     },
 
 
-    spTripInfoUpdate(sp_id,sp_name, cu_id,cu_name, tran_id, comment, amount) {
+    spTripInfoUpdate(sp_id, sp_name, cu_id, cu_name, tran_id, comment, amount) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.sp_tip_info);
             var reviewTipAdd = {
@@ -1039,7 +1045,7 @@ var Comman = {
             var spEarnWallet = db.db(config.dbName).collection(config.collections.kk_earn_wallet);
             // var query = {sp_id: sp_id};
             // var mysort = {updateDate: -1};
-            var mysort = {_id:-1};
+            var mysort = {_id: -1};
             spEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
@@ -1094,7 +1100,6 @@ var Comman = {
         });
 
     },
-
 
 
     getRandomInt(max) {
@@ -1470,7 +1475,7 @@ var Comman = {
 
                                 console.log("----55" + avg);
                                 var cost = (parseFloat(avg) * parseFloat(elementCost.cc_per_item_qut));
-                                totalCost = (totalCost+ cost);
+                                totalCost = (totalCost + cost);
 
                                 var dataCostItem = {
                                     cc_id: elementCost.cc_id,
@@ -1864,7 +1869,7 @@ var Comman = {
 
             };
             service_cancellation.insertOne(messagesBody);
-            module.exports.spEranInfoUpdate(docs.sp_id,docs.tran_id, "Service provider cancel service.", 0, canCharges, "Debit")
+            module.exports.spEranInfoUpdate(docs.sp_id, docs.tran_id, "Service provider cancel service.", 0, canCharges, "Debit")
         });
     },
 
@@ -1904,7 +1909,7 @@ var Comman = {
 
             };
             service_cancellation.insertOne(messagesBody);
-            module.exports.spEranInfoUpdate(docs.sp_id,docs.tran_id, "Service provider cancel service : Cancel-Progress-Auto", 0, canCharges, "Debit")
+            module.exports.spEranInfoUpdate(docs.sp_id, docs.tran_id, "Service provider cancel service : Cancel-Progress-Auto", 0, canCharges, "Debit")
 
         });
     },
@@ -2063,7 +2068,7 @@ var Comman = {
                                     var message = "Auto Cancel Service Remainder"
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
 
-                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id,true);
+                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
@@ -2084,7 +2089,7 @@ var Comman = {
                                     var message = "Auto Cancel Service Remainder"
                                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
 
-                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id,false);
+                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
 
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -2105,7 +2110,7 @@ var Comman = {
                                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id,true);
+                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
 
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -2149,7 +2154,7 @@ var Comman = {
                                     var message = "Auto Cancel Service Remainder"
                                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
 
-                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id,false);
+                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
 
 
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -2172,7 +2177,7 @@ var Comman = {
                                     var message = "Auto Cancel Service Remainder"
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
 
-                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id,true);
+                                    module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
 
 
                                     var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -2342,8 +2347,6 @@ var Comman = {
             });
 
 
-
-
         });
     },
 
@@ -2466,19 +2469,19 @@ var Comman = {
                         if (docs[0].coupon_apply == true) {
 
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         }
 
-                    }else{
+                    } else {
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title,"New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         }
                     }
 
@@ -2488,7 +2491,7 @@ var Comman = {
     },
 
     //customer service book conform to credit amount in kaikili wallet
-    kaikiliWalletDebitCustomerAmount(tran_id,cancelCR) {
+    kaikiliWalletDebitCustomerAmount(tran_id, cancelCR) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
@@ -2502,17 +2505,17 @@ var Comman = {
                     if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
                         if (cancelCR == true) {
                             canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
-                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                                 comment = "Customer Auto cancel service give back amount to customer account.";
-                            }else {
+                            } else {
                                 comment = "Customer cancel service give back amount to customer account.";
                             }
 
-                        }else {
+                        } else {
                             canCharges = 0;
-                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                                 comment = "Service provider Auto cancel service give back amount to customer account.";
-                            }else {
+                            } else {
                                 comment = "Service provider cancel service give back amount to customer account.";
                             }
 
@@ -2520,37 +2523,37 @@ var Comman = {
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name,docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
 
                         } else {
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
                         }
                     } else {
                         if (cancelCR == true) {
                             canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
-                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                                 comment = "Customer Auto cancel service give back amount to customer account.";
-                            }else {
+                            } else {
                                 comment = "Customer cancel service give back amount to customer account.";
                             }
 
-                        }else {
+                        } else {
                             canCharges = 0;
-                            if( docs[0].sr_status == "Cancel-Scheduled-Auto"){
+                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                                 comment = "Service provider Auto cancel service give back amount to customer account.";
-                            }else {
+                            } else {
                                 comment = "Service provider cancel service give back amount to customer account.";
                             }
                         }
 
                         if (docs[0].coupon_apply == true) {
                             getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
                             // }
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name, docs[0].tran_id,docs[0].sr_title, comment, 0,(getAmount - canCharges),  "Debit")
+                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
                         }
                     }
 
@@ -2560,11 +2563,11 @@ var Comman = {
     },
 
     // comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
-    kaiKiliWalletUpdate(sp_id,sp_name, cu_id,cu_name, tran_id,sr_title, comment, credit, debit, type) {
+    kaiKiliWalletUpdate(sp_id, sp_name, cu_id, cu_name, tran_id, sr_title, comment, credit, debit, type) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
             // var query = {sp_id: sp_id};
-            var mysort = {_id:-1};
+            var mysort = {_id: -1};
             kkEarnWallet.find({}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
@@ -2611,7 +2614,7 @@ var Comman = {
                         cu_name: cu_name,
                         type: type,
                         tran_id: tran_id,
-                        sr_title:sr_title,
+                        sr_title: sr_title,
                         comment: comment,
                         opening: 0,
                         credit: credit,
@@ -2628,9 +2631,8 @@ var Comman = {
     },
 
 
-
     //customer service book conform to credit amount in kaikili wallet
-    CreditCustomerTipAmount(tran_id,tip_amount) {
+    CreditCustomerTipAmount(tran_id, tip_amount) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
@@ -2643,9 +2645,8 @@ var Comman = {
 
                     module.exports.spEranInfoUpdate(docs[0].sp_id, tran_id, "Customer give tip $" + tip_amount, tip_amount, 0, "Credit");
 
-                    module.exports.spTripInfoUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name,tran_id, "Customer give tip $" + tip_amount, tip_amount);
-                    module.exports.kaiKiliWalletUpdate(docs[0].sp_id,docs[0].sp_first_name+" "+docs[0].sp_Last_name, docs[0].cust_id,docs[0].cust_first_name+" "+docs[0].cust_last_name,tran_id , "Give tip", "Customer give tip to service provider", tip_amount,0,  "Credit")
-
+                    module.exports.spTripInfoUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, tran_id, "Customer give tip $" + tip_amount, tip_amount);
+                    module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, tran_id, "Give tip", "Customer give tip to service provider", tip_amount, 0, "Credit")
 
 
                 }
@@ -2654,21 +2655,21 @@ var Comman = {
     },
 
     // Creating Login key 21-2-2020
-    checkSPValidLogin(sp_id,key,callBack) {
-        console.log("------------>>"+sp_id);
-        console.log("------------>>"+key);
+    checkSPValidLogin(sp_id, key, callBack) {
+        console.log("------------>>" + sp_id);
+        console.log("------------>>" + key);
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.sp_personal_info);
-            collection.findOne({sp_id:sp_id,login_key:key},function (err, dataSet) {
+            collection.findOne({sp_id: sp_id, login_key: key}, function (err, dataSet) {
                 if (err) {
-                    console.log("------------>>"+err);
+                    console.log("------------>>" + err);
                     return callBack(false);
                 } else {
                     // return dataSet.length;
-                    console.log("data------------>>"+dataSet);
-                    if(dataSet != null){
+                    console.log("data------------>>" + dataSet);
+                    if (dataSet != null) {
                         return callBack(true);
-                    }else {
+                    } else {
                         return callBack(false);
                     }
                 }
@@ -2677,22 +2678,83 @@ var Comman = {
     },
 
 
-    // Creating Login key 21-2-2020
+    // Creating Logout key 24-2-2020
     SPUserLogout(sp_id) {
         var upload = {
             fcm_token: "",
             login_key: "",
-            onlineStatus:false,
+            onlineStatus: false,
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
-            collectionSP.updateOne({sp_id: sp_id}, {$set: upload}, function(err, records) {
+            collectionSP.updateOne({sp_id: sp_id}, {$set: upload}, function (err, records) {
                 console.log("---------" + err);
                 console.log("---------" + records);
             });
         });
     },
 
+    // Creating Auto Check Online key 24-2-2020
+    autoCheckOnlineUser() {
+
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://kaikili-service.firebaseio.com"
+        });
+
+
+        // console.log(admin.name);  // '[DEFAULT]'
+
+// Retrieve services via the defaultApp variable...
+        var defaultAuth = admin.auth();
+        var defaultDatabase = admin.database();
+
+        console.log(defaultAuth.name)
+
+// ... or use the equivalent shorthand notation
+//         defaultAuth = admin.auth();
+//         defaultDatabase = admin.database();
+
+        // admin.auth().
+        //     .then(function(userRecord) {
+        //         // See the UserRecord reference doc for the contents of userRecord.
+        //         console.log('Successfully fetched user data:', userRecord.toJSON());
+        //     })
+        //     .catch(function(error) {
+        //         console.log('Error fetching user data:', error);
+        //     });
+
+        // var db = admin.database();
+         var ref = defaultDatabase.ref("kaikili-service-provider");
+        ref.once("value", function(snapshot) {
+            console.log(snapshot.val());
+        });
+        // console.log(admin.database().getRulesJSON());
+
+        // var db = admin.database();
+        // console.log(db.getRules());
+        // console.log(db.getRulesJSON());
+        // console.log(db.app);
+
+        // var ref = db.ref();
+        // ref.once("value", function(snapshot) {
+        //     console.log(snapshot.val());
+        // });
+
+        // // Get a database reference to our posts
+        // var db = firebaseAdmin.database("kaikili-service");
+        // var ref = db.ref("kaikili-service-provider");
+
+   //     var db = admin.database();
+     //   var ref = db.ref("kaikili-service-provider");
+
+// // Attach an asynchronous callback to read the data at our posts reference
+//         ref.on("value", function(snapshot) {
+//             console.log(snapshot.val());
+//         }, function (errorObject) {
+//             console.log("The read failed: " + errorObject.code);
+//         });
+    },
 
 
 }

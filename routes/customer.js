@@ -15,7 +15,7 @@ let uploadCUReview = multerSettings.uploadCUReview;
 
 
 //P O S T   M E T H O D S
-
+//API - 1
 router.post('/AddNewUser', function (req, res, next) {
     customerModel.addNewUser(req, function (err, result) {
         if (err) {
@@ -29,7 +29,7 @@ router.post('/AddNewUser', function (req, res, next) {
     });
 });
 
-
+//API - 2
 router.post('/checkCUUserCreated', function (req, res, next) {
     console.log("call checkCUUserCreated-----1");
     customerModel.checkCUUserCreated(req, function (err, result) {
@@ -43,6 +43,7 @@ router.post('/checkCUUserCreated', function (req, res, next) {
     });
 });
 
+//API - 3
 router.post('/CPUserRegistrationCheck', function (req, res, next) {
     console.log("call CUUserRegistrationCheck -----1");
     customerModel.CURegiCheck(req, function (err, result) {
@@ -56,7 +57,7 @@ router.post('/CPUserRegistrationCheck', function (req, res, next) {
     });
 });
 
-
+//API - 4
 router.post('/CUUserLogin', function (req, res, next) {
     console.log("call CUUserLogin-----1");
     customerModel.CUUserLogin(req, function (err, result) {
@@ -70,6 +71,8 @@ router.post('/CUUserLogin', function (req, res, next) {
     });
 });
 
+
+//API - 5
 router.post('/addCUAddress', function (req, res, next) {
     console.log("call addCUAddress-----1");
     customerModel.addUserAddress(req, function (err, result) {
@@ -83,7 +86,7 @@ router.post('/addCUAddress', function (req, res, next) {
     });
 });
 
-
+//API - 6
 router.post('/GetCUAddress', function (req, res, next) {
     console.log("call addCUAddress-----1");
     customerModel.userGetAddress(req, function (err, result) {
@@ -97,6 +100,7 @@ router.post('/GetCUAddress', function (req, res, next) {
     });
 });
 
+//API - 7
 router.post('/searchSProvider', function (req, res, next) {
     console.log("call searchServiceProvider-----1");
     customerModel.searchServiceProvider(req, function (err, result) {
@@ -110,6 +114,7 @@ router.post('/searchSProvider', function (req, res, next) {
     });
 });
 
+//API - 8
 router.post('/searchSProviderTest', function (req, res, next) {
     console.log("call searchServiceProvider-----1");
     customerModel.searchServiceProviderNew(req, function (err, result) {
@@ -124,6 +129,7 @@ router.post('/searchSProviderTest', function (req, res, next) {
 });
 
 
+//API - 9
 router.post('/reSearchSProvider', function (req, res, next) {
     console.log("call searchServiceProvider-----1");
     customerModel.reSearchServiceProvider(req, function (err, result) {
@@ -137,7 +143,7 @@ router.post('/reSearchSProvider', function (req, res, next) {
     });
 });
 
-
+//API - 10
 router.post('/searchQuoteProvider', function (req, res, next) {
     console.log("call searchQuoteProvider-----1");
     customerModel.searchQuoteProvider(req, function (err, result) {
@@ -151,7 +157,7 @@ router.post('/searchQuoteProvider', function (req, res, next) {
     });
 });
 
-
+//API - 11
 router.post('/checkServiceAlert', function (req, res, next) {
     console.log("call addServiceAlertData-----1");
     customerModel.CheckServiceAlertData(req, function (err, result) {
@@ -166,7 +172,7 @@ router.post('/checkServiceAlert', function (req, res, next) {
 });
 
 
-
+//API - 12
 router.post('/addNewServiceAlert', function (req, res, next) {
     console.log("call addServiceAlertData-----1");
     customerModel.addServiceAlertData(req, function (err, result) {
@@ -180,7 +186,7 @@ router.post('/addNewServiceAlert', function (req, res, next) {
     });
 });
 
-
+//API - 13
 router.post('/bookNewService', function (req, res, next) {
     console.log("call serviceBookUser-----1");
     customerModel.serviceBookUser(req, function (err, result) {
@@ -194,7 +200,7 @@ router.post('/bookNewService', function (req, res, next) {
     });
 });
 
-
+//API - 14
 router.post('/removeAddressData', function (req, res, next) {
     console.log("call serviceBookUser-----1");
     customerModel.removeUserAddress(req, function (err, result) {
@@ -208,6 +214,8 @@ router.post('/removeAddressData', function (req, res, next) {
     });
 });
 
+
+//API - 15
 router.post('/getCustomerTransition', function (req, res, next) {
     console.log("call getCustomerTransition-----1");
     customerModel.getCustomerTransition(req, function (err, result) {
@@ -222,6 +230,7 @@ router.post('/getCustomerTransition', function (req, res, next) {
 });
 
 
+//API - 16
 router.post('/getCustomerAlertData', function (req, res, next) {
     console.log("call getCustomerTransition-----1");
     customerModel.getCustomerAlertTransition(req, function (err, result) {
@@ -235,6 +244,8 @@ router.post('/getCustomerAlertData', function (req, res, next) {
     });
 });
 
+
+//API - 17
 router.post('/customerAlertUpdate', function (req, res, next) {
     console.log("call customerAlertInfoUpdate-----1");
     customerModel.customerAlertInfoUpdate(req, function (err, result) {
@@ -249,6 +260,7 @@ router.post('/customerAlertUpdate', function (req, res, next) {
 });
 
 
+//API - 18
 router.post('/customerAlertDelete', function (req, res, next) {
     console.log("call customerAlertInfoDelete-----1");
     customerModel.customerAlertInfoDelete(req, function (err, result) {
@@ -262,7 +274,7 @@ router.post('/customerAlertDelete', function (req, res, next) {
     });
 });
 
-
+//API - 19
 router.post('/customerTransitionRescheduledData', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerRescheduledTransitionData(req, function (err, result) {
@@ -276,7 +288,7 @@ router.post('/customerTransitionRescheduledData', function (req, res, next) {
     });
 });
 
-
+//API - 20
 router.post('/customerTransitionRescheduledDataUpdate', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerRescheduledTransitionUpdateData(req, function (err, result) {
@@ -291,6 +303,7 @@ router.post('/customerTransitionRescheduledDataUpdate', function (req, res, next
 });
 
 
+//API - 21
 router.post('/customerUpdateShoutingData', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerShoutingUpdateData(req, function (err, result) {
@@ -304,6 +317,7 @@ router.post('/customerUpdateShoutingData', function (req, res, next) {
     });
 });
 
+//API - 22
 router.post('/customerUpdateInterestedData', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerInterestedUpdateData(req, function (err, result) {
@@ -317,7 +331,7 @@ router.post('/customerUpdateInterestedData', function (req, res, next) {
     });
 });
 
-
+//API - 23
 router.post('/customerToServiceReview', function (req, res, next) {
     console.log("call customerTransitionRescheduledData-----1");
     customerModel.customerAddToServiceReview(req, function (err, result) {
@@ -331,7 +345,7 @@ router.post('/customerToServiceReview', function (req, res, next) {
     });
 });
 
-
+//API - 24
 router.post('/customerCompletedAllService', function (req, res, next) {
     console.log("call customerCompletedService-----1");
     customerModel.customerCompletedService(req, function (err, result) {
@@ -345,7 +359,7 @@ router.post('/customerCompletedAllService', function (req, res, next) {
     });
 });
 
-
+//API - 25
 router.post('/getCustomerDataInfo', function (req, res, next) {
     console.log("call getCustomerData-----1");
     customerModel.getCustomerData(req, function (err, result) {
@@ -360,6 +374,7 @@ router.post('/getCustomerDataInfo', function (req, res, next) {
 });
 
 
+//API - 26
 router.post('/userTransitionUpdate', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.customerTransitionUpdate(req, function (err, result) {
@@ -374,6 +389,7 @@ router.post('/userTransitionUpdate', function (req, res, next) {
 });
 
 
+//API - 27
 router.post('/customerSingleAlertTransition', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.getCustomerSingleAlertTransition(req, function (err, result) {
@@ -388,6 +404,7 @@ router.post('/customerSingleAlertTransition', function (req, res, next) {
 });
 
 
+//API - 28
 router.post('/customerBookPreferredProviderService', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.postCustomerBookPreferredProviderService(req, function (err, result) {
@@ -402,6 +419,7 @@ router.post('/customerBookPreferredProviderService', function (req, res, next) {
 });
 
 
+//API - 29
 router.post('/BookPPStoCancel', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.postBookPPStoCancel(req, function (err, result) {
@@ -416,6 +434,7 @@ router.post('/BookPPStoCancel', function (req, res, next) {
 });
 
 
+//API - 30
 router.post('/GetServiceOTP', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.getServiceOPT(req, function (err, result) {
@@ -429,7 +448,7 @@ router.post('/GetServiceOTP', function (req, res, next) {
     });
 });
 
-
+//API - 31
 router.post('/searchRepeatedService', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
     customerModel.searchRepeatedServiceProvider(req, function (err, result) {
@@ -443,6 +462,8 @@ router.post('/searchRepeatedService', function (req, res, next) {
     });
 });
 
+
+//API - 32
 router.post('/cuProfileUpload', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
     customerModel.updateCUProfileDataUpload(req, function (err, result) {
@@ -457,6 +478,7 @@ router.post('/cuProfileUpload', function (req, res, next) {
 });
 
 
+//API - 33
 router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
     let upload = Bluebird.promisify(uploadCUUserProfileIM);
     return upload(req, res).then((data) => {
@@ -489,6 +511,7 @@ router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
 });
 
 
+//API - 34
 router.post('/customerSingleInterestedTransition', function (req, res, next) {
     // console.log("Call ling sub metherd ");
     customerModel.getCustomerSingleInterestedTransition(req, function (err, result) {
@@ -503,6 +526,7 @@ router.post('/customerSingleInterestedTransition', function (req, res, next) {
 });
 
 
+//API - 35
 router.post('/CUAddBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     customerModel.userAddBankInfo(req, function (err, result) {
@@ -516,7 +540,7 @@ router.post('/CUAddBankInfo', function (req, res, next) {
     });
 });
 
-
+//API - 36
 router.post('/CUUserBankInfoList', function (req, res, next) {
     console.log("Call ling sub -------- ");
     customerModel.CUUserBankInfoList(req, function (err, result) {
@@ -531,6 +555,7 @@ router.post('/CUUserBankInfoList', function (req, res, next) {
 });
 
 
+//API - 37
 router.post('/CUUserDeleteBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     customerModel.CUUserDeleteBankInfo(req, function (err, result) {
@@ -545,6 +570,7 @@ router.post('/CUUserDeleteBankInfo', function (req, res, next) {
 });
 
 
+//API - 38
 router.post('/CUUserSetDefaultBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
     customerModel.CUUserSetDefaultBankInfo(req, function (err, result) {
@@ -559,6 +585,7 @@ router.post('/CUUserSetDefaultBankInfo', function (req, res, next) {
 });
 
 
+//API - 39
 // new Service repeated service booking
 router.post('/bookRepeatedService', function (req, res, next) {
     console.log("call bookRepeatedService-----1");
@@ -574,6 +601,7 @@ router.post('/bookRepeatedService', function (req, res, next) {
 });
 
 
+//API - 40
 // 6-12-2019 Otp Check Api
 router.post('/cuCheckOtp', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
@@ -588,7 +616,7 @@ router.post('/cuCheckOtp', function (req, res, next) {
     });
 });
 
-
+//API - 41
 // 6-12-2019 Review add Image Api
 router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
     let upload = Bluebird.promisify(uploadCUReview);
@@ -621,6 +649,8 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
     });
 });
 
+
+//API - 42
 // Add Dispute Data in customer 15-12-2019
 router.post('/CUdisputeAdd', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
@@ -636,6 +666,7 @@ router.post('/CUdisputeAdd', function (req, res, next) {
 });
 
 
+//API - 43
 // Read Dispute Data in customer 18-12-2019
 router.post('/CUdisputeRead', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
@@ -651,7 +682,7 @@ router.post('/CUdisputeRead', function (req, res, next) {
 });
 
 
-
+//API - 44
 // 21-12-2019 Get Data Dispute to SP
 router.get('/GetFAQ', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
@@ -667,7 +698,7 @@ router.get('/GetFAQ', function (req, res, next) {
 });
 
 
-
+//API - 45
 // Coupon Code in customer book service 6-02-2020
 router.post('/CouponCode', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");

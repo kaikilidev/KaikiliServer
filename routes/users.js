@@ -848,6 +848,13 @@ router.get('/userLogOut/:sp_id', function (req, res, next) {
 });
 
 
+//API - 55  SP user Logout
+router.get('/testfirebase', function (req, res, next) {
+    comman.autoCheckOnlineUser();
+    res.json();
+});
+
+
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {
 //     try {
