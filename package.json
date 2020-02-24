@@ -26,6 +26,7 @@
     "moment": "2.24.0",
     "forever": "^0.15.3",
     "forever-monitor": "^1.7.1",
-    "uuid-apikey": "1.4.6"
+    "uuid-apikey": "1.4.6",
+    "firebase-admin": "8.9.2"
   }
 }
