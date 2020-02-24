@@ -230,8 +230,6 @@ router.post('/getSingleCancellationTransitionInfo', function (req, res, next) {
 });
 
 
-
-
 //API - 16
 router.post('/SPAddBankInfo', function (req, res, next) {
     console.log("Call ling sub -------- ");
@@ -332,8 +330,6 @@ router.post('/getUserRatingData', function (req, res, next) {
 });
 
 
-
-
 //API - 23
 router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
     let upload = Bluebird.promisify(uploadSPWork);
@@ -344,7 +340,7 @@ router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath+"SPWork/"+documents[index].filename);
+                    uploads.push(configDB.imagePath + "SPWork/" + documents[index].filename);
                 });
                 usersModel.updateSPWorkImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {
@@ -377,7 +373,7 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath+"SPProfile/"+documents[index].filename);
+                    uploads.push(configDB.imagePath + "SPProfile/" + documents[index].filename);
                 });
                 usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {
@@ -805,7 +801,6 @@ router.post('/getTransitionID', function (req, res, next) {
 });
 
 
-
 //API - 54
 router.post('/getCustomerDataInfo', function (req, res, next) {
     console.log("call getCustomerData-----1");
@@ -844,6 +839,14 @@ router.get('/checkUserValid/:sp_id/:key', function (req, res, next) {
         }
     });
 });
+
+
+//API - 55  SP user Logout
+router.get('/userLogOut/:sp_id', function (req, res, next) {
+    comman.SPUserLogout(req.params.sp_id);
+    res.json();
+});
+
 
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {
