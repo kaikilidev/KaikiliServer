@@ -645,7 +645,7 @@ var Customer = {
                                             discountGive = docs[0].discount.ds_rate_per_item;
                                         }
 
-                                        if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "") {
+                                        if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
                                             if (isProviderAvailabel) {
                                                 newPreferredArrServic.push(docs[0].sp_id);
                                                 var ppsData = {
@@ -685,7 +685,7 @@ var Customer = {
 
                                         };
 
-                                        if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "") {
+                                        if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
                                             newArrServic.push(dataShow);
                                         }
                                         ctr++;
@@ -1997,8 +1997,8 @@ var Customer = {
                                             discountGive = docs[0].discount.ds_rate_per_item;
                                         }
 
-                                        if (docs[0].preferred_provider == "1") {
-                                            if (isProviderAvailabel) {
+                                        if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
+                                            if (isProviderAvailabel ) {
                                                 newPreferredArrServic.push(docs[0].sp_id);
 
                                                 var ppsData = {
@@ -2039,7 +2039,7 @@ var Customer = {
                                         };
 
                                         if (!last_cancel_sp_id.includes(docs[0].sp_id)) {
-                                            if (isProviderAvailabel) {
+                                            if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
                                                 newArrServic.push(dataShow);
                                             }
                                         }

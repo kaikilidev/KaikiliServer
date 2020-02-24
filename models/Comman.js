@@ -2681,7 +2681,8 @@ var Comman = {
     SPUserLogout(sp_id) {
         var upload = {
             fcm_token: "",
-            login_key: ""
+            login_key: "",
+            onlineStatus:false,
         };
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);

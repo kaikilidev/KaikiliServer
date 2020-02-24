@@ -22,6 +22,7 @@ var Users = {
                 password: req.body.password,
                 fcm_token: req.body.fcm_token,
                 creationDate: new Date().toUTCString(),
+                onlineStatus:true,
                 login_key: uuidAPIKey.create().apiKey
             };
 
@@ -94,6 +95,7 @@ var Users = {
                     // assert.equal(1, docs.length);
                     var upload = {
                         fcm_token: fcm_token,
+                        onlineStatus:true,
                         login_key: uuidAPIKey.create().apiKey
                     };
                     console.log(upload);
@@ -503,6 +505,7 @@ var Users = {
                     if (docs.length == 1) {
                         var upload = {
                             fcm_token: fcm_token,
+                            onlineStatus:true,
                             login_key: uuidAPIKey.create().apiKey
                         };
 
