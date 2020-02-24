@@ -2678,7 +2678,20 @@ var Comman = {
     },
 
 
-
+    // Creating Login key 21-2-2020
+    SPUserLogout(sp_id) {
+        var upload = {
+            fcm_token: "",
+            login_key: ""
+        };
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collectionSP.updateOne({sp_id: sp_id}, {$set: upload}, function(err, records) {
+                console.log("---------" + err);
+                console.log("---------" + records);
+            });
+        });
+    },
 
 
 

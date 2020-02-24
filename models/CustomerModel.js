@@ -560,7 +560,7 @@ var Customer = {
                                 newArrData.push(element.sp_id);
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                                 collection.aggregate([
-                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id,fcm_token:{$ne :""} ,login_key :{$ne :""}  }},//age : {$ne :19}}
                                     {
                                         $lookup: {
                                             from: config.collections.sp_sr_profile,
@@ -1914,7 +1914,7 @@ var Customer = {
                                 newArrData.push(element.sp_id);
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                                 collection.aggregate([
-                                    {$match: {sp_id: element.sp_id, sr_id: sr_id}},
+                                    {$match: {sp_id: element.sp_id, sr_id: sr_id,fcm_token:{$ne :""} ,login_key :{$ne :""}}},
                                     {
                                         $lookup: {
                                             from: config.collections.sp_sr_profile,
