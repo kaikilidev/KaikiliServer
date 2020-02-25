@@ -423,33 +423,37 @@ var UserService = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                var tran_id = req.body.tran_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                    var mysort = {updateDate: -1};
-                    var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                    console.log(err);
-                    collection.find({tran_id: tran_id}
-                    ).sort(mysort).toArray(function (err, docs) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            // console.log(status);
-                            callback(status);
 
-                        } else {
-                            var status = {
-                                status: 1,
-                                message: "Success get all transition service information",
-                                data: docs
-                            };
-                            callback(status);
-                        }
-                    });
-
+                comman.singleNotification(req.body.tran_id,function (getData) {
+                    callback(getData);
                 });
+                // var tran_id = req.body.tran_id;
+                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //     var mysort = {updateDate: -1};
+                //     var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                //     console.log(err);
+                //     collection.find({tran_id: tran_id}
+                //     ).sort(mysort).toArray(function (err, docs) {
+                //         if (err) {
+                //             console.log(err);
+                //             var status = {
+                //                 status: 0,
+                //                 message: "Failed !. Server Error....."
+                //             };
+                //             // console.log(status);
+                //             callback(status);
+                //
+                //         } else {
+                //             var status = {
+                //                 status: 1,
+                //                 message: "Success get all transition service information",
+                //                 data: docs
+                //             };
+                //             callback(status);
+                //         }
+                //     });
+                //
+                // });
             } else {
                 var status = {
                     status: -1,
@@ -469,72 +473,78 @@ var UserService = {
                 var tran_id = req.body.tran_id;
                 var cu_id = req.body.cu_id;
                 var body = req.body.message;
-                comman.getTransitionInfo(tran_id, function (transitionData) {
 
-                    var messagesBody;
-                    if (sp_id == null) {
-                        messagesBody = {
-                            author: cu_id,
-                            author_type: "CU",
-                            sp_delet: "0",
-                            cu_delte: "0",
-                            sp_read: "0",
-                            cu_read: "0",
-                            created_on: new Date().toISOString(),
-                            body: body
-                        };
-
-                        try {
-                            comman.sendServiceNotification(transitionData.sp_id, tran_id, body, "Messages", "chat");
-                        } catch (error) {
-                            console.error(error);
-                        }
-
-
-                    } else {
-                        messagesBody = {
-                            author: sp_id,
-                            author_type: "SP",
-                            sp_delet: "0",
-                            cu_delte: "0",
-                            sp_read: "0",
-                            cu_read: "0",
-                            created_on: new Date().toISOString(),
-                            body: body
-                        };
-                        try {
-                            comman.sendCustomerNotification(transitionData.cust_id, tran_id, body, "Messages", "chat");
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }
-
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                        var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
-                        collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
-
-                            if (err) {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Failed"
-                                };
-                                // console.log(status);
-                                callback(status);
-                            } else {
-                                var status = {
-                                    status: 1,
-                                    message: "Success to load bank info",
-                                    data: docs
-                                };
-                                callback(status);
-                                // console.log("Update in Notification");
-                                // console.log(docs);
-                            }
-                        });
-
-                    });
+                comman.notificationPost(tran_id, null, sp_id, body, function (dataApi) {
+                    callback(dataApi);
                 });
+
+
+                // comman.getTransitionInfo(tran_id, function (transitionData) {
+                //
+                //     var messagesBody;
+                //     if (sp_id == null) {
+                //         messagesBody = {
+                //             author: cu_id,
+                //             author_type: "CU",
+                //             sp_delet: "0",
+                //             cu_delte: "0",
+                //             sp_read: "0",
+                //             cu_read: "0",
+                //             created_on: new Date().toISOString(),
+                //             body: body
+                //         };
+                //
+                //         try {
+                //             comman.sendServiceNotification(transitionData.sp_id, tran_id, body, "Messages", "chat");
+                //         } catch (error) {
+                //             console.error(error);
+                //         }
+                //
+                //
+                //     } else {
+                //         messagesBody = {
+                //             author: sp_id,
+                //             author_type: "SP",
+                //             sp_delet: "0",
+                //             cu_delte: "0",
+                //             sp_read: "0",
+                //             cu_read: "0",
+                //             created_on: new Date().toISOString(),
+                //             body: body
+                //         };
+                //         try {
+                //             comman.sendCustomerNotification(transitionData.cust_id, tran_id, body, "Messages", "chat");
+                //         } catch (error) {
+                //             console.error(error);
+                //         }
+                //     }
+                //
+                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                //         collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+                //
+                //             if (err) {
+                //                 console.log(err);
+                //                 var status = {
+                //                     status: 0,
+                //                     message: "Failed"
+                //                 };
+                //                 // console.log(status);
+                //                 callback(status);
+                //             } else {
+                //                 var status = {
+                //                     status: 1,
+                //                     message: "Success to load bank info",
+                //                     data: docs
+                //                 };
+                //                 callback(status);
+                //                 // console.log("Update in Notification");
+                //                 // console.log(docs);
+                //             }
+                //         });
+                //
+                //     });
+                // });
             } else {
                 var status = {
                     status: -1,
@@ -2294,35 +2304,41 @@ var UserService = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
+
                 var pps_id = req.body.pps_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                    var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-
-                    if (req.body.read == true)
-                        collection.update({pps_id: pps_id}, {$set: {sp_show: true}});
-
-                    // Update service record
-                    collection.find({pps_id: pps_id}).toArray(function (err, docs) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
-                            var status = {
-                                status: 1,
-                                message: "Success upload to service to server",
-                                ppsdata: docs
-                            };
-                            console.log();
-                            callback(status);
-
-                        }
-                    });
+                comman.preferredProviderInfo(req.body.pps_id,req.body.read,function (getData) {
+                    callback(getData);
                 });
+
+                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //     var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                //
+                //     if (req.body.read == true)
+                //         collection.update({pps_id: pps_id}, {$set: {sp_show: true}});
+                //
+                //     // Update service record
+                //     collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                //         if (err) {
+                //             console.log(err);
+                //             var status = {
+                //                 status: 0,
+                //                 message: "Failed !. Server Error....."
+                //             };
+                //             console.log(status);
+                //             callback(status);
+                //         } else {
+                //             var status = {
+                //                 status: 1,
+                //                 message: "Success upload to service to server",
+                //                 ppsdata: docs
+                //             };
+                //             console.log();
+                //             callback(status);
+                //
+                //         }
+                //     });
+                // });
+
             } else {
                 var status = {
                     status: -1,
@@ -2340,31 +2356,36 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var pps_id = req.body.pps_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                    var collection = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
 
-                    // Update service record
-                    collection.find({pps_id: pps_id}).toArray(function (err, docs) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
-                            var status = {
-                                status: 1,
-                                message: "Success upload to service to server",
-                                ppsdata: docs
-                            };
-                            console.log();
-                            callback(status);
-
-                        }
-                    });
+                comman.preferredProviderInfoCancel(req.body.pps_id,function (getData) {
+                    callback(getData);
                 });
+
+                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //     var collection = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+                //
+                //     // Update service record
+                //     collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                //         if (err) {
+                //             console.log(err);
+                //             var status = {
+                //                 status: 0,
+                //                 message: "Failed !. Server Error....."
+                //             };
+                //             console.log(status);
+                //             callback(status);
+                //         } else {
+                //             var status = {
+                //                 status: 1,
+                //                 message: "Success upload to service to server",
+                //                 ppsdata: docs
+                //             };
+                //             console.log();
+                //             callback(status);
+                //
+                //         }
+                //     });
+                // });
             } else {
                 var status = {
                     status: -1,

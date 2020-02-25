@@ -2694,6 +2694,31 @@ var Comman = {
         });
     },
 
+
+    // Creating Login key 21-2-2020
+    checkCUValidLogin(cu_id, key, callBack) {
+        console.log("------------>>" + cu_id);
+        console.log("------------>>" + key);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_profile);
+            collection.findOne({cu_id: cu_id, login_key: key}, function (err, dataSet) {
+                if (err) {
+                    console.log("------------>>" + err);
+                    return callBack(false);
+                } else {
+                    // return dataSet.length;
+                    console.log("data------------>>" + dataSet);
+                    if (dataSet != null) {
+                        return callBack(true);
+                    } else {
+                        return callBack(false);
+                    }
+                }
+            });
+        });
+    },
+
+
     // Creating Auto Check Online key 24-2-2020
     autoCheckOnlineUser() {
 
@@ -2725,8 +2750,8 @@ var Comman = {
         //     });
 
         // var db = admin.database();
-         var ref = defaultDatabase.ref("kaikili-service-provider");
-        ref.once("value", function(snapshot) {
+        var ref = defaultDatabase.ref("kaikili-service-provider");
+        ref.once("value", function (snapshot) {
             console.log(snapshot.val());
         });
         // console.log(admin.database().getRulesJSON());
@@ -2745,8 +2770,8 @@ var Comman = {
         // var db = firebaseAdmin.database("kaikili-service");
         // var ref = db.ref("kaikili-service-provider");
 
-   //     var db = admin.database();
-     //   var ref = db.ref("kaikili-service-provider");
+        //     var db = admin.database();
+        //   var ref = db.ref("kaikili-service-provider");
 
 // // Attach an asynchronous callback to read the data at our posts reference
 //         ref.on("value", function(snapshot) {
@@ -2756,6 +2781,263 @@ var Comman = {
 //         });
     },
 
+    // 25-2-2020
+    getTransitionInfoFull(tran_id, sp_view, callback) {
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection_transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collection_transaction_completed = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+            var collection_transaction_cancellation = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+            if (sp_view == true) {
+                collection_transaction.update({tran_id: tran_id}, {$set: {sp_view: true}});
+            }
 
+            collection_transaction.find({tran_id: tran_id}).toArray(function (err1, docsOnTr) {
+                collection_transaction_completed.find({tran_id: tran_id}).toArray(function (err2, docsOnTrCom) {
+                    collection_transaction_cancellation.find({tran_id: tran_id}).toArray(function (err3, docsOnTrCan) {
+
+                        if (err1 || err2 || err3) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+
+                            var doc = docsOnTr.concat(docsOnTrCom);
+                            var doc = doc.concat(docsOnTrCan);
+
+                            if (doc.length > 0) {
+                                var status = {
+                                    status: 1,
+                                    message: "Success upload to service to server",
+                                    data: doc[0]
+                                };
+                                console.log();
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 0,
+                                    message: "No Transaction found.",
+                                };
+                                console.log();
+                                callback(status);
+                            }
+                        }
+
+                    });
+                });
+            });
+
+        });
+    },
+
+    // Post new Message 25-2-2020
+    notificationPost(tran_id, cu_id,sp_id,body, callback) {
+
+        module.exports.getTransitionInfo(tran_id, function (transitionData) {
+
+            var messagesBody;
+            if (sp_id == null) {
+                messagesBody = {
+                    author: cu_id,
+                    author_type: "CU",
+                    sp_delet: "0",
+                    cu_delte: "0",
+                    sp_read: "0",
+                    cu_read: "0",
+                    created_on: new Date().toISOString(),
+                    body: body
+                };
+
+                try {
+                    module.exports.sendServiceNotification(transitionData.sp_id, tran_id, body, "Messages", "chat");
+                } catch (error) {
+                    console.error(error);
+                }
+
+
+            } else {
+                messagesBody = {
+                    author: sp_id,
+                    author_type: "SP",
+                    sp_delet: "0",
+                    cu_delte: "0",
+                    sp_read: "0",
+                    cu_read: "0",
+                    created_on: new Date().toISOString(),
+                    body: body
+                };
+                try {
+                    module.exports.sendCustomerNotification(transitionData.cust_id, tran_id, body, "Messages", "chat");
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+                collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
+
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed"
+                        };
+                        // console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Success to load bank info",
+                            data: docs
+                        };
+                        callback(status);
+                        // console.log("Update in Notification");
+                        // console.log(docs);
+                    }
+                });
+
+            });
+        });
+    },
+
+    //Get Message List 25-2-2020
+    singleNotification(tran_id, callback){
+        // var tran_id = req.body.tran_id;
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var mysort = {updateDate: -1};
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
+            console.log(err);
+            collection.find({tran_id: tran_id}
+            ).sort(mysort).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    // console.log(status);
+                    callback(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success get all transition service information",
+                        data: docs
+                    };
+                    callback(status);
+                }
+            });
+
+        });
+    },
+
+    //Post ContectUS post 25-2-2020
+    contactUsInsert(user_id,comment,topic,callback){
+        module.exports.getNextSequenceUserID("contact_req", function (result) {
+            //  console.log(result);
+            var newPost = {
+                con_id: "CONTACT0" + result,
+                post_user_id: user_id,
+                comment: comment,
+                topic: topic,
+                admin_view: 0,
+                admin_replay: 0,
+                admin_favourite: 0,
+                is_deleted: 0,
+                creationDate: new Date().toUTCString(),
+                admin_replay_date: "",
+                admin_replay_ms: ""
+            };
+            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
+                collectionSP.insert(newPost, function (err, dataSet) {
+                    if (err) {
+                        console.log(err);
+                        var status = {
+                            status: 0,
+                            message: "Failed !. Server Error....."
+                        };
+                        console.log(status);
+                        callback(status);
+                    } else {
+                        var status = {
+                            status: 1,
+                            message: "Successfully add information",
+                            data: dataSet
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+                });
+            });
+        });
+    },
+
+
+    //Preferred Provider Info 25-2-2020
+    preferredProviderInfo(pps_id,read,callback){
+
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+
+            if (read == true)
+                collection.update({pps_id: pps_id}, {$set: {sp_show: true}});
+
+            // Update service record
+            collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        ppsdata: docs
+                    };
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
+
+    //Preferred Provider Info Cancel 25-2-2020
+    preferredProviderInfoCancel(pps_id,callback){
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collection = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+
+            // Update service record
+            collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Success upload to service to server",
+                        ppsdata: docs
+                    };
+                    console.log();
+                    callback(status);
+
+                }
+            });
+        });
+    },
 }
 module.exports = Comman;

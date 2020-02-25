@@ -29,6 +29,7 @@ router.post('/AddNewUser', function (req, res, next) {
     });
 });
 
+
 //API - 2
 router.post('/checkCUUserCreated', function (req, res, next) {
     console.log("call checkCUUserCreated-----1");
@@ -42,6 +43,7 @@ router.post('/checkCUUserCreated', function (req, res, next) {
         }
     });
 });
+
 
 //API - 3
 router.post('/CPUserRegistrationCheck', function (req, res, next) {
@@ -703,6 +705,121 @@ router.get('/GetFAQ', function (req, res, next) {
 router.post('/CouponCode', function (req, res, next) {
     console.log("call searchRepeatedServiceProvider-----1");
     customerModel.CUCouponCode(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+//API - 46
+// 20-2-2020 Get Data Single Transition Any type
+router.post('/getTransitionID', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.getTransitionInfoFull(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+//API - 47
+router.post('/userPostMessages', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    customerModel.userNotificationPost(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+//API - 48
+router.post('/userSingleNotification', function (req, res, next) {
+    // console.log("Call ling sub metherd ");
+    customerModel.getUserSingleNotification(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+//API - 49
+router.post('/contactUs', function (req, res, next) {
+    console.log("call searchRepeatedServiceProvider-----1");
+    customerModel.contactUsInsert(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+//API - 50
+router.post('/getSpPreferredProviderInfo', function (req, res, next) {
+    customerModel.getPreferredProviderInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+//API - 51
+router.post('/getSpPreferredProviderInfoCancel', function (req, res, next) {
+    customerModel.getPreferredProviderInfoCancel(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+
+
+//API - 52
+router.post('/getUserRatingData', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.getUserRatingDataCU(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
+//API - 53
+router.post('/getUserWorkProfile', function (req, res, next) {
+    console.log("Call ling sub -------- ");
+    customerModel.getSPUserWorkProfile(req, function (err, result) {
         if (err) {
             res.json(err);
             console.log(err);

@@ -866,7 +866,6 @@ var Users = {
                 callback(status);
             }
         });
-
     },
 
 
@@ -926,44 +925,49 @@ var Users = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                comman.getNextSequenceUserID("contact_req", function (result) {
-                    //  console.log(result);
-                    var newPost = {
-                        con_id: "CONTACT0" + result,
-                        post_user_id: req.body.post_user_id,
-                        comment: req.body.comment,
-                        topic: req.body.topic,
-                        admin_view: 0,
-                        admin_replay: 0,
-                        admin_favourite: 0,
-                        is_deleted: 0,
-                        creationDate: new Date().toUTCString(),
-                        admin_replay_date: "",
-                        admin_replay_ms: ""
-                    };
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-                        var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
-                        collectionSP.insert(newPost, function (err, dataSet) {
-                            if (err) {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Failed !. Server Error....."
-                                };
-                                console.log(status);
-                                callback(status);
-                            } else {
-                                var status = {
-                                    status: 1,
-                                    message: "Successfully add information",
-                                    data: dataSet
-                                };
-                                console.log(status);
-                                callback(status);
-                            }
-                        });
-                    });
+
+                comman.contactUsInsert(req.body.post_user_id,req.body.comment,req.body.topic,function (getData){
+                    callback(getData);
                 });
+
+                // comman.getNextSequenceUserID("contact_req", function (result) {
+                //     //  console.log(result);
+                //     var newPost = {
+                //         con_id: "CONTACT0" + result,
+                //         post_user_id: req.body.post_user_id,
+                //         comment: req.body.comment,
+                //         topic: req.body.topic,
+                //         admin_view: 0,
+                //         admin_replay: 0,
+                //         admin_favourite: 0,
+                //         is_deleted: 0,
+                //         creationDate: new Date().toUTCString(),
+                //         admin_replay_date: "",
+                //         admin_replay_ms: ""
+                //     };
+                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //         var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
+                //         collectionSP.insert(newPost, function (err, dataSet) {
+                //             if (err) {
+                //                 console.log(err);
+                //                 var status = {
+                //                     status: 0,
+                //                     message: "Failed !. Server Error....."
+                //                 };
+                //                 console.log(status);
+                //                 callback(status);
+                //             } else {
+                //                 var status = {
+                //                     status: 1,
+                //                     message: "Successfully add information",
+                //                     data: dataSet
+                //                 };
+                //                 console.log(status);
+                //                 callback(status);
+                //             }
+                //         });
+                //     });
+                // });
             } else {
                 var status = {
                     status: -1,
