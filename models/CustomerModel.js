@@ -107,7 +107,7 @@ var Customer = {
                     // if (docs.length == 1) {
 
                     collectionSP.updateOne({mobile_no: mobile_no},
-                        {$set: {fcm_token: fcm_token, login_key: uuidAPIKey.create().apiKey}}, function
+                        {$set: {fcm_token: fcm_token}}, function
                             (err, records) {
                             console.log(records);
                         });
