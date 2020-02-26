@@ -1,24 +1,13 @@
 var mongo = require('mongodb').MongoClient;
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 const math = require('mathjs')
 const moment = require('moment')
 const crypto = require('crypto');
 
-
 // Import Admin SDK
-var admin = require("firebase-admin");
-var serviceAccount = require("../serviceAccountKey.json");
-
-
-//  "dbUrl": "mongodb://157.230.188.53:27017/",
-
-
-//
-// var fcm = require('fcm-notification');
-// var path = require('../privatekey.json');
-// var fcmCustomer = new fcm(path);
+// var admin = require("firebase-admin");
 
 
 var FCM = require('fcm-node');
@@ -550,7 +539,6 @@ var Comman = {
         });
     },
 
-
     getSPUserRadiusLocationToAVGWithoutCostItem(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
 
 
@@ -639,7 +627,6 @@ var Comman = {
 
 // old AVG get Cost-item to nearest Service provider
     getSPUserRadiusLocationToAVG_OLD(cc_ids, sr_id, longitude, latitude, cost_item, callBack) {
-
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
             var collection = kdb.db(config.dbName).collection(config.collections.sp_sr_geo_location);
@@ -1918,11 +1905,11 @@ var Comman = {
     autoTimerService() {
         console.log("=====" + " auto timer calll");
 
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
-            var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            var collectionPP = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-            var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-            var collectionInterested = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, dbas) {
+            var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collectionPP = dbas.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+            var collectionShout = dbas.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+            var collectionInterested = dbas.db(config.dbName).collection(config.collections.sp_cu_send_interested);
 
             collection.find({sr_status: {$in: ["Open", "Rescheduled", "Scheduled", "Progress"]}}).toArray(function (err, mainDocs) {
                 if (err) {
@@ -2719,68 +2706,6 @@ var Comman = {
     },
 
 
-    // Creating Auto Check Online key 24-2-2020
-    autoCheckOnlineUser() {
-
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://kaikili-service.firebaseio.com"
-        });
-
-
-        // console.log(admin.name);  // '[DEFAULT]'
-
-// Retrieve services via the defaultApp variable...
-        var defaultAuth = admin.auth();
-        var defaultDatabase = admin.database();
-
-        console.log(defaultAuth.name)
-
-// ... or use the equivalent shorthand notation
-//         defaultAuth = admin.auth();
-//         defaultDatabase = admin.database();
-
-        // admin.auth().
-        //     .then(function(userRecord) {
-        //         // See the UserRecord reference doc for the contents of userRecord.
-        //         console.log('Successfully fetched user data:', userRecord.toJSON());
-        //     })
-        //     .catch(function(error) {
-        //         console.log('Error fetching user data:', error);
-        //     });
-
-        // var db = admin.database();
-        var ref = defaultDatabase.ref("kaikili-service-provider");
-        ref.once("value", function (snapshot) {
-            console.log(snapshot.val());
-        });
-        // console.log(admin.database().getRulesJSON());
-
-        // var db = admin.database();
-        // console.log(db.getRules());
-        // console.log(db.getRulesJSON());
-        // console.log(db.app);
-
-        // var ref = db.ref();
-        // ref.once("value", function(snapshot) {
-        //     console.log(snapshot.val());
-        // });
-
-        // // Get a database reference to our posts
-        // var db = firebaseAdmin.database("kaikili-service");
-        // var ref = db.ref("kaikili-service-provider");
-
-        //     var db = admin.database();
-        //   var ref = db.ref("kaikili-service-provider");
-
-// // Attach an asynchronous callback to read the data at our posts reference
-//         ref.on("value", function(snapshot) {
-//             console.log(snapshot.val());
-//         }, function (errorObject) {
-//             console.log("The read failed: " + errorObject.code);
-//         });
-    },
-
     // 25-2-2020
     getTransitionInfoFull(tran_id, sp_view, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
@@ -2834,7 +2759,7 @@ var Comman = {
     },
 
     // Post new Message 25-2-2020
-    notificationPost(tran_id, cu_id,sp_id,body, callback) {
+    notificationPost(tran_id, cu_id, sp_id, body, callback) {
 
         module.exports.getTransitionInfo(tran_id, function (transitionData) {
 
@@ -2905,7 +2830,7 @@ var Comman = {
     },
 
     //Get Message List 25-2-2020
-    singleNotification(tran_id, callback){
+    singleNotification(tran_id, callback) {
         // var tran_id = req.body.tran_id;
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var mysort = {updateDate: -1};
@@ -2936,7 +2861,7 @@ var Comman = {
     },
 
     //Post ContectUS post 25-2-2020
-    contactUsInsert(user_id,comment,topic,callback){
+    contactUsInsert(user_id, comment, topic, callback) {
         module.exports.getNextSequenceUserID("contact_req", function (result) {
             //  console.log(result);
             var newPost = {
@@ -2979,7 +2904,7 @@ var Comman = {
 
 
     //Preferred Provider Info 25-2-2020
-    preferredProviderInfo(pps_id,read,callback){
+    preferredProviderInfo(pps_id, read, callback) {
 
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
@@ -3012,7 +2937,7 @@ var Comman = {
     },
 
     //Preferred Provider Info Cancel 25-2-2020
-    preferredProviderInfoCancel(pps_id,callback){
+    preferredProviderInfoCancel(pps_id, callback) {
         mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
 
@@ -3039,5 +2964,63 @@ var Comman = {
             });
         });
     },
+
+
+    // Creating Auto Check Online key 26-2-2020
+    autoCheckOnlineUser() {
+        var firebase = require('firebase/app');
+        require('firebase/database');
+        var config = {
+            apiKey: "AIzaSyCSN-Py-eM65QmCO63aHG-EJMuUFdaZdO4",
+            authDomain: "kaikili-service.firebaseapp.com",
+            databaseURL: "https://kaikili-service.firebaseio.com",
+            projectId: "kaikili-service",
+            storageBucket: "kaikili-service.appspot.com",
+            messagingSenderId: "881771145407",
+        };
+        firebase.initializeApp(config);
+
+        var ref = firebase.database().ref("kaikili-service-provider");
+        ref.once("value",)
+         .then(function (snap) {
+             // console.log(snap.val());
+             snap.forEach(function(childSnapshot) {
+                 var childKey = childSnapshot.key;
+                 var childData = childSnapshot.val();
+                 console.log("childKey", childKey);
+                 console.log("childData", childData.lastUpdated);
+                 var sp_id = childKey;
+
+                 var timeMin;
+                 var res_time = new Date()
+                 var start_date = moment.utc(childData.lastUpdated);
+
+                 var end_date = moment.utc(res_time);
+                 var duration = moment.duration(end_date.diff(start_date));
+                 timeMin = duration / 60000;
+                 var onlineStatusSet = false;
+                 if (timeMin <= 4 && timeMin >= -4  ) {
+                     console.log("time ", timeMin);
+                     console.log(childKey +"------->>"+"Online");
+                     onlineStatusSet = true;
+                 }else {
+                     console.log("time ", timeMin);
+                     console.log(childKey +"------->>"+"Offline");
+                     onlineStatusSet = false;
+                 }
+                 module.exports.spUserUpdateStatus(sp_id,onlineStatusSet);
+
+             });
+
+        });
+    },
+
+    spUserUpdateStatus(sp_id, onlineStatus){
+        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collectionSP.updateOne({sp_id: sp_id}, {$set: {onlineStatus:onlineStatus }});
+        });
+    },
+
 }
 module.exports = Comman;
