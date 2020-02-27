@@ -44,7 +44,7 @@ var UserService = {
                 } else {
                     newQuoteServiceRemoveArr.push(req.body.sr_id);
                 }
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                     console.log(sp_id);
                     console.log(sr_id);
@@ -67,7 +67,7 @@ var UserService = {
                                 } else {
 
                                     if (sp_sr_status === "ON") {
-                                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                             var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                             var cursor = collection_location.updateOne({sp_id: sp_id},
                                                 {
@@ -88,7 +88,7 @@ var UserService = {
 
                                         });
                                     } else {
-                                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                             var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                             var cursor = collection_location.updateOne({sp_id: sp_id},
                                                 {
@@ -126,7 +126,7 @@ var UserService = {
                                     callback(status);
                                 } else {
                                     if (sp_sr_status === "ON") {
-                                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                             var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                             var cursor = collection_location.updateOne({sp_id: sp_id},
                                                 {
@@ -146,7 +146,7 @@ var UserService = {
                                                 }, {upsert: true});
                                         });
                                     } else {
-                                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                             var collection_location = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                             // "sp_sr_status":"OFF"
                                             var cursor1 = collection_location.updateOne({sp_id: sp_id},
@@ -192,7 +192,7 @@ var UserService = {
                 var sr_id = req.body.sr_id;
                 console.log(sr_id);
                 console.log(sp_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                     console.log(err);
                     collection.find({sp_id: sp_id, sr_id: sr_id}).toArray(function (err, docs) {
@@ -236,7 +236,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(sp_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                     console.log(err);
 
@@ -317,7 +317,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(sp_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                     var mysort = {updateDate: -1};
                     var collectionPPS = kdb.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                     var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -373,7 +373,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(sp_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var mysort = {updateDate: -1};
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                     console.log(err);
@@ -428,7 +428,7 @@ var UserService = {
                     callback(getData);
                 });
                 // var tran_id = req.body.tran_id;
-                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                // mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //     var mysort = {updateDate: -1};
                 //     var collection = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                 //     console.log(err);
@@ -519,7 +519,7 @@ var UserService = {
                 //         }
                 //     }
                 //
-                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //         var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                 //         collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
                 //
@@ -571,7 +571,7 @@ var UserService = {
                     sr_status: req.body.sr_status,
                     updateDate: new Date().toUTCString()
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
                     // Update service record
@@ -793,7 +793,7 @@ var UserService = {
                     txn_status: req.body.txn_status,
                     updateDate: new Date().toUTCString()
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
                     // Update service record
@@ -925,7 +925,7 @@ var UserService = {
             if (validUser) {
                 console.log(sp_id);
                 comman.spCurrentBalance(sp_id, function (currentBalance) {
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var mysort = {_id: -1};
                         var collection = db.db(config.dbName).collection(config.collections.sp_earn_wallet);
                         console.log(err);
@@ -1019,7 +1019,7 @@ var UserService = {
                     sp_review: "true",
                     sr_status: "Completed"
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_cu_review);
                     collectionPaymentSettlement.insertOne(reviewAdd, function (err, docs) {
                         if (err) {
@@ -1082,7 +1082,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(sp_id + "=====  call completed ");
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                     var mysort = {updateDate: 1};
                     var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     collection.find({
@@ -1156,7 +1156,7 @@ var UserService = {
             if (validUser) {
                 var tran_id = req.body.tran_id;
                 var sp_view = req.body.sp_view;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     if (sp_view == true) {
                         collection.update({tran_id: tran_id}, {$set: {sp_view: true}});
@@ -1211,13 +1211,13 @@ var UserService = {
                     isUsed: "true",
                     creationDate: new Date().toUTCString()
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
                     collection.updateMany({sp_id: req.body.sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
 
                         console.log(docs);
 
-                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                             var collectionPaymentSettlement = db.db(config.dbName).collection(config.collections.sp_bank_info);
                             collectionPaymentSettlement.insertOne(bankInfoAdd, function (err, docs) {
                                 if (err) {
@@ -1258,7 +1258,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 comman.spCurrentBalance(sp_id, function (currentBalance) {
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
                         var spProfileData = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                         // var mysort = {creationDate: -1};
@@ -1308,7 +1308,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var pid = req.body.id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var bankdata = db.db(config.dbName).collection(config.collections.sp_bank_info);
                     var mysort = {creationDate: -1};
                     var myquery = {_id: ObjectID(pid), sp_id: sp_id};
@@ -1349,7 +1349,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var pid = req.body.id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.sp_bank_info);
                     // Update service record
                     collection.updateMany({sp_id: sp_id}, {$set: {isUsed: "false"}}, function (err, docs) {
@@ -1410,7 +1410,7 @@ var UserService = {
                     sr_status: req.body.sr_status,
                     updateDate: new Date().toUTCString()
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
                     // Update service record
@@ -1532,7 +1532,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var sr_id = req.body.sr_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionService = db.db(config.dbName).collection(config.collections.add_services);
                     var collectionProvider = db.db(config.dbName).collection(config.collections.sp_sr_catalogue);
                     collectionService.find({
@@ -1769,7 +1769,7 @@ var UserService = {
                             console.log(userLocationLatitude + " -----userLocationLatitude");
 
 
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                                 var collection = kdb.db(config.dbName).collection(config.collections.cu_service_alert);
                                 var cursorIndex = collection.createIndex({location: "2dsphere"});
                                 var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
@@ -1997,7 +1997,7 @@ var UserService = {
                                 avg_cost: avgCost.totalCost
                             };
 
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                                 var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
                                 collection.insertOne(newAlertRequirement, function (err, records) {
                                     if (err) {
@@ -2060,7 +2060,7 @@ var UserService = {
 
                 //
                 // var sp_id = req.body.sp_id;
-                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                // mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //     var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
                 //     // Update service record
                 //     collection.find({
@@ -2105,7 +2105,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var tran_id = req.body.tran_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
 
                     // Update service record
@@ -2153,7 +2153,7 @@ var UserService = {
                 console.log(pps_id);
                 console.log(sp_id);
                 console.log(statusData);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                     collection.find({pps_id: pps_id}).toArray(function (err, docs) {
 
@@ -2310,7 +2310,7 @@ var UserService = {
                     callback(getData);
                 });
 
-                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                // mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //     var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
                 //
                 //     if (req.body.read == true)
@@ -2361,7 +2361,7 @@ var UserService = {
                     callback(getData);
                 });
 
-                // mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                // mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //     var collection = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
                 //
                 //     // Update service record
@@ -2402,7 +2402,7 @@ var UserService = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var tran_id = req.body.tran_id;
                     var otp = req.body.otp;
                     console.log(otp);
@@ -2497,7 +2497,7 @@ var UserService = {
                             console.log(userLocationLongitude + " -----userLocationLongitude");
                             console.log(userLocationLatitude + " -----userLocationLatitude");
 
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                                 var collection = kdb.db(config.dbName).collection(config.collections.cu_interested_services);
                                 var cursorIndex = collection.createIndex({location: "2dsphere"});
                                 var radius = (parseFloat(result[0].userprofile.radius) * parseFloat("1609.34"));
@@ -2750,7 +2750,7 @@ var UserService = {
                             creationDate: new Date().toISOString()
                         };
 
-                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, kdb) {
+                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
                             var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_interested);
                             collection.insertOne(newAlertRequirement, function (err, records) {
                                 if (err) {
@@ -2823,7 +2823,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(sp_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var mysort = {creationDate: -1};
                     var collection = db.db(config.dbName).collection(config.collections.sp_cu_send_interested);
                     var collectionShout = db.db(config.dbName).collection(config.collections.sp_cu_send_shout);
@@ -2933,7 +2933,7 @@ var UserService = {
             if (validUser) {
                 var tran_id = req.body.tran_id;
                 var sp_view = req.body.sp_view;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collection_transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     var collection_transaction_completed = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
                     var collection_transaction_cancellation = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -3000,7 +3000,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 var cu_id = req.body.cu_id;
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
                     collectionSP.findOne({cu_id: cu_id}, function (err, records) {
                         if (err) {

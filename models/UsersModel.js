@@ -26,7 +26,7 @@ var Users = {
                 login_key: uuidAPIKey.create().apiKey
             };
 
-            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
                 collectionSP.find({email: req.body.email}).toArray(function (err, docs) {
                     if (err) {
@@ -80,7 +80,7 @@ var Users = {
     checkSPUserCreated: function (req, callback) {
         var mobile_no = req.body.mobile_no;
         var fcm_token = req.body.fcm_token;
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.find({mobile_no: mobile_no}).toArray(function (err, docs) {
                 if (err) {
@@ -140,7 +140,7 @@ var Users = {
                     sp_add_bank: false,
                     sp_background: false
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
                     collectionSP.findOne({sp_id: sp_id}, function (err, docs) {
                         if (docs != null) {
@@ -220,13 +220,13 @@ var Users = {
                         }
                     };
                 }
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                     collectionSP.find({sp_id: sp_id}).toArray(function (err, docs) {
                         if (docs.length == 0) {
                             console.log("created new object");
 
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                                 collectionSP.insert(addWorkInfo, function (err, records) {
                                     if (err) {
@@ -239,7 +239,7 @@ var Users = {
                                         callback(status);
                                     } else {
 
-                                        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                             var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                             collectionSP.insert(geoLocationMatch, function (err, records) {
                                                 if (err) {
@@ -262,7 +262,7 @@ var Users = {
                             });
                         } else {
                             console.log("update new object");
-                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                                 collectionSP.updateOne({sp_id: sp_id}, {$set: addWorkInfo}, function (err, records) {
                                     if (err) {
@@ -276,7 +276,7 @@ var Users = {
                                     } else {
 
                                         if (geoUpdate == true) {
-                                            mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                                                 var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_geo_location);
                                                 collectionSP.updateOne({sp_id: sp_id}, {$set: geoLocationMatch}, function (err, records) {
                                                     if (err) {
@@ -317,7 +317,7 @@ var Users = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                     collectionSP.find({sp_id: sp_id}).toArray(function (err, docs) {
                         if (err) {
@@ -357,7 +357,7 @@ var Users = {
             if (validUser) {
                 console.log(" data " + data.images);
                 console.log(" imageAmount " + data);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);//scores: { $each: [ 90, 92, 85 ] } }
                     collectionSP.updateOne({sp_id: id}, {$push: {workImages: {$each: data}}}, function (err, records) {
                         if (err) {
@@ -399,7 +399,7 @@ var Users = {
                 var addWorkInfo = {
                     "profile_image": data[0]
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
                     collectionSP.update({sp_id: id}, {$set: addWorkInfo}, function (err, records) {
                         if (err) {
@@ -450,7 +450,7 @@ var Users = {
                     ssn: req.body.ssn,
                     creationDate: new Date().toUTCString()
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_background);
                     collectionSP.insert(newUser, function (err, records) {
                         if (err) {
@@ -489,7 +489,7 @@ var Users = {
         var fcm_token = req.body.fcm_token;
         console.log(email + "  ----1111");
 
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.find({email: email}).toArray(function (err, docs) {
                 if (err) {
@@ -591,7 +591,7 @@ var Users = {
                     creditAmount: "2000.00",
                     totalday: 0
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                     collectionSP.insert(newUser, function (err, dataSet) {
                         if (err) {
@@ -629,7 +629,7 @@ var Users = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                     var collectionAdmin = db.db(config.dbName).collection(config.collections.admin_setting);
                     collectionAdmin.find({}).toArray(function (err, dataAdmin) {
@@ -676,7 +676,7 @@ var Users = {
                 var type = req.body.type;
                 if (type == "start") {
 
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                         collectionSP.updateOne({sp_id: sp_id}, {$set: {scanFirstTime: new Date().toUTCString()}}, function (err, dataSet) {
                             if (err) {
@@ -719,7 +719,7 @@ var Users = {
                         creditAmount: creditAmount,
                         totalday: diffDays
                     };
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                         collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
                             if (err) {
@@ -765,7 +765,7 @@ var Users = {
                     "last_name": req.body.last_name,
                     "email": req.body.email,
                 };
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
                     collectionSP.find({email: email}).toArray(function (err, docs) {
                         if (err) {
@@ -876,7 +876,7 @@ var Users = {
         console.log(mobile_no);
         console.log(otp);
 
-        mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_otp);
             collectionSP.findOne({mobile_no: mobile_no}, function (err, docs) {
                 if (err) {
@@ -945,7 +945,7 @@ var Users = {
                 //         admin_replay_date: "",
                 //         admin_replay_ms: ""
                 //     };
-                //     mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                //     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 //         var collectionSP = db.db(config.dbName).collection(config.collections.contact_req);
                 //         collectionSP.insert(newPost, function (err, dataSet) {
                 //             if (err) {
@@ -1000,7 +1000,7 @@ var Users = {
                         admin_replay_comment: "",
                         creationDate: new Date().toUTCString()
                     };
-                    mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var collectionSP = db.db(config.dbName).collection(config.collections.sp_dispute);
                         collectionSP.insert(newPost, function (err, dataSet) {
                             if (err) {
@@ -1041,7 +1041,7 @@ var Users = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 console.log(req.body.tran_id);
-                mongo.connect(config.dbUrl, {useNewUrlParser: true}, function (err, db) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_dispute);
                     collectionSP.find({
                         tr_id: req.body.tran_id,
