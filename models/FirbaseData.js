@@ -28,8 +28,8 @@ var FirbaseData = {
                     var sp_id = childKey;
 
                     var timeMin;
-                    var res_time = new Date()
-                    var start_date = moment(childData.lastUpdated);
+                    var res_time = new Date().toUTCString()
+                    var start_date = moment.utc(childData.lastUpdated);
 
                     var end_date = moment.utc(res_time);
                     var duration = moment.duration(end_date.diff(start_date));
