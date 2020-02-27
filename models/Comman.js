@@ -2688,6 +2688,23 @@ var Comman = {
     },
 
 
+    // Creating Logout key 27-2-2020
+    CPUserLogout(cu_id) {
+        var upload = {
+            fcm_token: "",
+            login_key: "",
+        };
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
+            collectionSP.updateOne({cu_id: cu_id}, {$set: upload}, function (err, records) {
+                console.log("---------" + err);
+                console.log("---------" + records);
+            });
+        });
+    },
+
+
+
     // Creating Login key 21-2-2020
     checkCUValidLogin(cu_id, key, callBack) {
         console.log("------------>>" + cu_id);

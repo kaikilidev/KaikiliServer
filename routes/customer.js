@@ -830,6 +830,14 @@ router.post('/getUserWorkProfile', function (req, res, next) {
     });
 });
 
+
+//API - 54  CP user Logout 27-2-2020
+router.get('/userLogOut/:cu_id', function (req, res, next) {
+    comman.CPUserLogout(req.params.cu_id);
+    res.json();
+});
+
+
 // return upload(req, res).then((data) => {
 //     console.log("2----"+req.files.uploas);
 //     console.log("3----"+req.query.type);
