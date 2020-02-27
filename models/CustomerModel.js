@@ -105,9 +105,15 @@ var Customer = {
                 } else {
                     // assert.equal(1, docs.length);
                     // if (docs.length == 1) {
+                    var upload = {
+                        fcm_token: fcm_token,
+                        login_key: uuidAPIKey.create().apiKey
+                    };
+
+
 
                     collectionSP.updateOne({mobile_no: mobile_no},
-                        {$set: {fcm_token: fcm_token}}, function
+                        {$set: upload}, function
                             (err, records) {
                             console.log(records);
                         });
@@ -119,6 +125,7 @@ var Customer = {
                             message: "No User"
                         };
                     } else {
+                        docs.login_key = upload.login_key;
                         var status = {
                             status: 1,
                             message: "Successfully data getting",
