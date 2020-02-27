@@ -1090,7 +1090,14 @@ var Comman = {
 
 
     getRandomInt(max) {
-        return math.floor(math.random() * math.floor(max));
+        var num1 = math.floor(math.random() * math.floor(max))
+        if (num1 < 1000) {
+            return num1 + 1000;
+        } else {
+            return num1;
+        }
+
+
     },
 
     getSPUserRepeatedService(sp_id, cc_ids, sr_id, cost_item, callBack) {
@@ -1260,7 +1267,6 @@ var Comman = {
             });
         });
     },
-
 
     cuInterestedServicesAdd(body) {
         module.exports.getNextSequenceUserID("cu_search_id", function (result) {
@@ -3015,12 +3021,57 @@ var Comman = {
     //     });
     // },
 
-    spUserUpdateStatus(sp_id, onlineStatus){
+    spUserUpdateStatus(sp_id, onlineStatus) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
-            collectionSP.updateOne({sp_id: sp_id}, {$set: {onlineStatus:onlineStatus }});
+            collectionSP.updateOne({sp_id: sp_id}, {$set: {onlineStatus: onlineStatus}});
         });
     },
+
+
+    spToCheckBookingDate(sp_id, bookingDateTime, callback) {
+
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, dbas) {
+            var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled"]}}).toArray(function (err, mainDocs) {
+                if (err) {
+                    callback(false);
+                } else {
+                    var cout = 0;
+                    console.log("=====>>" + mainDocs.length);
+                    if (mainDocs.length == 0) {
+                        callback(false);
+                    } else {
+                        mainDocs.forEach(function (element) {
+                            var timeMin;
+                            var scheduled_date = moment.utc(element.bookingDateTime);
+                            var end_date = moment.utc(bookingDateTime);
+                            console.log("=====>>" + scheduled_date);
+                            console.log("=====>>" + end_date);
+
+                            var duration = moment.duration(scheduled_date.diff(end_date));
+                            var book = false;
+
+                            timeMin = duration / 60000;
+                            console.log("=====" + timeMin);
+
+                            if (timeMin > -120 && timeMin < 120) {
+                                book = true;
+                            }
+                            cout++;
+                            if (mainDocs.length == cout) {
+                                // return book;
+                                callback(book)
+                            }
+                        });
+                }
+            }
+        });
+    }
+)
+;
+
+},
 
 }
 module.exports = Comman;

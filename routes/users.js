@@ -848,10 +848,40 @@ router.get('/userLogOut/:sp_id', function (req, res, next) {
 });
 
 
+
+
 //API - 55  SP user Logout
-router.get('/testfirebase', function (req, res, next) {
-    comman.autoCheckOnlineUser();
-    res.json();
+router.post('/checkSPServiceSlot', function (req, res, next) {
+    var sp_id = req.body.sp_id;
+    var key = req.body.key;
+    comman.checkSPValidLogin(sp_id, key, function (validUser) {
+        if (validUser) {
+
+            comman.spToCheckBookingDate(sp_id, req.body.bookingDateTime, function (validUser) {
+                if (validUser) {
+                    var status = {
+                        status: 2,
+                        message: "not advisable"
+                    };
+                    res.json(status);
+
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "free slot"
+                    };
+                    res.json(status);
+                }
+            });
+        }else {
+            var status = {
+                status: -1,
+                message: "Login in other mobile",
+            };
+            res.json(status);
+        }
+    });
+
 });
 
 

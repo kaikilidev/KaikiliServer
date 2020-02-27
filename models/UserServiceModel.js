@@ -424,7 +424,7 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
-                comman.singleNotification(req.body.tran_id,function (getData) {
+                comman.singleNotification(req.body.tran_id, function (getData) {
                     callback(getData);
                 });
                 // var tran_id = req.body.tran_id;
@@ -2154,140 +2154,139 @@ var UserService = {
                 console.log(sp_id);
                 console.log(statusData);
                 mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-                    var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-                    collection.find({pps_id: pps_id}).toArray(function (err, docs) {
+                        var collection = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                        collection.find({pps_id: pps_id}).toArray(function (err, docs) {
 
 
-                            console.log("------------------------------------>");
-                            if (err) {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Failed !. Server Error....."
-                                };
-                                console.log(status);
-                                callback(status);
-                            } else {
-
-                                if (docs.length == 0) {
-
+                                console.log("------------------------------------>");
+                                if (err) {
+                                    console.log(err);
                                     var status = {
                                         status: 0,
-                                        message: "This Service other service provider accepted."
+                                        message: "Failed !. Server Error....."
                                     };
-
-                                    console.log();
+                                    console.log(status);
                                     callback(status);
                                 } else {
-                                    var dist = "";
-                                    docs[0].pps_data.forEach(function (ppsdata) {
-                                        if (ppsdata.sp_id == sp_id) {
-                                            dist = ppsdata.dist;
-                                        }
-                                    });
 
-                                    if (statusData == "Cancel") {
+                                    if (docs.length == 0) {
 
-                                        var serviceUpdate = {
-                                            sr_status: "Cancel-New-Sp",
-                                            updateDate: new Date().toUTCString()
-                                        };
-
-                                        var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                                        cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
-
-                                        collection.updateOne({pps_id: pps_id}, {$pull: {preferredProvider: sp_id}}, function (err, docs) {
-                                            console.log(docs + "----------1");
-                                        });
-                                        collection.updateOne({pps_id: pps_id}, {$pull: {pps_data: {sp_id: sp_id}}}, function (err, docs) {
-                                            console.log(docs + "----------2");
-                                        });
                                         var status = {
-                                            status: 1,
-                                            message: "Cancel service provider."
+                                            status: 0,
+                                            message: "This Service other service provider accepted."
                                         };
 
                                         console.log();
                                         callback(status);
-
                                     } else {
-
-                                        var serviceUpdate = {
-                                            sr_status: "Scheduled",
-                                            updateDate: new Date().toUTCString()
-                                        };
-
-                                        var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                                        cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
-                                        collection.update({pps_id: pps_id}, {$set: serviceUpdate});
-
-                                        var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
-                                        var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-                                        bulkRemove.find({pps_id: req.body.pps_id}).forEach(
-                                            function (doc) {
-                                                bulkInsert.insertOne(doc);
-                                                bulkRemove.removeOne({pps_id: pps_id});
+                                        var dist = "";
+                                        docs[0].pps_data.forEach(function (ppsdata) {
+                                            if (ppsdata.sp_id == sp_id) {
+                                                dist = ppsdata.dist;
                                             }
-                                        );
+                                        });
 
-                                        comman.getSPProfileData(sp_id, function (result) {
+                                        if (statusData == "Cancel") {
 
-                                            var discount = {
-                                                ds_title: "Disount",
-                                                ds_rate_per_item: "0",
-                                                ds_per: "0"
+                                            var serviceUpdate = {
+                                                sr_status: "Cancel-New-Sp",
+                                                updateDate: new Date().toUTCString()
                                             };
 
-                                            var postJob = {
-                                                address: docs[0].address,
-                                                comment: docs[0].comment,
-                                                sr_id: docs[0].sr_id,
-                                                sr_title: docs[0].sr_title,
-                                                time: docs[0].time,
-                                                date: docs[0].date,
-                                                bookingDateTime: docs[0].bookingDateTime,
-                                                cust_id: docs[0].cust_id,
-                                                cust_first_name: docs[0].cust_first_name,
-                                                cust_last_name: docs[0].cust_last_name,
-                                                sr_status: "Scheduled",
-                                                txn_status: "",
-                                                minimum_charge: "0",
-                                                totalCost: docs[0].totalCost,
-                                                itemCost: docs[0].itemCost,
-                                                last_cancel_tran_id: docs[0].last_cancel_tran_id,
-                                                last_cancel_sp_id: docs[0].last_cancel_sp_id,
-                                                re_book: docs[0].re_book,
-                                                type_of_service: docs[0].type_of_service,
-                                                discount: discount,
-                                                kaikili_commission: docs[0].kaikili_commission,
-                                                sr_type: docs[0].sr_type,
-                                                sr_total: docs[0].sr_total,
-                                                sp_net_pay: docs[0].sp_net_pay,
-                                                coordinatePoint: docs[0].coordinatePoint,
-                                                cp_review: docs[0].cp_review,
-                                                sp_review: docs[0].sp_review,
-                                                sp_first_name: result[0].first_name,
-                                                sp_Last_name: result[0].last_name,
-                                                sp_id: sp_id,
-                                                sp_image: result[0].userprofile.profile_image,
-                                                sp_service_area: result[0].userprofile.service_area,
-                                                distance: dist,
-                                                coupon_code: result[0].coupon_code,
-                                                coupon_apply: result[0].coupon_apply,
-                                                coupon_code_discount_amount: result[0].coupon_code_discount_amount,
-                                            }
+                                            var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                                            cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
 
-                                            comman.getBookPPService(postJob, function (result) {
-                                                callback(result);
+                                            collection.updateOne({pps_id: pps_id}, {$pull: {preferredProvider: sp_id}}, function (err, docs) {
+                                                console.log(docs + "----------1");
                                             });
+                                            collection.updateOne({pps_id: pps_id}, {$pull: {pps_data: {sp_id: sp_id}}}, function (err, docs) {
+                                                console.log(docs + "----------2");
+                                            });
+                                            var status = {
+                                                status: 1,
+                                                message: "Cancel service provider."
+                                            };
 
-                                        });
-                                    }
+                                            console.log();
+                                            callback(status);
+
+                                        } else {
+                                                var serviceUpdate = {
+                                                    sr_status: "Scheduled",
+                                                    updateDate: new Date().toUTCString()
+                                                };
+
+                                                var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                                                cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
+                                                collection.update({pps_id: pps_id}, {$set: serviceUpdate});
+
+                                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+                                                var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                                                bulkRemove.find({pps_id: req.body.pps_id}).forEach(
+                                                    function (doc) {
+                                                        bulkInsert.insertOne(doc);
+                                                        bulkRemove.removeOne({pps_id: pps_id});
+                                                    }
+                                                );
+                                                comman.getSPProfileData(sp_id, function (result) {
+
+                                                    var discount = {
+                                                        ds_title: "Disount",
+                                                        ds_rate_per_item: "0",
+                                                        ds_per: "0"
+                                                    };
+
+                                                    var postJob = {
+                                                        address: docs[0].address,
+                                                        comment: docs[0].comment,
+                                                        sr_id: docs[0].sr_id,
+                                                        sr_title: docs[0].sr_title,
+                                                        time: docs[0].time,
+                                                        date: docs[0].date,
+                                                        bookingDateTime: docs[0].bookingDateTime,
+                                                        cust_id: docs[0].cust_id,
+                                                        cust_first_name: docs[0].cust_first_name,
+                                                        cust_last_name: docs[0].cust_last_name,
+                                                        sr_status: "Scheduled",
+                                                        txn_status: "",
+                                                        minimum_charge: "0",
+                                                        totalCost: docs[0].totalCost,
+                                                        itemCost: docs[0].itemCost,
+                                                        last_cancel_tran_id: docs[0].last_cancel_tran_id,
+                                                        last_cancel_sp_id: docs[0].last_cancel_sp_id,
+                                                        re_book: docs[0].re_book,
+                                                        type_of_service: docs[0].type_of_service,
+                                                        discount: discount,
+                                                        kaikili_commission: docs[0].kaikili_commission,
+                                                        sr_type: docs[0].sr_type,
+                                                        sr_total: docs[0].sr_total,
+                                                        sp_net_pay: docs[0].sp_net_pay,
+                                                        coordinatePoint: docs[0].coordinatePoint,
+                                                        cp_review: docs[0].cp_review,
+                                                        sp_review: docs[0].sp_review,
+                                                        sp_first_name: result[0].first_name,
+                                                        sp_Last_name: result[0].last_name,
+                                                        sp_id: sp_id,
+                                                        sp_image: result[0].userprofile.profile_image,
+                                                        sp_service_area: result[0].userprofile.service_area,
+                                                        distance: dist,
+                                                        coupon_code: result[0].coupon_code,
+                                                        coupon_apply: result[0].coupon_apply,
+                                                        coupon_code_discount_amount: result[0].coupon_code_discount_amount,
+                                                    }
+
+                                                    comman.getBookPPService(postJob, function (result) {
+                                                        callback(result);
+                                                    });
+
+                                                });
+                                            }
+                                        }
                                 }
                             }
-                        }
-                    );
-                });
+                        );
+                    }
+                );
             } else {
                 var status = {
                     status: -1,
@@ -2295,10 +2294,11 @@ var UserService = {
                 };
                 callback(status);
             }
-        });
+        })
+        ;
     },
 
-    // Api Created 22-6-2019 Preferred Provider Transition Info
+// Api Created 22-6-2019 Preferred Provider Transition Info
     getPreferredProviderInfo: function (req, callback) {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
@@ -2306,7 +2306,7 @@ var UserService = {
             if (validUser) {
 
                 var pps_id = req.body.pps_id;
-                comman.preferredProviderInfo(req.body.pps_id,req.body.read,function (getData) {
+                comman.preferredProviderInfo(req.body.pps_id, req.body.read, function (getData) {
                     callback(getData);
                 });
 
@@ -2347,9 +2347,10 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
-    // Api Created 24-6-2019 Preferred Provider Transition Info
+// Api Created 24-6-2019 Preferred Provider Transition Info
     getPreferredProviderInfoCancel: function (req, callback) {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
@@ -2357,7 +2358,7 @@ var UserService = {
             if (validUser) {
                 var pps_id = req.body.pps_id;
 
-                comman.preferredProviderInfoCancel(req.body.pps_id,function (getData) {
+                comman.preferredProviderInfoCancel(req.body.pps_id, function (getData) {
                     callback(getData);
                 });
 
@@ -2394,9 +2395,10 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
-    // new Api Check Otp - 24-7-2019
+// new Api Check Otp - 24-7-2019
     checkServiceOPT: function (req, callback) {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
@@ -2444,9 +2446,10 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
-    // Interested To Hire customer find in service provider location and work area 29-8-2019 changed
+// Interested To Hire customer find in service provider location and work area 29-8-2019 changed
     getUserNearestInterestedToHire: function (req, callback) {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
@@ -2695,7 +2698,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
     SPUserInterestedSendCustomerInfo: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -2793,7 +2797,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
     getUserServiceCostHelperInfo: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -2815,7 +2820,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
     userSendShoutInterestedPostList: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -2894,7 +2900,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
     SPcashOutToBanck: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -2923,7 +2930,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
     getTransitionInfoFull: function (req, callback) {
         var sp_id = req.body.sp_id;
@@ -2989,10 +2997,11 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
 
-    // 1-6-2019 created Api (Customer Shouting SR status update)
+// 1-6-2019 created Api (Customer Shouting SR status update)
     getCustomerData(req, callback) {
         var sp_id = req.body.sp_id;
         var sp_id = req.body.sp_id;
@@ -3030,7 +3039,8 @@ var UserService = {
                 callback(status);
             }
         });
-    },
+    }
+    ,
 
 
 }
