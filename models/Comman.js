@@ -2488,69 +2488,71 @@ var Comman = {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collection = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
 
-            collection.find({tran_id: tran_id}).toArray(function (err, docs) {
-                if (err) {
-                } else {
+            module.exports.getTransitionInfoSingID(tran_id, function (doc) {
 
-                    var canCharges;
-                    var getAmount;
-                    var comment;
-                    if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
-                        if (cancelCR == true) {
-                            canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
-                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
-                                comment = "Customer Auto cancel service give back amount to customer account.";
-                            } else {
-                                comment = "Customer cancel service give back amount to customer account.";
-                            }
-
+                // // collection.find({tran_id: tran_id}).toArray(function (err, docs) {
+                //     if (err) {
+                //     } else {
+                var docs = doc;
+                var canCharges;
+                var getAmount;
+                var comment;
+                if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
+                    if (cancelCR == true) {
+                        canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
+                        if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
+                            comment = "Customer Auto cancel service give back amount to customer account.";
                         } else {
-                            canCharges = 0;
-                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
-                                comment = "Service provider Auto cancel service give back amount to customer account.";
-                            } else {
-                                comment = "Service provider cancel service give back amount to customer account.";
-                            }
-
+                            comment = "Customer cancel service give back amount to customer account.";
                         }
 
-                        if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
-
-                        } else {
-                            getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
-                        }
                     } else {
-                        if (cancelCR == true) {
-                            canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
-                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
-                                comment = "Customer Auto cancel service give back amount to customer account.";
-                            } else {
-                                comment = "Customer cancel service give back amount to customer account.";
-                            }
-
+                        canCharges = 0;
+                        if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
+                            comment = "Service provider Auto cancel service give back amount to customer account.";
                         } else {
-                            canCharges = 0;
-                            if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
-                                comment = "Service provider Auto cancel service give back amount to customer account.";
-                            } else {
-                                comment = "Service provider cancel service give back amount to customer account.";
-                            }
+                            comment = "Service provider cancel service give back amount to customer account.";
                         }
 
-                        if (docs[0].coupon_apply == true) {
-                            getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
-                            // }
+                    }
+
+                    if (docs[0].coupon_apply == true) {
+                        getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
+                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+
+                    } else {
+                        getAmount = parseFloat(docs[0].minimum_charge);
+                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                    }
+                } else {
+                    if (cancelCR == true) {
+                        canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
+                        if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
+                            comment = "Customer Auto cancel service give back amount to customer account.";
                         } else {
-                            getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                            comment = "Customer cancel service give back amount to customer account.";
+                        }
+
+                    } else {
+                        canCharges = 0;
+                        if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
+                            comment = "Service provider Auto cancel service give back amount to customer account.";
+                        } else {
+                            comment = "Service provider cancel service give back amount to customer account.";
                         }
                     }
 
+                    if (docs[0].coupon_apply == true) {
+                        getAmount = parseFloat(docs[0].sp_net_pay) - parseFloat(docs[0].coupon_code_discount_amount);
+                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                        // }
+                    } else {
+                        getAmount = parseFloat(docs[0].sp_net_pay);
+                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                    }
                 }
+
+                // }
             });
         });
     },
@@ -2702,7 +2704,6 @@ var Comman = {
             });
         });
     },
-
 
 
     // Creating Login key 21-2-2020
@@ -3049,46 +3050,67 @@ var Comman = {
     spToCheckBookingDate(sp_id, bookingDateTime, callback) {
 
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, dbas) {
-            var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
-            collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled"]}}).toArray(function (err, mainDocs) {
-                if (err) {
-                    callback(false);
-                } else {
-                    var cout = 0;
-                    console.log("=====>>" + mainDocs.length);
-                    if (mainDocs.length == 0) {
+                var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled"]}}).toArray(function (err, mainDocs) {
+                    if (err) {
                         callback(false);
                     } else {
-                        mainDocs.forEach(function (element) {
-                            var timeMin;
-                            var scheduled_date = moment.utc(element.bookingDateTime);
-                            var end_date = moment.utc(bookingDateTime);
-                            console.log("=====>>" + scheduled_date);
-                            console.log("=====>>" + end_date);
+                        var cout = 0;
+                        console.log("=====>>" + mainDocs.length);
+                        if (mainDocs.length == 0) {
+                            callback(false);
+                        } else {
+                            mainDocs.forEach(function (element) {
+                                var timeMin;
+                                var scheduled_date = moment.utc(element.bookingDateTime);
+                                var end_date = moment.utc(bookingDateTime);
+                                console.log("=====>>" + scheduled_date);
+                                console.log("=====>>" + end_date);
 
-                            var duration = moment.duration(scheduled_date.diff(end_date));
-                            var book = false;
+                                var duration = moment.duration(scheduled_date.diff(end_date));
+                                var book = false;
 
-                            timeMin = duration / 60000;
-                            console.log("=====" + timeMin);
+                                timeMin = duration / 60000;
+                                console.log("=====" + timeMin);
 
-                            if (timeMin > -120 && timeMin < 120) {
-                                book = true;
-                            }
-                            cout++;
-                            if (mainDocs.length == cout) {
-                                // return book;
-                                callback(book)
-                            }
-                        });
-                }
+                                if (timeMin > -120 && timeMin < 120) {
+                                    book = true;
+                                }
+                                cout++;
+                                if (mainDocs.length == cout) {
+                                    // return book;
+                                    callback(book)
+                                }
+                            });
+                        }
+                    }
+                });
             }
-        });
-    }
-)
-;
+        )
+        ;
 
-},
+    },
+
+
+    // 29-2-2020
+    getTransitionInfoSingID(tran_id, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collection_transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collection_transaction_completed = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+            var collection_transaction_cancellation = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+
+            collection_transaction.find({tran_id: tran_id}).toArray(function (err1, docsOnTr) {
+                collection_transaction_completed.find({tran_id: tran_id}).toArray(function (err2, docsOnTrCom) {
+                    collection_transaction_cancellation.find({tran_id: tran_id}).toArray(function (err3, docsOnTrCan) {
+                        var doc = docsOnTr.concat(docsOnTrCom);
+                        var doc = doc.concat(docsOnTrCan);
+                        callback(doc);
+                    });
+                });
+            });
+
+        });
+    },
 
 }
 module.exports = Comman;
