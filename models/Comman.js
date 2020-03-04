@@ -2672,7 +2672,6 @@ var Comman = {
         });
     },
 
-
     // Creating Logout key 24-2-2020
     SPUserLogout(sp_id) {
         var upload = {
@@ -2688,7 +2687,6 @@ var Comman = {
             });
         });
     },
-
 
     // Creating Logout key 27-2-2020
     CPUserLogout(cu_id) {
@@ -2728,7 +2726,6 @@ var Comman = {
             });
         });
     },
-
 
     // 25-2-2020
     getTransitionInfoFull(tran_id, sp_view, callback) {
@@ -2926,7 +2923,6 @@ var Comman = {
         });
     },
 
-
     //Preferred Provider Info 25-2-2020
     preferredProviderInfo(pps_id, read, callback) {
 
@@ -2990,54 +2986,6 @@ var Comman = {
     },
 
 
-    // Creating Auto Check Online key 26-2-2020
-    // autoCheckOnlineUser() {
-    //     var firebase = require('firebase/app');
-    //     require('firebase/database');
-    //     var config = {
-    //         apiKey: "AIzaSyCSN-Py-eM65QmCO63aHG-EJMuUFdaZdO4",
-    //         authDomain: "kaikili-service.firebaseapp.com",
-    //         databaseURL: "https://kaikili-service.firebaseio.com",
-    //         projectId: "kaikili-service",
-    //         storageBucket: "kaikili-service.appspot.com",
-    //         messagingSenderId: "881771145407",
-    //     };
-    //     firebase.initializeApp(config);
-    //
-    //     var ref = firebase.database().ref("kaikili-service-provider");
-    //     ref.once("value",)
-    //      .then(function (snap) {
-    //          // console.log(snap.val());
-    //          snap.forEach(function(childSnapshot) {
-    //              var childKey = childSnapshot.key;
-    //              var childData = childSnapshot.val();
-    //              console.log("childKey", childKey);
-    //              console.log("childData", childData.lastUpdated);
-    //              var sp_id = childKey;
-    //
-    //              var timeMin;
-    //              var res_time = new Date()
-    //              var start_date = moment.utc(childData.lastUpdated);
-    //
-    //              var end_date = moment.utc(res_time);
-    //              var duration = moment.duration(end_date.diff(start_date));
-    //              timeMin = duration / 60000;
-    //              var onlineStatusSet = false;
-    //              if (timeMin <= 4 && timeMin >= -4  ) {
-    //                  console.log("time ", timeMin);
-    //                  console.log(childKey +"------->>"+"Online");
-    //                  onlineStatusSet = true;
-    //              }else {
-    //                  console.log("time ", timeMin);
-    //                  console.log(childKey +"------->>"+"Offline");
-    //                  onlineStatusSet = false;
-    //              }
-    //              module.exports.spUserUpdateStatus(sp_id,onlineStatusSet);
-    //
-    //          });
-    //
-    //     });
-    // },
 
     spUserUpdateStatus(sp_id, onlineStatus) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
@@ -3112,5 +3060,154 @@ var Comman = {
         });
     },
 
+
+    // 4-3-2020 customers offers credit - debit api
+    cp_offer_kaiKiliWalletUpdate(cu_id, cu_name, tran_id, sr_title, comment, credit, debit, type) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.cu_kaikili_wallet);
+            var mysort = {_id: -1};
+            kkEarnWallet.find({cu_id : cu_id}).sort(mysort).toArray(function (err, doc) {
+
+                if (doc.length > 0) {
+                    var current;
+                    if (credit > 0) {
+                        current = parseFloat(doc[0].close) + parseFloat(credit);
+                    } else {
+                        current = parseFloat(doc[0].close) - parseFloat(debit);
+                    }
+
+                    var paymentBody = {
+                        cu_name: cu_name,
+                        cu_id: cu_id,
+                        type: type,
+                        tran_id: tran_id,
+                        sr_title: sr_title,
+                        comment: comment,
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+
+                    kkEarnWallet.insertOne(paymentBody);
+
+                } else {
+
+                    var current;
+                    if (credit > 0) {
+                        current = 0 + parseFloat(credit);
+                    } else {
+                        current = 0 - parseFloat(debit);
+                    }
+
+                    var paymentBody = {
+                        cu_id: cu_id,
+                        cu_name: cu_name,
+                        type: type,
+                        tran_id: tran_id,
+                        sr_title: sr_title,
+                        comment: comment,
+                        opening: 0,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+                    kkEarnWallet.insertOne(paymentBody);
+                }
+            });
+        });
+    },
+
+    // 4-3-2020 service provider offers credit - debit api
+    sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, tran_id, sr_title, comment, credit, debit, type) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.sp_kaikili_wallet);
+            var mysort = {_id: -1};
+            kkEarnWallet.find({sp_id:sp_id}).sort(mysort).toArray(function (err, doc) {
+
+                if (doc.length > 0) {
+                    var current;
+                    if (credit > 0) {
+                        current = parseFloat(doc[0].close) + parseFloat(credit);
+                    } else {
+                        current = parseFloat(doc[0].close) - parseFloat(debit);
+                    }
+
+                    var paymentBody = {
+                        sp_name: sp_name,
+                        sp_id: sp_id,
+                        type: type,
+                        tran_id: tran_id,
+                        sr_title: sr_title,
+                        comment: comment,
+                        opening: doc[0].close,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+
+                    kkEarnWallet.insertOne(paymentBody);
+
+                } else {
+
+                    var current;
+                    if (credit > 0) {
+                        current = 0 + parseFloat(credit);
+                    } else {
+                        current = 0 - parseFloat(debit);
+                    }
+
+                    var paymentBody = {
+                        sp_id: sp_id,
+                        sp_name: sp_name,
+                        type: type,
+                        tran_id: tran_id,
+                        sr_title: sr_title,
+                        comment: comment,
+                        opening: 0,
+                        credit: credit,
+                        debit: debit,
+                        close: current,
+                        updateDate: new Date().toUTCString()
+                    }
+                    kkEarnWallet.insertOne(paymentBody);
+                }
+            });
+        });
+    },
+
+
+    // 4-3-2020 customers offers current credit
+    getCUCurrentOfferCredit(cu_id, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.cu_kaikili_wallet);
+            var mysort = {_id: -1};
+            kkEarnWallet.find({cu_id : cu_id}).sort(mysort).toArray(function (err, doc) {
+                if (doc.length > 0) {
+                    callback(parseFloat(doc[0].close));
+                } else {
+                    callback(0);
+                }
+            });
+        });
+    },
+
+    // 4-3-2020 provider offers current credit
+    getSPCurrentOfferCredit(sp_id, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.sp_kaikili_wallet);
+            var mysort = {_id: -1};
+            kkEarnWallet.find({sp_id : sp_id}).sort(mysort).toArray(function (err, doc) {
+                if (doc.length > 0) {
+                    callback(parseFloat(doc[0].close));
+                } else {
+                    callback(0);
+                }
+            });
+        });
+    },
 }
 module.exports = Comman;

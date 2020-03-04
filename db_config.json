@@ -52,7 +52,9 @@
     "faqs": "faqs",
     "cu_deleted_alert_data": "cu_deleted_alert_data",
     "coupon_code": "coupon_code",
-    "cu_used_coupon_code": "cu_used_coupon_code"
+    "cu_used_coupon_code": "cu_used_coupon_code",
+    "sp_kaikili_wallet": "sp_kaikili_wallet",
+    "cu_kaikili_wallet": "cu_kaikili_wallet"
 
   }
 
