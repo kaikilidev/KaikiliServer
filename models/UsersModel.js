@@ -60,6 +60,7 @@ var Users = {
                                         console.log(status);
                                         callback(status);
                                     } else {
+                                        comman.createNewSPUserCredit(newUser.sp_id,newUser.first_name +" "+newUser.last_name)
                                         var status = {
                                             status: 1,
                                             message: "Success create new user",

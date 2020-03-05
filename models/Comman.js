@@ -3209,5 +3209,22 @@ var Comman = {
             });
         });
     },
+
+
+    // 5-3-2020 create new SP user credit opning
+    createNewSPUserCredit(sp_id,sp_name) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.admin_setting);
+            var mysort = {_id: -1};
+            // collectionAdmin.find({}).toArray(function (err, dataAdmin) {
+            kkEarnWallet.findOne({set_id : "AS01"},function (err, adminData) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    module.exports.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", adminData.message, adminData.message, adminData.amount, 0, "Credit");
+                }
+            });
+        });
+    },
 }
 module.exports = Comman;
