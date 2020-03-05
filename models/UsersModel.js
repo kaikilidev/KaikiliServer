@@ -22,7 +22,7 @@ var Users = {
                 password: req.body.password,
                 fcm_token: req.body.fcm_token,
                 creationDate: new Date().toUTCString(),
-                onlineStatus:true,
+                onlineStatus: true,
                 login_key: uuidAPIKey.create().apiKey
             };
 
@@ -60,7 +60,7 @@ var Users = {
                                         console.log(status);
                                         callback(status);
                                     } else {
-                                        comman.createNewSPUserCredit(newUser.sp_id,newUser.first_name +" "+newUser.last_name)
+                                        comman.createNewSPUserCredit(newUser.sp_id, newUser.first_name + " " + newUser.last_name)
                                         var status = {
                                             status: 1,
                                             message: "Success create new user",
@@ -96,7 +96,7 @@ var Users = {
                     // assert.equal(1, docs.length);
                     var upload = {
                         fcm_token: fcm_token,
-                        onlineStatus:true,
+                        onlineStatus: true,
                         login_key: uuidAPIKey.create().apiKey
                     };
                     console.log(upload);
@@ -506,7 +506,7 @@ var Users = {
                     if (docs.length == 1) {
                         var upload = {
                             fcm_token: fcm_token,
-                            onlineStatus:true,
+                            onlineStatus: true,
                             login_key: uuidAPIKey.create().apiKey
                         };
 
@@ -634,26 +634,29 @@ var Users = {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                     var collectionAdmin = db.db(config.dbName).collection(config.collections.admin_setting);
                     collectionAdmin.find({}).toArray(function (err, dataAdmin) {
-                        collectionSP.find({sp_id: req.body.sp_id}).toArray(function (err, dataSet) {
-                            if (err) {
-                                console.log(err);
-                                var status = {
-                                    status: 0,
-                                    message: "Failed !. Server Error....."
-                                };
-                                console.log(status);
-                                callback(status);
-                            } else {
-                                var status = {
-                                    status: 1,
-                                    message: "Check Data",
-                                    data: dataSet,
-                                    admin: dataAdmin
-                                };
-                                console.log(status);
-                                callback(status);
+                        comman.getSPCurrentOfferCredit(sp_id,function (spCredit) {
+                            collectionSP.find({sp_id: req.body.sp_id}).toArray(function (err, dataSet) {
+                                if (err) {
+                                    console.log(err);
+                                    var status = {
+                                        status: 0,
+                                        message: "Failed !. Server Error....."
+                                    };
+                                    console.log(status);
+                                    callback(status);
+                                } else {
+                                    var status = {
+                                        status: 1,
+                                        message: "Check Data",
+                                        data: dataSet,
+                                        admin: dataAdmin,
+                                      spCurrnet : spCredit
+                                    };
+                                    console.log(status);
+                                    callback(status);
 
-                            }
+                                }
+                            });
                         });
                     });
                 });
@@ -927,7 +930,7 @@ var Users = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
-                comman.contactUsInsert(req.body.post_user_id,req.body.comment,req.body.topic,function (getData){
+                comman.contactUsInsert(req.body.post_user_id, req.body.comment, req.body.topic, function (getData) {
                     callback(getData);
                 });
 

@@ -2276,7 +2276,7 @@ var Comman = {
                                 };
 
                                 collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
-                                var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+                                var bulkInsert = dbas.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
                                 collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
                                     function (doc) {
                                         bulkInsert.insertOne(doc);
@@ -2287,7 +2287,7 @@ var Comman = {
                             }
                         } else {
                             collectionShout.updateOne({sp_cp_alert_send_id: element.sp_cp_alert_send_id}, {$set: updateTran});
-                            var bulkInsert = db.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
+                            var bulkInsert = dbas.db(config.dbName).collection(config.collections.sp_cu_send_shout_cancellation);
                             collectionShout.find({sp_cp_alert_send_id: element.sp_cp_alert_send_id}).forEach(
                                 function (doc) {
                                     bulkInsert.insertOne(doc);
@@ -3217,7 +3217,7 @@ var Comman = {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.admin_setting);
             var mysort = {_id: -1};
             // collectionAdmin.find({}).toArray(function (err, dataAdmin) {
-            kkEarnWallet.findOne({set_id : "AS01"},function (err, adminData) {
+            kkEarnWallet.findOne({set_id : "AS001"},function (err, adminData) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -3226,5 +3226,7 @@ var Comman = {
             });
         });
     },
+
+
 }
 module.exports = Comman;
