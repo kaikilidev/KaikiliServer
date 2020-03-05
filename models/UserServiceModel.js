@@ -896,6 +896,7 @@ var UserService = {
                                             comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
                                             comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name+" "+paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, commissioBack, "Debit");
                                             comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, kkCommissioBack, 0, "Credit")
+                                            comment = "Kaikili Credit "+docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
                                             comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment,commissioBack, 0, "Credit")
 
                                         }else if(spCredit < commissioBack){
@@ -904,6 +905,7 @@ var UserService = {
                                             comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+spCredit+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+spCredit;
                                             comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name+" "+paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, spCredit, "Debit");
                                             comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, kkCommissioBack, 0, "Credit")
+                                            comment = "Kaikili Credit "+docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
                                             comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment,spCredit, 0, "Credit")
                                         }
                                     }else {

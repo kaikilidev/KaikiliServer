@@ -1079,5 +1079,48 @@ var Users = {
             }
         });
     },
+
+
+
+    getKaikiliCreditData: function (req, callback) {
+        var sp_id = req.body.sp_id;
+        var key = req.body.key;
+        comman.checkSPValidLogin(sp_id, key, function (validUser) {
+            if (validUser) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+                    var collectionSP = db.db(config.dbName).collection(config.collections.sp_kaikili_wallet);
+                    var mysort = {_id: -1};
+                    collectionSP.find({sp_id: sp_id}).sort(mysort).toArray(function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully data getting",
+                                data: docs
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    });
+                });
+            } else {
+                var status = {
+                    status: -1,
+                    message: "Login in other mobile",
+                };
+                callback(status);
+            }
+
+        });
+    },
+
+
 }
 module.exports = Users;
