@@ -583,10 +583,6 @@ var Users = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
-                var kkEarnWallet = db.db(config.dbName).collection(config.collections.admin_setting);
-                var mysort = {_id: -1};
-                // collectionAdmin.find({}).toArray(function (err, dataAdmin) {
-                // kkEarnWallet.findOne({set_id: "AS004"}, function (err, adminData) {
                     var newUser = {
                         sp_id: req.body.sp_id,
                         stickerApplyDate: new Date().toUTCString(),
@@ -594,7 +590,7 @@ var Users = {
                         barCode: '',
                         scanFirstTime: '',
                         scanEndTime: '',
-                        creditAmount: 0,
+                        creditAmount: "0",
                         totalTran: 0
                     };
                     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
@@ -619,7 +615,6 @@ var Users = {
                             }
                         });
                     });
-                // });
             } else {
                 var status = {
                     status: -1,
@@ -760,7 +755,8 @@ var Users = {
                                             creditAmount: getCommission,
                                             totalTran: newItemCost.length
                                         };
-                                        comman.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", "Kaikili Marketing Credit", "Kaikili Marketing Credit = Total Commission "+parseFloat(totlaCommission)+" 10% Give ("+getCommission+ ") Kaikili Credit to Sp", getCommission, 0, "Credit");
+                                        console.log(updateData);
+                                       comman.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", "Kaikili Marketing Credit", "Kaikili Marketing Credit = Total Commission "+parseFloat(totlaCommission)+" 10% Give ("+getCommission+ ") Kaikili Credit to Sp", getCommission, 0, "Credit");
                                         collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
                                             if (err) {
                                                 var status = {
