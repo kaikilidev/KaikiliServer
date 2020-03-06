@@ -726,7 +726,6 @@ var Users = {
                     };
                     console.log(query);
                      mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-                        // var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                         var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
                         collectionSP.find(query).toArray(function (err, dataSet) {
                             if (err) {
@@ -756,8 +755,10 @@ var Users = {
                                             totalTran: newItemCost.length
                                         };
                                         console.log(updateData);
-                                       comman.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", "Kaikili Marketing Credit", "Kaikili Marketing Credit = Total Commission "+parseFloat(totlaCommission)+" 10% Give ("+getCommission+ ") Kaikili Credit to Sp", getCommission, 0, "Credit");
-                                        collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
+
+                                      // comman.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", "Kaikili Marketing Credit", "Kaikili Marketing Credit = Total Commission "+parseFloat(totlaCommission)+" 10% Give ("+getCommission+ ") Kaikili Credit to Sp", getCommission, 0, "Credit");
+                                        var collectionSPMaer = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+                                        collectionSPMaer.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
                                             if (err) {
                                                 var status = {
                                                     status: 0,
