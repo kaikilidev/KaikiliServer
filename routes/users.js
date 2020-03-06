@@ -599,6 +599,7 @@ router.post('/checkToSticker', function (req, res, next) {
 
 //API - 40
 router.post('/stickerQRScan', function (req, res, next) {
+    console.log("Call ling sub -------- ");
     usersModel.stickerQRScanUpdate(req, function (err, result) {
         if (err) {
             res.json(err);

@@ -582,38 +582,44 @@ var Users = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                var newUser = {
-                    sp_id: req.body.sp_id,
-                    stickerApplyDate: new Date().toUTCString(),
-                    stickerSendDate: '',
-                    barCode: '',
-                    scanFirstTime: '',
-                    scanEndTime: '',
-                    creditAmount: "2000.00",
-                    totalday: 0
-                };
-                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-                    var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                    collectionSP.insert(newUser, function (err, dataSet) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
-                            var status = {
-                                status: 1,
-                                message: "Successfully add information",
-                                data: dataSet
-                            };
-                            console.log(status);
-                            callback(status);
-                        }
+
+                var kkEarnWallet = db.db(config.dbName).collection(config.collections.admin_setting);
+                var mysort = {_id: -1};
+                // collectionAdmin.find({}).toArray(function (err, dataAdmin) {
+                // kkEarnWallet.findOne({set_id: "AS004"}, function (err, adminData) {
+                    var newUser = {
+                        sp_id: req.body.sp_id,
+                        stickerApplyDate: new Date().toUTCString(),
+                        stickerSendDate: '',
+                        barCode: '',
+                        scanFirstTime: '',
+                        scanEndTime: '',
+                        creditAmount: 0,
+                        totalTran: 0
+                    };
+                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+                        var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+                        collectionSP.insert(newUser, function (err, dataSet) {
+                            if (err) {
+                                console.log(err);
+                                var status = {
+                                    status: 0,
+                                    message: "Failed !. Server Error....."
+                                };
+                                console.log(status);
+                                callback(status);
+                            } else {
+                                var status = {
+                                    status: 1,
+                                    message: "Successfully add information",
+                                    data: dataSet
+                                };
+                                console.log(status);
+                                callback(status);
+                            }
+                        });
                     });
-                });
+                // });
             } else {
                 var status = {
                     status: -1,
@@ -634,7 +640,7 @@ var Users = {
                     var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
                     var collectionAdmin = db.db(config.dbName).collection(config.collections.admin_setting);
                     collectionAdmin.find({}).toArray(function (err, dataAdmin) {
-                        comman.getSPCurrentOfferCredit(sp_id,function (spCredit) {
+                        comman.getSPCurrentOfferCredit(sp_id, function (spCredit) {
                             collectionSP.find({sp_id: req.body.sp_id}).toArray(function (err, dataSet) {
                                 if (err) {
                                     console.log(err);
@@ -650,7 +656,7 @@ var Users = {
                                         message: "Check Data",
                                         data: dataSet,
                                         admin: dataAdmin,
-                                      spCurrnet : spCredit
+                                        spCurrnet: spCredit
                                     };
                                     console.log(status);
                                     callback(status);
@@ -674,6 +680,8 @@ var Users = {
     stickerQRScanUpdate: function (req, callback) {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
+        var sp_name = req.body.sp_name;
+        const moment = require('moment')
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
@@ -707,27 +715,26 @@ var Users = {
                     var endDate = new Date().toUTCString();
                     var offerAmount = req.body.offerAmount;
                     var startDate = new Date(req.body.startDate);
-                    console.log(new Date(endDate).toUTCString() + "----" + startDate);
-                    var diffDays = parseInt((new Date(endDate) - startDate) / (1000 * 60 * 60 * 24));
-                    var oneDayAmout = parseFloat(offerAmount) / 365;
-                    console.log(oneDayAmout.toFixed(2));
-                    console.log(diffDays);
-                    var creditAmount;
-                    if (diffDays < 366) {
-                        creditAmount = oneDayAmout.toFixed(2) * diffDays;
-                    } else {
-                        creditAmount = oneDayAmout.toFixed(2) * 365;
-                    }
-                    var updateData = {
-                        scanEndTime: endDate,
-                        creditAmount: creditAmount,
-                        totalday: diffDays
+                    // console.log(new Date(endDate).toUTCString() + "----" + startDate);
+                    // var diffDays = parseInt((new Date(endDate) - startDate) / (1000 * 60 * 60 * 24));
+                    // var oneDayAmout = parseFloat(offerAmount) / 365;
+                    // console.log(oneDayAmout.toFixed(2));
+                    // console.log(diffDays);
+                    // var creditAmount;
+                    // if (diffDays < 366) {
+                    //     creditAmount = oneDayAmout.toFixed(2) * diffDays;
+                    // } else {
+                    //     creditAmount = oneDayAmout.toFixed(2) * 365;
+                    // }
+                    var query = {
+                        "sp_id": sp_id, sr_status: "Completed"
                     };
-                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-                        var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
-                        collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
+                    console.log(query);
+                     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+                        // var collectionSP = db.db(config.dbName).collection(config.collections.sp_marketing_info);
+                        var collectionSP = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                        collectionSP.find(query).toArray(function (err, dataSet) {
                             if (err) {
-                                // console.log(err);
                                 var status = {
                                     status: 0,
                                     message: "Failed !. Server Error....."
@@ -735,25 +742,60 @@ var Users = {
                                 // console.log(status);
                                 callback(status);
                             } else {
-                                var status = {
-                                    status: 1,
-                                    message: "Successfully server are stop",
-                                    data: dataSet
-                                };
-                                // console.log(status);
-                                callback(status);
+                                console.log(dataSet.length);
+                                var count = 0;
+                                var totlaCommission = 0;
+                                var newItemCost = new Array();
+                                dataSet.forEach(function (element) {
+                                    if (moment.utc(startDate) <= moment.utc(element.updateDate) && moment.utc(endDate) >= moment.utc(element.updateDate)) {
+                                        newItemCost.push(element)
+                                        totlaCommission = totlaCommission + parseFloat(element.kaikili_commission.kk_sr_commission);
+                                    }
+                                    count++;
+                                    if (dataSet.length == count) {
+
+                                        var getCommission = parseFloat(totlaCommission) * 10 / 100
+                                        var updateData = {
+                                            scanEndTime: endDate,
+                                            creditAmount: getCommission,
+                                            totalTran: newItemCost.length
+                                        };
+                                        comman.sp_offer_kaiKiliWalletUpdate(sp_id, sp_name, "00", "Kaikili Marketing Credit", "Kaikili Marketing Credit = Total Commission "+parseFloat(totlaCommission)+" 10% Give ("+getCommission+ ") Kaikili Credit to Sp", getCommission, 0, "Credit");
+                                        collectionSP.updateOne({sp_id: sp_id}, {$set: updateData}, function (err, dataSet) {
+                                            if (err) {
+                                                var status = {
+                                                    status: 0,
+                                                    message: "Failed !. Server Error....."
+                                                };
+                                                // console.log(status);
+                                                callback(status);
+                                            } else {
+                                                var status = {
+                                                    status: 1,
+                                                    message: "Successfully data",
+                                                };
+                                                callback(status);
+                                            }
+                                        });
+                                    }
+                                });
                             }
+
                         });
-                    });
+                    })
+                        ;
+                    }
                 }
-            } else {
-                var status = {
-                    status: -1,
-                    message: "Login in other mobile",
-                };
-                callback(status);
+            else
+                {
+                    var status = {
+                        status: -1,
+                        message: "Login in other mobile",
+                    };
+                    callback(status);
+                }
             }
-        });
+        );
     },
 
 
@@ -1079,7 +1121,6 @@ var Users = {
             }
         });
     },
-
 
 
     getKaikiliCreditData: function (req, callback) {
