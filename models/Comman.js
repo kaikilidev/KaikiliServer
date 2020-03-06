@@ -3228,5 +3228,19 @@ var Comman = {
     },
 
 
+    // Creating Logout key 24-2-2020
+    SPUserLocation(sp_id, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_sr_profile);
+            collectionSP.findOne({sp_id: sp_id}, function (err, records) {
+                if (records != null) {
+                    callback(records.coordinatePoint);
+                } else {
+                    callback();
+                }
+            });
+        });
+    },
+
 }
 module.exports = Comman;

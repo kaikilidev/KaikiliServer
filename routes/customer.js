@@ -838,6 +838,14 @@ router.get('/userLogOut/:cu_id', function (req, res, next) {
 });
 
 
+//API - 57  SP user Logout
+router.get('/getLocation/:sp_id', function (req, res, next) {
+    comman.SPUserLocation(req.params.sp_id, function (data) {
+        res.json(data);
+    });
+});
+
+
 // return upload(req, res).then((data) => {
 //     console.log("2----"+req.files.uploas);
 //     console.log("3----"+req.query.type);
