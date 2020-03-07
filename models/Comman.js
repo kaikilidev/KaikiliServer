@@ -3242,5 +3242,24 @@ var Comman = {
         });
     },
 
+
+    // 7-3-2020 create new SP user referral credit opning
+    createNewSPUserCreditGiveReferral(referral_user_id,referral_amount,referral_user_type,new_user_sp_id,sp_name) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var SPReferral = db.db(config.dbName).collection(config.collections.sp_referral_info);
+            var newUser = {
+                referral_user_id: referral_user_id,
+                referral_amount: referral_amount,
+                referral_user_type: referral_user_type,
+                new_user_sp_id: new_user_sp_id,
+                new_user_name: sp_name,
+                creationDate: new Date().toUTCString(),
+            };
+            SPReferral.insert(newUser);
+            module.exports.sp_offer_kaiKiliWalletUpdate(referral_user_id, sp_name, "00", "Kaikili referral bonus","Kaikili referral "+referral_user_id+"  to  "+sp_name+" "+new_user_sp_id+" bonus "+referral_amount , referral_amount, 0, "Credit");
+        });
+    },
+
+
 }
 module.exports = Comman;

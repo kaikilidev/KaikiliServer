@@ -11,6 +11,12 @@ var Users = {
     addNewUser: function (req, callback) {
         comman.getNextSequenceUserID("sp_user", function (result) {
             //  console.log(result);
+            // editor.putString("referral_user_id", null);
+            // editor.putString("referral_user_type", null);
+            // editor.putString("referral_amount", null);
+
+
+
             var newUser = {
                 sp_id: "SP0" + result,
                 first_name: req.body.first_name,
@@ -60,6 +66,10 @@ var Users = {
                                         console.log(status);
                                         callback(status);
                                     } else {
+                                        if(req.body.referral_user_id != null && req.body.referral_amount != null && req.body.referral_user_type != null){
+                                          comman.createNewSPUserCreditGiveReferral(req.body.referral_user_id,req.body.referral_amount,req.body.referral_user_type,newUser.sp_id,newUser.first_name + " " + newUser.last_name)
+                                        }
+
                                         comman.createNewSPUserCredit(newUser.sp_id, newUser.first_name + " " + newUser.last_name)
                                         var status = {
                                             status: 1,
