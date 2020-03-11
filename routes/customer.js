@@ -846,6 +846,20 @@ router.get('/getLocation/:sp_id', function (req, res, next) {
 });
 
 
+//API - 58
+router.post('/getKaikiliEarnTan', function (req, res, next) {
+    console.log("call getCustomerData-----1");
+    customerModel.getKaikiliCreditData(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 // return upload(req, res).then((data) => {
 //     console.log("2----"+req.files.uploas);
 //     console.log("3----"+req.query.type);
