@@ -111,7 +111,6 @@ var Customer = {
                     };
 
 
-
                     collectionSP.updateOne({mobile_no: mobile_no},
                         {$set: upload}, function
                             (err, records) {
@@ -2812,80 +2811,87 @@ var Customer = {
                 var cu_id = req.body.cu_id;
                 mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var bankdata = db.db(config.dbName).collection(config.collections.cu_bank_info);
+                    var collectionAdmin = db.db(config.dbName).collection(config.collections.admin_setting);
+
                     var kaikiliWallet = db.db(config.dbName).collection(config.collections.kaikili_wallet);
                     var mysort = {creationDate: -1};
                     var mysort1 = {_id: -1};
-
-                    bankdata.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
-                            var cursorSearch = kaikiliWallet.aggregate([
-                                {
-                                    $match: {
-                                        cu_id: cu_id
-                                    }
-                                }, {
-                                    $lookup: {
-                                        from: config.collections.cu_sp_transaction_cancellation,
-                                        localField: "tran_id",
-                                        foreignField: "tran_id",
-                                        as: "tran11"
-                                    }
-                                },
-
-                                {
-                                    $lookup: {
-                                        from: config.collections.cu_sp_transaction_completed,
-                                        localField: "tran_id",
-                                        foreignField: "tran_id",
-                                        as: "tran22"
-                                    }
-                                },
-
-                                {
-                                    $lookup: {
-                                        from: config.collections.cu_sp_transaction,
-                                        localField: "tran_id",
-                                        foreignField: "tran_id",
-                                        as: "tran33"
-                                    }
-                                }
-
-                            ]).sort(mysort1);
-
-                            cursorSearch.toArray(function (err, payment) {
-                                // kaikiliWallet.find({cu_id: cu_id}).sort(mysort1).toArray(function (err, payment) {
+                    comman.getCUCurrentOfferCredit(cu_id, function (spCredit) {
+                        collectionAdmin.find({}).toArray(function (err, dataAdmin) {
+                            bankdata.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
                                 if (err) {
+                                    console.log(err);
                                     var status = {
-                                        status: 1,
-                                        message: "Thank you.",
-                                        data: docs,
-                                        payment: []
-
+                                        status: 0,
+                                        message: "Failed !. Server Error....."
                                     };
-                                    console.log();
+                                    console.log(status);
                                     callback(status);
-
                                 } else {
-                                    var status = {
-                                        status: 1,
-                                        message: "Thank you.",
-                                        data: docs,
-                                        payment: payment
+                                    var cursorSearch = kaikiliWallet.aggregate([
+                                        {
+                                            $match: {
+                                                cu_id: cu_id
+                                            }
+                                        }, {
+                                            $lookup: {
+                                                from: config.collections.cu_sp_transaction_cancellation,
+                                                localField: "tran_id",
+                                                foreignField: "tran_id",
+                                                as: "tran11"
+                                            }
+                                        },
 
-                                    };
-                                    console.log();
-                                    callback(status);
+                                        {
+                                            $lookup: {
+                                                from: config.collections.cu_sp_transaction_completed,
+                                                localField: "tran_id",
+                                                foreignField: "tran_id",
+                                                as: "tran22"
+                                            }
+                                        },
+
+                                        {
+                                            $lookup: {
+                                                from: config.collections.cu_sp_transaction,
+                                                localField: "tran_id",
+                                                foreignField: "tran_id",
+                                                as: "tran33"
+                                            }
+                                        }
+
+                                    ]).sort(mysort1);
+
+                                    cursorSearch.toArray(function (err, payment) {
+                                        // kaikiliWallet.find({cu_id: cu_id}).sort(mysort1).toArray(function (err, payment) {
+                                        if (err) {
+                                            var status = {
+                                                status: 1,
+                                                message: "Thank you.",
+                                                data: docs,
+                                                payment: [],
+                                                admin: dataAdmin,
+                                                spCurrnet: spCredit
+                                            };
+                                            console.log();
+                                            callback(status);
+
+                                        } else {
+                                            var status = {
+                                                status: 1,
+                                                message: "Thank you.",
+                                                data: docs,
+                                                payment: payment,
+                                                admin: dataAdmin,
+                                                spCurrnet: spCredit
+                                            };
+                                            console.log();
+                                            callback(status);
+                                        }
+                                    });
                                 }
                             });
-                        }
+                        });
                     });
                 });
 
@@ -3649,7 +3655,7 @@ var Customer = {
         comman.checkCUValidLogin(cu_id, key, function (validUser) {
             if (validUser) {
 
-                comman.preferredProviderInfoCancel(req.body.pps_id,function (getData) {
+                comman.preferredProviderInfoCancel(req.body.pps_id, function (getData) {
                     callback(getData);
                 });
 
