@@ -66,7 +66,7 @@ var Users = {
                                         console.log(status);
                                         callback(status);
                                     } else {
-                                        if(req.body.referral_user_id != null && req.body.referral_amount != null && req.body.referral_user_type != null){
+                                        if(req.body.referral_user_id.length >0 && req.body.referral_amount.length >0 && req.body.referral_user_type.length >0 ){
                                           comman.createNewSPUserCreditGiveReferral(req.body.referral_user_id,req.body.referral_amount,req.body.referral_user_type,newUser.sp_id,newUser.first_name + " " + newUser.last_name)
                                         }
 

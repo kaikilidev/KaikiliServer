@@ -55,7 +55,8 @@
     "cu_used_coupon_code": "cu_used_coupon_code",
     "sp_kaikili_wallet": "sp_kaikili_wallet",
     "cu_kaikili_wallet": "cu_kaikili_wallet",
-    "sp_referral_info": "sp_referral_info"
+    "sp_referral_info": "sp_referral_info",
+    "cu_referral_info": "cu_referral_info"
 
 
   }

@@ -66,6 +66,11 @@ var Customer = {
                                         console.log(status);
                                         callback(status);
                                     } else {
+
+                                        if(req.body.referral_user_id.length >0 && req.body.referral_amount.length >0 && req.body.referral_user_type.length >0 ){
+                                            comman.createNewCUUserCreditGiveReferral(req.body.referral_user_id,req.body.referral_amount,req.body.referral_user_type,newUser.cu_id,newUser.first_name + " " + newUser.last_name)
+                                        }
+
                                         var status = {
                                             status: 1,
                                             message: "Success create new user",
