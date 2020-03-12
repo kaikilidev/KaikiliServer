@@ -2468,7 +2468,9 @@ var Comman = {
                             getAmount = parseFloat(docs[0].minimum_charge);
                             module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
                                 if (spCredit > 0) {
-                                    var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    // var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    var creditDis = (getAmount * 5) / 100;
+
                                     if (parseFloat(spCredit) >= creditDis) {
                                         getAmount = getAmount - creditDis;
                                         module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + creditDis, 0, creditDis, "Debit");
@@ -2495,7 +2497,9 @@ var Comman = {
 
                             module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
                                 if (spCredit > 0) {
-                                    var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    // var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    var creditDis = (getAmount * 5) / 100;
+
                                     if (parseFloat(spCredit) >= creditDis) {
                                         getAmount = getAmount - creditDis;
                                         module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + creditDis, 0, creditDis, "Debit");

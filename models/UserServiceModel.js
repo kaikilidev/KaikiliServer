@@ -1112,7 +1112,7 @@ var UserService = {
             if (validUser) {
                 console.log(sp_id + "=====  call completed ");
                 mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
-                    var mysort = {updateDate: 1};
+                    var mysort = {updateDate: -1};
                     var collection = kdb.db(config.dbName).collection(config.collections.cu_sp_transaction);
                     collection.find({
                         sp_id: sp_id,
