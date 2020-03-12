@@ -1929,9 +1929,9 @@ var Comman = {
                         if (element.sr_status == "Open") {
                             var timeMin;
                             var res_time = new Date().toUTCString();
-                            var start_date = moment.utc(element.creationDate);
+                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
 
-                            var end_date = moment.utc(res_time);
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
@@ -1952,8 +1952,8 @@ var Comman = {
                                 var message = "Auto Cancel Service Remainder"
                                 module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
 
-                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                 bulkRemove.find({tran_id: element.tran_id}).forEach(
                                     function (doc) {
                                         bulkInsert.insertOne(doc);
@@ -1968,9 +1968,9 @@ var Comman = {
 
                             var timeMin;
                             var res_time = new Date().toUTCString();
-                            var start_date = moment.utc(element.updateDate);
+                            var start_date = moment(element.updateDate,"MMM dd, yyyy HH:mm:ss z");
 
-                            var end_date = moment.utc(res_time);
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
@@ -1989,8 +1989,8 @@ var Comman = {
                                 module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
 
 
-                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                 bulkRemove.find({tran_id: element.tran_id}).forEach(
                                     function (doc) {
                                         bulkInsert.insertOne(doc);
@@ -2006,8 +2006,8 @@ var Comman = {
                             var timeMin;
                             var res_time = new Date().toUTCString();
                             console.log("=====" + res_time);
-                            var start_date = moment.utc(element.bookingDateTime);
-                            var end_date = moment.utc(res_time);
+                            var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             // var duration1 = moment.duration(start_date.diff(end_date));
                             var duration = moment.duration(end_date.diff(start_date));
 
@@ -2041,8 +2041,8 @@ var Comman = {
                                     module.exports.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id);
 
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2062,8 +2062,8 @@ var Comman = {
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
 
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2084,8 +2084,8 @@ var Comman = {
 
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
 
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2105,8 +2105,8 @@ var Comman = {
                                     module.exports.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
 
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2126,8 +2126,8 @@ var Comman = {
                             var res_time = new Date().toUTCString();
                             console.log("===== res_time " + res_time);
                             console.log("=====element.bookingDateTime" + element.bookingDateTime);
-                            var start_date = moment.utc(element.bookingDateTime);
-                            var end_date = moment.utc(res_time);
+                            var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             // var duration1 = moment.duration(start_date.diff(end_date));
                             var duration = moment.duration(end_date.diff(start_date));
 
@@ -2150,8 +2150,8 @@ var Comman = {
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
 
 
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2173,8 +2173,8 @@ var Comman = {
                                     module.exports.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
 
 
-                                    var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
-                                    var bulkRemove = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
                                         function (doc) {
                                             bulkInsert.insertOne(doc);
@@ -2200,9 +2200,9 @@ var Comman = {
 
                         var timeMin;
                         var res_time = new Date().toUTCString();
-                        var start_date = moment.utc(element.creationDate);
+                        var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
 
-                        var end_date = moment.utc(res_time);
+                        var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                         var duration = moment.duration(end_date.diff(start_date));
                         timeMin = duration / 60000;
                         console.log("pps id ---->>>" + element.pps_id);
@@ -2215,9 +2215,9 @@ var Comman = {
 
                         } else if (timeMin >= 5) {
                             //Auto remove
-                            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
-                            var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-                            var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                            var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+                            var bulkRemove = dbas.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                            var cu_sp_pps_send = dbas.db(config.dbName).collection(config.collections.cu_sp_pps_send);
 
                             var serviceUpdate = {
                                 sr_status: "Cancel-New-Auto",
@@ -2259,9 +2259,9 @@ var Comman = {
                         if (element.sr_status == "Open") {
                             var timeMin;
                             var res_time = new Date().toISOString();
-                            var start_date = moment.utc(element.creationDate);
+                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
 
-                            var end_date = moment.utc(res_time);
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
@@ -2308,9 +2308,9 @@ var Comman = {
                         if (element.sr_status == "Open") {
                             var timeMin;
                             var res_time = new Date().toISOString();
-                            var start_date = moment.utc(element.creationDate);
+                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
 
-                            var end_date = moment.utc(res_time);
+                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                             var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
                             // "cu_interested_rq_id": "cu_interested_rq_4",

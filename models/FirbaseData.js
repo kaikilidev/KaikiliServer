@@ -29,9 +29,9 @@ var FirbaseData = {
 
                     var timeMin;
                     var res_time = new Date().toUTCString()
-                    var start_date = moment.utc(childData.lastUpdated);
+                    var start_date = moment(childData.lastUpdated,"MMM dd, yyyy HH:mm:ss z");
 
-                    var end_date = moment.utc(res_time);
+                    var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
                     var duration = moment.duration(end_date.diff(start_date));
                     timeMin = duration / 60000;
                     var onlineStatusSet = false;
