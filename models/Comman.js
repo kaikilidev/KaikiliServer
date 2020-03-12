@@ -2464,8 +2464,26 @@ var Comman = {
                             getAmount = parseFloat(docs[0].minimum_charge) - parseFloat(docs[0].coupon_code_discount_amount);
                             module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
+
                             getAmount = parseFloat(docs[0].minimum_charge);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                            module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
+                                if (spCredit > 0) {
+                                    var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    if (parseFloat(spCredit) >= creditDis) {
+                                        getAmount = getAmount - creditDis;
+                                        module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + creditDis, 0, creditDis, "Debit");
+                                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount. +(Kaikili Credit " + creditDis + ")", getAmount.toFixed(2), 0, "Credit")
+
+                                    } else {
+                                        getAmount = getAmount - spCredit;
+                                        module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + spCredit, 0, spCredit, "Debit");
+                                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount. +(Kaikili Credit " + spCredit + ")", getAmount.toFixed(2), 0, "Credit")
+                                    }
+                                } else {
+                                    module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                                }
+
+                            });
                         }
 
                     } else {
@@ -2474,7 +2492,25 @@ var Comman = {
                             module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
                         } else {
                             getAmount = parseFloat(docs[0].sp_net_pay);
-                            module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+
+                            module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
+                                if (spCredit > 0) {
+                                    var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
+                                    if (parseFloat(spCredit) >= creditDis) {
+                                        getAmount = getAmount - creditDis;
+                                        module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + creditDis, 0, creditDis, "Debit");
+                                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount. +(Kaikili Credit " + creditDis + ")", getAmount.toFixed(2), 0, "Credit")
+
+                                    } else {
+                                        getAmount = getAmount - spCredit;
+                                        module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Customer Book service ", "Customer Book service in used Kaikili Credit $" + spCredit, 0, spCredit, "Debit");
+                                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount. +(Kaikili Credit " + spCredit + ")", getAmount.toFixed(2), 0, "Credit")
+                                    }
+                                } else {
+                                    module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, "New book service, Customer debit amount.", getAmount.toFixed(2), 0, "Credit")
+                                }
+                            });
+
                         }
                     }
 
@@ -2522,7 +2558,15 @@ var Comman = {
 
                     } else {
                         getAmount = parseFloat(docs[0].minimum_charge);
-                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                        module.exports.getCUCurrentOfferDebitAmount(docs[0].cust_id, docs[0].tran_id, function (spCredit) {
+                            if (spCredit > 0) {
+                                getAmount = getAmount - spCredit;
+                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0,  "Credit");
+                                module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                            } else {
+                                module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                            }
+                        });
                     }
                 } else {
                     if (cancelCR == true) {
@@ -2548,8 +2592,19 @@ var Comman = {
                         // }
                     } else {
                         getAmount = parseFloat(docs[0].sp_net_pay);
-                        module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
-                    }
+
+                        module.exports.getCUCurrentOfferDebitAmount(docs[0].cust_id, docs[0].tran_id, function (spCredit) {
+                            if (spCredit > 0) {
+                                getAmount = getAmount - spCredit;
+                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0,  "Credit");
+                                module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+                            } else {
+                                module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
+
+                            }
+                        });
+
+                                    }
                 }
 
                 // }
@@ -2986,7 +3041,6 @@ var Comman = {
     },
 
 
-
     spUserUpdateStatus(sp_id, onlineStatus) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -3066,7 +3120,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.cu_kaikili_wallet);
             var mysort = {_id: -1};
-            kkEarnWallet.find({cu_id : cu_id}).sort(mysort).toArray(function (err, doc) {
+            kkEarnWallet.find({cu_id: cu_id}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
                     var current;
@@ -3125,7 +3179,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.sp_kaikili_wallet);
             var mysort = {_id: -1};
-            kkEarnWallet.find({sp_id:sp_id}).sort(mysort).toArray(function (err, doc) {
+            kkEarnWallet.find({sp_id: sp_id}).sort(mysort).toArray(function (err, doc) {
 
                 if (doc.length > 0) {
                     var current;
@@ -3185,7 +3239,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.cu_kaikili_wallet);
             var mysort = {_id: -1};
-            kkEarnWallet.find({cu_id : cu_id}).sort(mysort).toArray(function (err, doc) {
+            kkEarnWallet.find({cu_id: cu_id}).sort(mysort).toArray(function (err, doc) {
                 if (doc.length > 0) {
                     callback(parseFloat(doc[0].close));
                 } else {
@@ -3200,7 +3254,7 @@ var Comman = {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.sp_kaikili_wallet);
             var mysort = {_id: -1};
-            kkEarnWallet.find({sp_id : sp_id}).sort(mysort).toArray(function (err, doc) {
+            kkEarnWallet.find({sp_id: sp_id}).sort(mysort).toArray(function (err, doc) {
                 if (doc.length > 0) {
                     callback(parseFloat(doc[0].close));
                 } else {
@@ -3212,12 +3266,12 @@ var Comman = {
 
 
     // 5-3-2020 create new SP user credit opning
-    createNewSPUserCredit(sp_id,sp_name) {
+    createNewSPUserCredit(sp_id, sp_name) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var kkEarnWallet = db.db(config.dbName).collection(config.collections.admin_setting);
             var mysort = {_id: -1};
             // collectionAdmin.find({}).toArray(function (err, dataAdmin) {
-            kkEarnWallet.findOne({set_id : "AS001"},function (err, adminData) {
+            kkEarnWallet.findOne({set_id: "AS001"}, function (err, adminData) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -3244,7 +3298,7 @@ var Comman = {
 
 
     // 7-3-2020 create new SP user referral credit opning
-    createNewSPUserCreditGiveReferral(referral_user_id,referral_amount,referral_user_type,new_user_sp_id,sp_name) {
+    createNewSPUserCreditGiveReferral(referral_user_id, referral_amount, referral_user_type, new_user_sp_id, sp_name) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var SPReferral = db.db(config.dbName).collection(config.collections.sp_referral_info);
             var newUser = {
@@ -3256,12 +3310,12 @@ var Comman = {
                 creationDate: new Date().toUTCString(),
             };
             SPReferral.insert(newUser);
-            module.exports.sp_offer_kaiKiliWalletUpdate(referral_user_id, sp_name, "00", "Kaikili referral bonus","Kaikili referral "+referral_user_id+"  to  "+sp_name+" "+new_user_sp_id+" bonus "+referral_amount , referral_amount, 0, "Credit");
+            module.exports.sp_offer_kaiKiliWalletUpdate(referral_user_id, sp_name, "00", "Kaikili referral bonus", "Kaikili referral " + referral_user_id + "  to  " + sp_name + " " + new_user_sp_id + " bonus " + referral_amount, referral_amount, 0, "Credit");
         });
     },
 
     // 11-3-2020 create new SP user referral credit opning
-    createNewCUUserCreditGiveReferral(referral_user_id,referral_amount,referral_user_type,new_user_cu_id,cu_name) {
+    createNewCUUserCreditGiveReferral(referral_user_id, referral_amount, referral_user_type, new_user_cu_id, cu_name) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var SPReferral = db.db(config.dbName).collection(config.collections.cu_referral_info);
             var newUser = {
@@ -3273,10 +3327,24 @@ var Comman = {
                 creationDate: new Date().toUTCString(),
             };
             SPReferral.insert(newUser);
-            module.exports.cp_offer_kaiKiliWalletUpdate(referral_user_id, cu_name, "00", "Kaikili referral bonus","Kaikili referral "+referral_user_id+"  to  "+cu_name+" "+new_user_cu_id+" bonus "+referral_amount , referral_amount, 0, "Credit");
+            module.exports.cp_offer_kaiKiliWalletUpdate(referral_user_id, cu_name, "00", "Kaikili referral bonus", "Kaikili referral " + referral_user_id + "  to  " + cu_name + " " + new_user_cu_id + " bonus " + referral_amount, referral_amount, 0, "Credit");
         });
     },
 
+    // 12-3-2020 customers offers current debit
+    getCUCurrentOfferDebitAmount(cu_id, tran_id, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var kkEarnWallet = db.db(config.dbName).collection(config.collections.cu_kaikili_wallet);
+            var mysort = {_id: -1};
+            kkEarnWallet.find({cu_id: cu_id, tran_id: tran_id}).sort(mysort).toArray(function (err, doc) {
+                if (doc.length > 0) {
+                    callback(parseFloat(doc[0].debit));
+                } else {
+                    callback(0);
+                }
+            });
+        });
+    },
 
 }
 module.exports = Comman;
