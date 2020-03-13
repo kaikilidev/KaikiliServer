@@ -73,10 +73,16 @@ setInterval(function() {
   console.log("I am doing my 5 minutes check");
   comman.autoTimerService();
   firbaseData.autoCheckOnlineUser();
-  setting.autoTimerUpdateSetting()
 
   // do your stuff here
 }, the_interval);
+
+var minutes1 = 30, the_interval1 = minutes1 * 60 * 1000;
+setInterval(function() {
+  console.log("====="+new Date(new Date()).toUTCString());
+  setting.autoTimerUpdateSetting()
+  // do your stuff here
+}, the_interval1);
 
 
 
