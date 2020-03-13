@@ -14,6 +14,7 @@ var testNew = require('./routes/testNew');
 
 var comman = require('./models/Comman');
 var firbaseData = require('./models/FirbaseData');
+var setting = require('./models/Setting');
 
 var app = express();
 
@@ -70,8 +71,10 @@ var minutes = 1, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   console.log("====="+new Date(new Date()).toUTCString());
   console.log("I am doing my 5 minutes check");
-comman.autoTimerService();
+  comman.autoTimerService();
   firbaseData.autoCheckOnlineUser();
+  setting.autoTimerUpdateSetting()
+
   // do your stuff here
 }, the_interval);
 

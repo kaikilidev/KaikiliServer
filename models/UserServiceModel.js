@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 var customerModel = require('../models/CustomerModel.js');
 var config = require('../db_config.json');
 var comman = require('../models/Comman');
+var setting = require('../models/Setting');
 // load math.js (using node.js)
 const math = require('mathjs')
 const moment = require('moment')
@@ -889,7 +890,8 @@ var UserService = {
 
                                 comman.getSPCurrentOfferCredit(sp_id, function (spCredit) {
                                     if(spCredit>0){
-                                        var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission)*25/100;
+                                        var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission)* setting.getMarketing_Credit_Used_Provider() / 100;
+                                        // var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission)* 25 / 100;
                                         if(spCredit>=commissioBack){
 
                                             var kkCommissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission) - commissioBack;

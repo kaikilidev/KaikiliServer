@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 var comman = require('../models/Comman');
+var setting = require('../models/Setting');
 var bcrypt = require('bcrypt');
 var uuidAPIKey = require('uuid-apikey');
 
@@ -758,7 +759,8 @@ var Users = {
                                     count++;
                                     if (dataSet.length == count) {
 
-                                        var getCommission = parseFloat(totlaCommission) * 10 / 100
+                                        var getCommission = parseFloat(totlaCommission) * setting.getMarketing_Credit_Give_To_Provider() / 100;
+                                        // var getCommission = parseFloat(totlaCommission) * 10 / 100;
                                         var updateData = {
                                             scanEndTime: endDate,
                                             creditAmount: getCommission,

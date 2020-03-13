@@ -5,7 +5,7 @@ var config = require('../db_config.json');
 const math = require('mathjs')
 const moment = require('moment')
 const crypto = require('crypto');
-
+var setting = require('../models/Setting');
 // Import Admin SDK
 // var admin = require("firebase-admin");
 
@@ -1794,9 +1794,11 @@ var Comman = {
 
             var canCharges;
             if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
-                canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+                // canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+                canCharges = (parseFloat(docs.minimum_charge) * setting.getCustomer_Cancel_Book_Service()) / 100;
             } else {
-                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+                canCharges = (parseFloat(docs.sp_net_pay) * setting.getCustomer_Cancel_Book_Service()) / 100;
+                // canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
             }
 
             var messagesBody = {
@@ -1833,9 +1835,11 @@ var Comman = {
 
             var canCharges;
             if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
-                canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
+                canCharges = (parseFloat(docs.minimum_charge) * setting.getProvider_Cancel_Book_Service()) / 100;
+                // canCharges = (parseFloat(docs.minimum_charge) * 5) / 100;
             } else {
-                canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
+                canCharges = (parseFloat(docs.sp_net_pay) * setting.getProvider_Cancel_Book_Service()) / 100;
+                // canCharges = (parseFloat(docs.sp_net_pay) * 5) / 100;
             }
 
             var messagesBody = {
@@ -1873,9 +1877,11 @@ var Comman = {
 
             var canCharges;
             if (parseFloat(docs.minimum_charge) > parseFloat(docs.sp_net_pay)) {
-                canCharges = (parseFloat(docs.minimum_charge) * 10) / 100;
+                // canCharges = (parseFloat(docs.minimum_charge) * 10) / 100;
+                canCharges = (parseFloat(docs.minimum_charge) * setting.getProvider_Cancel_Book_Service_Progress()) / 100;
             } else {
-                canCharges = (parseFloat(docs.sp_net_pay) * 10) / 100;
+                canCharges = (parseFloat(docs.sp_net_pay) * setting.getProvider_Cancel_Book_Service_Progress()) / 100;
+                // canCharges = (parseFloat(docs.sp_net_pay) * 10) / 100;
             }
 
             var messagesBody = {
@@ -2469,7 +2475,8 @@ var Comman = {
                             module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
                                 if (spCredit > 0) {
                                     // var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
-                                    var creditDis = (getAmount * 5) / 100;
+                                    var creditDis = (getAmount * setting.getKaikili_Credit_Used_To_Customer()) / 100;
+                                    // var creditDis = (getAmount * 5) / 100;
 
                                     if (parseFloat(spCredit) >= creditDis) {
                                         getAmount = getAmount - creditDis;
@@ -2498,7 +2505,8 @@ var Comman = {
                             module.exports.getCUCurrentOfferCredit(docs[0].cust_id, function (spCredit) {
                                 if (spCredit > 0) {
                                     // var creditDis = (parseFloat(docs[0].kaikili_commission.kk_sr_commission) * 10) / 100;
-                                    var creditDis = (getAmount * 5) / 100;
+                                    // var creditDis = (getAmount * 5) / 100;
+                                    var creditDis = (getAmount * setting.getKaikili_Credit_Used_To_Customer()) / 100;
 
                                     if (parseFloat(spCredit) >= creditDis) {
                                         getAmount = getAmount - creditDis;
@@ -2539,7 +2547,8 @@ var Comman = {
                 var comment;
                 if (parseFloat(docs[0].minimum_charge) > parseFloat(docs[0].sp_net_pay)) {
                     if (cancelCR == true) {
-                        canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
+                        // canCharges = (parseFloat(docs[0].minimum_charge) * 5) / 100;
+                        canCharges = (parseFloat(docs[0].minimum_charge) * setting.getCustomer_Cancel_Book_Service()) / 100;
                         if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                             comment = "Customer Auto cancel service give back amount to customer account.";
                         } else {
@@ -2574,7 +2583,8 @@ var Comman = {
                     }
                 } else {
                     if (cancelCR == true) {
-                        canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
+                        canCharges = (parseFloat(docs[0].sp_net_pay) * setting.getCustomer_Cancel_Book_Service()) / 100;
+                        // canCharges = (parseFloat(docs[0].sp_net_pay) * 5) / 100;
                         if (docs[0].sr_status == "Cancel-Scheduled-Auto") {
                             comment = "Customer Auto cancel service give back amount to customer account.";
                         } else {
