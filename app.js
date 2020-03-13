@@ -77,7 +77,7 @@ setInterval(function() {
   // do your stuff here
 }, the_interval);
 
-var minutes1 = 30, the_interval1 = minutes1 * 60 * 1000;
+var minutes1 = 5, the_interval1 = minutes1 * 60 * 1000;
 setInterval(function() {
   console.log("====="+new Date(new Date()).toUTCString());
   setting.autoTimerUpdateSetting()
