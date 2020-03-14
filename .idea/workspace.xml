@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/UsersModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UsersModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss.cmd" beforeDir="false" />
@@ -1441,7 +1440,7 @@
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="227">
-              <caret line="403" column="29" lean-forward="true" selection-start-line="403" selection-start-column="29" selection-end-line="403" selection-end-column="29" />
+              <caret line="403" column="25" selection-start-line="403" selection-start-column="25" selection-end-line="403" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -1449,8 +1448,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="3399" column="28" selection-start-line="3399" selection-start-column="4" selection-end-line="3399" selection-end-column="28" />
+            <state relative-caret-position="39">
+              <caret line="3417" column="29" selection-start-line="3417" selection-start-column="23" selection-end-line="3417" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -1458,8 +1457,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="108" column="75" selection-start-line="108" selection-start-column="75" selection-end-line="108" selection-end-column="75" />
+            <state relative-caret-position="99">
+              <caret line="93" column="17" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -1504,8 +1503,8 @@
       <find>spWorkImageUpload</find>
       <find>moment</find>
       <find>ProfileImageUpload</find>
-      <find>checkSPUserCreated</find>
       <find>notifica</find>
+      <find>checkSPUserCreated</find>
     </findStrings>
     <dirStrings>
       <dir>E:\Project\Kaikili project\KaikiliServerGit\models</dir>
@@ -2013,14 +2012,7 @@
       <workItem from="1583924081082" duration="9038000" />
       <workItem from="1584011267779" duration="16230000" />
       <workItem from="1584095953441" duration="9646000" />
-      <workItem from="1584158521929" duration="11049000" />
-    </task>
-    <task id="LOCAL-00445" summary="Add New Api">
-      <created>1582031394281</created>
-      <option name="number" value="00445" />
-      <option name="presentableId" value="LOCAL-00445" />
-      <option name="project" value="LOCAL" />
-      <updated>1582031394281</updated>
+      <workItem from="1584158521929" duration="12551000" />
     </task>
     <task id="LOCAL-00446" summary="Add New Api">
       <created>1582031878423</created>
@@ -2358,11 +2350,18 @@
       <option name="project" value="LOCAL" />
       <updated>1584184781252</updated>
     </task>
-    <option name="localTasksCounter" value="494" />
+    <task id="LOCAL-00494" summary="Add New Api">
+      <created>1584190656169</created>
+      <option name="number" value="00494" />
+      <option name="presentableId" value="LOCAL-00494" />
+      <option name="project" value="LOCAL" />
+      <updated>1584190656169</updated>
+    </task>
+    <option name="localTasksCounter" value="495" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45963000" />
+    <option name="totallyTimeSpent" value="47465000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2375,20 +2374,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14966443" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14966443" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.5878187" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.48016998" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3286119" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.8611898" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.7266289" />
@@ -2775,24 +2776,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
+    <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="403" column="29" lean-forward="true" selection-start-line="403" selection-start-column="29" selection-end-line="403" selection-end-column="29" />
+        <state relative-caret-position="39">
+          <caret line="3417" column="29" selection-start-line="3417" selection-start-column="23" selection-end-line="3417" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/Comman.js">
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="3399" column="28" selection-start-line="3399" selection-start-column="4" selection-end-line="3399" selection-end-column="28" />
+        <state relative-caret-position="227">
+          <caret line="403" column="25" selection-start-line="403" selection-start-column="25" selection-end-line="403" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="108" column="75" selection-start-line="108" selection-start-column="75" selection-end-line="108" selection-end-column="75" />
+        <state relative-caret-position="99">
+          <caret line="93" column="17" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="17" />
         </state>
       </provider>
     </entry>

@@ -3398,7 +3398,6 @@ var Comman = {
 
     //Logout Notification
     sendSPLogoutNotification(fcm_token) {
-        console.log(sp_id);
 
         var token = fcm_token;
         console.log("----->" + token);
