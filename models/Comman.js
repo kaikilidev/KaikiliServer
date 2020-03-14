@@ -1298,7 +1298,7 @@ var Comman = {
                 "creationDate": new Date().toISOString()
             };
 
-            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude,cu_search_ID);
+            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude,tran_id);
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
                 spEarnWallet.insertOne(post, function (err, doc) {
