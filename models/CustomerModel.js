@@ -1037,7 +1037,7 @@ var Customer = {
                         coupon_code_discount_amount: req.body.coupon_code_discount_amount,
                     };
 
-                    comman.cuInterestedRemoveBookServicesData(req.body.sr_id, req.body.itemCost, req.body.cust_id, req.body.coordinatePoint.latitude, req.body.coordinatePoint.longitude);
+                    comman.cuInterestedRemoveBookServicesData(req.body.sr_id, req.body.itemCost, req.body.cust_id, req.body.coordinatePoint.latitude, req.body.coordinatePoint.longitude,"");
 
                     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                         var cu_used_coupon_code = db.db(config.dbName).collection(config.collections.cu_used_coupon_code);

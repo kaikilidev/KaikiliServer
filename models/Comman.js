@@ -1269,6 +1269,8 @@ var Comman = {
     },
 
     cuInterestedServicesAdd(body) {
+
+
         module.exports.getNextSequenceUserID("cu_search_id", function (result) {
             //  console.log(result);
             var tran_id = "cu_search_" + result;
@@ -1296,9 +1298,7 @@ var Comman = {
                 "creationDate": new Date().toISOString()
             };
 
-            //module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
-
-
+            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude,cu_search_ID);
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
                 spEarnWallet.insertOne(post, function (err, doc) {
@@ -1391,13 +1391,14 @@ var Comman = {
     },
 
 
-    cuInterestedRemoveBookServicesData(sr_id, itemCost, cu_id, latitude, longitude) {
+    cuInterestedRemoveBookServicesData(sr_id, itemCost, cu_id, latitude, longitude,cu_search_id) {
         // var cc_ids = new Array();
         // itemCost.forEach(function (ccid_item) {
         //     cc_ids.push(ccid_item.cc_id)
         // });
 
         var post = {
+            cu_search_id :{ $ne: cu_search_id },
             sr_id: sr_id,
             // cc_ids: cc_ids,
             cu_id: cu_id,
