@@ -1396,14 +1396,23 @@ var Comman = {
         // itemCost.forEach(function (ccid_item) {
         //     cc_ids.push(ccid_item.cc_id)
         // });
-
-        var post = {
-            cu_search_id :{ $ne: cu_search_id },
-            sr_id: sr_id,
-            // cc_ids: cc_ids,
-            cu_id: cu_id,
-            book_service: "false"
-        };
+        var post
+        if(cu_search_id.length > 1){
+            post = {
+                cu_search_id :{ $ne: cu_search_id },
+                sr_id: sr_id,
+                // cc_ids: cc_ids,
+                cu_id: cu_id,
+                book_service: "false"
+            };
+        }else {
+             post = {
+                sr_id: sr_id,
+                // cc_ids: cc_ids,
+                cu_id: cu_id,
+                book_service: "false"
+            };
+        }
 
         // console.log(JSON.stringify(post, null, 2));
         // console.log("----111" + post);
