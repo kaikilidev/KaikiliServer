@@ -2605,7 +2605,7 @@ var Comman = {
                         module.exports.getCUCurrentOfferDebitAmount(docs[0].cust_id, docs[0].tran_id, function (spCredit) {
                             if (spCredit > 0) {
                                 getAmount = getAmount - spCredit;
-                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0,  "Credit");
+                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0, "Credit");
                                 module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
                             } else {
                                 module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
@@ -2641,7 +2641,7 @@ var Comman = {
                         module.exports.getCUCurrentOfferDebitAmount(docs[0].cust_id, docs[0].tran_id, function (spCredit) {
                             if (spCredit > 0) {
                                 getAmount = getAmount - spCredit;
-                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0,  "Credit");
+                                module.exports.cp_offer_kaiKiliWalletUpdate(docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, "Cancel Service", "Customer Book service are cancel Kaikili Credit back $" + spCredit, spCredit, 0, "Credit");
                                 module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
                             } else {
                                 module.exports.kaiKiliWalletUpdate(docs[0].sp_id, docs[0].sp_first_name + " " + docs[0].sp_Last_name, docs[0].cust_id, docs[0].cust_first_name + " " + docs[0].cust_last_name, docs[0].tran_id, docs[0].sr_title, comment, 0, (getAmount - canCharges), "Debit")
@@ -2649,7 +2649,7 @@ var Comman = {
                             }
                         });
 
-                                    }
+                    }
                 }
 
                 // }
@@ -3395,6 +3395,57 @@ var Comman = {
             });
         });
     },
+
+    //Logout Notification
+    sendSPLogoutNotification(fcm_token) {
+        console.log(sp_id);
+
+        var token = fcm_token;
+        console.log("----->" + token);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            to: token,
+            // priority: "high",
+            collapse_key: 'your_collapse_key',
+
+            // notification: {
+            //     title: "Kaikili-Service App",
+            //     body: messages
+            // },
+
+            data: {  //you can send only notification or only data(or include both)
+                tran_id: "",
+                messages: "Logout User this device",
+                type: "Logout",
+                sr_status: "",
+                my_another_key: 'my another value'
+            }
+        };
+
+        fcmService.send(message, function (err, response) {
+            if (err) {
+                console.log(err);
+                console.log("Something has gone wrong!");
+
+                var status = {
+                    status: 0,
+                    message: "Something has gone wrong!",
+                };
+                // return callBack(status);
+            } else {
+                // console.log("Successfully sent with response: ", response);
+                // return callBack(response);
+                var status = {
+                    status: 1,
+                    message: "Successfully sent with response:!"
+                };
+                // console.log(status);
+                // return callBack(status);
+            }
+        });
+
+
+    },
+
 
 }
 module.exports = Comman;
