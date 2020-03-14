@@ -3,7 +3,7 @@ var mongo = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 const math = require('mathjs')
-const moment = require('moment')
+// const moment = require('moment')
 const crypto = require('crypto');
 var setting = require('../models/Setting');
 // Import Admin SDK
@@ -1749,8 +1749,6 @@ var Comman = {
         var sendData = false;
         dayList.forEach(function (element) {
             if (element.dayName == day1) {
-                var moment = require('moment');
-                // console.log("====="+new Date(new Date().setTime(moment('14:00:00', 'HH:mm aa'))));
                 //  console.log("-----start time --"+date+" "+element.start_time.substr(0,5)+" UTC");
                 //  console.log("-----start time --"+date+" "+element.end_time.substr(0,5)+" UTC");
                 //  console.log("-----start time --"+(new Date (date+" "+element.end_time.substr(0,5)+" UTC")));
@@ -1935,10 +1933,11 @@ var Comman = {
                         if (element.sr_status == "Open") {
                             var timeMin;
                             var res_time = new Date().toUTCString();
-                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                            var start_date = new Date(element.creationDate);
+                            var end_date = new Date(res_time);
 
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            var duration = moment.duration(end_date.diff(start_date));
+                            // var duration = moment.duration(end_date.diff(start_date));
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
                             timeMin = duration / 60000;
 
                             if (timeMin >= 4 && timeMin < 5) {
@@ -1973,11 +1972,18 @@ var Comman = {
                         } else if (element.sr_status == "Rescheduled") {
 
                             var timeMin;
-                            var res_time = new Date().toUTCString();
-                            var start_date = moment(element.updateDate,"MMM dd, yyyy HH:mm:ss z");
 
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            var duration = moment.duration(end_date.diff(start_date));
+
+                            var res_time = new Date().toUTCString();
+                            var start_date = new Date(element.updateDate);
+                            var end_date = new Date(res_time);
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
+
+                            // var res_time = new Date().toUTCString();
+                            // var start_date = moment(element.updateDate,"MMM dd, yyyy HH:mm:ss z");
+                            //
+                            // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                            // var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
                             if (timeMin >= 9 && timeMin < 10) {
@@ -2011,11 +2017,17 @@ var Comman = {
 
                             var timeMin;
                             var res_time = new Date().toUTCString();
-                            console.log("=====" + res_time);
-                            var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            // var duration1 = moment.duration(start_date.diff(end_date));
-                            var duration = moment.duration(end_date.diff(start_date));
+                            var start_date = new Date(element.bookingDateTime);
+                            var end_date = new Date(res_time);
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
+
+
+                            // var res_time = new Date().toUTCString();
+                            // console.log("=====" + res_time);
+                            // var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
+                            // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                            // // var duration1 = moment.duration(start_date.diff(end_date));
+                            // var duration = moment.duration(end_date.diff(start_date));
 
                             timeMin = duration / 60000;
                             console.log("=====" + timeMin);
@@ -2130,12 +2142,17 @@ var Comman = {
                         } else if (element.sr_status == "Progress") {
                             var timeMin;
                             var res_time = new Date().toUTCString();
+                            var start_date = new Date(element.bookingDateTime);
+                            var end_date = new Date(res_time);
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
+
+                            // var res_time = new Date().toUTCString();
                             console.log("===== res_time " + res_time);
-                            console.log("=====element.bookingDateTime" + element.bookingDateTime);
-                            var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            // var duration1 = moment.duration(start_date.diff(end_date));
-                            var duration = moment.duration(end_date.diff(start_date));
+                            // console.log("=====element.bookingDateTime" + element.bookingDateTime);
+                            // var start_date = moment(element.bookingDateTime,"MMM dd, yyyy HH:mm:ss z");
+                            // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                            // // var duration1 = moment.duration(start_date.diff(end_date));
+                            // var duration = moment.duration(end_date.diff(start_date));
 
                             timeMin = duration / 60000;
                             console.log("=====" + timeMin + " ----14");
@@ -2206,10 +2223,14 @@ var Comman = {
 
                         var timeMin;
                         var res_time = new Date().toUTCString();
-                        var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                        var start_date = new Date(element.creationDate);
+                        var end_date = new Date(res_time);
+                        var duration = Math.abs(end_date.getTime() - start_date.getTime());
 
-                        var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                        var duration = moment.duration(end_date.diff(start_date));
+                        // var res_time = new Date().toUTCString();
+                        // var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                        // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                        // var duration = moment.duration(end_date.diff(start_date));
                         timeMin = duration / 60000;
                         console.log("pps id ---->>>" + element.pps_id);
                         if (timeMin >= 4 && timeMin < 5) {
@@ -2264,11 +2285,16 @@ var Comman = {
                     mainDocs.forEach(function (element) {
                         if (element.sr_status == "Open") {
                             var timeMin;
-                            var res_time = new Date().toISOString();
-                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                            var res_time = new Date().toUTCString();
+                            var start_date = new Date(element.creationDate);
+                            var end_date = new Date(res_time);
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
 
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            var duration = moment.duration(end_date.diff(start_date));
+
+                            // var res_time = new Date().toISOString();
+                            // var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                            // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                            // var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
 
                             if (timeMin >= 4 && timeMin < 5) {
@@ -2313,11 +2339,16 @@ var Comman = {
                     mainDocs.forEach(function (element) {
                         if (element.sr_status == "Open") {
                             var timeMin;
-                            var res_time = new Date().toISOString();
-                            var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                            var res_time = new Date().toUTCString();
+                            var start_date = new Date(element.creationDate);
+                            var end_date = new Date(res_time);
+                            var duration = Math.abs(end_date.getTime() - start_date.getTime());
 
-                            var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
-                            var duration = moment.duration(end_date.diff(start_date));
+
+                            // var res_time = new Date().toISOString();
+                            // var start_date = moment(element.creationDate,"MMM dd, yyyy HH:mm:ss z");
+                            // var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                            // var duration = moment.duration(end_date.diff(start_date));
                             timeMin = duration / 60000;
                             // "cu_interested_rq_id": "cu_interested_rq_4",
                             if (timeMin >= 4 && timeMin < 5) {
@@ -3078,12 +3109,17 @@ var Comman = {
                         } else {
                             mainDocs.forEach(function (element) {
                                 var timeMin;
-                                var scheduled_date = moment.utc(element.bookingDateTime);
-                                var end_date = moment.utc(bookingDateTime);
+                                var scheduled_date = new Date(element.bookingDateTime);
+                                var end_date = new Date(bookingDateTime);
+                                var duration = Math.abs(scheduled_date.getTime() - end_date.getTime());
+
+
+                                // var scheduled_date = moment.utc(element.bookingDateTime);
+                                // var end_date = moment.utc(bookingDateTime);
                                 console.log("=====>>" + scheduled_date);
                                 console.log("=====>>" + end_date);
 
-                                var duration = moment.duration(scheduled_date.diff(end_date));
+                                // var duration = moment.duration(scheduled_date.diff(end_date));
                                 var book = false;
 
                                 timeMin = duration / 60000;

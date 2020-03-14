@@ -363,10 +363,10 @@ var Users = {
     },
 
     updateSPWorkImageUpload: function (id, data, callback) {
-        var sp_id = req.body.sp_id;
-        var key = req.body.key;
-        comman.checkSPValidLogin(sp_id, key, function (validUser) {
-            if (validUser) {
+        // var sp_id = req.body.sp_id;
+        // var key = req.body.key;
+        // comman.checkSPValidLogin(sp_id, key, function (validUser) {
+        //     if (validUser) {
                 console.log(" data " + data.images);
                 console.log(" imageAmount " + data);
                 mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
@@ -390,23 +390,23 @@ var Users = {
                         }
                     });
                 });
-            } else {
-                var status = {
-                    status: -1,
-                    message: "Login in other mobile",
-                };
-                callback(status);
-            }
-
-        });
+        //     } else {
+        //         var status = {
+        //             status: -1,
+        //             message: "Login in other mobile",
+        //         };
+        //         callback(status);
+        //     }
+        //
+        // });
     },
 
 
     updateSPProfileImageUpload: function (id, data, callback) {
-        var sp_id = req.body.sp_id;
-        var key = req.body.key;
-        comman.checkSPValidLogin(sp_id, key, function (validUser) {
-            if (validUser) {
+        // var sp_id = req.body.sp_id;
+        // var key = req.body.key;
+        // comman.checkSPValidLogin(sp_id, key, function (validUser) {
+        //     if (validUser) {
                 console.log(" imageAmount " + data);
                 var addWorkInfo = {
                     "profile_image": data[0]
@@ -433,14 +433,14 @@ var Users = {
                     });
                 });
 
-            } else {
-                var status = {
-                    status: -1,
-                    message: "Login in other mobile",
-                };
-                callback(status);
-            }
-        });
+            // } else {
+            //     var status = {
+            //         status: -1,
+            //         message: "Login in other mobile",
+            //     };
+            //     callback(status);
+            // }
+        // });
     },
 
 
@@ -687,7 +687,7 @@ var Users = {
         var sp_id = req.body.sp_id;
         var key = req.body.key;
         var sp_name = req.body.sp_name;
-        const moment = require('moment')
+        // const moment = require('moment')
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
@@ -752,7 +752,8 @@ var Users = {
                                 var totlaCommission = 0;
                                 var newItemCost = new Array();
                                 dataSet.forEach(function (element) {
-                                    if (moment.utc(startDate) <= moment.utc(element.updateDate) && moment.utc(endDate) >= moment.utc(element.updateDate)) {
+                                    // if (moment.utc(startDate) <= moment.utc(element.updateDate) && moment.utc(endDate) >= moment.utc(element.updateDate)) {
+                                    if (new Date(startDate) <= new Date(element.updateDate) && new Date(endDate) >= new Date(element.updateDate)) {
                                         newItemCost.push(element)
                                         totlaCommission = totlaCommission + parseFloat(element.kaikili_commission.kk_sr_commission);
                                     }

@@ -2513,15 +2513,15 @@ var Customer = {
     },
 
     updateCUProfileImageUpload: function (id, data, callback) {
-        var cu_id = req.body.cu_id;
-        var key = req.body.key;
-        comman.checkCUValidLogin(cu_id, key, function (validUser) {
-            if (validUser) {
-
-                console.log(" imageAmount " + data);
-                var addWorkInfo = {
-                    "cu_image": data[0]
-                };
+        // var cu_id = req.body.cu_id;
+        // var key = req.body.key;
+        // comman.checkCUValidLogin(cu_id, key, function (validUser) {
+        //     if (validUser) {
+        //
+        //         console.log(" imageAmount " + data);
+        //         var addWorkInfo = {
+        //             "cu_image": data[0]
+        //         };
                 mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                     var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
                     collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
@@ -2543,14 +2543,14 @@ var Customer = {
                         }
                     });
                 });
-            } else {
-                var status = {
-                    status: -1,
-                    message: "Login in other mobile",
-                };
-                callback(status);
-            }
-        });
+        //     } else {
+        //         var status = {
+        //             status: -1,
+        //             message: "Login in other mobile",
+        //         };
+        //         callback(status);
+        //     }
+        // });
     },
 
 

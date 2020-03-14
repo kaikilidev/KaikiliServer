@@ -366,6 +366,7 @@ router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
 //API - 24
 router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
     let upload = Bluebird.promisify(uploadSPUserProfileIM);
+    console.log("File are save");
     return upload(req, res).then((data) => {
         if (req.files && req.files.uploads) {
             // type = req.query.type;
@@ -374,23 +375,26 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
                     uploads.push(configDB.imagePath + "SPProfile/" + documents[index].filename);
+                    console.log("File are save ----" + configDB.imagePath + "SPProfile/" + documents[index].filename);
                 });
+                console.log("File are save");
                 usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {
                         res.json(err);
                         console.log(err);
                     } else {
                         console.log(result);
-                        res.json(result);
+                        res.json({"save": "image"});
                     }
                 });
+
+            } else {
+                var status = {
+                    status: 0,
+                    message: "No files uploaded"
+                };
+                res.json(status)
             }
-        } else {
-            var status = {
-                status: 0,
-                message: "No files uploaded"
-            };
-            res.json(status)
         }
     });
 });
@@ -849,8 +853,6 @@ router.get('/userLogOut/:sp_id', function (req, res, next) {
 });
 
 
-
-
 //API - 55  SP user Logout
 router.post('/checkSPServiceSlot', function (req, res, next) {
     var sp_id = req.body.sp_id;
@@ -874,7 +876,7 @@ router.post('/checkSPServiceSlot', function (req, res, next) {
                     res.json(status);
                 }
             });
-        }else {
+        } else {
             var status = {
                 status: -1,
                 message: "Login in other mobile",
@@ -884,7 +886,6 @@ router.post('/checkSPServiceSlot', function (req, res, next) {
     });
 
 });
-
 
 
 //API - 56
