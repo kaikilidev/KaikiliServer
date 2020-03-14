@@ -1296,7 +1296,7 @@ var Comman = {
                 "creationDate": new Date().toISOString()
             };
 
-            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
+            //module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude);
 
 
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
@@ -1398,10 +1398,6 @@ var Comman = {
         // });
 
         var post = {
-            // location: {
-            //     coordinates: [parseFloat(longitude), parseFloat(latitude)],
-            //     type: "Point"
-            // },
             sr_id: sr_id,
             // cc_ids: cc_ids,
             cu_id: cu_id,
