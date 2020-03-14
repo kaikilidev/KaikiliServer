@@ -105,9 +105,10 @@ var Users = {
                     callback(status);
                 } else {
                     // assert.equal(1, docs.length);
+                    if (docs.length > 0) {
                     if(docs[0].fcm_token != fcm_token && docs[0].fcm_token.length > 2){
                         comman.sendSPLogoutNotification(docs[0].fcm_token);
-                    }
+                    }}
 
                     var upload = {
                         fcm_token: fcm_token,

@@ -67,8 +67,8 @@ var Customer = {
                                         callback(status);
                                     } else {
 
-                                        if(req.body.referral_user_id.length >0 && req.body.referral_amount.length >0 && req.body.referral_user_type.length >0 ){
-                                            comman.createNewCUUserCreditGiveReferral(req.body.referral_user_id,req.body.referral_amount,req.body.referral_user_type,newUser.cu_id,newUser.first_name + " " + newUser.last_name)
+                                        if (req.body.referral_user_id.length > 0 && req.body.referral_amount.length > 0 && req.body.referral_user_type.length > 0) {
+                                            comman.createNewCUUserCreditGiveReferral(req.body.referral_user_id, req.body.referral_amount, req.body.referral_user_type, newUser.cu_id, newUser.first_name + " " + newUser.last_name)
                                         }
 
                                         var status = {
@@ -110,6 +110,12 @@ var Customer = {
                 } else {
                     // assert.equal(1, docs.length);
                     // if (docs.length == 1) {
+                    if (docs.length > 0) {
+                        if (docs[0].fcm_token != fcm_token && docs[0].fcm_token.length > 2) {
+                            comman.sendCULogoutNotification(docs[0].fcm_token);
+                        }
+                    }
+
                     var upload = {
                         fcm_token: fcm_token,
                         login_key: uuidAPIKey.create().apiKey
@@ -123,7 +129,7 @@ var Customer = {
                         });
 
 
-                    if (docs === undefined || docs === null) {
+                    if (docs.length == 0) {
                         var status = {
                             status: 0,
                             message: "No User"
@@ -2522,27 +2528,27 @@ var Customer = {
         //         var addWorkInfo = {
         //             "cu_image": data[0]
         //         };
-                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-                    var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
-                    collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
-                        if (err) {
-                            console.log(err);
-                            var status = {
-                                status: 0,
-                                message: "Failed !. Server Error....."
-                            };
-                            console.log(status);
-                            callback(status);
-                        } else {
-                            var status = {
-                                status: 1,
-                                message: "Successfully updated images",
-                            };
-                            console.log(status);
-                            callback(status);
-                        }
-                    });
-                });
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
+            collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
+                if (err) {
+                    console.log(err);
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    console.log(status);
+                    callback(status);
+                } else {
+                    var status = {
+                        status: 1,
+                        message: "Successfully updated images",
+                    };
+                    console.log(status);
+                    callback(status);
+                }
+            });
+        });
         //     } else {
         //         var status = {
         //             status: -1,

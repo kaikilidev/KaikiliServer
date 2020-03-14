@@ -3446,5 +3446,53 @@ var Comman = {
     },
 
 
+    //Logout Notification
+    sendCULogoutNotification(fcm_token) {
+
+        var token = fcm_token;
+        console.log("----->" + token);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            to: token,
+            // priority: "high",
+            collapse_key: 'your_collapse_key',
+
+            // notification: {
+            //     title: "Kaikili-Customer App",
+            //     body: messages
+            // },
+
+            data: {  //you can send only notification or only data(or include both)
+                tran_id: "",
+                type: "Logout",
+                messages: "",
+                sr_status: "",
+                my_another_key: 'my another value'
+            }
+        };
+
+        fcm.send(message, function (err, response) {
+            if (err) {
+                console.log(err);
+                console.log("Something has gone wrong!");
+
+                var status = {
+                    status: 0,
+                    message: "Something has gone wrong!",
+                };
+                // return callBack(status);
+            } else {
+                // console.log("Successfully sent with response: ", response);
+                // return callBack(response);
+                var status = {
+                    status: 1,
+                    message: "Successfully sent with response:!"
+                };
+                // console.log(status);
+                // return callBack(status);
+            }
+        });
+
+    },
+
 }
 module.exports = Comman;
