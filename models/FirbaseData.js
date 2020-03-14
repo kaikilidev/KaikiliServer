@@ -28,12 +28,14 @@ var FirbaseData = {
                     var sp_id = childKey;
 
                     var timeMin;
-                    var res_time = new Date().toUTCString()
-                    var start_date = moment(childData.lastUpdated,"MMM dd, yyyy HH:mm:ss z");
-
-                    var end_date = moment(res_time,"MMM dd, yyyy HH:mm:ss z");
+                    var res_time = new Date(new Date().toUTCString());
+                    var start_date = moment(childData.lastUpdated);
+                    console.log("start--->"+start_date)
+                    var end_date = moment(res_time);
+                    console.log("end--->"+end_date)
                     var duration = moment.duration(end_date.diff(start_date));
                     timeMin = duration / 60000;
+                    console.log("diff--->"+timeMin)
                     var onlineStatusSet = false;
                     if (timeMin <= 4 && timeMin >= -4  ) {
                         console.log("time ", timeMin);
