@@ -23,8 +23,8 @@ var FirbaseData = {
                 snap.forEach(function(childSnapshot) {
                     var childKey = childSnapshot.key;
                     var childData = childSnapshot.val();
-                    console.log("childKey", childKey);
-                    console.log("childData", childData.lastUpdated);
+                    // console.log("childKey", childKey);
+                    // console.log("childData", childData.lastUpdated);
                     var sp_id = childKey;
 
                     var timeMin;
@@ -32,20 +32,20 @@ var FirbaseData = {
                     var start_date = new Date(childData.lastUpdated);
                     var end_date = new Date(res_time);
 
-                    console.log("start--->"+start_date)
-                    console.log("start--->"+start_date.getTime)
-                    console.log("end--->"+end_date)
-                    console.log("end--->"+end_date.getTime())
-                    var duration =  Math.abs(end_date.getTime() - start_date.getTime());
+                    // console.log("start--->"+start_date)
+                    // console.log("start--->"+start_date.getTime)
+                    // console.log("end--->"+end_date)
+                    // console.log("end--->"+end_date.getTime())
+                    var duration = end_date.getTime() - start_date.getTime();
                     timeMin = duration / 60000;
-                    console.log("diff--->"+timeMin)
+                    // console.log("diff--->"+timeMin)
                     var onlineStatusSet = false;
                     if (timeMin <= 4 && timeMin >= -4  ) {
-                        console.log("time ", timeMin);
+                        // console.log("time ", timeMin);
                         console.log(childKey +"------->>"+"Online");
                         onlineStatusSet = true;
                     }else {
-                        console.log("time ", timeMin);
+                        // console.log("time ", timeMin);
                         console.log(childKey +"------->>"+"Offline");
                         onlineStatusSet = false;
                     }
@@ -55,8 +55,6 @@ var FirbaseData = {
 
             });
     },
-
-
 
 
 }

@@ -633,7 +633,7 @@ var UserService = {
                                 if (serviceTo25 == "ON") {
                                     var start_date = new Date(docs[0].creationDate);
                                     var end_date = new Date(res_time);
-                                    var duration = Math.abs(end_date.getTime() - start_date.getTime());;
+                                    var duration = end_date.getTime() - start_date.getTime();;
 
                                     // var start_date = moment.utc(docs[0].creationDate);
                                     // var end_date = moment.utc(res_time);
@@ -653,7 +653,7 @@ var UserService = {
 
                                     if ((startTime < bookTime) && (bookTime < endTime)) {
                                         // var duration = moment.duration(bookTime.diff(startTime));
-                                        var duration = Math.abs(bookTime.getTime() - startTime.getTime());;
+                                        var duration = bookTime.getTime() - startTime.getTime();
                                         timeMin = duration / 60000;
                                     } else {
                                         timeMin = 1.0;
