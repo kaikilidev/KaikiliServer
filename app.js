@@ -71,7 +71,7 @@ var minutes = 1, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   console.log("====="+new Date(new Date()).toUTCString());
   console.log("I am doing my 5 minutes check");
-  comman.autoTimerService();
+  //comman.autoTimerService();
   firbaseData.autoCheckOnlineUser();
 
   // do your stuff here
