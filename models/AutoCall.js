@@ -250,7 +250,7 @@ var AutoCall = {
                             console.log("=====" + timeMin + " ----14");
 
                             // wait for 24 hour
-                            if (timeMin >= 14 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
+                            if (timeMin >= 360 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
 
                                 if (element.type_of_service == "customer_location") {
                                     comman.cuServiceCancellationChargesSPProgress(element);
