@@ -110,10 +110,11 @@ var Customer = {
                 } else {
                     // assert.equal(1, docs.length);
                     // if (docs.length == 1) {
+                    console.log((docs=null)  +"--------");
                     if(docs != null){
                     // if (docs.length > 0) {
-                        if (docs[0].fcm_token != fcm_token && docs[0].fcm_token.length > 2) {
-                            comman.sendCULogoutNotification(docs[0].fcm_token);
+                        if (docs.fcm_token != fcm_token && docs.fcm_token.length > 2) {
+                            comman.sendCULogoutNotification(docs.fcm_token);
                         }
                     }
 
