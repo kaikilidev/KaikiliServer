@@ -1012,11 +1012,13 @@ var UserService = {
                                 callback(status);
 
                             } else {
+
                                 var status = {
                                     status: 1,
                                     message: "Success get all transition service information",
-                                    data: docs,
-                                    currentBalance: currentBalance
+                                    total_count: docs.length,
+                                    currentBalance: currentBalance,
+                                    data: docs.slice(req.body.start,req.body.end)
                                 };
                                 callback(status);
                             }
@@ -1162,10 +1164,12 @@ var UserService = {
                                     }
 
                                 } else {
+                                    var children = docs.concat(docs1)
                                     var status = {
                                         status: 1,
                                         message: "Success get all transition service list",
-                                        data: docs.concat(docs1)
+                                        data: children.slice(req.body.start,req.body.end),
+                                        total_count : children.length
 
                                     };
                                     callback(status);
