@@ -3790,5 +3790,53 @@ var Customer = {
         });
     },
 
+
+    getKaikiliNotificationData: function (req, callback) {
+        var cu_id = req.body.cu_id;
+        var key = req.body.key;
+        comman.checkCUValidLogin(cu_id, key, function (validUser) {
+            if (validUser) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+                    var collectionSP = db.db(config.dbName).collection(config.collections.admin_notification);
+                    var mysort = {_id: -1};
+
+                    // var query = {
+                    //     "creationDate":
+                    //         {
+                    //             $gte: new Date(new Date().setHours(0, 0, 0)).toISOString(),
+                    //             $lt: new Date(new Date().setHours(23, 59, 59)).toISOString()
+                    //         }, "sp_id": sp_id
+                    // };
+                    collectionSP.find({cu_id: cu_id}).sort(mysort).toArray(function (err, docs) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully data getting",
+                                data: docs
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    });
+                });
+            } else {
+                var status = {
+                    status: -1,
+                    message: "Login in other mobile",
+                };
+                callback(status);
+            }
+
+        });
+    },
+
 }
 module.exports = Customer;
