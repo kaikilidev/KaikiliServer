@@ -27,7 +27,8 @@ router.get('/adminNotification/:id', function (req, res, next) {
                 console.log(status);
                 res.json(status)
             } else {
-                if (docs.no_id == no_id) {
+
+                if (docs != null) {
 
                     if(docs.sp_id.length >0){
                         comman.sendSPAdminNotification(docs.sp_id,docs.title,docs.info,docs.no_id);

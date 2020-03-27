@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
-      <change afterPath="$PROJECT_DIR$/routes/admin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Comman.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Comman.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss.cmd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/@types/babel-types/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/babel-types/README.md" afterDir="false" />
@@ -1438,11 +1435,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Comman.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="3081" column="25" lean-forward="true" selection-start-line="3081" selection-start-column="25" selection-end-line="3081" selection-end-column="25" />
+            <state relative-caret-position="-336">
+              <caret line="3097" column="61" selection-start-line="3097" selection-start-column="61" selection-end-line="3097" selection-end-column="61" />
               <folding>
                 <element signature="e#138854#140326#0" />
               </folding>
@@ -1477,10 +1474,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/admin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
+            <state relative-caret-position="179">
               <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
             </state>
           </provider>
@@ -2093,21 +2090,7 @@
       <workItem from="1585040969598" duration="6318000" />
       <workItem from="1585116210449" duration="3040000" />
       <workItem from="1585230104662" duration="3175000" />
-      <workItem from="1585301669263" duration="7758000" />
-    </task>
-    <task id="LOCAL-00462" summary="Add New Api">
-      <created>1582730424443</created>
-      <option name="number" value="00462" />
-      <option name="presentableId" value="LOCAL-00462" />
-      <option name="project" value="LOCAL" />
-      <updated>1582730424444</updated>
-    </task>
-    <task id="LOCAL-00463" summary="Add New Api">
-      <created>1582731577072</created>
-      <option name="number" value="00463" />
-      <option name="presentableId" value="LOCAL-00463" />
-      <option name="project" value="LOCAL" />
-      <updated>1582731577072</updated>
+      <workItem from="1585301669263" duration="8886000" />
     </task>
     <task id="LOCAL-00464" summary="Add New Api">
       <created>1582785164574</created>
@@ -2438,11 +2421,25 @@
       <option name="project" value="LOCAL" />
       <updated>1585232059842</updated>
     </task>
-    <option name="localTasksCounter" value="511" />
+    <task id="LOCAL-00511" summary="Add New Api">
+      <created>1585312247489</created>
+      <option name="number" value="00511" />
+      <option name="presentableId" value="LOCAL-00511" />
+      <option name="project" value="LOCAL" />
+      <updated>1585312247490</updated>
+    </task>
+    <task id="LOCAL-00512" summary="Add New Api">
+      <created>1585313448584</created>
+      <option name="number" value="00512" />
+      <option name="presentableId" value="LOCAL-00512" />
+      <option name="project" value="LOCAL" />
+      <updated>1585313448585</updated>
+    </task>
+    <option name="localTasksCounter" value="513" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101161000" />
+    <option name="totallyTimeSpent" value="102289000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2455,6 +2452,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="npm" order="0" side_tool="true" />
       <window_info id="Favorites" order="1" side_tool="true" />
@@ -2893,20 +2891,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/admin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="3081" column="25" lean-forward="true" selection-start-line="3081" selection-start-column="25" selection-end-line="3081" selection-end-column="25" />
+        <state relative-caret-position="-336">
+          <caret line="3097" column="61" selection-start-line="3097" selection-start-column="61" selection-end-line="3097" selection-end-column="61" />
           <folding>
             <element signature="e#138854#140326#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
         </state>
       </provider>
     </entry>
