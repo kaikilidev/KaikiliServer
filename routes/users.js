@@ -917,6 +917,22 @@ router.post('/getKaikiliNotification', function (req, res, next) {
     });
 });
 
+
+
+//API - 58
+router.post('/getAdminNotificationInfo', function (req, res, next) {
+    console.log("call getCustomerData-----1");
+    usersModel.getAdminNotificationInfo(req, function (err, result) {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+            console.log(result);
+            res.json(result);//or return count for 1 & 0
+        }
+    });
+});
+
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {
 //     try {

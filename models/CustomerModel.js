@@ -3838,5 +3838,44 @@ var Customer = {
         });
     },
 
+
+    getAdminNotificationInfo: function (req, callback) {
+        var cu_id = req.body.cu_id;
+        var key = req.body.key;
+        var no_id = req.body.no_id;
+        comman.checkCUValidLogin(cu_id, key, function (validUser) {
+            if (validUser) {
+                mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+                    var collectionSP = db.db(config.dbName).collection(config.collections.admin_notification);
+                    collectionSP.findOne({no_id: no_id}, function (err, dataSet) {
+                        if (err) {
+                            console.log(err);
+                            var status = {
+                                status: 0,
+                                message: "Failed !. Server Error....."
+                            };
+                            console.log(status);
+                            callback(status);
+                        } else {
+                            var status = {
+                                status: 1,
+                                message: "Successfully data getting",
+                                data: dataSet
+                            };
+                            console.log(status);
+                            callback(status);
+                        }
+                    });
+                });
+            } else {
+                var status = {
+                    status: -1,
+                    message: "Login in other mobile",
+                };
+                callback(status);
+            }
+
+        });
+    },
 }
 module.exports = Customer;
