@@ -3095,7 +3095,7 @@ var Comman = {
                 console.log(err);
                 console.log("Something has gone wrong!");
             } else {
-                console.log("Successfully sent with response");
+                console.log("Successfully sent with response "+response);
             }
         });
     },
@@ -3169,8 +3169,8 @@ var Comman = {
                 console.log("Something has gone wrong!");
                 // return callBack(status);
             } else {
-                console.log("Successfully sent with response");
-                // console.log("Successfully sent with response: ", response);
+                // console.log("Successfully sent with response");
+                 console.log("Successfully sent with response: ", response);
                 // return callBack(response);
                 // console.log(status);
                 // return callBack(status);
