@@ -1297,7 +1297,7 @@ var Comman = {
                 "creationDate": new Date().toISOString()
             };
 
-            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude,tran_id);
+            module.exports.cuInterestedRemoveBookServicesData(body.sr_id, body.cost_item, body.cu_id, body.longitude, body.latitude, tran_id);
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
                 var spEarnWallet = db.db(config.dbName).collection(config.collections.cu_interested_services);
                 spEarnWallet.insertOne(post, function (err, doc) {
@@ -1390,22 +1390,22 @@ var Comman = {
     },
 
 
-    cuInterestedRemoveBookServicesData(sr_id, itemCost, cu_id, latitude, longitude,cu_search_id) {
+    cuInterestedRemoveBookServicesData(sr_id, itemCost, cu_id, latitude, longitude, cu_search_id) {
         // var cc_ids = new Array();
         // itemCost.forEach(function (ccid_item) {
         //     cc_ids.push(ccid_item.cc_id)
         // });
         var post
-        if(cu_search_id.length > 1){
+        if (cu_search_id.length > 1) {
             post = {
-                cu_search_id :{ $ne: cu_search_id },
+                cu_search_id: {$ne: cu_search_id},
                 sr_id: sr_id,
                 // cc_ids: cc_ids,
                 cu_id: cu_id,
                 book_service: "false"
             };
-        }else {
-             post = {
+        } else {
+            post = {
                 sr_id: sr_id,
                 // cc_ids: cc_ids,
                 cu_id: cu_id,
@@ -1915,9 +1915,6 @@ var Comman = {
 
         });
     },
-
-
-
 
 
     getSPtoCustomerRating(sp_id, callBack) {
@@ -3032,6 +3029,156 @@ var Comman = {
         });
 
     },
+
+
+    //SP Admin Notification
+    sendSPAdminNotification(sp_id, title, info, no_id) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var sp_info = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            var cursorSearch = sp_info.aggregate([
+                {
+                    $match: {
+                        $and: [{sp_id: {$in: sp_id}}],
+                        fcm_token: {$ne: ""}
+                    }
+                }, {
+                    $project: {
+                        fcm_token: 1,
+                    }
+                },
+                {$group: {_id: "111", fcm_token: {$push: "$fcm_token"}}},
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log("----" + mainDocs[0].fcm_token);
+                if(mainDocs[0].fcm_token.length <900){
+                    module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token,title,info,no_id);
+                }else {
+                    let number = mainDocs[0].fcm_token.length/900;
+                    console.log(number);
+                    var z = Math.ceil(number);
+                    console.log(z);
+                    for (i = 0; i < z; i++) {
+                        console.log(i)
+                        if(z ==(i+1)){
+                            console.log((900*i)+"- max");
+                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),mainDocs[0].fcm_token.length),title,info,no_id);
+                        }else {
+                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),(900*(i+1))),title,info,no_id);
+                            // console.log((900*i)+"-"+(900*(i+1)));
+                        }
+                    }
+                }
+            });
+        });
+    },
+
+    sendSPKaikiliNotification(fcm_token, title, info, no_id) {
+        var token = fcm_token;
+        console.log("----->" + token);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            registration_ids: token,
+            // to: token,
+            // priority: "high",
+            collapse_key: 'your_collapse_key',
+            data: {  //you can send only notification or only data(or include both)
+                tran_id: no_id,
+                messages: title,
+                type: "admin_notification",
+                sr_status: "kaikili_notification",
+                my_another_key: 'my another value'
+            }
+        };
+
+        fcmService.send(message, function (err, response) {
+            if (err) {
+                console.log(err);
+                console.log("Something has gone wrong!");
+            } else {
+                console.log("Successfully sent with response");
+            }
+        });
+    },
+
+
+    //SP Admin Notification
+    sendCUAdminNotification(cu_id, title, info, no_id) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var sp_info = db.db(config.dbName).collection(config.collections.cu_profile);
+            var cursorSearch = sp_info.aggregate([
+                {
+                    $match: {
+                        $and: [{cu_id: {$in: cu_id}}],
+                        fcm_token: {$ne: ""}
+                    }
+                }, {
+                    $project: {
+                        fcm_token: 1,
+                    }
+                },
+                {$group: {_id: "111", fcm_token: {$push: "$fcm_token"}}},
+            ]);
+
+            cursorSearch.toArray(function (err, mainDocs) {
+                console.log("----" + mainDocs[0].fcm_token);
+                if(mainDocs[0].fcm_token.length <900){
+                    module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token,title,info,no_id);
+                }else {
+                    let number = mainDocs[0].fcm_token.length/900;
+                    console.log(number);
+                    var z = Math.ceil(number);
+                    console.log(z);
+                    for (i = 0; i < z; i++) {
+                        console.log(i)
+                        if(z ==(i+1)){
+                            console.log((900*i)+"- max");
+                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),mainDocs[0].fcm_token.length),title,info,no_id);
+                        }else {
+                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),(900*(i+1))),title,info,no_id);
+                            // console.log((900*i)+"-"+(900*(i+1)));
+                        }
+                    }
+                }
+            });
+        });
+    },
+
+
+    //Logout Notification
+    sendCUKaikiliNotification(fcm_token, title, info, no_id)  {
+
+        var token = fcm_token;
+        console.log("----->" + token);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            // to: token,
+            registration_ids: token,
+            // priority: "high",
+            collapse_key: 'your_collapse_key',
+            data: {  //you can send only notification or only data(or include both)
+                tran_id: no_id,
+                messages: title,
+                type: "admin_notification",
+                sr_status: "kaikili_notification",
+                my_another_key: 'my another value'
+            }
+        };
+
+        fcm.send(message, function (err, response) {
+            if (err) {
+                console.log(err);
+                console.log("Something has gone wrong!");
+                // return callBack(status);
+            } else {
+                console.log("Successfully sent with response");
+                // console.log("Successfully sent with response: ", response);
+                // return callBack(response);
+                // console.log(status);
+                // return callBack(status);
+            }
+        });
+
+    },
+
 
 }
 module.exports = Comman;

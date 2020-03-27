@@ -11,6 +11,7 @@ var subServiceRouter = require('./routes/subservices');
 var usersRouter = require('./routes/users');
 var customerRouter = require('./routes/customer');
 var testNew = require('./routes/testNew');
+var admin = require('./routes/admin');
 
 var comman = require('./models/Comman');
 var firbaseData = require('./models/FirbaseData');
@@ -51,6 +52,7 @@ app.use('/customer', customerRouter);
 app.use('/services', servicesRouter);
 app.use('/subservices', subServiceRouter);
 app.use('/testNew', testNew);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
