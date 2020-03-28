@@ -250,7 +250,7 @@ var AutoCall = {
                             console.log("=====" + timeMin + " ----14");
 
                             // wait for 24 hour
-                            if (timeMin >= 360 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
+                            if (timeMin >= 360 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")){
 
                                 if (element.type_of_service == "customer_location") {
                                     comman.cuServiceCancellationChargesSPProgress(element);
@@ -297,8 +297,52 @@ var AutoCall = {
                                         }
                                     )
                                 }
-                            }
+                            } else if (timeMin >= 360 && (element.service_book_type == "shouting" || element.service_book_type == "interested")) {
 
+                                console.log("===== AAAA" + element.tran_id + "  Scheduled");
+                                if (element.type_of_service == "customer_location") {
+                                    comman.cuServiceCancellationChargesSP(element);
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
+
+                                    comman.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
+
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+
+                                } else {
+                                    comman.cuServiceCancellationCharges(element);
+
+                                    var serviceUpdate = {
+                                        sr_status: "Cancel-Scheduled-Auto",
+                                        updateDate: new Date().toUTCString()
+                                    };
+                                    collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
+                                    var message = "Auto Cancel Service Remainder"
+                                    comman.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
+                                    comman.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
+
+                                    var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+                                    var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                                    bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                        function (doc) {
+                                            bulkInsert.insertOne(doc);
+                                            bulkRemove.removeOne({tran_id: element.tran_id});
+                                        }
+                                    )
+                                }
+                            }
                         } else {
                             console.log("===== ccc" + element.tran_id + "  Scheduled");
                             console.log("===== id" + element.sr_status);
