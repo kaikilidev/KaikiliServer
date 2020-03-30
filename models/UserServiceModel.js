@@ -567,6 +567,8 @@ var UserService = {
                 var timeNew1 = req.body.timeNew1;
                 var timeNew2 = req.body.timeNew2;
                 var dateNew2 = req.body.dateNew2;
+                var bookingDateTime1 = req.body.bookingDateTime1;
+                var bookingDateTime2 = req.body.bookingDateTime2;
 
                 var serviceUpdate = {
                     sr_status: req.body.sr_status,
@@ -720,8 +722,10 @@ var UserService = {
                                     time: docs[0].time,
                                     dateNew1: dateNew1,
                                     timeNew1: timeNew1,
+                                    bookingDateTime1 : bookingDateTime1,
                                     dateNew2: dateNew2,
                                     timeNew2: timeNew2,
+                                    bookingDateTime2 : bookingDateTime2,
                                     created_on: new Date().toUTCString(),
                                 };
 
