@@ -71,7 +71,7 @@ var AutoCall = {
                             var res_time = new Date().toUTCString();
                             var start_date = new Date(element.updateDate);
                             var end_date = new Date(res_time);
-                            var duration =end_date.getTime() - start_date.getTime();
+                            var duration = end_date.getTime() - start_date.getTime();
 
                             timeMin = duration / 60000;
                             if (timeMin >= 9 && timeMin < 10) {
@@ -250,7 +250,7 @@ var AutoCall = {
                             console.log("=====" + timeMin + " ----14");
 
                             // wait for 24 hour
-                            if (timeMin >= 360 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")){
+                            if (timeMin >= 360 && (element.service_book_type == "preferred_provider" || element.service_book_type == "customer_book")) {
 
                                 if (element.type_of_service == "customer_location") {
                                     comman.cuServiceCancellationChargesSPProgress(element);
@@ -513,7 +513,39 @@ var AutoCall = {
                 }
             });
 
+            collection.find({sr_status: {$in: ["Completed"]}}).toArray(function (err, mainDocs) {
+                if (err) {
+                } else {
+                    console.log("=====" + mainDocs.length);
 
+                    mainDocs.forEach(function (element) {
+
+                        console.log("=====" + element.tran_id + " --- " + element.sr_status);
+
+                        var timeMin;
+                        var res_time = new Date().toUTCString();
+                        var start_date = new Date(element.bookingDateTime);
+                        var end_date = new Date(res_time);
+                        var duration = end_date.getTime() - start_date.getTime();
+                        timeMin = duration / 60000;
+
+                        if (timeMin >= 1440) {
+                            //Auto remove
+                            var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+                            var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
+                            bulkRemove.find({tran_id: element.tran_id}).forEach(
+                                function (doc) {
+                                    bulkInsert.insertOne(doc);
+                                    bulkRemove.removeOne({tran_id: element.tran_id});
+                                }
+                            )
+
+                        } else {
+                            console.log("=====333 " + element.tran_id + "  Completed");
+                        }
+                    });
+                }
+            });
         });
     },
 }

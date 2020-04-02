@@ -918,7 +918,6 @@ router.post('/getKaikiliNotification', function (req, res, next) {
 });
 
 
-
 //API - 58
 router.post('/getAdminNotificationInfo', function (req, res, next) {
     console.log("call getCustomerData-----1");
@@ -932,6 +931,44 @@ router.post('/getAdminNotificationInfo', function (req, res, next) {
         }
     });
 });
+
+
+//API - 59
+router.post('/getDisputeCategories', function (req, res, next) {
+    var sp_id = req.body.sp_id;
+    var key = req.body.key;
+    var type = req.body.type;
+    comman.checkSPValidLogin(sp_id, key, function (validUser) {
+        if (validUser) {
+            comman.getDisputeCategories(type, function (spCredit) {
+
+                if (spCredit.length > 0) {
+                    var status = {
+                        status: 1,
+                        message: "Successfully data getting",
+                        data: spCredit
+                    }
+                    res.json(status);
+                } else {
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    res.json(status);
+                }
+            });
+        } else {
+            var status = {
+                status: -1,
+                message: "Login in other mobile",
+            };
+            res.json(status);
+        }
+
+    });
+});
+
+
 
 //Delete File not working
 // router.post('/spWorkImageDelete/', function (req, res, next) {

@@ -57,7 +57,8 @@
     "cu_kaikili_wallet": "cu_kaikili_wallet",
     "sp_referral_info": "sp_referral_info",
     "cu_referral_info": "cu_referral_info",
-    "admin_notification": "admin_notification"
+    "admin_notification": "admin_notification",
+    "dispute_categories": "dispute_categories"
 
 
   }

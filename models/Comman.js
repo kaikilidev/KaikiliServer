@@ -2981,7 +2981,6 @@ var Comman = {
 
     },
 
-
     //Logout Notification
     sendCULogoutNotification(fcm_token) {
 
@@ -3029,7 +3028,6 @@ var Comman = {
         });
 
     },
-
 
     //SP Admin Notification
     sendSPAdminNotification(sp_id, title, info, no_id) {
@@ -3178,6 +3176,21 @@ var Comman = {
         });
 
     },
+
+
+    // getting dispute categories List
+    getDisputeCategories(type, callback) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.dispute_categories);
+            collectionSP.find({type: type}).toArray(function (err, records){
+                if (err) {
+                    callback([]);
+                } else {
+                    callback(records);
+                }
+        });
+    },
+
 
 
 }

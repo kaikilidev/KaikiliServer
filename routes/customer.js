@@ -853,7 +853,6 @@ router.post('/getKaikiliEarnTan', function (req, res, next) {
         if (err) {
             res.json(err);
             console.log(err);
-        } else {
             console.log(result);
             res.json(result);//or return count for 1 & 0
         }
@@ -892,6 +891,40 @@ router.post('/getAdminNotificationInfo', function (req, res, next) {
     });
 });
 
+
+//API - 61
+router.post('/getDisputeCategories', function (req, res, next) {
+    var cu_id = req.body.cu_id;
+    var key = req.body.key;
+    var no_id = req.body.no_id;
+    comman.checkCUValidLogin(cu_id, key, function (validUser) {
+        if (validUser) {
+            comman.getDisputeCategories(type, function (spCredit) {
+                if (spCredit.length > 0) {
+                    var status = {
+                        status: 1,
+                        message: "Successfully data getting",
+                        data: spCredit
+                    }
+                    res.json(status);
+                } else {
+                    var status = {
+                        status: 0,
+                        message: "Failed !. Server Error....."
+                    };
+                    res.json(status);
+                }
+            });
+        } else {
+            var status = {
+                status: -1,
+                message: "Login in other mobile",
+            };
+            res.json(status);
+        }
+
+    });
+});
 
 
 // return upload(req, res).then((data) => {
