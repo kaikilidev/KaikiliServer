@@ -3049,20 +3049,20 @@ var Comman = {
 
             cursorSearch.toArray(function (err, mainDocs) {
                 console.log("----" + mainDocs[0].fcm_token);
-                if(mainDocs[0].fcm_token.length <900){
-                    module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token,title,info,no_id);
-                }else {
-                    let number = mainDocs[0].fcm_token.length/900;
+                if (mainDocs[0].fcm_token.length < 900) {
+                    module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token, title, info, no_id);
+                } else {
+                    let number = mainDocs[0].fcm_token.length / 900;
                     console.log(number);
                     var z = Math.ceil(number);
                     console.log(z);
                     for (i = 0; i < z; i++) {
                         console.log(i)
-                        if(z ==(i+1)){
-                            console.log((900*i)+"- max");
-                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),mainDocs[0].fcm_token.length),title,info,no_id);
-                        }else {
-                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),(900*(i+1))),title,info,no_id);
+                        if (z == (i + 1)) {
+                            console.log((900 * i) + "- max");
+                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900 * i), mainDocs[0].fcm_token.length), title, info, no_id);
+                        } else {
+                            module.exports.sendSPKaikiliNotification(mainDocs[0].fcm_token.slice((900 * i), (900 * (i + 1))), title, info, no_id);
                             // console.log((900*i)+"-"+(900*(i+1)));
                         }
                     }
@@ -3093,7 +3093,7 @@ var Comman = {
                 console.log(err);
                 console.log("Something has gone wrong!");
             } else {
-                console.log("Successfully sent with response "+response);
+                console.log("Successfully sent with response " + response);
             }
         });
     },
@@ -3119,20 +3119,20 @@ var Comman = {
 
             cursorSearch.toArray(function (err, mainDocs) {
                 console.log("----" + mainDocs[0].fcm_token);
-                if(mainDocs[0].fcm_token.length <900){
-                    module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token,title,info,no_id);
-                }else {
-                    let number = mainDocs[0].fcm_token.length/900;
+                if (mainDocs[0].fcm_token.length < 900) {
+                    module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token, title, info, no_id);
+                } else {
+                    let number = mainDocs[0].fcm_token.length / 900;
                     console.log(number);
                     var z = Math.ceil(number);
                     console.log(z);
                     for (i = 0; i < z; i++) {
                         console.log(i)
-                        if(z ==(i+1)){
-                            console.log((900*i)+"- max");
-                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),mainDocs[0].fcm_token.length),title,info,no_id);
-                        }else {
-                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900*i),(900*(i+1))),title,info,no_id);
+                        if (z == (i + 1)) {
+                            console.log((900 * i) + "- max");
+                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900 * i), mainDocs[0].fcm_token.length), title, info, no_id);
+                        } else {
+                            module.exports.sendCUKaikiliNotification(mainDocs[0].fcm_token.slice((900 * i), (900 * (i + 1))), title, info, no_id);
                             // console.log((900*i)+"-"+(900*(i+1)));
                         }
                     }
@@ -3143,7 +3143,7 @@ var Comman = {
 
 
     //Logout Notification
-    sendCUKaikiliNotification(fcm_token, title, info, no_id)  {
+    sendCUKaikiliNotification(fcm_token, title, info, no_id) {
 
         var token = fcm_token;
         console.log("----->" + token);
@@ -3168,7 +3168,7 @@ var Comman = {
                 // return callBack(status);
             } else {
                 // console.log("Successfully sent with response");
-                 console.log("Successfully sent with response: ", response);
+                console.log("Successfully sent with response: ", response);
                 // return callBack(response);
                 // console.log(status);
                 // return callBack(status);
@@ -3182,15 +3182,15 @@ var Comman = {
     getDisputeCategories(type, callback) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.dispute_categories);
-            collectionSP.find({type: type}).toArray(function (err, records){
+            collectionSP.find({type: type}).toArray(function (err, records) {
                 if (err) {
                     callback([]);
                 } else {
                     callback(records);
                 }
+            });
         });
     },
-
 
 
 }
