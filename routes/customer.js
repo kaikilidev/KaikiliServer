@@ -896,10 +896,9 @@ router.post('/getAdminNotificationInfo', function (req, res, next) {
 router.post('/getDisputeCategories', function (req, res, next) {
     var cu_id = req.body.cu_id;
     var key = req.body.key;
-    var no_id = req.body.no_id;
     comman.checkCUValidLogin(cu_id, key, function (validUser) {
         if (validUser) {
-            comman.getDisputeCategories(type, function (spCredit) {
+            comman.getDisputeCategories(req.body.type, function (spCredit) {
                 if (spCredit.length > 0) {
                     var status = {
                         status: 1,
