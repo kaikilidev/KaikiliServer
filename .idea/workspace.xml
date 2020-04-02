@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CustomerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/CustomerModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/UsersModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/UsersModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss.cmd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/@types/babel-types/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/babel-types/README.md" afterDir="false" />
@@ -1435,16 +1437,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="3846" column="28" lean-forward="true" selection-start-line="3842" selection-start-column="5" selection-end-line="3846" selection-end-column="28" />
+            <state relative-caret-position="371">
+              <caret line="3270" column="35" selection-start-line="3270" selection-start-column="35" selection-end-line="3270" selection-end-column="35" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/AutoCall.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
@@ -1462,6 +1464,47 @@
                 <element signature="e#29422#31989#0" />
                 <element signature="e#32140#32159#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/users.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="735" column="23" lean-forward="true" selection-start-line="735" selection-start-column="23" selection-end-line="735" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/customer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="658" column="25" lean-forward="true" selection-start-line="658" selection-start-column="25" selection-end-line="658" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/Comman.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="454">
+              <caret line="3191" column="11" selection-start-line="3191" selection-start-column="11" selection-end-line="3191" selection-end-column="11" />
+              <folding>
+                <element signature="e#134691#135539#0" />
+                <element signature="e#135719#136567#0" />
+                <element signature="e#137281#138783#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="1053" column="50" lean-forward="true" selection-start-line="1053" selection-start-column="50" selection-end-line="1053" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -1505,7 +1548,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>notifica</find>
       <find>checkSPUserCreated</find>
       <find>fcm_token</find>
       <find>cu_interested_services</find>
@@ -1531,10 +1573,11 @@
       <find>router.get</find>
       <find>userTransitionUpdate</find>
       <find>bookRepeatedService</find>
-      <find>SPdisputeAdd</find>
       <find>find</find>
       <find>callback</find>
       <find>getTransitionID</find>
+      <find>CUdisputeAdd</find>
+      <find>SPdisputeAdd</find>
     </findStrings>
     <replaceStrings>
       <replace>comman</replace>
@@ -1557,14 +1600,14 @@
         <option value="$PROJECT_DIR$/models/FirbaseData.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/routes/admin.js" />
-        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
-        <option value="$PROJECT_DIR$/models/UsersModel.js" />
         <option value="$PROJECT_DIR$/db_config.json" />
-        <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/routes/customer.js" />
         <option value="$PROJECT_DIR$/models/AutoCall.js" />
+        <option value="$PROJECT_DIR$/models/Comman.js" />
+        <option value="$PROJECT_DIR$/models/CustomerModel.js" />
+        <option value="$PROJECT_DIR$/models/UsersModel.js" />
       </list>
     </option>
   </component>
@@ -2059,14 +2102,7 @@
       <workItem from="1585561632542" duration="1631000" />
       <workItem from="1585632710252" duration="2896000" />
       <workItem from="1585736662894" duration="3769000" />
-      <workItem from="1585811833594" duration="9549000" />
-    </task>
-    <task id="LOCAL-00469" summary="Add New Api">
-      <created>1582811509049</created>
-      <option name="number" value="00469" />
-      <option name="presentableId" value="LOCAL-00469" />
-      <option name="project" value="LOCAL" />
-      <updated>1582811509049</updated>
+      <workItem from="1585811833594" duration="11292000" />
     </task>
     <task id="LOCAL-00470" summary="Add New Api">
       <created>1582812746886</created>
@@ -2404,11 +2440,18 @@
       <option name="project" value="LOCAL" />
       <updated>1585823008283</updated>
     </task>
-    <option name="localTasksCounter" value="518" />
+    <task id="LOCAL-00518" summary="Add New Api">
+      <created>1585825904502</created>
+      <option name="number" value="00518" />
+      <option name="presentableId" value="LOCAL-00518" />
+      <option name="project" value="LOCAL" />
+      <updated>1585825904502</updated>
+    </task>
+    <option name="localTasksCounter" value="519" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126411000" />
+    <option name="totallyTimeSpent" value="128154000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2424,10 +2467,10 @@
     <layout>
       <window_info id="npm" order="0" side_tool="true" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.22751679" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.22751679" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.58498585" />
+      <window_info anchor="bottom" id="Terminal" order="1" weight="0.58498585" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.3286119" />
@@ -2839,54 +2882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="1242" column="45" lean-forward="true" selection-start-line="1232" selection-start-column="27" selection-end-line="1242" selection-end-column="45" />
-          <folding>
-            <element signature="e#51730#53258#0" />
-            <element signature="e#53313#54840#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Comman.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="3185" column="26" lean-forward="true" selection-start-line="3185" selection-start-column="26" selection-end-line="3185" selection-end-column="26" />
-          <folding>
-            <element signature="e#134691#135539#0" />
-            <element signature="e#135719#136567#0" />
-            <element signature="e#137281#138783#0" />
-            <element signature="e#138853#140325#0" />
-            <element signature="e#140412#142205#0" />
-            <element signature="e#142269#143224#0" />
-            <element signature="e#143311#145098#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="935" column="1" selection-start-line="935" selection-start-column="1" selection-end-line="968" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="3846" column="28" lean-forward="true" selection-start-line="3842" selection-start-column="5" selection-end-line="3846" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="902" selection-start-line="902" selection-end-line="902" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/AutoCall.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -2904,6 +2899,46 @@
             <element signature="e#29422#31989#0" />
             <element signature="e#32140#32159#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Comman.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="3191" column="11" selection-start-line="3191" selection-start-column="11" selection-end-line="3191" selection-end-column="11" />
+          <folding>
+            <element signature="e#134691#135539#0" />
+            <element signature="e#135719#136567#0" />
+            <element signature="e#137281#138783#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="658" column="25" lean-forward="true" selection-start-line="658" selection-start-column="25" selection-end-line="658" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="735" column="23" lean-forward="true" selection-start-line="735" selection-start-column="23" selection-end-line="735" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/UsersModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="1053" column="50" lean-forward="true" selection-start-line="1053" selection-start-column="50" selection-end-line="1053" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/CustomerModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="3270" column="35" selection-start-line="3270" selection-start-column="35" selection-end-line="3270" selection-end-column="35" />
         </state>
       </provider>
     </entry>

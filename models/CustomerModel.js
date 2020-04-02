@@ -3256,6 +3256,7 @@ var Customer = {
     CUdisputeInsert: function (req, callback) {
         var cu_id = req.body.cu_id;
         var key = req.body.key;
+        var type = req.body.type;
 
         comman.checkCUValidLogin(cu_id, key, function (validUser) {
             if (validUser) {
@@ -3267,6 +3268,7 @@ var Customer = {
                         cu_id: req.body.cu_id,
                         comment: req.body.comment,
                         tr_id: req.body.tran_id,
+                        dispute_cat: type,
                         admin_view: 0,
                         admin_replay: 0,
                         admin_favourite: 0,

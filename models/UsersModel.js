@@ -1052,7 +1052,7 @@ var Users = {
                         dispute_id: "DIS0" + result,
                         sp_id: req.body.sp_id,
                         comment: req.body.comment,
-                        dispute_cat : req.dispute_cat,
+                        dispute_cat : req.body.type,
                         tr_id: req.body.tran_id,
                         admin_view: 0,
                         admin_replay: 0,
