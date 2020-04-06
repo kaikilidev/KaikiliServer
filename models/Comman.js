@@ -2634,7 +2634,7 @@ var Comman = {
 
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, dbas) {
                 var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
-                collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled"]}}).toArray(function (err, mainDocs) {
+                collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled","Progress"]}}).toArray(function (err, mainDocs) {
                     if (err) {
                         callback(false);
                     } else {
