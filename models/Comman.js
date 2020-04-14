@@ -1382,7 +1382,7 @@ var Comman = {
 
             cursorSearch.toArray(function (err, mainDocs) {
                 console.log("----555" + mainDocs.length);
-                console.log("----555" + new Date(new Date().setHours(0, 0, 0)).toUTCString(),);
+                console.log("----555" + new Date(new Date().setHours(0, 0, 0)).toUTCString());
                 console.log("----555" + new Date(new Date().setHours(47, 59, 59)).toUTCString());
                 return callBack(mainDocs);
             });
