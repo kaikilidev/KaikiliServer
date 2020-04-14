@@ -1,6 +1,6 @@
 {
   "port": 5000,
-  "dbUrl": "mongodb://kaikilidev:KaiKili99Dev123@3.21.181.239:27017/",
+  "dbUrl": "mongodb://kaikilidev:KaiKili99Dev123@3.12.125.65:27011/",
   "imagePath": "http://3.22.158.190:3000/",
   "dbName": "kdb",
   "collections": {
