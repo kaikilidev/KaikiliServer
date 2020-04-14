@@ -17,7 +17,7 @@ var FirbaseData = {
     autoCheckOnlineUser() {
 
         var ref = firebase.database().ref("kaikili-service-provider");
-        ref.once("value",)
+        ref.once("value")
             .then(function (snap) {
                 // console.log(snap.val());
                 snap.forEach(function(childSnapshot) {
