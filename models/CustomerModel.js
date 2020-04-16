@@ -2525,6 +2525,7 @@ var Customer = {
         var addWorkInfo = {
             "profile_image": data[0]
         };
+        console.log(addWorkInfo);
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.cu_profile);
             collectionSP.update({cu_id: id}, {$set: addWorkInfo}, function (err, records) {
