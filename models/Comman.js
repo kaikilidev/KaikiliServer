@@ -1383,7 +1383,7 @@ var Comman = {
             cursorSearch.toArray(function (err, mainDocs) {
                 console.log("----555" + mainDocs.length);
                 //console.log("----555" + new Date(new Date().setHours(0, 0, 0)).toUTCString(),);
-               // console.log("----555" + new Date(new Date().setHours(47, 59, 59)).toUTCString());
+                // console.log("----555" + new Date(new Date().setHours(47, 59, 59)).toUTCString());
                 return callBack(mainDocs);
             });
         });
@@ -2634,7 +2634,10 @@ var Comman = {
 
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, dbas) {
                 var collection = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
-                collection.find({sp_id: sp_id, sr_status: {$in: ["Scheduled","Progress"]}}).toArray(function (err, mainDocs) {
+                collection.find({
+                    sp_id: sp_id,
+                    sr_status: {$in: ["Scheduled", "Progress"]}
+                }).toArray(function (err, mainDocs) {
                     if (err) {
                         callback(false);
                     } else {
@@ -3192,6 +3195,88 @@ var Comman = {
         });
     },
 
+
+    //Provider Auto Block function
+    // 17-4-2020
+    checkProvidrTransitionInfoActive(sp_id) {
+
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            var collection_transaction = db.db(config.dbName).collection(config.collections.cu_sp_transaction);
+            var collection_transaction_completed = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
+            var collection_transaction_cancellation = db.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
+
+
+            collection_transaction.find({sp_id: sp_id}).sort({_id: -1}).limit(6).toArray(function (err1, docsOnTr) {
+                collection_transaction_completed.find({sp_id: sp_id}).sort({_id: -1}).limit(6).toArray(function (err2, docsOnTrCom) {
+                    collection_transaction_cancellation.find({sp_id: sp_id}).sort({_id: -1}).limit(6).toArray(function (err3, docsOnTrCan) {
+                        var doc = docsOnTr.concat(docsOnTrCom);
+                        var doc = doc.concat(docsOnTrCan);
+
+                        doc.sort(function (a, b) {
+                            return a._id - b._id;
+                        });
+
+                        var newBookArray = [];
+
+                        if (doc.length > 5) {
+                            for (i = 0; i < 5; i++) {
+                                console.log("--->> ", doc[i].sr_status);
+                                newBookArray.push(doc[i].sr_status);
+                            }
+                        } else {
+                            for (i = 0; i < doc.length; i++) {
+                                newBookArray.push(doc[i].sr_status);
+                                console.log("--->> ", doc[i].sr_status);
+                            }
+                        }
+
+                        var newCancel = newBookArray.filter(x => x === "Cancel-New-Auto").length + newBookArray.filter(x => x === "Cancel-New-Sp").length;
+
+                        var workOnArray = [];
+
+                        if (doc.length > 3) {
+                            for (i = 0; i < 3; i++) {
+                                console.log("--->> ", doc[i].sr_status);
+                                workOnArray.push(doc[i].sr_status);
+                            }
+                        } else {
+                            for (i = 0; i < doc.length; i++) {
+                                workOnArray.push(doc[i].sr_status);
+                                console.log("--->> ", doc[i].sr_status);
+                            }
+                        }
+
+                        var workOnCancel = workOnArray.filter(x => x === "Cancel-Scheduled-Sp").length + workOnArray.filter(x => x === "Cancel-Scheduled-Auto").length + workOnArray.filter(x => x === "Cancel-Progress-Auto").length;
+
+                        console.log("---- 1-- " + newBookArray)  // -> 3
+                        console.log("---- 1-- " + newCancel)  // -> 3
+                        console.log("---- 2-- " + workOnCancel)  // -> 3
+                        // CoinArray.filter(x => x === "Cancel-New-Auto").length  // -> 3
+                        if (newCancel == 5 || workOnCancel == 3) {
+
+                            var addWorkInfo = {
+                                work_status: false,
+                            };
+                            collectionSP.update({sp_id: sp_id}, {$set: addWorkInfo});
+                        }
+                    });
+                });
+            });
+
+        });
+    },
+
+
+    // getting dispute categories List
+    checkSPActive(sp_id) {
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
+            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+            collectionSP.findOne({sp_id: sp_id}, function (err, records) {
+               return records.work_status;
+               });
+        });
+    },
 
 }
 module.exports = Comman;

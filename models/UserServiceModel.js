@@ -1520,6 +1520,8 @@ var UserService = {
                                     )
                                 }
 
+                                comman.checkProvidrTransitionInfoActive(docs[0].sp_id);
+
                                 var collectionNotification = db.db(config.dbName).collection(config.collections.cu_sp_notifications);
                                 collectionNotification.update({tran_id: tran_id}, {$push: {messages: messagesBody}}, function (err, docs) {
 

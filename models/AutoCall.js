@@ -52,6 +52,7 @@ var AutoCall = {
                                 collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
                                 var message = "Auto Cancel Service Remainder"
                                 comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
+                                comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                 var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                 var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -89,7 +90,7 @@ var AutoCall = {
                                 collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
                                 var message = "Auto Cancel Service Remainder"
                                 comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-New-Auto", "tran");
-
+                                comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                 var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                 var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -145,6 +146,7 @@ var AutoCall = {
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -166,8 +168,9 @@ var AutoCall = {
                                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
+
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
                                     bulkRemove.find({tran_id: element.tran_id}).forEach(
@@ -189,8 +192,8 @@ var AutoCall = {
                                     collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
-
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -212,6 +215,7 @@ var AutoCall = {
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Scheduled-Auto", "tran");
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -261,8 +265,8 @@ var AutoCall = {
                                     collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
-
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
@@ -284,9 +288,8 @@ var AutoCall = {
                                     collection.update({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
-
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
-
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -309,8 +312,8 @@ var AutoCall = {
                                     collection.updateOne({tran_id: element.tran_id}, {$set: serviceUpdate});
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendCustomerNotification(element.cust_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
-
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, false);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);
@@ -332,6 +335,7 @@ var AutoCall = {
                                     var message = "Auto Cancel Service Remainder"
                                     comman.sendServiceNotification(element.sp_id, element.tran_id, message, "Cancel-Progress-Auto", "tran");
                                     comman.kaikiliWalletDebitCustomerAmount(element.tran_id, true);
+                                    comman.checkProvidrTransitionInfoActive(element.sp_id);
 
                                     var bulkInsert = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction_cancellation);
                                     var bulkRemove = dbas.db(config.dbName).collection(config.collections.cu_sp_transaction);

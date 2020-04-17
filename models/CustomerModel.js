@@ -512,7 +512,7 @@ var Customer = {
                                                     discountGive = docs[0].discount.ds_rate_per_item;
                                                 }
 
-                                                if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
+                                                if (docs[0].preferred_provider == "1" && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus && docs[0].profile.work_status) {
                                                     if (isProviderAvailabel) {
                                                         newPreferredArrServic.push(docs[0].sp_id);
                                                         var ppsData = {
@@ -552,7 +552,7 @@ var Customer = {
 
                                                 };
 
-                                                if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus) {
+                                                if (isProviderAvailabel && docs[0].profile.fcm_token != "" && docs[0].profile.login_key != "" && docs[0].profile.onlineStatus && docs[0].profile.work_status) {
                                                     newArrServic.push(dataShow);
                                                 }
                                                 ctr++;
@@ -1925,6 +1925,7 @@ var Customer = {
                                     )
                                 }
 
+                                comman.checkProvidrTransitionInfoActive(findRecord[0].sp_id);
                             });
                             console.log();
                             callback(status);
