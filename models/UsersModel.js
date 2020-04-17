@@ -16,8 +16,6 @@ var Users = {
             // editor.putString("referral_user_type", null);
             // editor.putString("referral_amount", null);
 
-
-
             var newUser = {
                 sp_id: "SP0" + result,
                 first_name: req.body.first_name,
@@ -30,7 +28,10 @@ var Users = {
                 fcm_token: req.body.fcm_token,
                 creationDate: new Date().toUTCString(),
                 onlineStatus: true,
-                login_key: uuidAPIKey.create().apiKey
+                login_key: uuidAPIKey.create().apiKey,
+                work_status: false,
+                verified_email: 0,
+                verified_mobile: 1
             };
 
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
@@ -225,7 +226,10 @@ var Users = {
 
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
+
                 var addWorkInfo = req.body;
+                console.log(addWorkInfo);
+
                 var geoUpdate = req.body.geoUpdate;
                 if (geoUpdate == true) {
                     var geoLocationMatch = {

@@ -29,7 +29,10 @@ var Customer = {
                 search_show: req.body.search_show,
                 fcm_token: req.body.fcm_token,
                 creationDate: new Date().toUTCString(),
-                login_key: uuidAPIKey.create().apiKey
+                login_key: uuidAPIKey.create().apiKey,
+                verified_email: 0,
+                verified_mobile: 1,
+                book_service_status:true
             };
 
             mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {

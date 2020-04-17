@@ -2623,8 +2623,8 @@ var Comman = {
 
 
     spUserUpdateStatus(sp_id, onlineStatus) {
-        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
-            var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
+        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, dbas) {
+            var collectionSP = dbas.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.updateOne({sp_id: sp_id}, {$set: {onlineStatus: onlineStatus}});
         });
     },
