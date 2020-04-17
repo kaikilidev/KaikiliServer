@@ -1999,8 +1999,6 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
                 comman.checkSPActive(req.body.sp_id, function (spCredit) {
-                    res.json(spCredit);
-
                     if (spCredit) {
                         var userSRSendCUAlertData = req.body.shout_data;
                         var sp_id = req.body.sp_id;
@@ -2982,9 +2980,7 @@ var UserService = {
             if (validUser) {
 
                 comman.checkSPActive(req.body.sp_id, function (spCredit) {
-                    res.json(spCredit);
-
-                    if (spCredit) {
+                     if (spCredit) {
                         var sp_name = req.body.sp_name;
                         var cash_out = req.body.cash_out;
 
