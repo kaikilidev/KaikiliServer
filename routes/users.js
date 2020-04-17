@@ -973,15 +973,15 @@ router.post('/getDisputeCategories', function (req, res, next) {
 router.post('/testUser', function (req, res, next) {
     console.log("call getCustomerData-----1");
 
-    comman.checkSPActive(req, function (err, result) {
-        if (err) {
-            res.json(err);
-            console.log(err);
-        } else {
-            console.log(result);
-            res.json(result);//or return count for 1 & 0
-        }
+    comman.checkSPActive(req.body.sp_id, function (spCredit) {
+            res.json(spCredit);
     });
+
+
+
+    // comman.checkSPActive(req, function (err, result) {
+    //         res.json(comman.checkSPActive("SP02"));
+
 });
 
 //Delete File not working

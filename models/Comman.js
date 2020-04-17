@@ -3269,11 +3269,11 @@ var Comman = {
 
 
     // getting dispute categories List
-    checkSPActive(sp_id) {
+    checkSPActive(sp_id,callback) {
         mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
             var collectionSP = db.db(config.dbName).collection(config.collections.sp_personal_info);
             collectionSP.findOne({sp_id: sp_id}, function (err, records) {
-               return records.work_status;
+                callback(records.work_status);
                });
         });
     },

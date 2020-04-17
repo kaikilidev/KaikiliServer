@@ -635,7 +635,8 @@ var UserService = {
                                 if (serviceTo25 == "ON") {
                                     var start_date = new Date(docs[0].creationDate);
                                     var end_date = new Date(res_time);
-                                    var duration = end_date.getTime() - start_date.getTime();;
+                                    var duration = end_date.getTime() - start_date.getTime();
+                                    ;
 
                                     // var start_date = moment.utc(docs[0].creationDate);
                                     // var end_date = moment.utc(res_time);
@@ -722,10 +723,10 @@ var UserService = {
                                     time: docs[0].time,
                                     dateNew1: dateNew1,
                                     timeNew1: timeNew1,
-                                    bookingDateTime1 : bookingDateTime1,
+                                    bookingDateTime1: bookingDateTime1,
                                     dateNew2: dateNew2,
                                     timeNew2: timeNew2,
-                                    bookingDateTime2 : bookingDateTime2,
+                                    bookingDateTime2: bookingDateTime2,
                                     created_on: new Date().toUTCString(),
                                 };
 
@@ -899,33 +900,31 @@ var UserService = {
 
 
                                 comman.getSPCurrentOfferCredit(sp_id, function (spCredit) {
-                                    if(spCredit>0){
-                                        var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission)* setting.getMarketing_Credit_Used_Provider() / 100;
+                                    if (spCredit > 0) {
+                                        var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission) * setting.getMarketing_Credit_Used_Provider() / 100;
                                         // var commissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission)* 25 / 100;
-                                        if(spCredit>=commissioBack){
+                                        if (spCredit >= commissioBack) {
 
                                             var kkCommissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission) - commissioBack;
-                                            comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
-                                            comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name+" "+paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, commissioBack, "Debit");
+                                            comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission + " - 25% kaikili credit $" + commissioBack + " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $" + commissioBack;
+                                            comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name + " " + paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, commissioBack, "Debit");
                                             comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, kkCommissioBack, 0, "Credit")
-                                            comment = "Kaikili Credit "+docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
-                                            comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment,commissioBack, 0, "Credit")
+                                            comment = "Kaikili Credit " + docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission + " - 25% kaikili credit $" + commissioBack + " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $" + commissioBack;
+                                            comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, commissioBack, 0, "Credit")
 
-                                        }else if(spCredit < commissioBack){
+                                        } else if (spCredit < commissioBack) {
 
                                             var kkCommissioBack = parseFloat(docs[0].kaikili_commission.kk_sr_commission) - spCredit;
-                                            comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+spCredit+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+spCredit;
-                                            comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name+" "+paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, spCredit, "Debit");
+                                            comment = docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission + " - 25% kaikili credit $" + spCredit + " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $" + spCredit;
+                                            comman.sp_offer_kaiKiliWalletUpdate(sp_id, paymentSettlementBody.sp_first_name + " " + paymentSettlementBody.sp_Last_name, docs[0].tran_id, paymentSettlementBody.sr_title, comment, 0, spCredit, "Debit");
                                             comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, kkCommissioBack, 0, "Credit")
-                                            comment = "Kaikili Credit "+docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission+" - 25% kaikili credit $"+commissioBack+ " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $"+commissioBack;
-                                            comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment,spCredit, 0, "Credit")
+                                            comment = "Kaikili Credit " + docs[0].tran_id + " - " + docs[0].sr_id + " - " + " Completed Service - CU Pay $" + docs[0].sp_net_pay + " - KKC $" + docs[0].kaikili_commission.kk_sr_commission + " - 25% kaikili credit $" + commissioBack + " = SP Pay $" + docs[0].kaikili_commission.kk_sp_pay + " + kaikili credit 25% $" + commissioBack;
+                                            comman.spEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, spCredit, 0, "Credit")
                                         }
-                                    }else {
+                                    } else {
                                         comman.kaiKiliEranInfoUpdate(docs[0].sp_id, docs[0].tran_id, comment, docs[0].kaikili_commission.kk_sr_commission, 0, "Credit")
                                     }
                                 });
-
-
 
 
                                 // var transactionCompleted = db.db(config.dbName).collection(config.collections.cu_sp_transaction_completed);
@@ -1022,7 +1021,7 @@ var UserService = {
                                     message: "Success get all transition service information",
                                     total_count: docs.length,
                                     currentBalance: currentBalance,
-                                    data: docs.slice(req.body.start,req.body.end)
+                                    data: docs.slice(req.body.start, req.body.end)
                                 };
                                 callback(status);
                             }
@@ -1172,8 +1171,8 @@ var UserService = {
                                     var status = {
                                         status: 1,
                                         message: "Success get all transition service list",
-                                        data: children.slice(req.body.start,req.body.end),
-                                        total_count : children.length
+                                        data: children.slice(req.body.start, req.body.end),
+                                        total_count: children.length
 
                                     };
                                     callback(status);
@@ -1999,86 +1998,100 @@ var UserService = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                var userSRSendCUAlertData = req.body.shout_data;
-                var sp_id = req.body.sp_id;
-                var first_name = req.body.first_name;
-                var last_name = req.body.last_name;
-                var sp_mobile_no = req.body.sp_mobile_no;
-                var sp_images = "";
-                var uploadData = true;
-                var count = 0;
-                userSRSendCUAlertData.forEach(function (data) {
-                    comman.getSPUserRadiusLocationToAVGShout(data.sr_id, data.longitude, data.latitude, data.cost_item, function (avgCost) {
-                        comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
-                            var newAlertRequirement = {
-                                cp_alert_id: data.cp_alert_id,
-                                sp_cp_alert_send_id: "SHOUT0" + result,
-                                comment: data.comment,
-                                address: data.address,
-                                sr_title: data.sr_title,
-                                sp_id: sp_id,
-                                sp_first_name: first_name,
-                                sp_last_name: last_name,
-                                sp_mobile_no: sp_mobile_no,
-                                sp_images: sp_images,
-                                cu_first_name: data.cu_first_name,
-                                date: data.date,
-                                time: data.time,
-                                bookingDateTime: data.bookingDateTime,
-                                cu_last_name: data.cu_last_name,
-                                cu_mobile_no: data.mobile_no,
-                                type_of_service: data.type_of_service,
-                                sr_status: "Open",
-                                sr_id: data.sr_id,
-                                cost_item: data.cost_item,
-                                cu_id: data.cu_id,
-                                dist: data.dist,
-                                longitude: data.longitude,
-                                latitude: data.latitude,
-                                totalCost: data.totalCost,
-                                kaikili_commission: data.kaikili_commission,
-                                discountGive: data.discountGive,
-                                service_area: data.service_area,
-                                discountAfterPrice: data.discountAfterPrice,
-                                creationDate: new Date().toISOString(),
-                                avg_cost: avgCost.totalCost
-                            };
+                comman.checkSPActive(req.body.sp_id, function (spCredit) {
+                    res.json(spCredit);
 
-                            mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
-                                var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
-                                collection.insertOne(newAlertRequirement, function (err, records) {
-                                    if (err) {
-                                        uploadData = false;
-                                    } else {
-                                        comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+                    if (spCredit) {
+                        var userSRSendCUAlertData = req.body.shout_data;
+                        var sp_id = req.body.sp_id;
+                        var first_name = req.body.first_name;
+                        var last_name = req.body.last_name;
+                        var sp_mobile_no = req.body.sp_mobile_no;
+                        var sp_images = "";
+                        var uploadData = true;
+                        var count = 0;
+                        userSRSendCUAlertData.forEach(function (data) {
+                            comman.getSPUserRadiusLocationToAVGShout(data.sr_id, data.longitude, data.latitude, data.cost_item, function (avgCost) {
+                                comman.getNextSequenceUserID("sp_cu_shout_id", function (result) {
+                                    var newAlertRequirement = {
+                                        cp_alert_id: data.cp_alert_id,
+                                        sp_cp_alert_send_id: "SHOUT0" + result,
+                                        comment: data.comment,
+                                        address: data.address,
+                                        sr_title: data.sr_title,
+                                        sp_id: sp_id,
+                                        sp_first_name: first_name,
+                                        sp_last_name: last_name,
+                                        sp_mobile_no: sp_mobile_no,
+                                        sp_images: sp_images,
+                                        cu_first_name: data.cu_first_name,
+                                        date: data.date,
+                                        time: data.time,
+                                        bookingDateTime: data.bookingDateTime,
+                                        cu_last_name: data.cu_last_name,
+                                        cu_mobile_no: data.mobile_no,
+                                        type_of_service: data.type_of_service,
+                                        sr_status: "Open",
+                                        sr_id: data.sr_id,
+                                        cost_item: data.cost_item,
+                                        cu_id: data.cu_id,
+                                        dist: data.dist,
+                                        longitude: data.longitude,
+                                        latitude: data.latitude,
+                                        totalCost: data.totalCost,
+                                        kaikili_commission: data.kaikili_commission,
+                                        discountGive: data.discountGive,
+                                        service_area: data.service_area,
+                                        discountAfterPrice: data.discountAfterPrice,
+                                        creationDate: new Date().toISOString(),
+                                        avg_cost: avgCost.totalCost
+                                    };
 
-                                        count++;
-                                        if (count == userSRSendCUAlertData.length) {
-                                            if (!uploadData) {
-                                                console.log(err);
-                                                var status = {
-                                                    status: 0,
-                                                    message: "Failed !. Server Error....."
-                                                };
-                                                console.log(status);
-                                                callback(status);
+                                    mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
+                                        var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_shout);
+                                        collection.insertOne(newAlertRequirement, function (err, records) {
+                                            if (err) {
+                                                uploadData = false;
                                             } else {
-                                                var status = {
-                                                    status: 1,
-                                                    message: "Successfully add user address",
-                                                    data: records
-                                                };
-                                                console.log(status);
-                                                callback(status);
+                                                comman.sendCustomerNotification(data.cu_id, "SHOUT0" + result, "Service Provider Send Neighborhood Shout Request", "Neighborhood Shout", "shout");
+
+                                                count++;
+                                                if (count == userSRSendCUAlertData.length) {
+                                                    if (!uploadData) {
+                                                        console.log(err);
+                                                        var status = {
+                                                            status: 0,
+                                                            message: "Failed !. Server Error....."
+                                                        };
+                                                        console.log(status);
+                                                        callback(status);
+                                                    } else {
+                                                        var status = {
+                                                            status: 1,
+                                                            message: "Successfully add user address",
+                                                            data: records
+                                                        };
+                                                        console.log(status);
+                                                        callback(status);
+                                                    }
+                                                }
                                             }
-                                        }
-                                    }
+                                        });
+                                    });
+
                                 });
                             });
-
                         });
-                    });
+
+                    } else {
+                        var status = {
+                            status: 2,
+                            message: "This Account are  deactivated. Pleas contact support team.",
+                        };
+                        callback(status);
+                    }
                 });
+
             } else {
                 var status = {
                     status: -1,
@@ -2258,77 +2271,77 @@ var UserService = {
                                             callback(status);
 
                                         } else {
-                                                var serviceUpdate = {
-                                                    sr_status: "Scheduled",
-                                                    updateDate: new Date().toUTCString()
+                                            var serviceUpdate = {
+                                                sr_status: "Scheduled",
+                                                updateDate: new Date().toUTCString()
+                                            };
+
+                                            var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
+                                            cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
+                                            collection.update({pps_id: pps_id}, {$set: serviceUpdate});
+
+                                            var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
+                                            var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
+                                            bulkRemove.find({pps_id: req.body.pps_id}).forEach(
+                                                function (doc) {
+                                                    bulkInsert.insertOne(doc);
+                                                    bulkRemove.removeOne({pps_id: pps_id});
+                                                }
+                                            );
+                                            comman.getSPProfileData(sp_id, function (result) {
+
+                                                var discount = {
+                                                    ds_title: "Disount",
+                                                    ds_rate_per_item: "0",
+                                                    ds_per: "0"
                                                 };
 
-                                                var cu_sp_pps_send = db.db(config.dbName).collection(config.collections.cu_sp_pps_send);
-                                                cu_sp_pps_send.update({pps_id: pps_id, sp_id: sp_id}, {$set: serviceUpdate});
-                                                collection.update({pps_id: pps_id}, {$set: serviceUpdate});
+                                                var postJob = {
+                                                    address: docs[0].address,
+                                                    comment: docs[0].comment,
+                                                    sr_id: docs[0].sr_id,
+                                                    sr_title: docs[0].sr_title,
+                                                    time: docs[0].time,
+                                                    date: docs[0].date,
+                                                    bookingDateTime: docs[0].bookingDateTime,
+                                                    cust_id: docs[0].cust_id,
+                                                    cust_first_name: docs[0].cust_first_name,
+                                                    cust_last_name: docs[0].cust_last_name,
+                                                    sr_status: "Scheduled",
+                                                    txn_status: "",
+                                                    minimum_charge: "0",
+                                                    totalCost: docs[0].totalCost,
+                                                    itemCost: docs[0].itemCost,
+                                                    last_cancel_tran_id: docs[0].last_cancel_tran_id,
+                                                    last_cancel_sp_id: docs[0].last_cancel_sp_id,
+                                                    re_book: docs[0].re_book,
+                                                    type_of_service: docs[0].type_of_service,
+                                                    discount: discount,
+                                                    kaikili_commission: docs[0].kaikili_commission,
+                                                    sr_type: docs[0].sr_type,
+                                                    sr_total: docs[0].sr_total,
+                                                    sp_net_pay: docs[0].sp_net_pay,
+                                                    coordinatePoint: docs[0].coordinatePoint,
+                                                    cp_review: docs[0].cp_review,
+                                                    sp_review: docs[0].sp_review,
+                                                    sp_first_name: result[0].first_name,
+                                                    sp_Last_name: result[0].last_name,
+                                                    sp_id: sp_id,
+                                                    sp_image: result[0].userprofile.profile_image,
+                                                    sp_service_area: result[0].userprofile.service_area,
+                                                    distance: dist,
+                                                    coupon_code: result[0].coupon_code,
+                                                    coupon_apply: result[0].coupon_apply,
+                                                    coupon_code_discount_amount: result[0].coupon_code_discount_amount,
+                                                }
 
-                                                var bulkInsert = db.db(config.dbName).collection(config.collections.cu_sp_pps_cancellation);
-                                                var bulkRemove = db.db(config.dbName).collection(config.collections.cp_sp_preferred_provider);
-                                                bulkRemove.find({pps_id: req.body.pps_id}).forEach(
-                                                    function (doc) {
-                                                        bulkInsert.insertOne(doc);
-                                                        bulkRemove.removeOne({pps_id: pps_id});
-                                                    }
-                                                );
-                                                comman.getSPProfileData(sp_id, function (result) {
-
-                                                    var discount = {
-                                                        ds_title: "Disount",
-                                                        ds_rate_per_item: "0",
-                                                        ds_per: "0"
-                                                    };
-
-                                                    var postJob = {
-                                                        address: docs[0].address,
-                                                        comment: docs[0].comment,
-                                                        sr_id: docs[0].sr_id,
-                                                        sr_title: docs[0].sr_title,
-                                                        time: docs[0].time,
-                                                        date: docs[0].date,
-                                                        bookingDateTime: docs[0].bookingDateTime,
-                                                        cust_id: docs[0].cust_id,
-                                                        cust_first_name: docs[0].cust_first_name,
-                                                        cust_last_name: docs[0].cust_last_name,
-                                                        sr_status: "Scheduled",
-                                                        txn_status: "",
-                                                        minimum_charge: "0",
-                                                        totalCost: docs[0].totalCost,
-                                                        itemCost: docs[0].itemCost,
-                                                        last_cancel_tran_id: docs[0].last_cancel_tran_id,
-                                                        last_cancel_sp_id: docs[0].last_cancel_sp_id,
-                                                        re_book: docs[0].re_book,
-                                                        type_of_service: docs[0].type_of_service,
-                                                        discount: discount,
-                                                        kaikili_commission: docs[0].kaikili_commission,
-                                                        sr_type: docs[0].sr_type,
-                                                        sr_total: docs[0].sr_total,
-                                                        sp_net_pay: docs[0].sp_net_pay,
-                                                        coordinatePoint: docs[0].coordinatePoint,
-                                                        cp_review: docs[0].cp_review,
-                                                        sp_review: docs[0].sp_review,
-                                                        sp_first_name: result[0].first_name,
-                                                        sp_Last_name: result[0].last_name,
-                                                        sp_id: sp_id,
-                                                        sp_image: result[0].userprofile.profile_image,
-                                                        sp_service_area: result[0].userprofile.service_area,
-                                                        distance: dist,
-                                                        coupon_code: result[0].coupon_code,
-                                                        coupon_apply: result[0].coupon_apply,
-                                                        coupon_code_discount_amount: result[0].coupon_code_discount_amount,
-                                                    }
-
-                                                    comman.getBookPPService(postJob, function (result) {
-                                                        callback(result);
-                                                    });
-
+                                                comman.getBookPPService(postJob, function (result) {
+                                                    callback(result);
                                                 });
-                                            }
+
+                                            });
                                         }
+                                    }
                                 }
                             }
                         );
@@ -2754,87 +2767,98 @@ var UserService = {
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
 
-                var userSRSendCUAlertData = req.body.shout_data;
-                var sp_id = req.body.sp_id;
-                var first_name = req.body.first_name;
-                var last_name = req.body.last_name;
-                var sp_mobile_no = req.body.sp_mobile_no;
-                var sp_images = "";
-                var uploadData = true;
-                var count = 0;
+                comman.checkSPActive(req.body.sp_id, function (spCredit) {
+                   if(spCredit){
+                       var userSRSendCUAlertData = req.body.shout_data;
+                       var sp_id = req.body.sp_id;
+                       var first_name = req.body.first_name;
+                       var last_name = req.body.last_name;
+                       var sp_mobile_no = req.body.sp_mobile_no;
+                       var sp_images = "";
+                       var uploadData = true;
+                       var count = 0;
 
-                userSRSendCUAlertData.forEach(function (data) {
-                    comman.getNextSequenceUserID("cu_interested", function (result) {
-                        var newAlertRequirement = {
-                            cu_search_id: data.cu_search_id,
-                            cu_interested_rq_id: "cu_interested_rq_" + result,
-                            comment: data.comment,
-                            address: data.address,
-                            sr_title: data.sr_title,
-                            sp_id: sp_id,
-                            sp_first_name: first_name,
-                            sp_last_name: last_name,
-                            sp_mobile_no: sp_mobile_no,
-                            sp_images: sp_images,
-                            cu_first_name: data.cu_first_name,
-                            cu_last_name: data.cu_last_name,
-                            mobile_no: data.mobile_no,
-                            cu_images: data.cu_images,
-                            type_of_service: data.type_of_service,
-                            sr_status: "Open",
-                            sr_id: data.sr_id,
-                            cost_item: data.cost_item,
-                            cu_id: data.cu_id,
-                            cu_ids: data.cc_ids,
-                            time: data.time,
-                            date: data.date,
-                            bookingDateTime: data.bookingDateTime,
-                            dist: data.dist,
-                            longitude: data.longitude,
-                            latitude: data.latitude,
-                            totalCost: data.totalCost,
-                            kaikili_commission: data.kaikili_commission,
-                            discountGive: data.discountGive,
-                            service_area: data.service_area,
-                            discountAfterPrice: data.discountAfterPrice,
-                            minimum_charge: data.minimum_charge,
-                            creationDate: new Date().toISOString()
-                        };
+                       userSRSendCUAlertData.forEach(function (data) {
+                           comman.getNextSequenceUserID("cu_interested", function (result) {
+                               var newAlertRequirement = {
+                                   cu_search_id: data.cu_search_id,
+                                   cu_interested_rq_id: "cu_interested_rq_" + result,
+                                   comment: data.comment,
+                                   address: data.address,
+                                   sr_title: data.sr_title,
+                                   sp_id: sp_id,
+                                   sp_first_name: first_name,
+                                   sp_last_name: last_name,
+                                   sp_mobile_no: sp_mobile_no,
+                                   sp_images: sp_images,
+                                   cu_first_name: data.cu_first_name,
+                                   cu_last_name: data.cu_last_name,
+                                   mobile_no: data.mobile_no,
+                                   cu_images: data.cu_images,
+                                   type_of_service: data.type_of_service,
+                                   sr_status: "Open",
+                                   sr_id: data.sr_id,
+                                   cost_item: data.cost_item,
+                                   cu_id: data.cu_id,
+                                   cu_ids: data.cc_ids,
+                                   time: data.time,
+                                   date: data.date,
+                                   bookingDateTime: data.bookingDateTime,
+                                   dist: data.dist,
+                                   longitude: data.longitude,
+                                   latitude: data.latitude,
+                                   totalCost: data.totalCost,
+                                   kaikili_commission: data.kaikili_commission,
+                                   discountGive: data.discountGive,
+                                   service_area: data.service_area,
+                                   discountAfterPrice: data.discountAfterPrice,
+                                   minimum_charge: data.minimum_charge,
+                                   creationDate: new Date().toISOString()
+                               };
 
-                        mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
-                            var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_interested);
-                            collection.insertOne(newAlertRequirement, function (err, records) {
-                                if (err) {
-                                    uploadData = false;
-                                } else {
-                                    comman.sendCustomerNotification(data.cu_id, newAlertRequirement.cu_interested_rq_id, "Service Provider Send Interested Service Request", "Interested to Service", "cu_interested");
+                               mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, kdb) {
+                                   var collection = kdb.db(config.dbName).collection(config.collections.sp_cu_send_interested);
+                                   collection.insertOne(newAlertRequirement, function (err, records) {
+                                       if (err) {
+                                           uploadData = false;
+                                       } else {
+                                           comman.sendCustomerNotification(data.cu_id, newAlertRequirement.cu_interested_rq_id, "Service Provider Send Interested Service Request", "Interested to Service", "cu_interested");
 
-                                    count++;
-                                    if (count == userSRSendCUAlertData.length) {
-                                        if (!uploadData) {
-                                            console.log(err);
-                                            var status = {
-                                                status: 0,
-                                                message: "Failed !. Server Error....."
-                                            };
-                                            console.log(status);
-                                            callback(status);
-                                        } else {
-                                            var status = {
-                                                status: 1,
-                                                message: "Successfully add user address",
-                                                data: records
-                                            };
-                                            console.log(status);
-                                            callback(status);
-                                        }
-                                    }
-                                }
-                            });
-                        });
+                                           count++;
+                                           if (count == userSRSendCUAlertData.length) {
+                                               if (!uploadData) {
+                                                   console.log(err);
+                                                   var status = {
+                                                       status: 0,
+                                                       message: "Failed !. Server Error....."
+                                                   };
+                                                   console.log(status);
+                                                   callback(status);
+                                               } else {
+                                                   var status = {
+                                                       status: 1,
+                                                       message: "Successfully add user address",
+                                                       data: records
+                                                   };
+                                                   console.log(status);
+                                                   callback(status);
+                                               }
+                                           }
+                                       }
+                                   });
+                               });
 
-                    });
+                           });
 
+                       });
+                   }else {
+
+                       var status = {
+                           status: 2,
+                           message: "This Account are  deactivated. Pleas contact support team.",
+                       };
+                       callback(status);
+                   }
                 });
             } else {
                 var status = {
@@ -2956,19 +2980,35 @@ var UserService = {
         var key = req.body.key;
         comman.checkSPValidLogin(sp_id, key, function (validUser) {
             if (validUser) {
-                var sp_name = req.body.sp_name;
-                var cash_out = req.body.cash_out;
 
-                comman.spEranInfoUpdate(sp_id, "CASH-OUT", "Cash out to user", 0, cash_out, "Debit");
-                comman.kaiKiliWalletUpdate(sp_id, sp_name, "", "", "CASH-OUT", "Cash Out", "Cash out to service provider", 0, cash_out, "Debit")
+                comman.checkSPActive(req.body.sp_id, function (spCredit) {
+                    res.json(spCredit);
 
-                var status = {
-                    status: 1,
-                    message: "Successfully update information ",
+                    if (spCredit) {
+                        var sp_name = req.body.sp_name;
+                        var cash_out = req.body.cash_out;
 
-                };
-                console.log(status);
-                callback(status);
+                        comman.spEranInfoUpdate(sp_id, "CASH-OUT", "Cash out to user", 0, cash_out, "Debit");
+                        comman.kaiKiliWalletUpdate(sp_id, sp_name, "", "", "CASH-OUT", "Cash Out", "Cash out to service provider", 0, cash_out, "Debit")
+
+                        var status = {
+                            status: 1,
+                            message: "Successfully update information ",
+                        };
+                        console.log(status);
+                        callback(status);
+
+                    } else {
+                        var status = {
+                            status: 2,
+                            message: "This Account are  deactivated. Pleas contact support team.",
+                        };
+                        console.log(status);
+                        callback(status);
+                    }
+
+
+                });
             } else {
                 var status = {
                     status: -1,
