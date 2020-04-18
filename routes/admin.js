@@ -4,6 +4,8 @@ var mongo = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var config = require('../db_config.json');
 var comman = require('../models/Comman');
+const path = require("path");
+const userFile = path.join(__dirname, "..", "public/");
 
 
 var express = require('express');
@@ -12,8 +14,6 @@ var router = express.Router();
 //API - 1
 router.get('/adminNotification/:id', function (req, res, next) {
     var no_id = req.params.id;
-
-
     mongo.connect(config.dbUrl, {useUnifiedTopology: true}, function (err, db) {
         var collection = db.db(config.dbName).collection(config.collections.admin_notification);
         var sp_info = db.db(config.dbName).collection(config.collections.sp_personal_info);
@@ -59,29 +59,27 @@ router.get('/adminNotification/:id', function (req, res, next) {
 
 });
 
-// //API - 54
-// router.get('/checkUserValid/:sp_id/:key', function (req, res, next) {
-//     console.log("call getCustomerData-----1");
-//     var sp_id = req.params.sp_id;
-//     var key = req.params.key;
-//     console.log("call getCustomerData-----1" + sp_id + "---" + key);
-//     comman.checkSPValidLogin(sp_id, key, function (validUser) {
-//         if (validUser) {
-//             var status = {
-//                 status: 1,
-//                 message: "Successfully update information.",
-//             };
-//             res.json(status);
-//
-//         } else {
-//             var status = {
-//                 status: -1,
-//                 message: "Login in other mobile",
-//             };
-//             res.json(status);
-//         }
-//     });
-// });
+//API - 54
+router.get('/delete_file/:folder/:fileName', function (req, res, next) {
+    console.log("call getCustomerData-----1");
+    var fs = require('fs');
+    try{
+        var sourceUrls = userFile+req.params.folder+"/"+req.params.fileName;
+        fs.unlinkSync(sourceUrls);
+        var status = {
+            status: 1,
+            message: "Successfully deleted file.",
+        };
+        res.json(status);
+    }catch(err){
+        console.log(err);
+        var status = {
+            status: 0,
+            message: "Server error......",
+        };
+        res.json(status);
+    }
+});
 
 
 module.exports = router;
