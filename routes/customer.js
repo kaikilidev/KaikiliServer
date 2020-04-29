@@ -4,9 +4,9 @@ var customerModel = require('../models/CustomerModel.js');
 var configDB = require('../db_config.json');
 var comman = require('../models/Comman');
 
-const multerSettings = require("../models/Multer-settings");
+const multerSettings = require("../models/Multer-settings-aws");
 const Bluebird = require("bluebird");
-let uploadSPWork = multerSettings.uploadSPWork;
+// let uploadSPWork = multerSettings.uploadSPWork;
 let uploadCUUserProfileIM = multerSettings.uploadCUUserProfileIM;
 let uploadCUReview = multerSettings.uploadCUReview;
 
@@ -490,7 +490,8 @@ router.post('/cuProfileImageUpload/:cu_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath + "CUProfile/" + documents[index].filename);
+                    uploads.push(documents[index].location);
+                    // uploads.push(configDB.imagePath + "CUProfile/" + documents[index].filename);
                 });
                 customerModel.updateCUProfileImageUpload(req.params.cu_id, uploads, function (err, result) {
                     if (err) {
@@ -629,7 +630,8 @@ router.post('/cuReviewImageUpload/:tran_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
+                    // uploads.push(configDB.imagePath + "CUReview/" + documents[index].filename);
+                    uploads.push(documents[index].location);
                 });
                 customerModel.updateCUReviewImageUpload(req.params.tran_id, uploads, function (err, result) {
                     if (err) {

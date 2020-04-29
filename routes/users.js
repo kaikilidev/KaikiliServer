@@ -5,10 +5,14 @@ var usersModel = require('../models/UsersModel');
 var configDB = require('../db_config.json');
 var comman = require('../models/Comman');
 
-const multerSettings = require("../models/Multer-settings");
+const multerSettings = require("../models/Multer-settings-aws");
 const Bluebird = require("bluebird");
 let uploadSPWork = multerSettings.uploadSPWork;
 let uploadSPUserProfileIM = multerSettings.uploadSPUserProfileIM;
+
+
+// const multerSettingsAWS = require("../models/Multer-settings-aws");
+// let uploadSPUserProfileIMAWS = multerSettingsAWS.uploadSPUserProfileIM;
 
 
 // //G E T   M E T H O D S
@@ -340,7 +344,8 @@ router.post('/spWorkImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath + "SPWork/" + documents[index].filename);
+                    uploads.push(documents[index].location);
+                    // uploads.push(configDB.imagePath + "SPWork/" + documents[index].filename);
                 });
                 usersModel.updateSPWorkImageUpload(req.params.sp_id, uploads, function (err, result) {
                     if (err) {
@@ -374,8 +379,10 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
             let uploads = [];
             if (documents && (documents.length > 0)) {
                 documents.forEach(function (item, index) {
-                    uploads.push(configDB.imagePath + "SPProfile/" + documents[index].filename);
-                    console.log("File are save ----" + configDB.imagePath + "SPProfile/" + documents[index].filename);
+                    uploads.push(documents[index].location);
+                    // uploads.push(configDB.imagePath + "SPProfile/" + documents[index].filename);
+                    // console.log("File are save ----" + configDB.imagePath + "SPProfile/" + documents[index].filename);
+                    console.log("File are save ----" + documents[index].location);
                 });
                 console.log("File are save");
                 usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
@@ -398,6 +405,48 @@ router.post('/spProfileImageUpload/:sp_id', function (req, res, next) {
         }
     });
 });
+
+
+
+// //API - 24
+// router.post('/spProfileImageUploadAWS/:sp_id', function (req, res, next) {
+//     let upload = Bluebird.promisify(uploadSPUserProfileIMAWS);
+//     console.log("File are save");
+//     return upload(req, res).then((data) => {
+//         if (req.files && req.files.uploads) {
+//             // type = req.query.type;
+//             let documents = req.files.uploads;
+//             // console.log(documents);
+//             let uploads = [];
+//             if (documents && (documents.length > 0)) {
+//                 documents.forEach(function (item, index) {
+//                     // uploads.push(configDB.imagePath + "SPProfile/" + documents[index].filename);
+//                     uploads.push(documents[index].location);
+//                     console.log("File are save ----" + documents[index].location);
+//                     console.log(documents[index]);
+//                 });
+//                 console.log("File are save");
+//                 usersModel.updateSPProfileImageUpload(req.params.sp_id, uploads, function (err, result) {
+//                     if (err) {
+//                         res.json(err);
+//                         console.log(err);
+//                     } else {
+//                         console.log(result);
+//                         res.json({"save": "image"});
+//                     }
+//                 });
+//
+//             } else {
+//                 var status = {
+//                     status: 0,
+//                     message: "No files uploaded"
+//                 };
+//                 res.json(status)
+//             }
+//         }
+//     });
+// });
+
 
 //API - 25
 router.post('/checkSPUserCreated', function (req, res, next) {
