@@ -12,8 +12,8 @@ var express = require('express');
 var router = express.Router();
 
 aws.config.update({
-    secretAccessKey: 'fPLPNmRohiAbcfxSIpN7qRjPKoASWbqLAIlXk0nl',
-    accessKeyId: 'AKIAJZ3THRP6RVSWJPVQ',
+    secretAccessKey: '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',
+    accessKeyId: 'AKIAI5THPJMULL6R5T4A',
     region: 'us-east-2'
 });
 
