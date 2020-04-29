@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54cf783c-6265-4ccb-bf2d-24f7e149569a" name="Default Changelist" comment="Add New Api">
-      <change afterPath="$PROJECT_DIR$/models/Multer-settings-aws.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Multer-settings-aws.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Multer-settings-aws.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/cleancss.cmd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.bin/semver" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.bin/semver" afterDir="false" />
@@ -1767,10 +1767,7 @@
       <change beforePath="$PROJECT_DIR$/node_modules/type-is/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/type-is/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/type-is/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/type-is/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/type-is/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/type-is/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/customer.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/customer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/admin.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1815,11 +1812,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
               <caret line="38" column="25" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/admin.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3">
+              <caret line="71" column="35" selection-start-line="71" selection-start-column="35" selection-end-line="71" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -1863,8 +1869,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Multer-settings-aws.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="52" selection-start-line="16" selection-start-column="52" selection-end-line="16" selection-end-column="52" />
+            <state relative-caret-position="357">
+              <caret line="21" column="23" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -1874,15 +1880,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="73">
               <caret line="373" column="4" selection-start-line="373" selection-start-column="4" selection-end-line="373" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/aws-sdk/lib/services/s3.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="834" column="34" selection-start-line="834" selection-start-column="34" selection-end-line="834" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -1956,11 +1953,11 @@
         <option value="$PROJECT_DIR$/models/AutoCall.js" />
         <option value="$PROJECT_DIR$/models/Comman.js" />
         <option value="$PROJECT_DIR$/models/UserServiceModel.js" />
-        <option value="$PROJECT_DIR$/routes/admin.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/models/Multer-settings-aws.js" />
         <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/routes/customer.js" />
+        <option value="$PROJECT_DIR$/models/Multer-settings-aws.js" />
+        <option value="$PROJECT_DIR$/routes/admin.js" />
       </list>
     </option>
   </component>
@@ -1986,6 +1983,16 @@
             <path>
               <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
               <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="KaikiliServerGit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KaikiliServerGit" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -2494,14 +2501,7 @@
       <workItem from="1587616289914" duration="2386000" />
       <workItem from="1587722322269" duration="3324000" />
       <workItem from="1588052838138" duration="174000" />
-      <workItem from="1588136803065" duration="9777000" />
-    </task>
-    <task id="LOCAL-00486" summary="Add New Api">
-      <created>1584017190189</created>
-      <option name="number" value="00486" />
-      <option name="presentableId" value="LOCAL-00486" />
-      <option name="project" value="LOCAL" />
-      <updated>1584017190190</updated>
+      <workItem from="1588136803065" duration="12859000" />
     </task>
     <task id="LOCAL-00487" summary="Add New Api">
       <created>1584018853473</created>
@@ -2839,11 +2839,18 @@
       <option name="project" value="LOCAL" />
       <updated>1587211435762</updated>
     </task>
-    <option name="localTasksCounter" value="535" />
+    <task id="LOCAL-00535" summary="Add New Api">
+      <created>1588158959857</created>
+      <option name="number" value="00535" />
+      <option name="presentableId" value="LOCAL-00535" />
+      <option name="project" value="LOCAL" />
+      <updated>1588158959858</updated>
+    </task>
+    <option name="localTasksCounter" value="536" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="274999000" />
+    <option name="totallyTimeSpent" value="278081000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2857,13 +2864,13 @@
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20604026" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17315437" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.51983005" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.51983005" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398017" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -3148,7 +3155,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/routes/admin.js</url>
-          <line>14</line>
+          <line>20</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -3245,13 +3252,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/admin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="30" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/Comman.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="649">
@@ -3280,13 +3280,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="502">
           <caret line="30" column="11" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Multer-settings-aws.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="52" selection-start-line="16" selection-start-column="52" selection-end-line="16" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -3334,6 +3327,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="38" column="25" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Multer-settings-aws.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3">
+          <caret line="71" column="35" selection-start-line="71" selection-start-column="35" selection-end-line="71" selection-end-column="35" />
         </state>
       </provider>
     </entry>

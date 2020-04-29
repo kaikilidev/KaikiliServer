@@ -6,10 +6,16 @@ var config = require('../db_config.json');
 var comman = require('../models/Comman');
 const path = require("path");
 const userFile = path.join(__dirname, "..", "public/");
-
+const aws = require('aws-sdk');
 
 var express = require('express');
 var router = express.Router();
+
+aws.config.update({
+    secretAccessKey: 'fPLPNmRohiAbcfxSIpN7qRjPKoASWbqLAIlXk0nl',
+    accessKeyId: 'AKIAJZ3THRP6RVSWJPVQ',
+    region: 'us-east-2'
+});
 
 //API - 1
 router.get('/adminNotification/:id', function (req, res, next) {
@@ -62,15 +68,44 @@ router.get('/adminNotification/:id', function (req, res, next) {
 //API - 54
 router.get('/delete_file/:folder/:fileName', function (req, res, next) {
     console.log("call getCustomerData-----1");
-    var fs = require('fs');
+    console.log(req.params.folder);
+    console.log(req.params.fileName);
+    // var fs = require('fs');
     try{
-        var sourceUrls = userFile+req.params.folder+"/"+req.params.fileName;
-        fs.unlinkSync(sourceUrls);
-        var status = {
-            status: 1,
-            message: "Successfully deleted file.",
+
+        var bucketInstance = new aws.S3();
+        var params = {
+            Bucket: "kaikili-dev/"+req.params.folder,
+            Key: req.params.fileName
         };
-        res.json(status);
+        bucketInstance.deleteObject(params, function (err, data) {
+            if (data) {
+                console.log(data);
+                var status = {
+                    status: 1,
+                    message: "Successfully deleted file.",
+                };
+                res.json(status);
+            }
+            else {
+                console.log(err);
+                var status = {
+                    status: 0,
+                    message: "Server error......",
+                };
+                res.json(status);
+                console.log("Check if you have sufficient permissions : "+err);
+            }
+        });
+
+    //
+    //     var sourceUrls = userFile+req.params.folder+"/"+req.params.fileName;
+    //     fs.unlinkSync(sourceUrls);
+    //     var status = {
+    //         status: 1,
+    //         message: "Successfully deleted file.",
+    //     };
+    //     res.json(status);
     }catch(err){
         console.log(err);
         var status = {
